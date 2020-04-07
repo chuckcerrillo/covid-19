@@ -168,7 +168,10 @@
             },
             stats()
             {
-                return this.raw_stats;
+                return this.raw_stats.sort(function (a, b) {
+                    return a.country > b.country ? 1 : -1;
+                });
+
             },
             selectedStats() {
                 return this.stats[this.selectedCountry];
@@ -201,17 +204,20 @@
                         {
                             label: 'Confirmed',
                             backgroundColor: '#dfd27d',
-                            data: []
+                            data: [],
+                            yAxisId: 'y-axis-1'
                         },
                         {
                             label: 'Deaths',
                             backgroundColor: '#d54242',
-                            data: []
+                            data: [],
+                            yAxisId: 'y-axis-2'
                         },
                         {
                             label: 'Recovered',
                             backgroundColor: '#14a76c',
-                            data: []
+                            data: [],
+                            yAxisId: 'y-axis-3'
                         },
                     ]
                 };
