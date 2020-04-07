@@ -2110,7 +2110,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       'countries': [],
       'raw_stats': [],
-      'selectedCountry': 17
+      'selectedCountry': 0
     };
   },
   mounted: function mounted() {

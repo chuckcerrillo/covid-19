@@ -110,7 +110,7 @@
                 },
                 'countries': [],
                 'raw_stats': [],
-                'selectedCountry': 17
+                'selectedCountry': 0
             }
         },
         mounted()
