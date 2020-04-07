@@ -174,7 +174,7 @@ class StatsController extends Controller
             $sequence = array_reverse($country['daily']);
             foreach($sequence AS $index=>$row)
             {
-                if (isset($row['confirmed']) && $row['confirmed'] > 0)
+                if (isset($row['confirmed']))
                 {
                     $data['country'][$country_index]['total']['confirmed'] = $row['confirmed'];
                     $data['country'][$country_index]['total']['deaths'] = $row['deaths'];
