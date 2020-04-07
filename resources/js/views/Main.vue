@@ -71,11 +71,38 @@
                                         }
                                     },
                                     scales: {
-                                        yAxes: [{
-                                            ticks: {
-                                                fontColor: '#2c3531',
+                                        yAxes: [
+                                            {
+                                                type: 'linear',
+                                                position: 'left',
+                                                id: 'y-axis-1',
+                                                ticks: {
+                                                    fontColor: '#2c3531',
+                                                }
+                                            },
+                                            {
+                                                type: 'linear',
+                                                position: 'right',
+                                                id: 'y-axis-2',
+                                                gridLines: {
+                                                    drawOnChartArea: false
+                                                },
+                                                ticks: {
+                                                    fontColor: '#2c3531',
+                                                }
+                                            },
+                                            {
+                                                type: 'linear',
+                                                position: 'right',
+                                                id: 'y-axis-3',
+                                                gridLines: {
+                                                    drawOnChartArea: false
+                                                },
+                                                ticks: {
+                                                    fontColor: '#2c3531',
+                                                }
                                             }
-                                        }],
+                                        ],
                                         xAxes: [{
                                             ticks: {
                                                 fontColor: '#2c3531',
