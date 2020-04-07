@@ -2120,6 +2120,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -2137,7 +2139,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       'countries': [],
       'raw_stats': [],
-      'selectedCountry': 0
+      'selectedCountry': 2
     };
   },
   mounted: function mounted() {
@@ -2211,17 +2213,17 @@ __webpack_require__.r(__webpack_exports__);
           label: 'Confirmed',
           backgroundColor: '#dfd27d',
           data: [],
-          yAxisId: 'y-axis-1'
+          yAxisID: 'y-1'
         }, {
           label: 'Deaths',
           backgroundColor: '#d54242',
           data: [],
-          yAxisId: 'y-axis-2'
+          yAxisID: 'y-2'
         }, {
           label: 'Recovered',
           backgroundColor: '#14a76c',
           data: [],
-          yAxisId: 'y-axis-3'
+          yAxisID: 'y-3'
         }]
       };
 
@@ -80117,46 +80119,50 @@ var render = function() {
                         options: {
                           responsive: true,
                           maintainAspectRatio: false,
-                          legend: {
-                            labels: {
-                              fontColor: "#2c3531"
-                            }
-                          },
+                          hoverMode: "index",
+                          stacked: false,
                           scales: {
-                            yAxes: [
+                            xAxes: [
                               {
-                                type: "linear",
-                                position: "left",
-                                id: "y-axis-1",
-                                ticks: {
-                                  fontColor: "#2c3531"
-                                }
-                              },
-                              {
-                                type: "linear",
-                                position: "right",
-                                id: "y-axis-2",
-                                gridLines: {
-                                  drawOnChartArea: false
-                                },
-                                ticks: {
-                                  fontColor: "#2c3531"
-                                }
-                              },
-                              {
-                                type: "linear",
-                                position: "right",
-                                id: "y-axis-3",
-                                gridLines: {
-                                  drawOnChartArea: false
-                                },
                                 ticks: {
                                   fontColor: "#2c3531"
                                 }
                               }
                             ],
-                            xAxes: [
+                            yAxes: [
                               {
+                                type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                display: true,
+                                position: "left",
+                                id: "y-1",
+                                ticks: {
+                                  fontColor: "#2c3531"
+                                }
+                              },
+                              {
+                                type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                display: true,
+                                position: "right",
+                                id: "y-2",
+
+                                // grid line settings
+                                gridLines: {
+                                  drawOnChartArea: false // only want the grid lines for one axis to show up
+                                },
+                                ticks: {
+                                  fontColor: "#2c3531"
+                                }
+                              },
+                              {
+                                type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                display: true,
+                                position: "right",
+                                id: "y-3",
+
+                                // grid line settings
+                                gridLines: {
+                                  drawOnChartArea: false // only want the grid lines for one axis to show up
+                                },
                                 ticks: {
                                   fontColor: "#2c3531"
                                 }
