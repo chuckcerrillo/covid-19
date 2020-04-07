@@ -28,7 +28,7 @@
                     </div>
                     <simplebar data-simplebar-auto-hide="false" class="absolute top-0 bottom-0 right-0 left-0 mt-12 mx-4 mb-4 mr-2" style="position:absolute" >
                         <div
-                            class="flex p-2 w-full hover:bg-hoverslab"
+                            class="flex p-2 w-full hover:bg-hoverslab cursor-pointer"
                             v-for="(row,key,index) in stats"
                             :class="selectedCountry == key ? 'bg-hoverslab' : ''"
                             @click="selectedCountry = key"
@@ -50,9 +50,9 @@
                         <div class="w-32">Deaths</div>
                         <div class="w-32">Recovered</div>
                     </div>
-                    <simplebar data-simplebar-auto-hide="false" class="absolute top-0 bottom-0 right-0 left-0 mt-12 mx-4 mb-4 mr-2" style="position:absolute" >
+                    <simplebar data-simplebar-auto-hide="false" class="absolute top-0 right-0 left-0 mt-12 mx-4 mb-4 mr-2" style="position:absolute; bottom: 40%" >
                         <div
-                            class="flex p-2 w-full hover:bg-hoverslab"
+                            class="flex p-2 w-full"
                             v-for="row in daily"
                         >
                             <div class="w-32">{{row['date']}}</div>
@@ -61,6 +61,28 @@
                             <div class="w-32">{{row['recovered']}}</div>
                         </div>
                     </simplebar>
+                    <LineChart :data="dailyChart" class="absolute left-0 right-0 bg-heading m-4 p-2 rounded bottom-0" style="top: 60%;"
+                               :options="{
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    legend: {
+                                        labels: {
+                                            fontColor: '#2c3531'
+                                        }
+                                    },
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                fontColor: '#2c3531',
+                                            }
+                                        }],
+                                        xAxes: [{
+                                            ticks: {
+                                                fontColor: '#2c3531',
+                                            }
+                                        }]
+                                    }
+                                }" />
                 </div>
 
             </div>
@@ -70,12 +92,14 @@
 
 <script>
     import simplebar from 'simplebar-vue';
-
+    import LineChart from "../components/charts/LineChart";
     import 'simplebar/dist/simplebar.min.css';
+
     export default {
         name: "Start",
         components:{
-            simplebar
+            simplebar,
+            LineChart
         },
         data()
         {
@@ -169,6 +193,52 @@
                     }
                 }
                 return data;
+            },
+            dailyChart(){
+                var data = {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Confirmed',
+                            backgroundColor: '#dfd27d',
+                            data: []
+                        },
+                        {
+                            label: 'Deaths',
+                            backgroundColor: '#d54242',
+                            data: []
+                        },
+                        {
+                            label: 'Recovered',
+                            backgroundColor: '#14a76c',
+                            data: []
+                        },
+                    ]
+                };
+
+                if (this.daily)
+                {
+
+                    for(var x in this.daily)
+                    {
+                        // Labels
+                        data.labels.push(this.daily[x].date);
+
+                        // Confirmed
+                        data.datasets[0].data.push(this.daily[x].confirmed);
+
+                        // Deaths
+                        data.datasets[1].data.push(this.daily[x].deaths);
+
+                        // Recovered
+                        data.datasets[2].data.push(this.daily[x].recovered);
+                    }
+
+
+                }
+
+                return data;
+
             }
         }
     }
