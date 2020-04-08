@@ -300,18 +300,21 @@
                     datasets: [
 
                         {
+                            type: 'line',
                             label: 'Confirmed',
                             backgroundColor: '#dfd27d',
                             data: [],
                             yAxisID: 'y-1'
                         },
                         {
+                            type: 'bar',
                             label: 'Deaths',
                             backgroundColor: '#d54242',
                             data: [],
                             yAxisID: 'y-2'
                         },
                         {
+                            type: 'bar',
                             label: 'Recovered',
                             backgroundColor: '#14a76c',
                             data: [],
