@@ -2121,6 +2121,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _components_Daily__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Daily */ "./resources/js/components/Daily.vue");
 /* harmony import */ var _Comparison__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Comparison */ "./resources/js/views/Comparison.vue");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_5__);
 //
 //
 //
@@ -2274,6 +2276,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -2346,7 +2372,9 @@ __webpack_require__.r(__webpack_exports__);
       var key = this.getCountryId(country);
 
       if (this.compare.length < 3) {
-        this.compare.push(key);
+        if (this.compare.indexOf(key) === -1) {
+          this.compare.push(key);
+        }
       }
 
       this.selectedCountry = key;
@@ -2429,6 +2457,32 @@ __webpack_require__.r(__webpack_exports__);
           data.datasets[1].data.push(this.daily[x].deaths); // Recovered
 
           data.datasets[2].data.push(this.daily[x].recovered);
+        }
+      }
+
+      return data;
+    },
+    global: function global() {
+      var data = {
+        confirmed: 0,
+        deaths: 0,
+        recovered: 0,
+        last_update: ''
+      },
+          last_update = '';
+
+      for (var x in this.stats) {
+        data.confirmed += parseInt(this.stats[x].content.total.confirmed);
+        data.deaths += parseInt(this.stats[x].content.total.deaths);
+        data.recovered += parseInt(this.stats[x].content.total.recovered);
+        console.log('This stats');
+        console.log(moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('YYYY-MM-DD'));
+        console.log('Last update');
+        console.log(last_update);
+
+        if (last_update.length === 0 || moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('YYYY-MM-DD') > last_update) {
+          data.last_update = moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('LL');
+          last_update = moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('YYYY-MM-DD');
         }
       }
 
@@ -80354,71 +80408,132 @@ var render = function() {
           "div",
           { staticClass: "flex flex-1 h-screen overflow-y-auto relative" },
           [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "m-4 absolute left-0 top-0 overflow-hidden bg-slab rounded",
-                staticStyle: { bottom: "64px" }
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "mx-4 pt-2" },
-                  [
-                    _vm._m(0),
-                    _vm._v(" "),
-                    _c(
-                      "simplebar",
-                      {
-                        staticClass:
-                          "absolute top-0 bottom-0 right-0 left-0 mt-12 mx-4 mb-4 mr-2",
-                        staticStyle: { position: "absolute" },
-                        attrs: { "data-simplebar-auto-hide": "false" }
-                      },
-                      _vm._l(_vm.stats, function(row, key, index) {
-                        return _c(
-                          "div",
-                          {
-                            staticClass:
-                              "flex p-2 hover:bg-lightslab cursor-pointer text-sm",
-                            class: _vm.isSelected(key) ? "bg-hoverslab" : "",
-                            on: {
-                              click: function($event) {
-                                return _vm.selectCountry(row["country"])
+            _c("div", [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "m-4 absolute left-0 top-0 overflow-hidden bg-lightslab rounded h-48 z-10 w-136 p-4"
+                },
+                [
+                  _c(
+                    "div",
+                    { staticClass: "text-2xl tracking-tight font-bold" },
+                    [_vm._v("Global tally")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "text-xs mb-4" }, [
+                    _vm._v("as of " + _vm._s(_vm.global.last_update))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "flex font-bold justify-between items-center"
+                    },
+                    [
+                      _c("div", { staticClass: "m-2" }, [
+                        _c("div", { staticClass: "text-sm" }, [
+                          _vm._v("Confirmed")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "text-4xl text-white" }, [
+                          _vm._v(_vm._s(_vm.global.confirmed))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "m-2" }, [
+                        _c("div", { staticClass: "text-sm" }, [
+                          _vm._v("Deaths")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "text-4xl text-white" }, [
+                          _vm._v(_vm._s(_vm.global.deaths))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "m-2" }, [
+                        _c("div", { staticClass: "text-sm" }, [
+                          _vm._v("Recovered")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "text-4xl text-white" }, [
+                          _vm._v(_vm._s(_vm.global.recovered))
+                        ])
+                      ])
+                    ]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "m-4 absolute left-0 overflow-hidden bg-slab rounded",
+                  staticStyle: { top: "13rem", bottom: "64px" }
+                },
+                [
+                  _c(
+                    "div",
+                    { staticClass: "mx-4 pt-2" },
+                    [
+                      _vm._m(0),
+                      _vm._v(" "),
+                      _c(
+                        "simplebar",
+                        {
+                          staticClass:
+                            "absolute top-0 bottom-0 right-0 left-0 mt-12 mx-4 mb-4 mr-2",
+                          staticStyle: { position: "absolute" },
+                          attrs: { "data-simplebar-auto-hide": "false" }
+                        },
+                        _vm._l(_vm.stats, function(row, key, index) {
+                          return _c(
+                            "div",
+                            {
+                              staticClass:
+                                "flex p-2 hover:bg-lightslab cursor-pointer text-sm",
+                              class: _vm.isSelected(key) ? "bg-hoverslab" : "",
+                              on: {
+                                click: function($event) {
+                                  return _vm.selectCountry(row["country"])
+                                }
                               }
-                            }
-                          },
-                          [
-                            _c("div", { staticClass: "w-56" }, [
-                              _vm._v(_vm._s(row["country"]))
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "w-24" }, [
-                              _vm._v(
-                                _vm._s(row["content"]["total"]["confirmed"])
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "w-24" }, [
-                              _vm._v(_vm._s(row["content"]["total"]["deaths"]))
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "w-24" }, [
-                              _vm._v(
-                                _vm._s(row["content"]["total"]["recovered"])
-                              )
-                            ])
-                          ]
-                        )
-                      }),
-                      0
-                    )
-                  ],
-                  1
-                )
-              ]
-            ),
+                            },
+                            [
+                              _c("div", { staticClass: "w-56" }, [
+                                _vm._v(_vm._s(row["country"]))
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "w-24" }, [
+                                _vm._v(
+                                  _vm._s(row["content"]["total"]["confirmed"])
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "w-24" }, [
+                                _vm._v(
+                                  _vm._s(row["content"]["total"]["deaths"])
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "w-24" }, [
+                                _vm._v(
+                                  _vm._s(row["content"]["total"]["recovered"])
+                                )
+                              ])
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    ],
+                    1
+                  )
+                ]
+              )
+            ]),
             _vm._v(" "),
             _c(
               "div",
@@ -95765,6 +95880,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
 /* harmony import */ var _components_App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/App */ "./resources/js/components/App.vue");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
 
 
 
@@ -95772,6 +95889,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.moment = moment__WEBPACK_IMPORTED_MODULE_3___default.a;
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   components: {

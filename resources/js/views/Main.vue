@@ -18,27 +18,50 @@
 <!--                </div>-->
 <!--            </div>-->
 <!--            <div class="m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded" style="left: 270px; bottom: 64px">-->
-            <div class="m-4 absolute left-0 top-0 overflow-hidden bg-slab rounded" style="bottom: 64px">
-                <div class="mx-4 pt-2">
-                    <div class="flex font-bold py-2 text-sm">
-                        <div class="w-56">Country / Region</div>
-                        <div class="w-24">Confirmed</div>
-                        <div class="w-24">Deaths</div>
-                        <div class="w-24">Recovered</div>
-                    </div>
-                    <simplebar data-simplebar-auto-hide="false" class="absolute top-0 bottom-0 right-0 left-0 mt-12 mx-4 mb-4 mr-2" style="position:absolute" >
-                        <div
-                            class="flex p-2 hover:bg-lightslab cursor-pointer text-sm"
-                            v-for="(row,key,index) in stats"
-                            :class="isSelected(key) ? 'bg-hoverslab' : ''"
-                            @click="selectCountry(row['country'])"
-                        >
-                            <div class="w-56">{{row['country']}}</div>
-                            <div class="w-24">{{row['content']['total']['confirmed']}}</div>
-                            <div class="w-24">{{row['content']['total']['deaths']}}</div>
-                            <div class="w-24">{{row['content']['total']['recovered']}}</div>
+            <div>
+                <div class="m-4 absolute left-0 top-0 overflow-hidden bg-lightslab rounded h-48 z-10 w-136 p-4">
+                    <div class="text-2xl tracking-tight font-bold">Global tally</div>
+                    <div class="text-xs mb-4">as of {{global.last_update}}</div>
+
+                    <div class="flex font-bold justify-between items-center">
+                        <div class="m-2">
+                            <div class="text-sm">Confirmed</div>
+                            <div class="text-4xl text-white">{{global.confirmed}}</div>
                         </div>
-                    </simplebar>
+                        <div class="m-2">
+                            <div class="text-sm">Deaths</div>
+                            <div class="text-4xl text-white">{{global.deaths}}</div>
+                        </div>
+                        <div class="m-2">
+                            <div class="text-sm">Recovered</div>
+                            <div class="text-4xl text-white">{{global.recovered}}</div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="m-4 absolute left-0 overflow-hidden bg-slab rounded" style="top: 13rem; bottom: 64px">
+                    <div class="mx-4 pt-2">
+                        <div class="flex font-bold py-2 text-sm">
+                            <div class="w-56">Country / Region</div>
+                            <div class="w-24">Confirmed</div>
+                            <div class="w-24">Deaths</div>
+                            <div class="w-24">Recovered</div>
+                        </div>
+                        <simplebar data-simplebar-auto-hide="false" class="absolute top-0 bottom-0 right-0 left-0 mt-12 mx-4 mb-4 mr-2" style="position:absolute" >
+                            <div
+                                class="flex p-2 hover:bg-lightslab cursor-pointer text-sm"
+                                v-for="(row,key,index) in stats"
+                                :class="isSelected(key) ? 'bg-hoverslab' : ''"
+                                @click="selectCountry(row['country'])"
+                            >
+                                <div class="w-56">{{row['country']}}</div>
+                                <div class="w-24">{{row['content']['total']['confirmed']}}</div>
+                                <div class="w-24">{{row['content']['total']['deaths']}}</div>
+                                <div class="w-24">{{row['content']['total']['recovered']}}</div>
+                            </div>
+                        </simplebar>
+                    </div>
                 </div>
             </div>
             <div class="m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded" style="left: 560px; bottom: 64px">
@@ -158,6 +181,8 @@
     import Daily from "../components/Daily";
     import Comparison from "./Comparison";
 
+    import moment from 'moment'
+
     export default {
         name: "Start",
         components:{
@@ -243,7 +268,10 @@
 
                 if(this.compare.length < 3)
                 {
-                    this.compare.push(key);
+                    if (this.compare.indexOf(key) === -1)
+                    {
+                        this.compare.push(key);
+                    }
                 }
                 this.selectedCountry = key
             },
@@ -346,6 +374,33 @@
 
                 return data;
 
+            },
+            global(){
+                var data = {
+                        confirmed: 0,
+                        deaths: 0,
+                        recovered: 0,
+                        last_update: '',
+                    },
+                    last_update = '';
+                for(var x in this.stats)
+                {
+                    data.confirmed += parseInt(this.stats[x].content.total.confirmed);
+                    data.deaths += parseInt(this.stats[x].content.total.deaths);
+                    data.recovered += parseInt(this.stats[x].content.total.recovered);
+
+                    console.log('This stats');
+                    console.log(moment(this.stats[x].content.total.last_update).format('YYYY-MM-DD'))
+                    console.log('Last update');
+                    console.log(last_update)
+                    if(last_update.length === 0 || moment(this.stats[x].content.total.last_update).format('YYYY-MM-DD') > last_update)
+                    {
+                        data.last_update = moment(this.stats[x].content.total.last_update).format('LL');
+                        last_update = moment(this.stats[x].content.total.last_update).format('YYYY-MM-DD');
+                    }
+
+                }
+                return data;
             }
         }
     }
