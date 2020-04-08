@@ -1926,6 +1926,76 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Daily.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Daily.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var simplebar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! simplebar-vue */ "./node_modules/simplebar-vue/dist/simplebar-vue.esm.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Daily",
+  components: {
+    simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  props: ['name', 'data', 'country'],
+  methods: {
+    remove: function remove(item) {
+      this.$emit('remove', item);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Nav.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Nav.vue?vue&type=script&lang=js& ***!
@@ -2001,6 +2071,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_charts_LineChart__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/charts/LineChart */ "./resources/js/components/charts/LineChart.vue");
 /* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! simplebar/dist/simplebar.min.css */ "./node_modules/simplebar/dist/simplebar.min.css");
 /* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _components_Daily__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Daily */ "./resources/js/components/Daily.vue");
 //
 //
 //
@@ -2122,6 +2193,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -2129,7 +2228,8 @@ __webpack_require__.r(__webpack_exports__);
   name: "Start",
   components: {
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    LineChart: _components_charts_LineChart__WEBPACK_IMPORTED_MODULE_1__["default"]
+    LineChart: _components_charts_LineChart__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Daily: _components_Daily__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     return {
@@ -2137,6 +2237,7 @@ __webpack_require__.r(__webpack_exports__);
         'countries': false,
         'raw_stats': false
       },
+      'compare': [],
       'countries': [],
       'raw_stats': [],
       'selectedCountry': 2
@@ -2155,12 +2256,16 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (error) {});
   },
   methods: {
-    getDaily: function getDaily(country) {
+    removeCompare: function removeCompare(item) {
+      var index = this.compare.indexOf(item);
+      if (index !== -1) this.compare.splice(index, 1);
+    },
+    getDaily: function getDaily(stats) {
       var data = [];
 
-      if (this.selectedStats && this.selectedStats.content && this.selectedStats.content.daily) {
-        for (var x in this.selectedStats.content.daily) {
-          var row = this.selectedStats.content.daily[x];
+      if (stats && stats.content && stats.content.daily) {
+        for (var x in stats.content.daily) {
+          var row = stats.content.daily[x];
           data.push({
             'date': x,
             'confirmed': parseInt(row.confirmed),
@@ -2171,9 +2276,40 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return data;
+    },
+    selectCountry: function selectCountry(key) {
+      if (this.compare.length < 3) {
+        this.compare.push(key);
+      }
+
+      this.selectedCountry = key;
+    },
+    isSelected: function isSelected(key) {
+      return false;
     }
   },
   computed: {
+    compare1: function compare1() {
+      if (this.compare.length > 0) {
+        return this.getDaily(this.stats[this.compare[0]]);
+      }
+
+      return [];
+    },
+    compare2: function compare2() {
+      if (this.compare.length > 1) {
+        return this.getDaily(this.stats[this.compare[1]]);
+      }
+
+      return [];
+    },
+    compare3: function compare3() {
+      if (this.compare.length > 2) {
+        return this.getDaily(this.stats[this.compare[2]]);
+      }
+
+      return [];
+    },
     loaded: function loaded() {
       if (this.loading.countries && this.loading.raw_stats) {
         return true;
@@ -2190,21 +2326,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.stats[this.selectedCountry];
     },
     daily: function daily() {
-      var data = [];
-
-      if (this.selectedStats && this.selectedStats.content && this.selectedStats.content.daily) {
-        for (var x in this.selectedStats.content.daily) {
-          var row = this.selectedStats.content.daily[x];
-          data.push({
-            'date': x,
-            'confirmed': row.confirmed ? parseInt(row.confirmed) : 0,
-            'deaths': row.deaths ? parseInt(row.deaths) : 0,
-            'recovered': row.recovered ? parseInt(row.recovered) : 0
-          });
-        }
-      }
-
-      return data;
+      return this.getDaily(this.selectedStats);
     },
     dailyChart: function dailyChart() {
       var data = {
@@ -79938,6 +80060,130 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Daily.vue?vue&type=template&id=ea22bb84&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Daily.vue?vue&type=template&id=ea22bb84&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "mx-6 pt-4 relative" }, [
+        _c("h2", { staticClass: "font-bold text-2xl" }, [
+          _vm._v(_vm._s(_vm.name))
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "flex text-sm mt-4 w-full items-center" }, [
+          _c("div", { staticClass: "text-center pr-4" }, [
+            _c("div", { staticClass: "text-xs font-bold" }, [
+              _vm._v("Confirmed")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-3xl font-bold" }, [
+              _vm._v(_vm._s(_vm.data[_vm.data.length - 1].confirmed))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "text-center pr-4" }, [
+            _c("div", { staticClass: "text-xs font-bold" }, [_vm._v("Deaths")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-3xl font-bold" }, [
+              _vm._v(_vm._s(_vm.data[_vm.data.length - 1].deaths))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "text-center" }, [
+            _c("div", { staticClass: "text-xs font-bold" }, [
+              _vm._v("Recovered")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-3xl font-bold" }, [
+              _vm._v(_vm._s(_vm.data[_vm.data.length - 1].recovered))
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "text-xs mb-4" }, [
+          _vm._v("As of " + _vm._s(_vm.data[_vm.data.length - 1].date))
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "absolute top-0 right-0 text-xs pt-4 hover:text-white cursor-pointer",
+            on: {
+              click: function($event) {
+                return _vm.remove(_vm.country)
+              }
+            }
+          },
+          [_vm._v("Remove")]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "simplebar",
+        {
+          staticClass: "top-0 right-0 left-0 bottom-0 mt-48 mx-4 mb-4 mr-2",
+          staticStyle: { position: "absolute" },
+          attrs: { "data-simplebar-auto-hide": "false" }
+        },
+        _vm._l(_vm.data, function(row) {
+          return _c("div", { staticClass: "flex p-2 w-full text-xs" }, [
+            _c("div", { staticClass: "w-32" }, [_vm._v(_vm._s(row["date"]))]),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-32" }, [
+              _vm._v(_vm._s(row["confirmed"]))
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-32" }, [_vm._v(_vm._s(row["deaths"]))]),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-32" }, [
+              _vm._v(_vm._s(row["recovered"]))
+            ])
+          ])
+        }),
+        0
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "mx-6 flex text-xs font-bold py-2" }, [
+      _c("div", { staticClass: "w-32" }, [_vm._v("Date")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "w-32" }, [_vm._v("Confirmed")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "w-32" }, [_vm._v("Deaths")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "w-32" }, [_vm._v("Recovered")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Nav.vue?vue&type=template&id=7cd4f788&scoped=true&":
 /*!******************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Nav.vue?vue&type=template&id=7cd4f788&scoped=true& ***!
@@ -80009,7 +80255,7 @@ var render = function() {
               [
                 _c(
                   "div",
-                  { staticClass: "mx-4" },
+                  { staticClass: "mx-4 pt-2" },
                   [
                     _vm._m(0),
                     _vm._v(" "),
@@ -80026,31 +80272,30 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "flex p-2 w-full hover:bg-hoverslab cursor-pointer",
-                            class:
-                              _vm.selectedCountry == key ? "bg-hoverslab" : "",
+                              "flex p-2 hover:bg-lightslab cursor-pointer text-sm",
+                            class: _vm.isSelected(key) ? "bg-hoverslab" : "",
                             on: {
                               click: function($event) {
-                                _vm.selectedCountry = key
+                                return _vm.selectCountry(key)
                               }
                             }
                           },
                           [
-                            _c("div", { staticClass: "w-64" }, [
+                            _c("div", { staticClass: "w-56" }, [
                               _vm._v(_vm._s(row["country"]))
                             ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "w-32" }, [
+                            _c("div", { staticClass: "w-24" }, [
                               _vm._v(
                                 _vm._s(row["content"]["total"]["confirmed"])
                               )
                             ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "w-32" }, [
+                            _c("div", { staticClass: "w-24" }, [
                               _vm._v(_vm._s(row["content"]["total"]["deaths"]))
                             ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "w-32" }, [
+                            _c("div", { staticClass: "w-24" }, [
                               _vm._v(
                                 _vm._s(row["content"]["total"]["recovered"])
                               )
@@ -80071,43 +80316,136 @@ var render = function() {
               {
                 staticClass:
                   "m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded",
-                staticStyle: { left: "690px", bottom: "64px" }
+                staticStyle: { left: "560px", bottom: "64px" }
               },
               [
+                _vm._m(1),
+                _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "mx-4" },
+                  { staticClass: "mx-4 h-full" },
                   [
-                    _vm._m(1),
-                    _vm._v(" "),
                     _c(
-                      "simplebar",
+                      "div",
                       {
-                        staticClass:
-                          "absolute top-0 right-0 left-0 mt-12 mx-4 mb-4 mr-2",
-                        staticStyle: { position: "absolute", bottom: "40%" },
-                        attrs: { "data-simplebar-auto-hide": "false" }
+                        staticClass: "flex w-full absolute left-0 right-0 px-2",
+                        staticStyle: { bottom: "40%", top: "70px" }
                       },
-                      _vm._l(_vm.daily, function(row) {
-                        return _c("div", { staticClass: "flex p-2 w-full" }, [
-                          _c("div", { staticClass: "w-32" }, [
-                            _vm._v(_vm._s(row["date"]))
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-32" }, [
-                            _vm._v(_vm._s(row["confirmed"]))
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-32" }, [
-                            _vm._v(_vm._s(row["deaths"]))
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-32" }, [
-                            _vm._v(_vm._s(row["recovered"]))
-                          ])
-                        ])
-                      }),
-                      0
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "rounded bg-hoverslab m-2 w-1/3 relative"
+                          },
+                          [
+                            _vm.compare.length > 0
+                              ? _c(
+                                  "div",
+                                  [
+                                    _c("Daily", {
+                                      attrs: {
+                                        name:
+                                          _vm.countries[_vm.compare[0]].name,
+                                        data: _vm.compare1,
+                                        country: _vm.compare[0]
+                                      },
+                                      on: { remove: _vm.removeCompare }
+                                    })
+                                  ],
+                                  1
+                                )
+                              : _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "flex items-center justify-center h-full text-2xl text-gray-200"
+                                  },
+                                  [
+                                    _c("div", [
+                                      _vm._v("Select a country to compare")
+                                    ])
+                                  ]
+                                )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "rounded bg-hoverslab m-2 w-1/3 relative"
+                          },
+                          [
+                            _vm.compare.length > 1
+                              ? _c(
+                                  "div",
+                                  [
+                                    _c("Daily", {
+                                      attrs: {
+                                        name:
+                                          _vm.countries[_vm.compare[1]].name,
+                                        data: _vm.compare2,
+                                        country: _vm.compare[1]
+                                      },
+                                      on: { remove: _vm.removeCompare }
+                                    })
+                                  ],
+                                  1
+                                )
+                              : _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "flex items-center justify-center h-full text-2xl text-gray-200"
+                                  },
+                                  [
+                                    _c("div", [
+                                      _vm._v("Select a country to compare")
+                                    ])
+                                  ]
+                                )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "rounded bg-hoverslab m-2 w-1/3 relative"
+                          },
+                          [
+                            _vm.compare.length > 2
+                              ? _c(
+                                  "div",
+                                  [
+                                    _c("Daily", {
+                                      attrs: {
+                                        name:
+                                          _vm.countries[_vm.compare[2]].name,
+                                        data: _vm.compare3,
+                                        country: _vm.compare[2]
+                                      },
+                                      on: { remove: _vm.removeCompare }
+                                    })
+                                  ],
+                                  1
+                                )
+                              : _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "flex items-center justify-center h-full text-2xl text-gray-200"
+                                  },
+                                  [
+                                    _c("div", [
+                                      _vm._v("Select a country to compare")
+                                    ])
+                                  ]
+                                )
+                          ]
+                        )
+                      ]
                     ),
                     _vm._v(" "),
                     _c("LineChart", {
@@ -80186,28 +80524,26 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex w-full font-bold py-2" }, [
-      _c("div", { staticClass: "w-64" }, [_vm._v("Country / Region")]),
+    return _c("div", { staticClass: "flex font-bold py-2 text-sm" }, [
+      _c("div", { staticClass: "w-56" }, [_vm._v("Country / Region")]),
       _vm._v(" "),
-      _c("div", { staticClass: "w-32" }, [_vm._v("Confirmed")]),
+      _c("div", { staticClass: "w-24" }, [_vm._v("Confirmed")]),
       _vm._v(" "),
-      _c("div", { staticClass: "w-32" }, [_vm._v("Deaths")]),
+      _c("div", { staticClass: "w-24" }, [_vm._v("Deaths")]),
       _vm._v(" "),
-      _c("div", { staticClass: "w-32" }, [_vm._v("Recovered")])
+      _c("div", { staticClass: "w-24" }, [_vm._v("Recovered")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex w-full font-bold py-2" }, [
-      _c("div", { staticClass: "w-32" }, [_vm._v("Date")]),
+    return _c("div", { staticClass: "p-4" }, [
+      _c("h1", { staticClass: "font-bold" }, [_vm._v("Compare country stats")]),
       _vm._v(" "),
-      _c("div", { staticClass: "w-32" }, [_vm._v("Confirmed")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "w-32" }, [_vm._v("Deaths")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "w-32" }, [_vm._v("Recovered")])
+      _c("p", { staticClass: "text-xs" }, [
+        _vm._v("Select up to three countries from the left to compare.")
+      ])
     ])
   }
 ]
@@ -95444,6 +95780,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_template_id_332fccf4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_template_id_332fccf4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Daily.vue":
+/*!*******************************************!*\
+  !*** ./resources/js/components/Daily.vue ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Daily_vue_vue_type_template_id_ea22bb84_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Daily.vue?vue&type=template&id=ea22bb84&scoped=true& */ "./resources/js/components/Daily.vue?vue&type=template&id=ea22bb84&scoped=true&");
+/* harmony import */ var _Daily_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Daily.vue?vue&type=script&lang=js& */ "./resources/js/components/Daily.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Daily_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Daily_vue_vue_type_template_id_ea22bb84_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Daily_vue_vue_type_template_id_ea22bb84_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "ea22bb84",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Daily.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Daily.vue?vue&type=script&lang=js&":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/Daily.vue?vue&type=script&lang=js& ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Daily_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Daily.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Daily.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Daily_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Daily.vue?vue&type=template&id=ea22bb84&scoped=true&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/Daily.vue?vue&type=template&id=ea22bb84&scoped=true& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Daily_vue_vue_type_template_id_ea22bb84_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Daily.vue?vue&type=template&id=ea22bb84&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Daily.vue?vue&type=template&id=ea22bb84&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Daily_vue_vue_type_template_id_ea22bb84_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Daily_vue_vue_type_template_id_ea22bb84_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

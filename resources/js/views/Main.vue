@@ -19,48 +19,75 @@
 <!--            </div>-->
 <!--            <div class="m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded" style="left: 270px; bottom: 64px">-->
             <div class="m-4 absolute left-0 top-0 overflow-hidden bg-slab rounded" style="bottom: 64px">
-                <div class="mx-4">
-                    <div class="flex w-full font-bold py-2">
-                        <div class="w-64">Country / Region</div>
-                        <div class="w-32">Confirmed</div>
-                        <div class="w-32">Deaths</div>
-                        <div class="w-32">Recovered</div>
+                <div class="mx-4 pt-2">
+                    <div class="flex font-bold py-2 text-sm">
+                        <div class="w-56">Country / Region</div>
+                        <div class="w-24">Confirmed</div>
+                        <div class="w-24">Deaths</div>
+                        <div class="w-24">Recovered</div>
                     </div>
                     <simplebar data-simplebar-auto-hide="false" class="absolute top-0 bottom-0 right-0 left-0 mt-12 mx-4 mb-4 mr-2" style="position:absolute" >
                         <div
-                            class="flex p-2 w-full hover:bg-hoverslab cursor-pointer"
+                            class="flex p-2 hover:bg-lightslab cursor-pointer text-sm"
                             v-for="(row,key,index) in stats"
-                            :class="selectedCountry == key ? 'bg-hoverslab' : ''"
-                            @click="selectedCountry = key"
+                            :class="isSelected(key) ? 'bg-hoverslab' : ''"
+                            @click="selectCountry(key)"
                         >
-                            <div class="w-64">{{row['country']}}</div>
-                            <div class="w-32">{{row['content']['total']['confirmed']}}</div>
-                            <div class="w-32">{{row['content']['total']['deaths']}}</div>
-                            <div class="w-32">{{row['content']['total']['recovered']}}</div>
+                            <div class="w-56">{{row['country']}}</div>
+                            <div class="w-24">{{row['content']['total']['confirmed']}}</div>
+                            <div class="w-24">{{row['content']['total']['deaths']}}</div>
+                            <div class="w-24">{{row['content']['total']['recovered']}}</div>
                         </div>
                     </simplebar>
                 </div>
             </div>
-
-            <div class="m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded" style="left: 690px; bottom: 64px">
-                <div class="mx-4">
-                    <div class="flex w-full font-bold py-2">
-                        <div class="w-32">Date</div>
-                        <div class="w-32">Confirmed</div>
-                        <div class="w-32">Deaths</div>
-                        <div class="w-32">Recovered</div>
-                    </div>
-                    <simplebar data-simplebar-auto-hide="false" class="absolute top-0 right-0 left-0 mt-12 mx-4 mb-4 mr-2" style="position:absolute; bottom: 40%" >
-                        <div
-                            class="flex p-2 w-full"
-                            v-for="row in daily"
-                        >
-                            <div class="w-32">{{row['date']}}</div>
-                            <div class="w-32">{{row['confirmed']}}</div>
-                            <div class="w-32">{{row['deaths']}}</div>
-                            <div class="w-32">{{row['recovered']}}</div>
+            <div class="m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded" style="left: 560px; bottom: 64px">
+                <div class="p-4">
+                <h1 class="font-bold">Compare country stats</h1>
+                <p class="text-xs">Select up to three countries from the left to compare.</p>
+                </div>
+                <div class="mx-4 h-full">
+                    <div class="flex w-full absolute left-0 right-0 px-2" style="bottom: 40%; top: 70px;">
+                        <div class="rounded bg-hoverslab m-2 w-1/3 relative">
+                            <div v-if="compare.length > 0">
+                                <Daily
+                                    v-on:remove="removeCompare"
+                                    :name="countries[compare[0]].name"
+                                    :data="compare1"
+                                    :country="compare[0]"
+                                />
+                            </div>
+                            <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
+                                <div>Select a country to compare</div>
+                            </div>
                         </div>
-                    </simplebar>
+                        <div class="rounded bg-hoverslab m-2 w-1/3 relative">
+                            <div v-if="compare.length > 1">
+                                <Daily
+                                    v-on:remove="removeCompare"
+                                    :name="countries[compare[1]].name"
+                                    :data="compare2"
+                                    :country="compare[1]"
+                                />
+                            </div>
+                            <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
+                                <div>Select a country to compare</div>
+                            </div>
+                        </div>
+                        <div class="rounded bg-hoverslab m-2 w-1/3 relative">
+                            <div v-if="compare.length > 2">
+                                <Daily
+                                    v-on:remove="removeCompare"
+                                    :name="countries[compare[2]].name"
+                                    :data="compare3"
+                                    :country="compare[2]"
+                                />
+                            </div>
+                            <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
+                                <div>Select a country to compare</div>
+                            </div>
+                        </div>
+                    </div>
                     <LineChart :data="dailyChart" class="absolute left-0 right-0 bg-heading m-4 p-2 rounded bottom-0" style="top: 60%;"
                                :options="{
 
@@ -123,12 +150,14 @@
     import simplebar from 'simplebar-vue';
     import LineChart from "../components/charts/LineChart";
     import 'simplebar/dist/simplebar.min.css';
+    import Daily from "../components/Daily";
 
     export default {
         name: "Start",
         components:{
             simplebar,
-            LineChart
+            LineChart,
+            Daily
         },
         data()
         {
@@ -137,6 +166,7 @@
                     'countries' : false,
                     'raw_stats': false,
                 },
+                'compare' : [],
                 'countries': [],
                 'raw_stats': [],
                 'selectedCountry': 2
@@ -163,15 +193,20 @@
                 });
         },
         methods:{
-            getDaily(country){
+            removeCompare(item)
+            {
+                var index = this.compare.indexOf(item);
+                if (index !== -1) this.compare.splice(index, 1);
+            },
+            getDaily(stats){
                 var data = [];
-                if (this.selectedStats && this.selectedStats.content && this.selectedStats.content.daily)
+                if (stats && stats.content && stats.content.daily)
                 {
 
-                    for(var x in this.selectedStats.content.daily)
+                    for(var x in stats.content.daily)
                     {
 
-                        var row = this.selectedStats.content.daily[x];
+                        var row = stats.content.daily[x];
 
                         data.push({
                             'date' : x,
@@ -184,9 +219,41 @@
                 }
 
                 return data;
+            },
+            selectCountry(key){
+
+                if(this.compare.length < 3)
+                {
+                    this.compare.push(key);
+                }
+                this.selectedCountry = key
+            },
+            isSelected(key){
+                return false;
             }
         },
         computed: {
+            compare1(){
+                if(this.compare.length > 0)
+                {
+                    return this.getDaily(this.stats[this.compare[0]]);
+                }
+                return [];
+            },
+            compare2(){
+                if(this.compare.length > 1)
+                {
+                    return this.getDaily(this.stats[this.compare[1]]);
+                }
+                return [];
+            },
+            compare3(){
+                if(this.compare.length > 2)
+                {
+                    return this.getDaily(this.stats[this.compare[2]]);
+                }
+                return [];
+            },
             loaded()
             {
                 if (this.loading.countries && this.loading.raw_stats)
@@ -206,25 +273,7 @@
                 return this.stats[this.selectedCountry];
             },
             daily(){
-                var data = [];
-
-                if (this.selectedStats && this.selectedStats.content && this.selectedStats.content.daily)
-                {
-
-                    for(var x in this.selectedStats.content.daily)
-                    {
-                        var row = this.selectedStats.content.daily[x];
-
-                        data.push({
-                            'date' : x,
-                            'confirmed' : row.confirmed ? parseInt(row.confirmed) : 0,
-                            'deaths' : row.deaths ? parseInt(row.deaths) : 0,
-                            'recovered' : row.recovered ? parseInt(row.recovered) : 0
-                        });
-
-                    }
-                }
-                return data;
+                return this.getDaily(this.selectedStats);
             },
             dailyChart(){
                 var data = {
