@@ -95,10 +95,15 @@
                                     maintainAspectRatio: false,
                                     hoverMode: 'index',
                                     stacked: false,
+                                    legend: {
+                                        labels: {
+                                            fontColor: '#d1e8e2'
+                                        }
+                                    },
                                     scales: {
                                         xAxes: [{
                                             ticks: {
-                                                fontColor: '#2c3531',
+                                                fontColor: '#d1e8e2',
                                             }
                                         }],
                                         yAxes: [{
@@ -107,7 +112,7 @@
                                             position: 'left',
                                             id: 'y-1',
                                             ticks: {
-                                                fontColor: '#2c3531',
+                                                fontColor: '#d1e8e2',
                                             }
                                         }, {
                                             type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
@@ -120,7 +125,7 @@
                                                 drawOnChartArea: false, // only want the grid lines for one axis to show up
                                             },
                                             ticks: {
-                                                fontColor: '#2c3531',
+                                                fontColor: '#d1e8e2',
                                             }
                                         }, {
                                             type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
@@ -133,7 +138,7 @@
                                                 drawOnChartArea: false, // only want the grid lines for one axis to show up
                                             },
                                             ticks: {
-                                                fontColor: '#2c3531',
+                                                fontColor: '#d1e8e2',
                                             }
                                         }
                                         ],

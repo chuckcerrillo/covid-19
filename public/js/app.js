@@ -2269,6 +2269,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -80557,11 +80562,16 @@ var render = function() {
                           maintainAspectRatio: false,
                           hoverMode: "index",
                           stacked: false,
+                          legend: {
+                            labels: {
+                              fontColor: "#d1e8e2"
+                            }
+                          },
                           scales: {
                             xAxes: [
                               {
                                 ticks: {
-                                  fontColor: "#2c3531"
+                                  fontColor: "#d1e8e2"
                                 }
                               }
                             ],
@@ -80572,7 +80582,7 @@ var render = function() {
                                 position: "left",
                                 id: "y-1",
                                 ticks: {
-                                  fontColor: "#2c3531"
+                                  fontColor: "#d1e8e2"
                                 }
                               },
                               {
@@ -80586,7 +80596,7 @@ var render = function() {
                                   drawOnChartArea: false // only want the grid lines for one axis to show up
                                 },
                                 ticks: {
-                                  fontColor: "#2c3531"
+                                  fontColor: "#d1e8e2"
                                 }
                               },
                               {
@@ -80600,7 +80610,7 @@ var render = function() {
                                   drawOnChartArea: false // only want the grid lines for one axis to show up
                                 },
                                 ticks: {
-                                  fontColor: "#2c3531"
+                                  fontColor: "#d1e8e2"
                                 }
                               }
                             ]
