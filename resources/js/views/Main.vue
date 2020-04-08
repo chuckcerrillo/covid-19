@@ -31,7 +31,7 @@
                             class="flex p-2 hover:bg-lightslab cursor-pointer text-sm"
                             v-for="(row,key,index) in stats"
                             :class="isSelected(key) ? 'bg-hoverslab' : ''"
-                            @click="selectCountry(key)"
+                            @click="selectCountry(row['country'])"
                         >
                             <div class="w-56">{{row['country']}}</div>
                             <div class="w-24">{{row['content']['total']['confirmed']}}</div>
@@ -52,7 +52,7 @@
                             <div v-if="compare.length > 0">
                                 <Daily
                                     v-on:remove="removeCompare"
-                                    :name="countries[compare[0]].name"
+                                    :name="stats[compare[0]].country"
                                     :data="compare1"
                                     :country="compare[0]"
                                 />
@@ -65,7 +65,7 @@
                             <div v-if="compare.length > 1">
                                 <Daily
                                     v-on:remove="removeCompare"
-                                    :name="countries[compare[1]].name"
+                                    :name="stats[compare[1]].country"
                                     :data="compare2"
                                     :country="compare[1]"
                                 />
@@ -78,7 +78,7 @@
                             <div v-if="compare.length > 2">
                                 <Daily
                                     v-on:remove="removeCompare"
-                                    :name="countries[compare[2]].name"
+                                    :name="stats[compare[2]].country"
                                     :data="compare3"
                                     :country="compare[2]"
                                 />
@@ -220,7 +220,19 @@
 
                 return data;
             },
-            selectCountry(key){
+            getCountryId(country)
+            {
+                for(var x in this.stats)
+                {
+                    if (this.stats[x].country === country){
+                        return x;
+                    }
+                }
+                return null;
+            },
+            selectCountry(country){
+
+                var key = this.getCountryId(country);
 
                 if(this.compare.length < 3)
                 {

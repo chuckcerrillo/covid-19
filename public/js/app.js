@@ -2277,7 +2277,18 @@ __webpack_require__.r(__webpack_exports__);
 
       return data;
     },
-    selectCountry: function selectCountry(key) {
+    getCountryId: function getCountryId(country) {
+      for (var x in this.stats) {
+        if (this.stats[x].country === country) {
+          return x;
+        }
+      }
+
+      return null;
+    },
+    selectCountry: function selectCountry(country) {
+      var key = this.getCountryId(country);
+
       if (this.compare.length < 3) {
         this.compare.push(key);
       }
@@ -80276,7 +80287,7 @@ var render = function() {
                             class: _vm.isSelected(key) ? "bg-hoverslab" : "",
                             on: {
                               click: function($event) {
-                                return _vm.selectCountry(key)
+                                return _vm.selectCountry(row["country"])
                               }
                             }
                           },
@@ -80345,8 +80356,7 @@ var render = function() {
                                   [
                                     _c("Daily", {
                                       attrs: {
-                                        name:
-                                          _vm.countries[_vm.compare[0]].name,
+                                        name: _vm.stats[_vm.compare[0]].country,
                                         data: _vm.compare1,
                                         country: _vm.compare[0]
                                       },
@@ -80383,8 +80393,7 @@ var render = function() {
                                   [
                                     _c("Daily", {
                                       attrs: {
-                                        name:
-                                          _vm.countries[_vm.compare[1]].name,
+                                        name: _vm.stats[_vm.compare[1]].country,
                                         data: _vm.compare2,
                                         country: _vm.compare[1]
                                       },
@@ -80421,8 +80430,7 @@ var render = function() {
                                   [
                                     _c("Daily", {
                                       attrs: {
-                                        name:
-                                          _vm.countries[_vm.compare[2]].name,
+                                        name: _vm.stats[_vm.compare[2]].country,
                                         data: _vm.compare3,
                                         country: _vm.compare[2]
                                       },
