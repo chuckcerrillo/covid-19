@@ -88,7 +88,7 @@
                             </div>
                         </div>
                     </div>
-                    <LineChart :data="dailyChart" class="absolute left-0 right-0 bg-heading m-4 p-2 rounded bottom-0" style="top: 60%;"
+                    <LineChart :data="dailyChart" class="absolute left-0 right-0 bg-hoverslab m-4 p-2 rounded bottom-0" style="top: 60%;"
                                :options="{
 
                                     responsive: true,
@@ -151,13 +151,15 @@
     import LineChart from "../components/charts/LineChart";
     import 'simplebar/dist/simplebar.min.css';
     import Daily from "../components/Daily";
+    import Comparison from "./Comparison";
 
     export default {
         name: "Start",
         components:{
             simplebar,
             LineChart,
-            Daily
+            Daily,
+            Comparison
         },
         data()
         {
