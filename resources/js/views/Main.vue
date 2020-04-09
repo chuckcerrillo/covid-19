@@ -2,22 +2,6 @@
     <div>
         <div v-if="!loaded">Loading data</div>
         <div v-else class="flex flex-1 h-screen overflow-y-auto relative">
-<!--            <div class="w-64 absolute m-4 top-0 left-0 overflow-hidden" style="bottom:64px">-->
-<!--                <div class="rounded bg-slab text-sm absolute top-0 left-0 right-0 bottom-0">-->
-<!--                    <h1 class="font-bold p-2 m-1">Countries</h1>-->
-<!--                    <simplebar data-simplebar-auto-hide="false" class="absolute top-0 bottom-0 right-0 left-0 mt-12 mb-4 mr-2" style="position:absolute" >-->
-<!--                        <ul>-->
-<!--                            <li v-for="country in countries">-->
-<!--                                <router-link-->
-<!--                                    to="#"-->
-<!--                                    class="px-2 py-1 m-1 hover:bg-base block"-->
-<!--                                >{{country.name}}</router-link>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </simplebar>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded" style="left: 270px; bottom: 64px">-->
             <div>
                 <div class="m-4 absolute left-0 top-0 overflow-hidden bg-lightslab rounded h-48 z-10 w-136 p-4">
                     <div class="text-2xl tracking-tight font-bold">Global tally</div>
@@ -42,23 +26,24 @@
                 </div>
                 <div class="m-4 absolute left-0 overflow-hidden bg-slab rounded" style="top: 13rem; bottom: 64px">
                     <div class="mx-4 pt-2">
-                        <div class="flex font-bold py-2 text-sm">
-                            <div class="w-56">Country / Region {{stats.length}}</div>
-                            <div class="w-24">Confirmed</div>
-                            <div class="w-24">Deaths</div>
-                            <div class="w-24">Recovered</div>
+                        <div class="text-xs text-right">Sorting by {{sort_stats.key}} {{sort_stats.order}}</div>
+                        <div class="flex font-bold py-2 text-sm items-center">
+                            <div class="w-56 cursor-pointer p-2 m-1" :class="sort_stats.key == 'country' ? 'bg-hoverslab' : '' " @click="toggleSort('country')">Country / Region ({{stats.length}} total)</div>
+                            <div class="w-24 cursor-pointer p-2 m-1" :class="sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmed')">Confirmed</div>
+                            <div class="w-20 cursor-pointer p-2 m-1" :class="sort_stats.key == 'deaths' ? 'bg-hoverslab' : '' " @click="toggleSort('deaths')">Deaths</div>
+                            <div class="w-20 cursor-pointer p-2 m-1" :class="sort_stats.key == 'recovered' ? 'bg-hoverslab' : '' " @click="toggleSort('recovered')">Recovered</div>
                         </div>
-                        <simplebar data-simplebar-auto-hide="false" class="absolute top-0 bottom-0 right-0 left-0 mt-12 mx-4 mb-4 mr-2" style="position:absolute" >
+                        <simplebar data-simplebar-auto-hide="false" class="absolute top-0 bottom-0 right-0 left-0 mt-20 mx-4 mb-4 mr-2" style="position:absolute" >
                             <div
-                                class="flex p-2 hover:bg-lightslab cursor-pointer text-sm"
+                                class="flex hover:bg-lightslab cursor-pointer text-sm"
                                 v-for="(row,key,index) in stats"
                                 :class="isSelected(key) ? 'bg-hoverslab' : ''"
                                 @click="selectCountry(row['country'])"
                             >
-                                <div class="w-56">{{row['country']}}</div>
-                                <div class="w-24">{{row['content']['total']['c']}}</div>
-                                <div class="w-24">{{row['content']['total']['d']}}</div>
-                                <div class="w-24">{{row['content']['total']['r']}}</div>
+                                <div class="w-56 px-2 m-1">{{row['country']}}</div>
+                                <div class="w-24 px-2 m-1">{{row['content']['total']['c']}}</div>
+                                <div class="w-20 px-2 m-1">{{row['content']['total']['d']}}</div>
+                                <div class="w-20 px-2 m-1">{{row['content']['total']['r']}}</div>
                             </div>
                         </simplebar>
                     </div>
@@ -198,6 +183,10 @@
                     'countries' : false,
                     'raw_stats': false,
                 },
+                'sort_stats' : {
+                    'key' : 'country',
+                    'order' : 'asc',
+                },
                 'compare' : [],
                 'countries': [],
                 'raw_stats': [],
@@ -225,6 +214,25 @@
                 });
         },
         methods:{
+            toggleSort(key)
+            {
+                if(this.sort_stats.key == key)
+                {
+                    if(this.sort_stats.order == 'asc')
+                    {
+                        this.sort_stats.order = 'desc';
+                    }
+                    else
+                    {
+                        this.sort_stats.order = 'asc';
+                    }
+                }
+                else
+                {
+                    this.sort_stats.key = key;
+                    this.sort_stats.order = 'asc';
+                }
+            },
             removeCompare(item)
             {
                 var index = this.compare.indexOf(item);
@@ -311,9 +319,36 @@
             },
             stats()
             {
+                var sort = this.sort_stats;
                 return this.raw_stats.sort(function (a, b) {
-                    return a.country.toUpperCase() > b.country.toUpperCase() ? 1 : -1;
-                    return a.content.total.c < b.content.total.c ? 1 : -1;
+                    if (sort.key == 'country')
+                    {
+                        if (sort.order == 'asc')
+                            return a.country.toUpperCase() > b.country.toUpperCase() ? 1 : -1;
+                        else
+                            return a.country.toUpperCase() < b.country.toUpperCase() ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'confirmed') {
+                        if (sort.order == 'asc')
+                            return a.content.total.c < b.content.total.c ? 1 : -1;
+                        else
+                            return a.content.total.c > b.content.total.c ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'deaths') {
+                        if (sort.order == 'asc')
+                            return a.content.total.d < b.content.total.d ? 1 : -1;
+                        else
+                            return a.content.total.d > b.content.total.d ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'recovered') {
+                        if (sort.order == 'asc')
+                            return a.content.total.r < b.content.total.r ? 1 : -1;
+                        else
+                            return a.content.total.r > b.content.total.r ? 1 : -1;
+                    }
                 });
 
             },
@@ -454,7 +489,7 @@
                         '#eabd3b'
                     ],
                     bgDeaths = [
-                        '#6df0d2',
+                        '#c7f9ee',
                         '#f0a58f',
                         '#e7e34e'
                     ]

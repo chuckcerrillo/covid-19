@@ -2294,21 +2294,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -2329,6 +2314,10 @@ __webpack_require__.r(__webpack_exports__);
         'countries': false,
         'raw_stats': false
       },
+      'sort_stats': {
+        'key': 'country',
+        'order': 'asc'
+      },
       'compare': [],
       'countries': [],
       'raw_stats': [],
@@ -2348,6 +2337,18 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (error) {});
   },
   methods: {
+    toggleSort: function toggleSort(key) {
+      if (this.sort_stats.key == key) {
+        if (this.sort_stats.order == 'asc') {
+          this.sort_stats.order = 'desc';
+        } else {
+          this.sort_stats.order = 'asc';
+        }
+      } else {
+        this.sort_stats.key = key;
+        this.sort_stats.order = 'asc';
+      }
+    },
     removeCompare: function removeCompare(item) {
       var index = this.compare.indexOf(item);
       if (index !== -1) this.compare.splice(index, 1);
@@ -2423,9 +2424,17 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     },
     stats: function stats() {
+      var sort = this.sort_stats;
       return this.raw_stats.sort(function (a, b) {
-        return a.country.toUpperCase() > b.country.toUpperCase() ? 1 : -1;
-        return a.content.total.c < b.content.total.c ? 1 : -1;
+        if (sort.key == 'country') {
+          if (sort.order == 'asc') return a.country.toUpperCase() > b.country.toUpperCase() ? 1 : -1;else return a.country.toUpperCase() < b.country.toUpperCase() ? 1 : -1;
+        } else if (sort.key == 'confirmed') {
+          if (sort.order == 'asc') return a.content.total.c < b.content.total.c ? 1 : -1;else return a.content.total.c > b.content.total.c ? 1 : -1;
+        } else if (sort.key == 'deaths') {
+          if (sort.order == 'asc') return a.content.total.d < b.content.total.d ? 1 : -1;else return a.content.total.d > b.content.total.d ? 1 : -1;
+        } else if (sort.key == 'recovered') {
+          if (sort.order == 'asc') return a.content.total.r < b.content.total.r ? 1 : -1;else return a.content.total.r > b.content.total.r ? 1 : -1;
+        }
       });
     },
     selectedStats: function selectedStats() {
@@ -2521,7 +2530,7 @@ __webpack_require__.r(__webpack_exports__);
           key,
           bgConfirmed = ['#19aade', '#af4bce', '#de542c'],
           bgRecovered = ['#1de4bd', '#ea7369', '#eabd3b'],
-          bgDeaths = ['#6df0d2', '#f0a58f', '#e7e34e'];
+          bgDeaths = ['#c7f9ee', '#f0a58f', '#e7e34e'];
 
       if (this.compare.length > 0) {
         var start = '',
@@ -80637,27 +80646,95 @@ var render = function() {
                     "div",
                     { staticClass: "mx-4 pt-2" },
                     [
+                      _c("div", { staticClass: "text-xs text-right" }, [
+                        _vm._v(
+                          "Sorting by " +
+                            _vm._s(_vm.sort_stats.key) +
+                            " " +
+                            _vm._s(_vm.sort_stats.order)
+                        )
+                      ]),
+                      _vm._v(" "),
                       _c(
                         "div",
-                        { staticClass: "flex font-bold py-2 text-sm" },
+                        {
+                          staticClass:
+                            "flex font-bold py-2 text-sm items-center"
+                        },
                         [
-                          _c("div", { staticClass: "w-56" }, [
-                            _vm._v(
-                              "Country / Region " + _vm._s(_vm.stats.length)
-                            )
-                          ]),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "w-56 cursor-pointer p-2 m-1",
+                              class:
+                                _vm.sort_stats.key == "country"
+                                  ? "bg-hoverslab"
+                                  : "",
+                              on: {
+                                click: function($event) {
+                                  return _vm.toggleSort("country")
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "Country / Region (" +
+                                  _vm._s(_vm.stats.length) +
+                                  " total)"
+                              )
+                            ]
+                          ),
                           _vm._v(" "),
-                          _c("div", { staticClass: "w-24" }, [
-                            _vm._v("Confirmed")
-                          ]),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "w-24 cursor-pointer p-2 m-1",
+                              class:
+                                _vm.sort_stats.key == "confirmed"
+                                  ? "bg-hoverslab"
+                                  : "",
+                              on: {
+                                click: function($event) {
+                                  return _vm.toggleSort("confirmed")
+                                }
+                              }
+                            },
+                            [_vm._v("Confirmed")]
+                          ),
                           _vm._v(" "),
-                          _c("div", { staticClass: "w-24" }, [
-                            _vm._v("Deaths")
-                          ]),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "w-20 cursor-pointer p-2 m-1",
+                              class:
+                                _vm.sort_stats.key == "deaths"
+                                  ? "bg-hoverslab"
+                                  : "",
+                              on: {
+                                click: function($event) {
+                                  return _vm.toggleSort("deaths")
+                                }
+                              }
+                            },
+                            [_vm._v("Deaths")]
+                          ),
                           _vm._v(" "),
-                          _c("div", { staticClass: "w-24" }, [
-                            _vm._v("Recovered")
-                          ])
+                          _c(
+                            "div",
+                            {
+                              staticClass: "w-20 cursor-pointer p-2 m-1",
+                              class:
+                                _vm.sort_stats.key == "recovered"
+                                  ? "bg-hoverslab"
+                                  : "",
+                              on: {
+                                click: function($event) {
+                                  return _vm.toggleSort("recovered")
+                                }
+                              }
+                            },
+                            [_vm._v("Recovered")]
+                          )
                         ]
                       ),
                       _vm._v(" "),
@@ -80665,7 +80742,7 @@ var render = function() {
                         "simplebar",
                         {
                           staticClass:
-                            "absolute top-0 bottom-0 right-0 left-0 mt-12 mx-4 mb-4 mr-2",
+                            "absolute top-0 bottom-0 right-0 left-0 mt-20 mx-4 mb-4 mr-2",
                           staticStyle: { position: "absolute" },
                           attrs: { "data-simplebar-auto-hide": "false" }
                         },
@@ -80674,7 +80751,7 @@ var render = function() {
                             "div",
                             {
                               staticClass:
-                                "flex p-2 hover:bg-lightslab cursor-pointer text-sm",
+                                "flex hover:bg-lightslab cursor-pointer text-sm",
                               class: _vm.isSelected(key) ? "bg-hoverslab" : "",
                               on: {
                                 click: function($event) {
@@ -80683,19 +80760,19 @@ var render = function() {
                               }
                             },
                             [
-                              _c("div", { staticClass: "w-56" }, [
+                              _c("div", { staticClass: "w-56 px-2 m-1" }, [
                                 _vm._v(_vm._s(row["country"]))
                               ]),
                               _vm._v(" "),
-                              _c("div", { staticClass: "w-24" }, [
+                              _c("div", { staticClass: "w-24 px-2 m-1" }, [
                                 _vm._v(_vm._s(row["content"]["total"]["c"]))
                               ]),
                               _vm._v(" "),
-                              _c("div", { staticClass: "w-24" }, [
+                              _c("div", { staticClass: "w-20 px-2 m-1" }, [
                                 _vm._v(_vm._s(row["content"]["total"]["d"]))
                               ]),
                               _vm._v(" "),
-                              _c("div", { staticClass: "w-24" }, [
+                              _c("div", { staticClass: "w-20 px-2 m-1" }, [
                                 _vm._v(_vm._s(row["content"]["total"]["r"]))
                               ])
                             ]
