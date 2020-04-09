@@ -39,6 +39,7 @@ class StatsController extends Controller
         'Guam',
         'Guernsey',
         'Hong Kong',
+        'Hong Kong SAR',
         'Jersey',
         'Macao SAR',
         'Macau',
