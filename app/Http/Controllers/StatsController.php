@@ -23,6 +23,7 @@ class StatsController extends Controller
         'Russia' => ['Russia','Russian Federation'],
         'United Kingom' => ['UK','United Kingdom'],
         'Holy See' => ['Holy See','Vatican City'],
+        'Azerbaijan' => ['Azerbaijan',' Azerbaijan'],
     ];
     protected $skip = [
         'Cape Verde',

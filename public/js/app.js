@@ -2424,7 +2424,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     stats: function stats() {
       return this.raw_stats.sort(function (a, b) {
-        return a.country > b.country ? 1 : -1;
+        return a.country.toUpperCase() > b.country.toUpperCase() ? 1 : -1;
         return a.content.total.c < b.content.total.c ? 1 : -1;
       });
     },
