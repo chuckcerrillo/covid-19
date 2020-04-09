@@ -2027,6 +2027,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Nav",
   props: ['active'],
@@ -2135,6 +2136,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Comparison__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Comparison */ "./resources/js/views/Comparison.vue");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_5__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -80593,18 +80603,27 @@ var render = function() {
           "div",
           {
             staticClass: "p-2 px-4 cursor-pointer hover:text-white",
-            class: _vm.isActive(_vm.selected, "statistics", "bg-hoverslab")
+            class: _vm.isActive(_vm.selected, "comparison", "bg-hoverslab")
           },
-          [_vm._v("Statistics")]
+          [_vm._v("Comparison")]
         ),
         _vm._v(" "),
         _c(
           "div",
           {
             staticClass: "p-2 px-4 cursor-pointer hover:text-white",
-            class: _vm.isActive(_vm.selected, "comparison", "bg-hoverslab")
+            class: _vm.isActive(_vm.selected, "statistics", "bg-hoverslab")
           },
-          [_vm._v("Comparison")]
+          [_vm._v("Trends")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "p-2 px-4 cursor-pointer hover:text-white",
+            class: _vm.isActive(_vm.selected, "about", "bg-hoverslab")
+          },
+          [_vm._v("About")]
         )
       ]
     )
@@ -81261,16 +81280,19 @@ var render = function() {
                               ],
                               yAxes: [
                                 {
-                                  type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                  type: "logarithmic", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
                                   display: true,
                                   position: "left",
                                   id: "y-1",
                                   ticks: {
-                                    fontColor: "#d1e8e2"
+                                    fontColor: "#d1e8e2",
+                                    callback: function(tick, index, ticks) {
+                                      return tick.toLocaleString()
+                                    }
                                   }
                                 },
                                 {
-                                  type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                  type: "logarithmic", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
                                   display: true,
                                   position: "right",
                                   id: "y-2",
@@ -81280,11 +81302,14 @@ var render = function() {
                                     drawOnChartArea: false // only want the grid lines for one axis to show up
                                   },
                                   ticks: {
-                                    fontColor: "#d1e8e2"
+                                    fontColor: "#d1e8e2",
+                                    callback: function(tick, index, ticks) {
+                                      return tick.toLocaleString()
+                                    }
                                   }
                                 },
                                 {
-                                  type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                  type: "logarithmic", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
                                   display: true,
                                   position: "right",
                                   id: "y-3",
@@ -81294,7 +81319,10 @@ var render = function() {
                                     drawOnChartArea: false // only want the grid lines for one axis to show up
                                   },
                                   ticks: {
-                                    fontColor: "#d1e8e2"
+                                    fontColor: "#d1e8e2",
+                                    callback: function(tick, index, ticks) {
+                                      return tick.toLocaleString()
+                                    }
                                   }
                                 }
                               ]

@@ -157,15 +157,18 @@
                                             }
                                         }],
                                         yAxes: [{
-                                            type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                            type: 'logarithmic', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
                                             display: true,
                                             position: 'left',
                                             id: 'y-1',
                                             ticks: {
                                                 fontColor: '#d1e8e2',
+                                                callback: function(tick, index, ticks) {
+                                                    return tick.toLocaleString()
+                                                }
                                             }
                                         }, {
-                                            type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                            type: 'logarithmic', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
                                             display: true,
                                             position: 'right',
                                             id: 'y-2',
@@ -176,9 +179,12 @@
                                             },
                                             ticks: {
                                                 fontColor: '#d1e8e2',
+                                                callback: function(tick, index, ticks) {
+                                                    return tick.toLocaleString()
+                                                }
                                             }
                                         }, {
-                                            type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                            type: 'logarithmic', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
                                             display: true,
                                             position: 'right',
                                             id: 'y-3',
@@ -189,6 +195,9 @@
                                             },
                                             ticks: {
                                                 fontColor: '#d1e8e2',
+                                                callback: function(tick, index, ticks) {
+                                                    return tick.toLocaleString()
+                                                }
                                             }
                                         }
                                         ],
