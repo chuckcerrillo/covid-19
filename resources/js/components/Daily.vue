@@ -22,21 +22,25 @@
                 @click="remove(country)"
             >Remove</div>
         </div>
-        <div class="mx-6 flex text-xs font-bold py-2">
-            <div class="w-32">Date</div>
-            <div class="w-32">Confirmed</div>
-            <div class="w-32">Deaths</div>
-            <div class="w-32">Recovered</div>
+        <div class="mx-6 flex text-xs font-bold py-2 justify-between">
+            <div class="w-20">Date</div>
+            <div class="justify-end flex w-full">
+                <div class="w-20">Confirmed</div>
+                <div class="w-20">Deaths</div>
+                <div class="w-20">Recovered</div>
+            </div>
         </div>
-        <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 left-0 bottom-0 mt-48 mx-4 mb-4 mr-2" style="position:absolute;" >
+        <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 left-0 bottom-0 mt-48 mx-4 mb-4 mr-4" style="position:absolute;" >
             <div
-                class="flex p-2 w-full text-xs"
+                class="flex p-2 text-xs justify-between"
                 v-for="row in data"
             >
-                <div class="w-32">{{row['date']}}</div>
-                <div class="w-32">{{row['confirmed']}}</div>
-                <div class="w-32">{{row['deaths']}}</div>
-                <div class="w-32">{{row['recovered']}}</div>
+                <div class="w-20">{{row['date']}}</div>
+                <div class="w-full flex justify-end">
+                    <div class="w-20">{{row['confirmed']}}</div>
+                    <div class="w-20">{{row['deaths']}}</div>
+                    <div class="w-20">{{row['recovered']}}</div>
+                </div>
             </div>
         </simplebar>
     </div>

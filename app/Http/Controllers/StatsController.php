@@ -60,6 +60,7 @@ class StatsController extends Controller
     ];
     public function __construct()
     {
+        define('MASTER_LIST','../covid-data/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv');
         define('COVID_DATA','../covid-data/csse_covid_19_data/csse_covid_19_daily_reports/');
         define('STATS','./stats/');
 
@@ -82,28 +83,228 @@ class StatsController extends Controller
         return response($countries)->setStatusCode(Response::HTTP_OK);
     }
 
-    public function country($country)
+    public function countries()
     {
-        $filename = STATS . 'countries.json';
+        $filename = STATS . 'master.json';
         $file = fopen($filename,'r');
-        $countries = json_decode(fread($file,filesize($filename)),true);
+        $countries = fread($file,filesize($filename));
+        return response($countries)->setStatusCode(Response::HTTP_OK);
+    }
 
-        $filename = base64_encode($country);
+    public function master()
+    {
 
-        foreach($countries AS $c)
+        // Generate master country list
+        $csv = array_map('str_getcsv', file(MASTER_LIST));
+        array_walk($csv, function(&$a) use ($csv) {
+            $a = array_combine($csv[0], $a);
+        });
+        array_shift($csv); # remove column header
+
+        $data = [];
+        $countries = [];
+
+        foreach($csv AS $row)
         {
-            if($c['filename'] == $filename)
+            if (!isset($data[$row['Country_Region']]) && strlen($row['Country_Region'])>0 && strlen($row['Province_State']) == 0
+                && strlen($row['Admin2']) == 0
+            )
             {
+                $data[$row['Country_Region']] = [
+                    'name' => $row['Country_Region'],
+                    'uid' => $row['UID'],
+                    'iso2' => $row['iso2'],
+                    'iso3' => $row['iso3'],
+                    'code3' => $row['code3'],
+                    'fips' => $row['FIPS'],
+                    'admin2' => $row['Admin2'],
+                    'lat' => $row['Lat'],
+                    'long' => $row['Long_'],
+                    'population' => $row['Population'],
+                    'states' => [],
+                    'daily' => [],
+                    'total' => [
+                        'l' => '',
+                        'c' => '0',
+                        'd' => '0',
+                        'r' => '0',
+                    ]
+                ];
+            }
+            if(
+                strlen($row['Province_State']) > 0 &&
+                strlen(trim($row['Admin2'])) === 0
+            )
+            {
+                $data[$row['Country_Region']]['states'][$row['Province_State']] = [
+                    'uid' => $row['UID'],
+                    'name' => $row['Province_State'],
+                    'lat' => $row['Lat'],
+                    'long' => $row['Long_'],
+                    'population' => $row['Population'],
+                ];
+            }
 
-                $filename = STATS . 'countries/' . base64_encode($country) . '.json';
+        }
 
-                $file = fopen($filename,'r');
-                $content = json_decode(fread($file,filesize($filename)),true);
-                return response($content)->setStatusCode(Response::HTTP_OK);
+//        // Then generate daily and tally data
+        $result = array_diff(scandir(COVID_DATA), array('..', '.','README.md','.gitignore'));
+
+
+        foreach($result AS $file)
+        {
+            $date = str_replace('.csv','',$file);
+            $filename = COVID_DATA . $file;
+            $csv = array_map('str_getcsv', file($filename));
+            array_shift($csv); # remove column header
+
+            foreach($csv AS $row)
+            {
+                if(count($row) == 6)
+                {
+
+                    // Old format with just 6 columns
+                    //array:6 [▼
+                    //  0 => "﻿Province/State"
+                    //  1 => "Country/Region"
+                    //  2 => "Last Update"
+                    //  3 => "Confirmed"
+                    //  4 => "Deaths"
+                    //  5 => "Recovered"
+                    //]
+
+                    if(isset($data[$row[1]]))
+                    {
+                        if(!isset($data[$row[1]]['daily'][$date]))
+                        {
+                            $data[$row[1]]['daily'][$date] = [
+                                'states' => []
+                            ];
+                        }
+                        $data[$row[1]]['daily'][$date]['states'][] = [
+                            'name' => $row[0],
+                            'lat' => null,
+                            'lng' => null,
+                            'l' => $row[2],
+                            'c' => $row[3],
+                            'd' => $row[4],
+                            'r' => $row[5],
+                        ];
+                    }
+                }
+                else if(count($row) == 8)
+                {
+                    //array:8 [▼
+                    //  0 => "Province/State"
+                    //  1 => "Country/Region"
+                    //  2 => "Last Update"
+                    //  3 => "Confirmed"
+                    //  4 => "Deaths"
+                    //  5 => "Recovered"
+                    //  6 => "Latitude"
+                    //  7 => "Longitude"
+                    //]
+                    if(isset($data[$row[1]]))
+                    {
+                        if(!isset($data[$row[1]]['daily'][$date]))
+                        {
+                            $data[$row[1]]['daily'][$date] = [
+                                'states' => []
+                            ];
+                        }
+                        $data[$row[1]]['daily'][$date]['states'][] = [
+                            'name' => $row[0],
+                            'lat' => $row[6],
+                            'lng' => $row[7],
+                            'l' => $row[2],
+                            'c' => $row[3],
+                            'd' => $row[4],
+                            'r' => $row[5]
+                        ];
+                    }
+                }
+                else if(count($row) == 12) {
+                    //array:12 [▼
+                    //  0 => "﻿FIPS"
+                    //  1 => "Admin2"
+                    //  2 => "Province_State"
+                    //  3 => "Country_Region"
+                    //  4 => "Last_Update"
+                    //  5 => "Lat"
+                    //  6 => "Long_"
+                    //  7 => "Confirmed"
+                    //  8 => "Deaths"
+                    //  9 => "Recovered"
+                    //  10 => "Active"
+                    //  11 => "Combined_Key"
+                    //]
+                    if (isset($data[$row[3]]))
+                    {
+                        if (!isset($data[$row[3]]['daily'][$date])) {
+                            $data[$row[3]]['daily'][$date] = [
+                                'states' => []
+                            ];
+                        }
+                        $data[$row[3]]['daily'][$date]['states'][] = [
+                            'name' => $row[2],
+                            'lat' => $row[5],
+                            'lng' => $row[6],
+                            'l' => $row[4],
+                            'c' => $row[7],
+                            'd' => $row[8],
+                            'r' => $row[9]
+                        ];
+                    }
+                }
             }
         }
 
-        return response('Country not found.')->setStatusCode(Response::HTTP_BAD_REQUEST);
+        // Get total
+        foreach($data AS $country => $row)
+        {
+            if(count($row['daily'])>0)
+            {
+                $sequence = array_reverse($row['daily']);
+                $last = reset($sequence);
+                foreach($last['states'] AS $state)
+                {
+                    if(isset($data[$country]))
+                    {
+                        if(!isset($data[$country]['total']))
+                        {
+                            $data[$country]['total'] = [
+                                'l' => '',
+                                'c' => 0,
+                                'd' => 0,
+                                'r' => 0,
+                            ];
+                        }
+
+                        $data[$country]['total']['l'] = $state['l'];
+                        $data[$country]['total']['c'] += (int) $state['c'];
+                        $data[$country]['total']['d'] += (int) $state['d'];
+                        $data[$country]['total']['r'] += (int) $state['r'];
+
+                        // Now look at their states
+                        if(isset($data[$country]['states'][$state['name']]))
+                        {
+                            $data[$country]['states'][$state['name']]['total'] = [
+                                'l' => $state['l'],
+                                'c' => $state['c'],
+                                'd' => $state['d'],
+                                'r' => $state['r'],
+                            ];
+                        }
+
+                    }
+                }
+            }
+        }
+        unset($data['Cruise Ship']);
+
+        // Write the file
+        file_put_contents(STATS . 'master.json',json_encode($data));
+        return response('Done harvesting data')->setStatusCode(Response::HTTP_OK);
     }
 
     public function harvest()

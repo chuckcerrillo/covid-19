@@ -1982,6 +1982,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2066,8 +2070,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     renderLineChart: function renderLineChart() {
-      console.log('options');
-      console.log(this.options);
       this.renderChart(this.chartData, this.options);
     }
   },
@@ -2294,6 +2296,50 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2319,16 +2365,17 @@ __webpack_require__.r(__webpack_exports__);
         'order': 'asc'
       },
       'compare': [],
-      'countries': [],
+      'raw_countries': [],
       'raw_stats': [],
-      'selectedCountry': 2
+      'selectedCountry': 2,
+      'show_countries': true
     };
   },
   mounted: function mounted() {
     var _this = this;
 
-    axios.get('/api/stats').then(function (res) {
-      _this.countries = res.data;
+    axios.get('/api/stats/countries').then(function (res) {
+      _this.raw_countries = res.data;
       _this.loading.countries = true;
     })["catch"](function (error) {});
     axios.get('/api/stats/full').then(function (res) {
@@ -2415,6 +2462,33 @@ __webpack_require__.r(__webpack_exports__);
 
       return [];
     },
+    countries: function countries() {
+      var data = [];
+
+      for (var x in this.raw_countries) {
+        var row = this.raw_countries[x];
+        data.push(row);
+      }
+
+      return data;
+    },
+    countries_sorted: function countries_sorted() {
+      var sort = this.sort_stats;
+
+      var data = _.cloneDeep(this.countries);
+
+      return data.sort(function (a, b) {
+        if (sort.key == 'country') {
+          if (sort.order == 'asc') return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;else return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
+        } else if (sort.key == 'confirmed') {
+          if (sort.order == 'desc') return a.total.c < b.total.c ? 1 : -1;else return a.total.c > b.total.c ? 1 : -1;
+        } else if (sort.key == 'deaths') {
+          if (sort.order == 'desc') return a.total.d < b.total.d ? 1 : -1;else return a.total.d > b.total.d ? 1 : -1;
+        } else if (sort.key == 'recovered') {
+          if (sort.order == 'desc') return a.total.r < b.total.r ? 1 : -1;else return a.total.r > b.total.r ? 1 : -1;
+        }
+      });
+    },
     loaded: function loaded() {
       if (this.loading.countries && this.loading.raw_stats) {
         return true;
@@ -2423,6 +2497,9 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     },
     stats: function stats() {
+      return this.raw_stats;
+    },
+    sorted_stats: function sorted_stats() {
       var sort = this.sort_stats;
       return this.raw_stats.sort(function (a, b) {
         if (sort.key == 'country') {
@@ -2537,7 +2614,6 @@ __webpack_require__.r(__webpack_exports__);
 
         for (var x in this.compare) {
           var stats = this.stats[this.compare[x]];
-          console.log(stats);
 
           for (var y in stats.content.daily) {
             if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_5___default()(y).format('YYYY-MM-DD') < start) {
@@ -2550,7 +2626,6 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
 
-        console.log('Start: ' + start + ' End: ' + end);
         var labels = [];
         var confirmed = {
           '0': [],
@@ -2641,15 +2716,14 @@ __webpack_require__.r(__webpack_exports__);
       },
           last_update = '';
 
-      for (var x in this.stats) {
-        data.confirmed += parseInt(this.stats[x].content.total.c);
-        data.deaths += parseInt(this.stats[x].content.total.d);
-        data.recovered += parseInt(this.stats[x].content.total.r);
+      for (var x in this.countries) {
+        data.confirmed += parseInt(this.countries[x].total.c);
+        data.deaths += parseInt(this.countries[x].total.d);
+        data.recovered += parseInt(this.countries[x].total.r);
 
-        if (last_update.length === 0 || moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('YYYY-MM-DD') > last_update) {
-          console.log('Global last update: ' + this.stats[x].content.total.last_update);
-          data.last_update = moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('YYYY-MM-DD HH:mm:ss');
-          last_update = moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('YYYY-MM-DD');
+        if (last_update.length === 0 || moment__WEBPACK_IMPORTED_MODULE_5___default()(this.countries[x].total.l).format('YYYY-MM-DD') > last_update) {
+          data.last_update = moment__WEBPACK_IMPORTED_MODULE_5___default()(this.countries[x].total.l).format('YYYY-MM-DD HH:mm:ss');
+          last_update = moment__WEBPACK_IMPORTED_MODULE_5___default()(this.countries[x].total.l).format('YYYY-MM-DD');
         }
       }
 
@@ -80428,24 +80502,32 @@ var render = function() {
       _c(
         "simplebar",
         {
-          staticClass: "top-0 right-0 left-0 bottom-0 mt-48 mx-4 mb-4 mr-2",
+          staticClass: "top-0 right-0 left-0 bottom-0 mt-48 mx-4 mb-4 mr-4",
           staticStyle: { position: "absolute" },
           attrs: { "data-simplebar-auto-hide": "false" }
         },
         _vm._l(_vm.data, function(row) {
-          return _c("div", { staticClass: "flex p-2 w-full text-xs" }, [
-            _c("div", { staticClass: "w-32" }, [_vm._v(_vm._s(row["date"]))]),
-            _vm._v(" "),
-            _c("div", { staticClass: "w-32" }, [
-              _vm._v(_vm._s(row["confirmed"]))
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "w-32" }, [_vm._v(_vm._s(row["deaths"]))]),
-            _vm._v(" "),
-            _c("div", { staticClass: "w-32" }, [
-              _vm._v(_vm._s(row["recovered"]))
-            ])
-          ])
+          return _c(
+            "div",
+            { staticClass: "flex p-2 text-xs justify-between" },
+            [
+              _c("div", { staticClass: "w-20" }, [_vm._v(_vm._s(row["date"]))]),
+              _vm._v(" "),
+              _c("div", { staticClass: "w-full flex justify-end" }, [
+                _c("div", { staticClass: "w-20" }, [
+                  _vm._v(_vm._s(row["confirmed"]))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "w-20" }, [
+                  _vm._v(_vm._s(row["deaths"]))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "w-20" }, [
+                  _vm._v(_vm._s(row["recovered"]))
+                ])
+              ])
+            ]
+          )
         }),
         0
       )
@@ -80458,15 +80540,21 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mx-6 flex text-xs font-bold py-2" }, [
-      _c("div", { staticClass: "w-32" }, [_vm._v("Date")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "w-32" }, [_vm._v("Confirmed")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "w-32" }, [_vm._v("Deaths")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "w-32" }, [_vm._v("Recovered")])
-    ])
+    return _c(
+      "div",
+      { staticClass: "mx-6 flex text-xs font-bold py-2 justify-between" },
+      [
+        _c("div", { staticClass: "w-20" }, [_vm._v("Date")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "justify-end flex w-full" }, [
+          _c("div", { staticClass: "w-20" }, [_vm._v("Confirmed")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "w-20" }, [_vm._v("Deaths")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "w-20" }, [_vm._v("Recovered")])
+        ])
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -80580,7 +80668,7 @@ var render = function() {
                 "div",
                 {
                   staticClass:
-                    "m-4 absolute left-0 top-0 overflow-hidden bg-lightslab rounded h-48 z-10 w-136 p-4"
+                    "m-4 absolute left-0 top-0 overflow-hidden bg-lightslab rounded h-48 z-10 w-128 p-4"
                 },
                 [
                   _c(
@@ -80641,147 +80729,371 @@ var render = function() {
                   staticStyle: { top: "13rem", bottom: "64px" }
                 },
                 [
-                  _c(
-                    "div",
-                    { staticClass: "mx-4 pt-2" },
-                    [
-                      _c("div", { staticClass: "text-xs text-right" }, [
-                        _vm._v(
-                          "Sorting by " +
-                            _vm._s(_vm.sort_stats.key) +
-                            " " +
-                            _vm._s(_vm.sort_stats.order)
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c(
+                  _vm.show_countries
+                    ? _c(
                         "div",
-                        {
-                          staticClass:
-                            "flex font-bold py-2 text-sm items-center"
-                        },
+                        { staticClass: "mx-4 pt-2 w-120" },
                         [
                           _c(
                             "div",
                             {
-                              staticClass: "w-56 cursor-pointer p-2 m-1",
-                              class:
-                                _vm.sort_stats.key == "country"
-                                  ? "bg-hoverslab"
-                                  : "",
-                              on: {
-                                click: function($event) {
-                                  return _vm.toggleSort("country")
-                                }
-                              }
+                              staticClass: "text-2xl tracking-tight font-bold"
+                            },
+                            [_vm._v("Countries and states")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "text-xs text-right" }, [
+                            _vm._v(
+                              "Sorting by " +
+                                _vm._s(_vm.sort_stats.key) +
+                                " " +
+                                _vm._s(_vm.sort_stats.order)
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "flex font-bold py-2 text-xs items-center"
                             },
                             [
-                              _vm._v(
-                                "Country / Region (" +
-                                  _vm._s(_vm.stats.length) +
-                                  " total)"
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "w-56 cursor-pointer p-2 m-1",
+                                  class:
+                                    _vm.sort_stats.key == "country"
+                                      ? "bg-hoverslab"
+                                      : "",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.toggleSort("country")
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "Country / Region (" +
+                                      _vm._s(_vm.countries.length) +
+                                      " total)"
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "w-20 cursor-pointer p-2 m-1",
+                                  class:
+                                    _vm.sort_stats.key == "confirmed"
+                                      ? "bg-hoverslab"
+                                      : "",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.toggleSort("confirmed")
+                                    }
+                                  }
+                                },
+                                [_vm._v("Confirmed")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "w-20 cursor-pointer p-2 m-1",
+                                  class:
+                                    _vm.sort_stats.key == "deaths"
+                                      ? "bg-hoverslab"
+                                      : "",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.toggleSort("deaths")
+                                    }
+                                  }
+                                },
+                                [_vm._v("Deaths")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "w-20 cursor-pointer p-2 m-1",
+                                  class:
+                                    _vm.sort_stats.key == "recovered"
+                                      ? "bg-hoverslab"
+                                      : "",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.toggleSort("recovered")
+                                    }
+                                  }
+                                },
+                                [_vm._v("Recovered")]
                               )
                             ]
                           ),
                           _vm._v(" "),
                           _c(
-                            "div",
+                            "simplebar",
                             {
-                              staticClass: "w-24 cursor-pointer p-2 m-1",
-                              class:
-                                _vm.sort_stats.key == "confirmed"
-                                  ? "bg-hoverslab"
-                                  : "",
-                              on: {
-                                click: function($event) {
-                                  return _vm.toggleSort("confirmed")
-                                }
-                              }
+                              staticClass:
+                                "absolute bottom-0 right-0 left-0 mx-4 mb-4 mr-2",
+                              staticStyle: {
+                                position: "absolute",
+                                top: "120px"
+                              },
+                              attrs: { "data-simplebar-auto-hide": "false" }
                             },
-                            [_vm._v("Confirmed")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass: "w-20 cursor-pointer p-2 m-1",
-                              class:
-                                _vm.sort_stats.key == "deaths"
-                                  ? "bg-hoverslab"
-                                  : "",
-                              on: {
-                                click: function($event) {
-                                  return _vm.toggleSort("deaths")
-                                }
-                              }
-                            },
-                            [_vm._v("Deaths")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass: "w-20 cursor-pointer p-2 m-1",
-                              class:
-                                _vm.sort_stats.key == "recovered"
-                                  ? "bg-hoverslab"
-                                  : "",
-                              on: {
-                                click: function($event) {
-                                  return _vm.toggleSort("recovered")
-                                }
-                              }
-                            },
-                            [_vm._v("Recovered")]
+                            _vm._l(_vm.countries_sorted, function(
+                              country_row,
+                              key,
+                              index
+                            ) {
+                              return _c(
+                                "div",
+                                {
+                                  class: _vm.isSelected(key)
+                                    ? "bg-hoverslab"
+                                    : ""
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "flex hover:bg-lightslab cursor-pointer items-center",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.selectCountry(
+                                            country_row["name"]
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "text-sm w-56 px-2 m-1"
+                                        },
+                                        [_vm._v(_vm._s(country_row["name"]))]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("div", [
+                                        _vm._v(_vm._s(country_row["stats"]))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "text-xs w-20 px-2 m-1"
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(country_row["total"]["c"])
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "text-xs w-20 px-2 m-1"
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(country_row["total"]["d"])
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "text-xs w-20 px-2 m-1"
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(country_row["total"]["r"])
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._l(country_row.states, function(row) {
+                                    return _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "ml-4 hover:bg-lightslab cursor-pointer py-1 flex items-center text-xs"
+                                      },
+                                      [
+                                        _c(
+                                          "div",
+                                          { staticClass: "w-52 px-2 m-1" },
+                                          [
+                                            _c(
+                                              "div",
+                                              { staticClass: "px-2 m-1" },
+                                              [_vm._v(_vm._s(row["name"]))]
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        row.total && row.total.c
+                                          ? _c(
+                                              "div",
+                                              { staticClass: "w-20 px-2 m-1" },
+                                              [
+                                                _vm._v(
+                                                  _vm._s(row["total"]["c"])
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        row.total && row.total.d
+                                          ? _c(
+                                              "div",
+                                              { staticClass: "w-20 px-2 m-1" },
+                                              [
+                                                _vm._v(
+                                                  _vm._s(row["total"]["d"])
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        row.total && row.total.r
+                                          ? _c(
+                                              "div",
+                                              { staticClass: "w-20 px-2 m-1" },
+                                              [
+                                                _vm._v(
+                                                  _vm._s(row["total"]["r"])
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e()
+                                      ]
+                                    )
+                                  })
+                                ],
+                                2
+                              )
+                            }),
+                            0
                           )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "simplebar",
-                        {
-                          staticClass:
-                            "absolute top-0 bottom-0 right-0 left-0 mt-20 mx-4 mb-4 mr-2",
-                          staticStyle: { position: "absolute" },
-                          attrs: { "data-simplebar-auto-hide": "false" }
-                        },
-                        _vm._l(_vm.stats, function(row, key, index) {
-                          return _c(
+                        ],
+                        1
+                      )
+                    : _c(
+                        "div",
+                        { staticClass: "mx-4 pt-2" },
+                        [
+                          _c("div", { staticClass: "text-xs text-right" }, [
+                            _vm._v(
+                              "Sorting by " +
+                                _vm._s(_vm.sort_stats.key) +
+                                " " +
+                                _vm._s(_vm.sort_stats.order)
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
                             "div",
                             {
                               staticClass:
-                                "flex hover:bg-lightslab cursor-pointer text-sm",
-                              class: _vm.isSelected(key) ? "bg-hoverslab" : "",
-                              on: {
-                                click: function($event) {
-                                  return _vm.selectCountry(row["country"])
-                                }
-                              }
+                                "flex font-bold py-2 text-sm items-center"
                             },
                             [
-                              _c("div", { staticClass: "w-56 px-2 m-1" }, [
-                                _vm._v(_vm._s(row["country"]))
-                              ]),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "w-56 cursor-pointer p-2 m-1",
+                                  class:
+                                    _vm.sort_stats.key == "country"
+                                      ? "bg-hoverslab"
+                                      : "",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.toggleSort("country")
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "Country / Region (" +
+                                      _vm._s(_vm.stats.length) +
+                                      " total)"
+                                  )
+                                ]
+                              ),
                               _vm._v(" "),
-                              _c("div", { staticClass: "w-24 px-2 m-1" }, [
-                                _vm._v(_vm._s(row["content"]["total"]["c"]))
-                              ]),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "w-20 cursor-pointer p-2 m-1",
+                                  class:
+                                    _vm.sort_stats.key == "confirmed"
+                                      ? "bg-hoverslab"
+                                      : "",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.toggleSort("confirmed")
+                                    }
+                                  }
+                                },
+                                [_vm._v("Confirmed")]
+                              ),
                               _vm._v(" "),
-                              _c("div", { staticClass: "w-20 px-2 m-1" }, [
-                                _vm._v(_vm._s(row["content"]["total"]["d"]))
-                              ]),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "w-20 cursor-pointer p-2 m-1",
+                                  class:
+                                    _vm.sort_stats.key == "deaths"
+                                      ? "bg-hoverslab"
+                                      : "",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.toggleSort("deaths")
+                                    }
+                                  }
+                                },
+                                [_vm._v("Deaths")]
+                              ),
                               _vm._v(" "),
-                              _c("div", { staticClass: "w-20 px-2 m-1" }, [
-                                _vm._v(_vm._s(row["content"]["total"]["r"]))
-                              ])
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "w-20 cursor-pointer p-2 m-1",
+                                  class:
+                                    _vm.sort_stats.key == "recovered"
+                                      ? "bg-hoverslab"
+                                      : "",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.toggleSort("recovered")
+                                    }
+                                  }
+                                },
+                                [_vm._v("Recovered")]
+                              )
                             ]
-                          )
-                        }),
-                        0
+                          ),
+                          _vm._v("sssss\n                        "),
+                          _c("simplebar", {
+                            staticClass:
+                              "absolute top-0 bottom-0 right-0 left-0 mt-20 mx-4 mb-4 mr-2",
+                            staticStyle: { position: "absolute" },
+                            attrs: { "data-simplebar-auto-hide": "false" }
+                          })
+                        ],
+                        1
                       )
-                    ],
-                    1
-                  )
                 ]
               )
             ]),
@@ -80791,205 +81103,209 @@ var render = function() {
               {
                 staticClass:
                   "m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded",
-                staticStyle: { left: "560px", bottom: "64px" }
+                staticStyle: { left: "528px", bottom: "64px" }
               },
               [
                 _vm._m(0),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "mx-4 h-full" },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "flex w-full absolute left-0 right-0 px-2",
-                        staticStyle: { bottom: "40%", top: "70px" }
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "rounded bg-hoverslab m-2 w-1/3 relative"
-                          },
-                          [
-                            _vm.compare.length > 0
-                              ? _c(
-                                  "div",
-                                  [
-                                    _c("Daily", {
-                                      attrs: {
-                                        name: _vm.stats[_vm.compare[0]].country,
-                                        data: _vm.compare1,
-                                        country: _vm.compare[0]
-                                      },
-                                      on: { remove: _vm.removeCompare }
-                                    })
-                                  ],
-                                  1
-                                )
-                              : _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "flex items-center justify-center h-full text-2xl text-gray-200"
+                _c("div", { staticClass: "mx-4 h-full" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "flex w-full absolute left-0 right-0 px-2",
+                      staticStyle: { bottom: "40%", top: "70px" }
+                    },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "rounded bg-hoverslab m-2 w-1/3 relative"
+                        },
+                        [
+                          _vm.compare.length > 0
+                            ? _c(
+                                "div",
+                                [
+                                  _c("Daily", {
+                                    attrs: {
+                                      name: _vm.stats[_vm.compare[0]].country,
+                                      data: _vm.compare1,
+                                      country: _vm.compare[0]
+                                    },
+                                    on: { remove: _vm.removeCompare }
+                                  })
+                                ],
+                                1
+                              )
+                            : _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "flex items-center justify-center h-full text-2xl text-gray-200"
+                                },
+                                [
+                                  _c("div", [
+                                    _vm._v("Select a country/state to compare")
+                                  ])
+                                ]
+                              )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "rounded bg-hoverslab m-2 w-1/3 relative"
+                        },
+                        [
+                          _vm.compare.length > 1
+                            ? _c(
+                                "div",
+                                [
+                                  _c("Daily", {
+                                    attrs: {
+                                      name: _vm.stats[_vm.compare[1]].country,
+                                      data: _vm.compare2,
+                                      country: _vm.compare[1]
+                                    },
+                                    on: { remove: _vm.removeCompare }
+                                  })
+                                ],
+                                1
+                              )
+                            : _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "flex items-center justify-center h-full text-2xl text-gray-200"
+                                },
+                                [
+                                  _c("div", [
+                                    _vm._v("Select a country/state to compare")
+                                  ])
+                                ]
+                              )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "rounded bg-hoverslab m-2 w-1/3 relative"
+                        },
+                        [
+                          _vm.compare.length > 2
+                            ? _c(
+                                "div",
+                                [
+                                  _c("Daily", {
+                                    attrs: {
+                                      name: _vm.stats[_vm.compare[2]].country,
+                                      data: _vm.compare3,
+                                      country: _vm.compare[2]
+                                    },
+                                    on: { remove: _vm.removeCompare }
+                                  })
+                                ],
+                                1
+                              )
+                            : _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "flex items-center justify-center h-full text-2xl text-gray-200"
+                                },
+                                [
+                                  _c("div", [
+                                    _vm._v("Select a country/state to compare")
+                                  ])
+                                ]
+                              )
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "absolute left-0 right-0 bottom-0 m-4 mt-0",
+                      staticStyle: { top: "60%" }
+                    },
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c("LineChart", {
+                        staticClass:
+                          "bg-hoverslab p-2 absolute rounded left-0 right-0 bottom-0",
+                        staticStyle: { top: "48px" },
+                        attrs: {
+                          data: _vm.comparisonDataset,
+                          options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            hoverMode: "index",
+                            stacked: false,
+                            legend: {
+                              labels: {
+                                fontColor: "#d1e8e2"
+                              }
+                            },
+                            scales: {
+                              xAxes: [
+                                {
+                                  ticks: {
+                                    fontColor: "#d1e8e2"
+                                  }
+                                }
+                              ],
+                              yAxes: [
+                                {
+                                  type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                  display: true,
+                                  position: "left",
+                                  id: "y-1",
+                                  ticks: {
+                                    fontColor: "#d1e8e2"
+                                  }
+                                },
+                                {
+                                  type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                  display: true,
+                                  position: "right",
+                                  id: "y-2",
+
+                                  // grid line settings
+                                  gridLines: {
+                                    drawOnChartArea: false // only want the grid lines for one axis to show up
                                   },
-                                  [
-                                    _c("div", [
-                                      _vm._v("Select a country to compare")
-                                    ])
-                                  ]
-                                )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "rounded bg-hoverslab m-2 w-1/3 relative"
-                          },
-                          [
-                            _vm.compare.length > 1
-                              ? _c(
-                                  "div",
-                                  [
-                                    _c("Daily", {
-                                      attrs: {
-                                        name: _vm.stats[_vm.compare[1]].country,
-                                        data: _vm.compare2,
-                                        country: _vm.compare[1]
-                                      },
-                                      on: { remove: _vm.removeCompare }
-                                    })
-                                  ],
-                                  1
-                                )
-                              : _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "flex items-center justify-center h-full text-2xl text-gray-200"
+                                  ticks: {
+                                    fontColor: "#d1e8e2"
+                                  }
+                                },
+                                {
+                                  type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                  display: true,
+                                  position: "right",
+                                  id: "y-3",
+
+                                  // grid line settings
+                                  gridLines: {
+                                    drawOnChartArea: false // only want the grid lines for one axis to show up
                                   },
-                                  [
-                                    _c("div", [
-                                      _vm._v("Select a country to compare")
-                                    ])
-                                  ]
-                                )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "rounded bg-hoverslab m-2 w-1/3 relative"
-                          },
-                          [
-                            _vm.compare.length > 2
-                              ? _c(
-                                  "div",
-                                  [
-                                    _c("Daily", {
-                                      attrs: {
-                                        name: _vm.stats[_vm.compare[2]].country,
-                                        data: _vm.compare3,
-                                        country: _vm.compare[2]
-                                      },
-                                      on: { remove: _vm.removeCompare }
-                                    })
-                                  ],
-                                  1
-                                )
-                              : _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "flex items-center justify-center h-full text-2xl text-gray-200"
-                                  },
-                                  [
-                                    _c("div", [
-                                      _vm._v("Select a country to compare")
-                                    ])
-                                  ]
-                                )
-                          ]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("LineChart", {
-                      staticClass:
-                        "absolute left-0 right-0 bg-hoverslab m-4 p-2 rounded bottom-0",
-                      staticStyle: { top: "60%" },
-                      attrs: {
-                        data: _vm.comparisonDataset,
-                        options: {
-                          responsive: true,
-                          maintainAspectRatio: false,
-                          hoverMode: "index",
-                          stacked: false,
-                          legend: {
-                            labels: {
-                              fontColor: "#d1e8e2"
+                                  ticks: {
+                                    fontColor: "#d1e8e2"
+                                  }
+                                }
+                              ]
                             }
-                          },
-                          scales: {
-                            xAxes: [
-                              {
-                                ticks: {
-                                  fontColor: "#d1e8e2"
-                                }
-                              }
-                            ],
-                            yAxes: [
-                              {
-                                type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
-                                display: true,
-                                position: "left",
-                                id: "y-1",
-                                ticks: {
-                                  fontColor: "#d1e8e2"
-                                }
-                              },
-                              {
-                                type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
-                                display: true,
-                                position: "right",
-                                id: "y-2",
-
-                                // grid line settings
-                                gridLines: {
-                                  drawOnChartArea: false // only want the grid lines for one axis to show up
-                                },
-                                ticks: {
-                                  fontColor: "#d1e8e2"
-                                }
-                              },
-                              {
-                                type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
-                                display: true,
-                                position: "right",
-                                id: "y-3",
-
-                                // grid line settings
-                                gridLines: {
-                                  drawOnChartArea: false // only want the grid lines for one axis to show up
-                                },
-                                ticks: {
-                                  fontColor: "#d1e8e2"
-                                }
-                              }
-                            ]
                           }
                         }
-                      }
-                    })
-                  ],
-                  1
-                )
+                      })
+                    ],
+                    1
+                  )
+                ])
               ]
             )
           ]
@@ -81007,6 +81323,34 @@ var staticRenderFns = [
       _c("p", { staticClass: "text-xs" }, [
         _vm._v("Select up to three countries from the left to compare.")
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex" }, [
+      _c("div", { staticClass: "bg-hoverslab px-2 py-1 rounded m-1" }, [
+        _vm._v("Chronological")
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "text-lightslab border border-hoverslab px-2 py-1 rounded m-1"
+        },
+        [_vm._v("From 100 cases")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "text-lightslab border border-hoverslab px-2 py-1 rounded m-1"
+        },
+        [_vm._v("Delta")]
+      )
     ])
   }
 ]

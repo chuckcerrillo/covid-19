@@ -3,7 +3,7 @@
         <div v-if="!loaded">Loading data</div>
         <div v-else class="flex flex-1 h-screen overflow-y-auto relative">
             <div>
-                <div class="m-4 absolute left-0 top-0 overflow-hidden bg-lightslab rounded h-48 z-10 w-136 p-4">
+                <div class="m-4 absolute left-0 top-0 overflow-hidden bg-lightslab rounded h-48 z-10 w-128 p-4">
                     <div class="text-2xl tracking-tight font-bold">Global tally</div>
                     <div class="text-xs mb-4">as of {{global.last_update}}</div>
 
@@ -25,31 +25,67 @@
 
                 </div>
                 <div class="m-4 absolute left-0 overflow-hidden bg-slab rounded" style="top: 13rem; bottom: 64px">
-                    <div class="mx-4 pt-2">
+                    <div v-if="show_countries" class="mx-4 pt-2 w-120">
+                        <div class="text-2xl tracking-tight font-bold">Countries and states</div>
                         <div class="text-xs text-right">Sorting by {{sort_stats.key}} {{sort_stats.order}}</div>
-                        <div class="flex font-bold py-2 text-sm items-center">
-                            <div class="w-56 cursor-pointer p-2 m-1" :class="sort_stats.key == 'country' ? 'bg-hoverslab' : '' " @click="toggleSort('country')">Country / Region ({{stats.length}} total)</div>
-                            <div class="w-24 cursor-pointer p-2 m-1" :class="sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmed')">Confirmed</div>
+                        <div class="flex font-bold py-2 text-xs items-center">
+                            <div class="w-56 cursor-pointer p-2 m-1" :class="sort_stats.key == 'country' ? 'bg-hoverslab' : '' " @click="toggleSort('country')">Country / Region ({{countries.length}} total)</div>
+                            <div class="w-20 cursor-pointer p-2 m-1" :class="sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmed')">Confirmed</div>
                             <div class="w-20 cursor-pointer p-2 m-1" :class="sort_stats.key == 'deaths' ? 'bg-hoverslab' : '' " @click="toggleSort('deaths')">Deaths</div>
                             <div class="w-20 cursor-pointer p-2 m-1" :class="sort_stats.key == 'recovered' ? 'bg-hoverslab' : '' " @click="toggleSort('recovered')">Recovered</div>
                         </div>
-                        <simplebar data-simplebar-auto-hide="false" class="absolute top-0 bottom-0 right-0 left-0 mt-20 mx-4 mb-4 mr-2" style="position:absolute" >
+                        <simplebar data-simplebar-auto-hide="false" class="absolute bottom-0 right-0 left-0 mx-4 mb-4 mr-2" style="position:absolute; top: 120px">
                             <div
-                                class="flex hover:bg-lightslab cursor-pointer text-sm"
-                                v-for="(row,key,index) in stats"
+                                v-for="(country_row,key,index) in countries_sorted"
                                 :class="isSelected(key) ? 'bg-hoverslab' : ''"
-                                @click="selectCountry(row['country'])"
                             >
-                                <div class="w-56 px-2 m-1">{{row['country']}}</div>
-                                <div class="w-24 px-2 m-1">{{row['content']['total']['c']}}</div>
-                                <div class="w-20 px-2 m-1">{{row['content']['total']['d']}}</div>
-                                <div class="w-20 px-2 m-1">{{row['content']['total']['r']}}</div>
+                                <div
+                                    class="flex hover:bg-lightslab cursor-pointer items-center"
+                                    @click="selectCountry(country_row['name'])"
+                                >
+                                    <div class="text-sm w-56 px-2 m-1">{{country_row['name']}}</div>
+                                    <div>{{country_row['stats']}}</div>
+                                    <div class="text-xs w-20 px-2 m-1">{{country_row['total']['c']}}</div>
+                                    <div class="text-xs w-20 px-2 m-1">{{country_row['total']['d']}}</div>
+                                    <div class="text-xs w-20 px-2 m-1">{{country_row['total']['r']}}</div>
+                                </div>
+                                <div v-for="row in country_row.states" class="ml-4 hover:bg-lightslab cursor-pointer py-1 flex items-center text-xs">
+                                    <div class="w-52 px-2 m-1">
+                                        <div class="px-2 m-1">{{row['name']}}</div>
+                                    </div>
+                                    <div v-if="row.total && row.total.c" class="w-20 px-2 m-1">{{row['total']['c']}}</div>
+                                    <div v-if="row.total && row.total.d" class="w-20 px-2 m-1">{{row['total']['d']}}</div>
+                                    <div v-if="row.total && row.total.r" class="w-20 px-2 m-1">{{row['total']['r']}}</div>
+                                </div>
                             </div>
+
+                        </simplebar>
+                    </div>
+                    <div v-else class="mx-4 pt-2">
+                        <div class="text-xs text-right">Sorting by {{sort_stats.key}} {{sort_stats.order}}</div>
+                        <div class="flex font-bold py-2 text-sm items-center">
+                            <div class="w-56 cursor-pointer p-2 m-1" :class="sort_stats.key == 'country' ? 'bg-hoverslab' : '' " @click="toggleSort('country')">Country / Region ({{stats.length}} total)</div>
+                            <div class="w-20 cursor-pointer p-2 m-1" :class="sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmed')">Confirmed</div>
+                            <div class="w-20 cursor-pointer p-2 m-1" :class="sort_stats.key == 'deaths' ? 'bg-hoverslab' : '' " @click="toggleSort('deaths')">Deaths</div>
+                            <div class="w-20 cursor-pointer p-2 m-1" :class="sort_stats.key == 'recovered' ? 'bg-hoverslab' : '' " @click="toggleSort('recovered')">Recovered</div>
+                        </div>sssss
+                        <simplebar data-simplebar-auto-hide="false" class="absolute top-0 bottom-0 right-0 left-0 mt-20 mx-4 mb-4 mr-2" style="position:absolute" >
+<!--                            <div-->
+<!--                                class="flex hover:bg-lightslab cursor-pointer text-sm"-->
+<!--                                v-for="(row,key,index) in stats"-->
+<!--                                :class="isSelected(key) ? 'bg-hoverslab' : ''"-->
+<!--                                @click="selectCountry(row['country'])"-->
+<!--                            >-->
+<!--                                <div class="w-56 px-2 m-1">{{row['country']}}</div>-->
+<!--                                <div class="w-24 px-2 m-1">{{row['content']['total']['c']}}</div>-->
+<!--                                <div class="w-20 px-2 m-1">{{row['content']['total']['d']}}</div>-->
+<!--                                <div class="w-20 px-2 m-1">{{row['content']['total']['r']}}</div>-->
+<!--                            </div>-->
                         </simplebar>
                     </div>
                 </div>
             </div>
-            <div class="m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded" style="left: 560px; bottom: 64px">
+            <div class="m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded" style="left: 528px; bottom: 64px">
                 <div class="p-4">
                 <h1 class="font-bold">Compare country stats</h1>
                 <p class="text-xs">Select up to three countries from the left to compare.</p>
@@ -66,7 +102,7 @@
                                 />
                             </div>
                             <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
-                                <div>Select a country to compare</div>
+                                <div>Select a country/state to compare</div>
                             </div>
                         </div>
                         <div class="rounded bg-hoverslab m-2 w-1/3 relative">
@@ -79,7 +115,7 @@
                                 />
                             </div>
                             <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
-                                <div>Select a country to compare</div>
+                                <div>Select a country/state to compare</div>
                             </div>
                         </div>
                         <div class="rounded bg-hoverslab m-2 w-1/3 relative">
@@ -92,12 +128,18 @@
                                 />
                             </div>
                             <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
-                                <div>Select a country to compare</div>
+                                <div>Select a country/state to compare</div>
                             </div>
                         </div>
                     </div>
-                    <LineChart :data="comparisonDataset" class="absolute left-0 right-0 bg-hoverslab m-4 p-2 rounded bottom-0" style="top: 60%;"
-                               :options="{
+                    <div class="absolute left-0 right-0 bottom-0 m-4 mt-0" style="top: 60%;">
+                        <div class="flex">
+                            <div class="bg-hoverslab px-2 py-1 rounded m-1">Chronological</div>
+                            <div class="text-lightslab border border-hoverslab px-2 py-1 rounded m-1">From 100 cases</div>
+                            <div class="text-lightslab border border-hoverslab px-2 py-1 rounded m-1">Delta</div>
+                        </div>
+                        <LineChart :data="comparisonDataset" class="bg-hoverslab p-2 absolute rounded left-0 right-0 bottom-0" style="top: 48px;"
+                                   :options="{
 
                                     responsive: true,
                                     maintainAspectRatio: false,
@@ -152,6 +194,8 @@
                                         ],
                                     }
                                 }" />
+                    </div>
+
                 </div>
 
             </div>
@@ -188,16 +232,17 @@
                     'order' : 'asc',
                 },
                 'compare' : [],
-                'countries': [],
+                'raw_countries': [],
                 'raw_stats': [],
-                'selectedCountry': 2
+                'selectedCountry': 2,
+                'show_countries': true
             }
         },
         mounted()
         {
-            axios.get('/api/stats')
+            axios.get('/api/stats/countries')
                 .then(res => {
-                    this.countries = res.data;
+                    this.raw_countries = res.data;
                     this.loading.countries = true;
                 })
                 .catch(error => {
@@ -308,6 +353,52 @@
                 }
                 return [];
             },
+            countries(){
+                var data = [];
+
+                for(var x in this.raw_countries)
+                {
+                    var row = this.raw_countries[x];
+                    data.push(row);
+                }
+                return data;
+            },
+            countries_sorted()
+            {
+                var sort = this.sort_stats;
+                var data = _.cloneDeep(this.countries);
+                return data.sort(function (a, b) {
+                    if (sort.key == 'country')
+                    {
+                        if (sort.order == 'asc')
+                            return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;
+                        else
+                            return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'confirmed') {
+                        if (sort.order == 'desc')
+                            return a.total.c < b.total.c ? 1 : -1;
+                        else
+                            return a.total.c > b.total.c ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'deaths') {
+                        if (sort.order == 'desc')
+                            return a.total.d < b.total.d ? 1 : -1;
+                        else
+                            return a.total.d > b.total.d ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'recovered') {
+                        if (sort.order == 'desc')
+                            return a.total.r < b.total.r ? 1 : -1;
+                        else
+                            return a.total.r > b.total.r ? 1 : -1;
+                    }
+                });
+
+            },
             loaded()
             {
                 if (this.loading.countries && this.loading.raw_stats)
@@ -317,6 +408,10 @@
                 return false;
             },
             stats()
+            {
+                return this.raw_stats;
+            },
+            sorted_stats()
             {
                 var sort = this.sort_stats;
                 return this.raw_stats.sort(function (a, b) {
@@ -501,7 +596,6 @@
                     for(var x in this.compare)
                     {
                         var stats = this.stats[this.compare[x]];
-                        console.log(stats);
                         for(var y in stats.content.daily)
                         {
                             if(start.length === 0 || moment(y).format('YYYY-MM-DD') < start)
@@ -515,7 +609,6 @@
                             }
                         }
                     }
-                    console.log('Start: ' + start + ' End: ' + end);
 
 
 
@@ -620,17 +713,16 @@
                         last_update: '',
                     },
                     last_update = '';
-                for(var x in this.stats)
+                for(var x in this.countries)
                 {
-                    data.confirmed += parseInt(this.stats[x].content.total.c);
-                    data.deaths += parseInt(this.stats[x].content.total.d);
-                    data.recovered += parseInt(this.stats[x].content.total.r);
+                    data.confirmed += parseInt(this.countries[x].total.c);
+                    data.deaths += parseInt(this.countries[x].total.d);
+                    data.recovered += parseInt(this.countries[x].total.r);
 
-                    if(last_update.length === 0 || moment(this.stats[x].content.total.last_update).format('YYYY-MM-DD') > last_update)
+                    if(last_update.length === 0 || moment(this.countries[x].total.l).format('YYYY-MM-DD') > last_update)
                     {
-                        console.log('Global last update: ' + this.stats[x].content.total.last_update);
-                        data.last_update = moment(this.stats[x].content.total.last_update).format('YYYY-MM-DD HH:mm:ss');
-                        last_update = moment(this.stats[x].content.total.last_update).format('YYYY-MM-DD');
+                        data.last_update = moment(this.countries[x].total.l).format('YYYY-MM-DD HH:mm:ss');
+                        last_update = moment(this.countries[x].total.l).format('YYYY-MM-DD');
                     }
 
                 }
