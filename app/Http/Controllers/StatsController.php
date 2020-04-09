@@ -15,8 +15,7 @@ class StatsController extends Controller
         'Gambia' => ['Gambia, The', 'The Gambia', 'Gambia'],
         'Vietnam' => ['Vietnam', 'Viet Nam'],
         'Cote d\'Ivoire' => ['Cote d\'Ivoire', 'Ivory Coast'],
-        'Hong Kong' => ['Hong Kong', 'Hong Kong SAR'],
-        'Iran' => ['Iran','Islamic Republic of'],
+        'Iran' => ['Iran','Iran (Islamic Republic of)'],
         'Diamond Princess' => ['Cruise Ship','Diamond Princess'],
         'Czechia' => ['Czechia','Czech Republic'],
         'Korea, South' => ['Korea, South','Republic of Korea','South Korea'],
@@ -53,6 +52,9 @@ class StatsController extends Controller
         'Saint Barthelemy',
         'St. Martin',
         'occupied Palestinian territory',
+        'Aruba',
+        'Puerto Rico',
+        'Saint Martin',
     ];
     public function __construct()
     {
