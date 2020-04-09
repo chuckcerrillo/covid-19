@@ -466,19 +466,21 @@
                     for(var x in this.compare)
                     {
                         var stats = this.stats[this.compare[x]];
+                        console.log(stats);
                         for(var y in stats.content.daily)
                         {
-                            if(start.length === 0 || moment(stats.content.daily[y].last_update).format('YYYY-MM-DD') < start)
+                            if(start.length === 0 || moment(y).format('YYYY-MM-DD') < start)
                             {
-                                start = moment(stats.content.daily[y].last_update).format('YYYY-MM-DD');
+                                start = moment(y).format('YYYY-MM-DD');
                             }
 
                             if(end.length === 0 || moment(stats.content.daily[y].last_update).format('YYYY-MM-DD') > end)
                             {
-                                end = moment(stats.content.daily[y].last_update).format('YYYY-MM-DD');
+                                end = moment(y).format('YYYY-MM-DD');
                             }
                         }
                     }
+                    console.log('Start: ' + start + ' End: ' + end);
 
 
 
@@ -573,7 +575,6 @@
                         );
                     }
                 }
-                console.log(data);
                 return data;
             },
             global(){
@@ -592,7 +593,8 @@
 
                     if(last_update.length === 0 || moment(this.stats[x].content.total.last_update).format('YYYY-MM-DD') > last_update)
                     {
-                        data.last_update = moment(this.stats[x].content.total.last_update).format('YYYY-MM-DD');
+                        console.log('Global last update: ' + this.stats[x].content.total.last_update);
+                        data.last_update = moment(this.stats[x].content.total.last_update).format('YYYY-MM-DD HH:mm:ss');
                         last_update = moment(this.stats[x].content.total.last_update).format('YYYY-MM-DD');
                     }
 

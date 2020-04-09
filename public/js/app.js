@@ -2528,18 +2528,20 @@ __webpack_require__.r(__webpack_exports__);
 
         for (var x in this.compare) {
           var stats = this.stats[this.compare[x]];
+          console.log(stats);
 
           for (var y in stats.content.daily) {
-            if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_5___default()(stats.content.daily[y].last_update).format('YYYY-MM-DD') < start) {
-              start = moment__WEBPACK_IMPORTED_MODULE_5___default()(stats.content.daily[y].last_update).format('YYYY-MM-DD');
+            if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_5___default()(y).format('YYYY-MM-DD') < start) {
+              start = moment__WEBPACK_IMPORTED_MODULE_5___default()(y).format('YYYY-MM-DD');
             }
 
             if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_5___default()(stats.content.daily[y].last_update).format('YYYY-MM-DD') > end) {
-              end = moment__WEBPACK_IMPORTED_MODULE_5___default()(stats.content.daily[y].last_update).format('YYYY-MM-DD');
+              end = moment__WEBPACK_IMPORTED_MODULE_5___default()(y).format('YYYY-MM-DD');
             }
           }
         }
 
+        console.log('Start: ' + start + ' End: ' + end);
         var labels = [];
         var confirmed = {
           '0': [],
@@ -2619,7 +2621,6 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      console.log(data);
       return data;
     },
     global: function global() {
@@ -2637,7 +2638,8 @@ __webpack_require__.r(__webpack_exports__);
         data.recovered += parseInt(this.stats[x].content.total.r);
 
         if (last_update.length === 0 || moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('YYYY-MM-DD') > last_update) {
-          data.last_update = moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('YYYY-MM-DD');
+          console.log('Global last update: ' + this.stats[x].content.total.last_update);
+          data.last_update = moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('YYYY-MM-DD HH:mm:ss');
           last_update = moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('YYYY-MM-DD');
         }
       }

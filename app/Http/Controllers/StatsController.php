@@ -185,7 +185,7 @@ class StatsController extends Controller
                     $data['country'][$country_index]['total']['c'] = $row['c'];
                     $data['country'][$country_index]['total']['d'] = $row['d'];
                     $data['country'][$country_index]['total']['r'] = $row['r'];
-                    $data['country'][$country_index]['total']['last_update'] = $index;
+                    $data['country'][$country_index]['total']['last_update'] = $row['last_update'];
                     break;
                 }
             }
