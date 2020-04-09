@@ -52,7 +52,7 @@ class StatsController extends Controller
         'Reunion',
         'Saint Barthelemy',
         'St. Martin',
-        'occupied Palestinian territory'
+        'occupied Palestinian territory',
     ];
     public function __construct()
     {
@@ -199,9 +199,6 @@ class StatsController extends Controller
                 else if(isset($stats['Last_Update']))
                 {
                     $last_update = $stats['Last_Update'];
-                }
-                else
-                {
                 }
 
 
