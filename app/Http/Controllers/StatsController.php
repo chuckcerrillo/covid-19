@@ -8,10 +8,23 @@ use Symfony\Component\HttpFoundation\Response;
 
 class StatsController extends Controller
 {
+    protected $combine = [
+        'China' => ['China','Mainland China'],
+        'Taiwan' => ['Taiwan','Taiwan*','Taipei and environs'],
+        'Bahamas' => ['Bahamas, The', 'The Bahamas', 'Bahamas'],
+        'Gambia' => ['Gambia, The', 'The Gambia', 'Gambia'],
+        'Vietnam' => ['Vietnam', 'Viet Nam'],
+        'Cote d\'Ivoire (Ivory Coast)' => ['Cote d\'Ivoire', 'Ivory Coast'],
+        'Hong Kong' => ['Hong Kong', 'Hong Kong SAR'],
+        'Iran (Islamic Republic of)' => ['Iran','Islamic Republic of'],
+        'Diamond Princess' => ['Cruise Ship','Diamond Princess']
+    ];
     public function __construct()
     {
         define('COVID_DATA','../covid-data/csse_covid_19_data/csse_covid_19_daily_reports/');
         define('STATS','./stats/');
+
+
     }
 
     public function index()
@@ -105,6 +118,16 @@ class StatsController extends Controller
                 else
                 {
                     $country = '';
+                }
+
+                // Check country against combined array
+                foreach($this->combine AS $combined => $keys)
+                {
+                    if (in_array($country,$keys))
+                    {
+                        $country = $combined;
+                        break;
+                    }
                 }
 
                 // Now that we know what country, we can initialise this thing
