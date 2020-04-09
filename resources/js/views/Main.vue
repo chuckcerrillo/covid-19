@@ -230,7 +230,6 @@
                 else
                 {
                     this.sort_stats.key = key;
-                    this.sort_stats.order = 'asc';
                 }
             },
             removeCompare(item)
@@ -330,21 +329,21 @@
                     }
 
                     else if (sort.key == 'confirmed') {
-                        if (sort.order == 'asc')
+                        if (sort.order == 'desc')
                             return a.content.total.c < b.content.total.c ? 1 : -1;
                         else
                             return a.content.total.c > b.content.total.c ? 1 : -1;
                     }
 
                     else if (sort.key == 'deaths') {
-                        if (sort.order == 'asc')
+                        if (sort.order == 'desc')
                             return a.content.total.d < b.content.total.d ? 1 : -1;
                         else
                             return a.content.total.d > b.content.total.d ? 1 : -1;
                     }
 
                     else if (sort.key == 'recovered') {
-                        if (sort.order == 'asc')
+                        if (sort.order == 'desc')
                             return a.content.total.r < b.content.total.r ? 1 : -1;
                         else
                             return a.content.total.r > b.content.total.r ? 1 : -1;

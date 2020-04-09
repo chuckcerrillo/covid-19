@@ -2346,7 +2346,6 @@ __webpack_require__.r(__webpack_exports__);
         }
       } else {
         this.sort_stats.key = key;
-        this.sort_stats.order = 'asc';
       }
     },
     removeCompare: function removeCompare(item) {
@@ -2429,11 +2428,11 @@ __webpack_require__.r(__webpack_exports__);
         if (sort.key == 'country') {
           if (sort.order == 'asc') return a.country.toUpperCase() > b.country.toUpperCase() ? 1 : -1;else return a.country.toUpperCase() < b.country.toUpperCase() ? 1 : -1;
         } else if (sort.key == 'confirmed') {
-          if (sort.order == 'asc') return a.content.total.c < b.content.total.c ? 1 : -1;else return a.content.total.c > b.content.total.c ? 1 : -1;
+          if (sort.order == 'desc') return a.content.total.c < b.content.total.c ? 1 : -1;else return a.content.total.c > b.content.total.c ? 1 : -1;
         } else if (sort.key == 'deaths') {
-          if (sort.order == 'asc') return a.content.total.d < b.content.total.d ? 1 : -1;else return a.content.total.d > b.content.total.d ? 1 : -1;
+          if (sort.order == 'desc') return a.content.total.d < b.content.total.d ? 1 : -1;else return a.content.total.d > b.content.total.d ? 1 : -1;
         } else if (sort.key == 'recovered') {
-          if (sort.order == 'asc') return a.content.total.r < b.content.total.r ? 1 : -1;else return a.content.total.r > b.content.total.r ? 1 : -1;
+          if (sort.order == 'desc') return a.content.total.r < b.content.total.r ? 1 : -1;else return a.content.total.r > b.content.total.r ? 1 : -1;
         }
       });
     },
