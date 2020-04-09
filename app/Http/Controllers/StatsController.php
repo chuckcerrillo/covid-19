@@ -111,23 +111,20 @@ class StatsController extends Controller
                 if (!isset($data['country'][$country])) {
                     $data['country'][$country]['daily'] = [];
                     $data['country'][$country]['total'] = [
-                        'confirmed' => 0,
-                        'deaths' => 0,
-                        'recovered' => 0,
+                        'c' => 0,
+                        'd' => 0,
+                        'r' => 0,
                     ];
                 }
 
-                if(isset($stats['Province/State']))
+                $state = '';
+                foreach($stats AS $i => $v)
                 {
-                    $state = $stats['Province/State'];
-                }
-                else if(isset($stats['Province_State']))
-                {
-                    $state = $stats['Province_State'];
-                }
-                else
-                {
-                    $state = '';
+                    if(strpos($i,'State')>0)
+                    {
+                        $state = $stats[$i];
+                        break;
+                    }
                 }
 
 
@@ -152,17 +149,26 @@ class StatsController extends Controller
                     {
                         $data['country'][$country]['daily'][$date] = [
                             'last_update' => $last_update,
-                            'confirmed' => 0,
-                            'deaths' => 0,
-                            'recovered' => 0
+                            'c' => 0,
+                            'd' => 0,
+                            'r' => 0,
+                            'state' => []
                         ];
                     }
                     if($stats['Confirmed'])
-                        $data['country'][$country]['daily'][$date]['confirmed'] += $stats['Confirmed'];
+                        $data['country'][$country]['daily'][$date]['c'] += $stats['Confirmed'];
                     if($stats['Deaths'])
-                        $data['country'][$country]['daily'][$date]['deaths'] += $stats['Deaths'];
+                        $data['country'][$country]['daily'][$date]['d'] += $stats['Deaths'];
                     if($stats['Recovered'])
-                        $data['country'][$country]['daily'][$date]['recovered'] += $stats['Recovered'];
+                        $data['country'][$country]['daily'][$date]['r'] += $stats['Recovered'];
+
+
+                    $data['country'][$country]['daily'][$date]['state'][] = [
+                        'state' => $state,
+                        'c' => $stats['Confirmed'],
+                        'd' => $stats['Deaths'],
+                        'r' => $stats['Recovered']
+                    ];
                 }
             }
         }
@@ -174,11 +180,11 @@ class StatsController extends Controller
             $sequence = array_reverse($country['daily']);
             foreach($sequence AS $index=>$row)
             {
-                if (isset($row['confirmed']))
+                if (isset($row['c']))
                 {
-                    $data['country'][$country_index]['total']['confirmed'] = $row['confirmed'];
-                    $data['country'][$country_index]['total']['deaths'] = $row['deaths'];
-                    $data['country'][$country_index]['total']['recovered'] = $row['recovered'];
+                    $data['country'][$country_index]['total']['c'] = $row['c'];
+                    $data['country'][$country_index]['total']['d'] = $row['d'];
+                    $data['country'][$country_index]['total']['r'] = $row['r'];
                     $data['country'][$country_index]['total']['last_update'] = $index;
                     break;
                 }

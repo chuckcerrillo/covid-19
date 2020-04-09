@@ -14,6 +14,8 @@
         },
         methods: {
             renderLineChart(){
+                console.log('options');
+                console.log(this.options);
                 this.renderChart(this.chartData,this.options);
             }
         },

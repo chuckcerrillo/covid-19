@@ -16,7 +16,7 @@
                     <div class="text-3xl font-bold">{{data[data.length-1].recovered}}</div>
                 </div>
             </div>
-            <div class="text-xs mb-4">As of {{data[data.length-1].date}}</div>
+            <div class="text-xs mb-4">As of {{last_update}}</div>
             <div
                 class="absolute top-0 right-0 text-xs pt-4 hover:text-white cursor-pointer"
                 @click="remove(country)"
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+    import moment from 'moment'
     import simplebar from 'simplebar-vue';
     export default {
         name: "Daily",
@@ -57,6 +58,11 @@
         methods: {
             remove(item){
                 this.$emit('remove',item);
+            }
+        },
+        computed: {
+            last_update(){
+                return moment(this.data[this.data.length-1].date).format('YYYY-MM-DD');
             }
         }
     }

@@ -1935,7 +1935,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var simplebar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! simplebar-vue */ "./node_modules/simplebar-vue/dist/simplebar-vue.esm.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var simplebar_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! simplebar-vue */ "./node_modules/simplebar-vue/dist/simplebar-vue.esm.js");
 //
 //
 //
@@ -1981,15 +1983,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Daily",
   components: {
-    simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: ['name', 'data', 'country'],
   methods: {
     remove: function remove(item) {
       this.$emit('remove', item);
+    }
+  },
+  computed: {
+    last_update: function last_update() {
+      return moment__WEBPACK_IMPORTED_MODULE_0___default()(this.data[this.data.length - 1].date).format('YYYY-MM-DD');
     }
   }
 });
@@ -2058,6 +2066,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     renderLineChart: function renderLineChart() {
+      console.log('options');
+      console.log(this.options);
       this.renderChart(this.chartData, this.options);
     }
   },
@@ -2350,9 +2360,9 @@ __webpack_require__.r(__webpack_exports__);
           var row = stats.content.daily[x];
           data.push({
             'date': x,
-            'confirmed': parseInt(row.confirmed),
-            'deaths': parseInt(row.deaths),
-            'recovered': parseInt(row.recovered)
+            'confirmed': parseInt(row.c),
+            'deaths': parseInt(row.d),
+            'recovered': parseInt(row.r)
           });
         }
       }
@@ -2421,9 +2431,49 @@ __webpack_require__.r(__webpack_exports__);
       return this.stats[this.selectedCountry];
     },
     daily: function daily() {
-      return this.getDaily(this.selectedStats);
+      if (this.compare.length > 1) return this.comparisonDataset;else return this.getDaily(this.selectedStats);
     },
     dailyChart: function dailyChart() {
+      var data = {
+        labels: [],
+        datasets: [{
+          type: 'line',
+          label: 'Confirmed',
+          backgroundColor: '#dfd27d',
+          fill: false,
+          data: [],
+          yAxisID: 'y-1'
+        }, {
+          type: 'bar',
+          label: 'Deaths',
+          backgroundColor: '#d54242',
+          data: [],
+          yAxisID: 'y-2'
+        }, {
+          type: 'bar',
+          label: 'Recovered',
+          backgroundColor: '#14a76c',
+          data: [],
+          yAxisID: 'y-3'
+        }]
+      };
+
+      if (this.daily) {
+        for (var x in this.daily) {
+          // Labels
+          data.labels.push(this.daily[x].date); // Confirmed
+
+          data.datasets[0].data.push(this.daily[x].confirmed); // Deaths
+
+          data.datasets[1].data.push(this.daily[x].deaths); // Recovered
+
+          data.datasets[2].data.push(this.daily[x].recovered);
+        }
+      }
+
+      return data;
+    },
+    singleDataset: function singleDataset() {
       var data = {
         labels: [],
         datasets: [{
@@ -2462,6 +2512,112 @@ __webpack_require__.r(__webpack_exports__);
 
       return data;
     },
+    comparisonDataset: function comparisonDataset() {
+      var data = {
+        labels: [],
+        datasets: []
+      },
+          key,
+          bgConfirmed = ['#19aade', '#af4bce', '#de542c'],
+          bgRecovered = ['#1de4bd', '#ea7369', '#eabd3b'],
+          bgDeaths = ['#6df0d2', '#f0a58f', '#e7e34e'];
+
+      if (this.compare.length > 0) {
+        var start = '',
+            end = ''; // Get start and end dates
+
+        for (var x in this.compare) {
+          var stats = this.stats[this.compare[x]];
+
+          for (var y in stats.content.daily) {
+            if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_5___default()(stats.content.daily[y].last_update).format('YYYY-MM-DD') < start) {
+              start = moment__WEBPACK_IMPORTED_MODULE_5___default()(stats.content.daily[y].last_update).format('YYYY-MM-DD');
+            }
+
+            if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_5___default()(stats.content.daily[y].last_update).format('YYYY-MM-DD') > end) {
+              end = moment__WEBPACK_IMPORTED_MODULE_5___default()(stats.content.daily[y].last_update).format('YYYY-MM-DD');
+            }
+          }
+        }
+
+        var labels = [];
+        var confirmed = {
+          '0': [],
+          '1': [],
+          '2': []
+        },
+            deaths = {
+          '0': [],
+          '1': [],
+          '2': []
+        },
+            recovered = {
+          '0': [],
+          '1': [],
+          '2': []
+        };
+
+        for (var x = 0; x < moment__WEBPACK_IMPORTED_MODULE_5___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_5___default()(start), 'days'); x++) {
+          var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_5___default()(start).add(x, 'days').format('YYYY-MM-DD'));
+
+          data.labels.push(current_date);
+
+          for (var y in this.compare) {
+            var stats = this.stats[this.compare[y]];
+
+            if (this.getDaily(stats)) {
+              var found = false;
+
+              for (var z in this.getDaily(stats)) {
+                var row = this.getDaily(stats)[z];
+
+                if (moment__WEBPACK_IMPORTED_MODULE_5___default()(row.date).format('YYYY-MM-DD') === current_date) {
+                  confirmed[y].push(row.confirmed);
+                  deaths[y].push(row.deaths);
+                  recovered[y].push(row.recovered);
+                  found = true;
+                }
+              } // If today's data is missing, use previous day's
+
+
+              if (!found) {
+                if (confirmed[y].length > 0) {
+                  confirmed[y].push(confirmed[confirmed[y].length]);
+                  deaths[y].push(deaths[deaths[y].length]);
+                  recovered[y].push(recovered[recovered[y].length]);
+                }
+              }
+            }
+          }
+        } // Assemble labels
+
+
+        for (var x in this.compare) {
+          data.datasets.push({
+            type: 'line',
+            label: 'Confirmed (' + this.stats[this.compare[x]].country + ')',
+            backgroundColor: bgConfirmed[x],
+            data: _.cloneDeep(confirmed[x]),
+            yAxisID: 'y-1'
+          }, {
+            type: 'bar',
+            label: 'Deaths (' + this.stats[this.compare[x]].country + ')',
+            backgroundColor: bgDeaths[x],
+            data: _.cloneDeep(deaths[x]),
+            yAxisID: 'y-2'
+          }, {
+            type: 'bar',
+            label: 'Recovered (' + this.stats[this.compare[x]].country + ')',
+            backgroundColor: bgRecovered[x],
+            data: _.cloneDeep(recovered[x]),
+            yAxisID: 'y-3'
+          });
+        }
+      }
+
+      console.log(data);
+      return data;
+    },
     global: function global() {
       var data = {
         confirmed: 0,
@@ -2472,16 +2628,12 @@ __webpack_require__.r(__webpack_exports__);
           last_update = '';
 
       for (var x in this.stats) {
-        data.confirmed += parseInt(this.stats[x].content.total.confirmed);
-        data.deaths += parseInt(this.stats[x].content.total.deaths);
-        data.recovered += parseInt(this.stats[x].content.total.recovered);
-        console.log('This stats');
-        console.log(moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('YYYY-MM-DD'));
-        console.log('Last update');
-        console.log(last_update);
+        data.confirmed += parseInt(this.stats[x].content.total.c);
+        data.deaths += parseInt(this.stats[x].content.total.d);
+        data.recovered += parseInt(this.stats[x].content.total.r);
 
         if (last_update.length === 0 || moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('YYYY-MM-DD') > last_update) {
-          data.last_update = moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('LL');
+          data.last_update = moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('YYYY-MM-DD');
           last_update = moment__WEBPACK_IMPORTED_MODULE_5___default()(this.stats[x].content.total.last_update).format('YYYY-MM-DD');
         }
       }
@@ -80238,7 +80390,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "text-xs mb-4" }, [
-          _vm._v("As of " + _vm._s(_vm.data[_vm.data.length - 1].date))
+          _vm._v("As of " + _vm._s(_vm.last_update))
         ]),
         _vm._v(" "),
         _c(
@@ -80507,21 +80659,15 @@ var render = function() {
                               ]),
                               _vm._v(" "),
                               _c("div", { staticClass: "w-24" }, [
-                                _vm._v(
-                                  _vm._s(row["content"]["total"]["confirmed"])
-                                )
+                                _vm._v(_vm._s(row["content"]["total"]["c"]))
                               ]),
                               _vm._v(" "),
                               _c("div", { staticClass: "w-24" }, [
-                                _vm._v(
-                                  _vm._s(row["content"]["total"]["deaths"])
-                                )
+                                _vm._v(_vm._s(row["content"]["total"]["d"]))
                               ]),
                               _vm._v(" "),
                               _c("div", { staticClass: "w-24" }, [
-                                _vm._v(
-                                  _vm._s(row["content"]["total"]["recovered"])
-                                )
+                                _vm._v(_vm._s(row["content"]["total"]["r"]))
                               ])
                             ]
                           )
@@ -80674,7 +80820,7 @@ var render = function() {
                         "absolute left-0 right-0 bg-hoverslab m-4 p-2 rounded bottom-0",
                       staticStyle: { top: "60%" },
                       attrs: {
-                        data: _vm.dailyChart,
+                        data: _vm.comparisonDataset,
                         options: {
                           responsive: true,
                           maintainAspectRatio: false,
