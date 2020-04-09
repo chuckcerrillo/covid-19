@@ -14,10 +14,45 @@ class StatsController extends Controller
         'Bahamas' => ['Bahamas, The', 'The Bahamas', 'Bahamas'],
         'Gambia' => ['Gambia, The', 'The Gambia', 'Gambia'],
         'Vietnam' => ['Vietnam', 'Viet Nam'],
-        'Cote d\'Ivoire (Ivory Coast)' => ['Cote d\'Ivoire', 'Ivory Coast'],
+        'Cote d\'Ivoire' => ['Cote d\'Ivoire', 'Ivory Coast'],
         'Hong Kong' => ['Hong Kong', 'Hong Kong SAR'],
-        'Iran (Islamic Republic of)' => ['Iran','Islamic Republic of'],
-        'Diamond Princess' => ['Cruise Ship','Diamond Princess']
+        'Iran' => ['Iran','Islamic Republic of'],
+        'Diamond Princess' => ['Cruise Ship','Diamond Princess'],
+        'Czechia' => ['Czechia','Czech Republic'],
+        'Korea, South' => ['Korea, South','Republic of Korea','South Korea'],
+        'Moldova' => ['Moldova','Republic of Moldova'],
+        'Russia' => ['Russia','Russian Federation'],
+        'United Kingom' => ['UK','United Kingdom'],
+        'Holy See' => ['Holy See','Vatican City'],
+    ];
+    protected $skip = [
+        'Cape Verde',
+        'Cayman Islands',
+        'Channel Islands',
+        'Curacao',
+        'East Timor',
+        'Faroe Islands',
+        'French Guiana',
+        'Gibraltar',
+        'Greenland',
+        'Guadeloupe',
+        'Guam',
+        'Guernsey',
+        'Hong Kong',
+        'Jersey',
+        'Macao SAR',
+        'Macau',
+        'Martinique',
+        'Mayotte',
+        'North Ireland',
+        'Others',
+        'Palestine',
+        'Republic of Ireland',
+        'Republic of the Congo',
+        'Reunion',
+        'Saint Barthelemy',
+        'St. Martin',
+        'occupied Palestinian territory'
     ];
     public function __construct()
     {
@@ -118,6 +153,12 @@ class StatsController extends Controller
                 else
                 {
                     $country = '';
+                }
+
+
+                if (in_array($country,$this->skip))
+                {
+                    continue;
                 }
 
                 // Check country against combined array

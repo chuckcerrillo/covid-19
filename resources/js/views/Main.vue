@@ -43,7 +43,7 @@
                 <div class="m-4 absolute left-0 overflow-hidden bg-slab rounded" style="top: 13rem; bottom: 64px">
                     <div class="mx-4 pt-2">
                         <div class="flex font-bold py-2 text-sm">
-                            <div class="w-56">Country / Region</div>
+                            <div class="w-56">Country / Region {{stats.length}}</div>
                             <div class="w-24">Confirmed</div>
                             <div class="w-24">Deaths</div>
                             <div class="w-24">Recovered</div>
@@ -312,7 +312,8 @@
             stats()
             {
                 return this.raw_stats.sort(function (a, b) {
-                    return a.country > b.country ? 1 : -1;
+                    // return a.country > b.country ? 1 : -1;
+                    return a.content.total.c < b.content.total.c ? 1 : -1;
                 });
 
             },

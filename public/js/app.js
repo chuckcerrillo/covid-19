@@ -2424,7 +2424,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     stats: function stats() {
       return this.raw_stats.sort(function (a, b) {
-        return a.country > b.country ? 1 : -1;
+        // return a.country > b.country ? 1 : -1;
+        return a.content.total.c < b.content.total.c ? 1 : -1;
       });
     },
     selectedStats: function selectedStats() {
@@ -80636,7 +80637,29 @@ var render = function() {
                     "div",
                     { staticClass: "mx-4 pt-2" },
                     [
-                      _vm._m(0),
+                      _c(
+                        "div",
+                        { staticClass: "flex font-bold py-2 text-sm" },
+                        [
+                          _c("div", { staticClass: "w-56" }, [
+                            _vm._v(
+                              "Country / Region " + _vm._s(_vm.stats.length)
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "w-24" }, [
+                            _vm._v("Confirmed")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "w-24" }, [
+                            _vm._v("Deaths")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "w-24" }, [
+                            _vm._v("Recovered")
+                          ])
+                        ]
+                      ),
                       _vm._v(" "),
                       _c(
                         "simplebar",
@@ -80695,7 +80718,7 @@ var render = function() {
                 staticStyle: { left: "560px", bottom: "64px" }
               },
               [
-                _vm._m(1),
+                _vm._m(0),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -80898,20 +80921,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex font-bold py-2 text-sm" }, [
-      _c("div", { staticClass: "w-56" }, [_vm._v("Country / Region")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "w-24" }, [_vm._v("Confirmed")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "w-24" }, [_vm._v("Deaths")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "w-24" }, [_vm._v("Recovered")])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
