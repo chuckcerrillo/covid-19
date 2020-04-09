@@ -461,7 +461,7 @@
                 if(this.compare.length > 0)
                 {
                     var start = '', end = '';
-                    
+
                     // Get start and end dates
                     for(var x in this.compare)
                     {
@@ -533,6 +533,12 @@
                                         confirmed[y].push(confirmed[confirmed[y].length]);
                                         deaths[y].push(deaths[deaths[y].length]);
                                         recovered[y].push(recovered[recovered[y].length]);
+                                    }
+                                    else
+                                    {
+                                        confirmed[y].push(0);
+                                        deaths[y].push(0);
+                                        recovered[y].push(0);
                                     }
                                 }
                             }
