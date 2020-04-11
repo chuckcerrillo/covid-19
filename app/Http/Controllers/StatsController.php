@@ -188,7 +188,7 @@ class StatsController extends Controller
                     {
                         if(strlen($row[0]) == 0)
                         {
-                            $state = 'Unspecified';
+                            $state = '(Unspecified)';
                         }
                         else
                         {
@@ -233,7 +233,7 @@ class StatsController extends Controller
                     {
                         if(strlen($row[0]) == 0)
                         {
-                            $state = 'Unspecified';
+                            $state = '(Unspecified)';
                         }
                         else
                         {
@@ -281,7 +281,7 @@ class StatsController extends Controller
                     {
                         if(strlen($row[2]) == 0)
                         {
-                            $state = 'Unspecified';
+                            $state = '(Unspecified)';
                         }
                         else
                         {
@@ -313,7 +313,7 @@ class StatsController extends Controller
                 }
             }
         }
-//        dump($data['Canada']['daily']['04-08-2020']);
+
 
         // Get total
         foreach($data AS $country => $row)
@@ -322,6 +322,7 @@ class StatsController extends Controller
             {
                 $sequence = array_reverse($row['daily']);
                 $last = reset($sequence);
+
                 foreach($last['states'] AS $state)
                 {
                     if(isset($data[$country]))
@@ -356,8 +357,8 @@ class StatsController extends Controller
                 }
             }
         }
-
-
+//        dump($data['United Kingdom']['daily']['04-08-2020']);
+//dd($data['Afghanistan']);
         // Cleanup
         foreach($data AS $index=>$row)
         {
