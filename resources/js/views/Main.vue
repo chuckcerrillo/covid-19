@@ -223,6 +223,7 @@
                 'loading': {
                     'countries' : false,
                     'raw_stats': false,
+                    'states' : false,
                 },
                 'sort_stats' : {
                     'key' : 'country',
@@ -231,6 +232,7 @@
                 'compare' : [],
                 'comparison' : [],
                 'raw_countries': [],
+                'raw_state_data': [],
                 'raw_stats': [],
                 'selectedCountry': 2,
                 'show_countries': true
@@ -242,6 +244,15 @@
                 .then(res => {
                     this.raw_countries = res.data;
                     this.loading.countries = true;
+                })
+                .catch(error => {
+
+                });
+
+            axios.get('/api/stats/states')
+                .then(res => {
+                    this.raw_state_data = res.data;
+                    this.loading.states = true;
                 })
                 .catch(error => {
 
@@ -316,23 +327,26 @@
             },
             getStateDaily(item)
             {
-                var country = item[0],
+                var country = this.stats[item[0]].country,
                     state = item[1],
                     data = [];
-                if(this.stats[country])
+
+                if(this.states[country])
                 {
-                    for(var x in this.stats[country].content.daily)
+                    console.log(this.states[country]);
+                    for(var x in this.states[country].states)
                     {
-                        for(var y in this.stats[country].content.daily[x].state)
+
+                        var row = this.states[country].states[x];
+                        if(x == state)
                         {
-                            if(this.stats[country].content.daily[x].state[y].state == state)
+                            for(var y in row.daily)
                             {
-                                var row = this.stats[country].content.daily[x].state[y]
                                 data.push({
-                                    'date' : x,
-                                    'confirmed' : parseInt(row.c),
-                                    'deaths' : parseInt(row.d),
-                                    'recovered' : parseInt(row.r)
+                                    'date' : y,
+                                    'confirmed' : parseInt(row.daily[y].c),
+                                    'deaths' : parseInt(row.daily[y].d),
+                                    'recovered' : parseInt(row.daily[y].r),
                                 });
                             }
                         }
@@ -465,7 +479,7 @@
             },
             loaded()
             {
-                if (this.loading.countries && this.loading.raw_stats)
+                if (this.loading.countries && this.loading.raw_stats && this.loading.states)
                 {
                     return true;
                 }
@@ -474,6 +488,10 @@
             stats()
             {
                 return this.raw_stats;
+            },
+            states()
+            {
+                return this.raw_state_data;
             },
             sorted_stats()
             {

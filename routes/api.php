@@ -22,4 +22,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/stats','StatsController@index');
 Route::get('/stats/full','StatsController@full');
 Route::get('/stats/harvest', 'StatsController@master');
+Route::get('/stats/states', 'StatsController@states');
 Route::get('/stats/countries', 'StatsController@countries');

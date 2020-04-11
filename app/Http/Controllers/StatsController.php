@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Ward as WardResource;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\AbstractList;
 use Symfony\Component\HttpFoundation\Response;
 
 class StatsController extends Controller
@@ -86,6 +87,14 @@ class StatsController extends Controller
     public function countries()
     {
         $filename = STATS . 'master.json';
+        $file = fopen($filename,'r');
+        $countries = fread($file,filesize($filename));
+        return response($countries)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function states()
+    {
+        $filename = STATS . 'states.json';
         $file = fopen($filename,'r');
         $countries = fread($file,filesize($filename));
         return response($countries)->setStatusCode(Response::HTTP_OK);
@@ -368,6 +377,43 @@ class StatsController extends Controller
 
         // Write the file
         file_put_contents(STATS . 'master.json',json_encode($data));
+
+
+        // Create daily json for states
+        $states = [];
+
+        foreach($data AS $country=>$row)
+        {
+            $states[$country] = [
+                'name' => $row['name'],
+                'states' => [],
+            ];
+
+
+            if(count($row['states']) > 0)
+            {
+                foreach($row['states'] AS $state => $state_row)
+                {
+                    if(isset($state_row['total']))
+                    {
+                        $states[$country]['states'][$state]['total'] = $state_row['total'];
+                    }
+                }
+            }
+
+            foreach($row['daily'] AS $date => $daily_row)
+            {
+                foreach($daily_row['states'] AS $state => $state_row)
+                {
+                    $states[$country]['states'][$state]['daily'][$date] = $state_row;
+                }
+            }
+        }
+
+        // Write the file
+        file_put_contents(STATS . 'states.json',json_encode($states));
+
+
         return response('Done harvesting data')->setStatusCode(Response::HTTP_OK);
     }
 

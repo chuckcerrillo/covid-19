@@ -2080,7 +2080,7 @@ __webpack_require__.r(__webpack_exports__);
       var result = 0;
 
       if (offset > 0) {
-        result = this.data[offset][field] - this.data[offset - 1][field];
+        result = isNaN(this.data[offset][field]) ? 0 : this.data[offset][field] - isNaN(this.data[offset - 1][field]) ? 0 : this.data[offset - 1][field];
       } else {
         result = this.data[offset][field];
       }
@@ -2473,7 +2473,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       'loading': {
         'countries': false,
-        'raw_stats': false
+        'raw_stats': false,
+        'states': false
       },
       'sort_stats': {
         'key': 'country',
@@ -2482,6 +2483,7 @@ __webpack_require__.r(__webpack_exports__);
       'compare': [],
       'comparison': [],
       'raw_countries': [],
+      'raw_state_data': [],
       'raw_stats': [],
       'selectedCountry': 2,
       'show_countries': true
@@ -2493,6 +2495,10 @@ __webpack_require__.r(__webpack_exports__);
     axios.get('/api/stats/countries').then(function (res) {
       _this.raw_countries = res.data;
       _this.loading.countries = true;
+    })["catch"](function (error) {});
+    axios.get('/api/stats/states').then(function (res) {
+      _this.raw_state_data = res.data;
+      _this.loading.states = true;
     })["catch"](function (error) {});
     axios.get('/api/stats/full').then(function (res) {
       _this.raw_stats = res.data;
@@ -2544,20 +2550,23 @@ __webpack_require__.r(__webpack_exports__);
       return [];
     },
     getStateDaily: function getStateDaily(item) {
-      var country = item[0],
+      var country = this.stats[item[0]].country,
           state = item[1],
           data = [];
 
-      if (this.stats[country]) {
-        for (var x in this.stats[country].content.daily) {
-          for (var y in this.stats[country].content.daily[x].state) {
-            if (this.stats[country].content.daily[x].state[y].state == state) {
-              var row = this.stats[country].content.daily[x].state[y];
+      if (this.states[country]) {
+        console.log(this.states[country]);
+
+        for (var x in this.states[country].states) {
+          var row = this.states[country].states[x];
+
+          if (x == state) {
+            for (var y in row.daily) {
               data.push({
-                'date': x,
-                'confirmed': parseInt(row.c),
-                'deaths': parseInt(row.d),
-                'recovered': parseInt(row.r)
+                'date': y,
+                'confirmed': parseInt(row.daily[y].c),
+                'deaths': parseInt(row.daily[y].d),
+                'recovered': parseInt(row.daily[y].r)
               });
             }
           }
@@ -2658,7 +2667,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     loaded: function loaded() {
-      if (this.loading.countries && this.loading.raw_stats) {
+      if (this.loading.countries && this.loading.raw_stats && this.loading.states) {
         return true;
       }
 
@@ -2666,6 +2675,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     stats: function stats() {
       return this.raw_stats;
+    },
+    states: function states() {
+      return this.raw_state_data;
     },
     sorted_stats: function sorted_stats() {
       var sort = this.sort_stats;

@@ -80,7 +80,7 @@
                 var result = 0;
 
                 if(offset>0){
-                    result = this.data[offset][field] - this.data[offset-1][field];
+                    result = isNaN(this.data[offset][field]) ? 0 : this.data[offset][field] - isNaN(this.data[offset-1][field]) ? 0 : this.data[offset-1][field];
                 }
                 else
                 {
