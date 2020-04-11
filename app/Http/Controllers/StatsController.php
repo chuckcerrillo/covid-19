@@ -363,7 +363,6 @@ class StatsController extends Controller
                 unset($data[$index]['states']['(Unspecified)']);
             }
         }
-        dd($data['US']);
         unset($data['Cruise Ship']);
 //        dd($data['United Kingdom']);
 
