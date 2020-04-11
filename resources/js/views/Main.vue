@@ -2,62 +2,46 @@
     <div>
         <div v-if="!loaded">Loading data</div>
         <div v-else class="flex flex-1 h-screen overflow-y-auto relative">
-            <div>
-                <div class="m-4 absolute left-0 top-0 overflow-hidden bg-lightslab rounded h-48 z-10 w-128 p-4">
+            <div class="w-116 relative">
+                <div class="m-4 absolute left-0 top-0 w-full overflow-hidden bg-lightslab rounded h-48 z-10 p-4">
                     <div class="text-2xl tracking-tight font-bold">Global tally</div>
                     <div class="text-xs mb-4">as of {{global.last_update}}</div>
 
                     <div class="flex font-bold justify-between items-center">
                         <div class="m-2">
                             <div class="text-sm">Confirmed</div>
-                            <div class="text-4xl text-white">{{global.confirmed}}</div>
+                            <div class="text-3xl text-white">{{global.confirmed}}</div>
                         </div>
                         <div class="m-2">
                             <div class="text-sm">Deaths</div>
-                            <div class="text-4xl text-white">{{global.deaths}}</div>
+                            <div class="text-3xl text-white">{{global.deaths}}</div>
                         </div>
                         <div class="m-2">
                             <div class="text-sm">Recovered</div>
-                            <div class="text-4xl text-white">{{global.recovered}}</div>
+                            <div class="text-3xl text-white">{{global.recovered}}</div>
                         </div>
                     </div>
 
 
                 </div>
-                <div class="m-4 absolute left-0 overflow-hidden bg-slab rounded" style="top: 13rem; bottom: 64px">
-                    <div v-if="show_countries" class="mx-4 pt-2 w-120">
-                        <div class="text-2xl tracking-tight font-bold">Countries and states</div>
+                <div class="w-full m-4 absolute left-0 overflow-hidden bg-slab rounded p-2" style="top: 13rem; bottom: 64px">
+                    <div v-if="show_countries" class="mx-2 pt-2">
+                        <div class="text-2xl tracking-tight font-bold">Countries and states ({{countries.length}} total)</div>
                         <div class="text-xs text-right">Sorting by {{sort_stats.key}} {{sort_stats.order}}</div>
                         <div class="flex font-bold py-2 text-xs items-center">
-                            <div class="w-56 cursor-pointer p-2 m-1" :class="sort_stats.key == 'country' ? 'bg-hoverslab' : '' " @click="toggleSort('country')">Country / Region ({{countries.length}} total)</div>
-                            <div class="w-20 cursor-pointer p-2 m-1" :class="sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmed')">Confirmed</div>
-                            <div class="w-20 cursor-pointer p-2 m-1" :class="sort_stats.key == 'deaths' ? 'bg-hoverslab' : '' " @click="toggleSort('deaths')">Deaths</div>
-                            <div class="w-20 cursor-pointer p-2 m-1" :class="sort_stats.key == 'recovered' ? 'bg-hoverslab' : '' " @click="toggleSort('recovered')">Recovered</div>
+                            <div class="w-4 p-2 m-1 ml-0"></div>
+                            <div class="w-32 cursor-pointer p-2 m-1 overflow-hidden" :class="sort_stats.key == 'country' ? 'bg-hoverslab' : '' " @click="toggleSort('country')">Country / Region</div>
+                            <div class="w-18 cursor-pointer p-2 m-1 overflow-hidden" :class="sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmed')">Confirmed</div>
+                            <div class="w-18 cursor-pointer p-2 m-1 overflow-hidden" :class="sort_stats.key == 'deaths' ? 'bg-hoverslab' : '' " @click="toggleSort('deaths')">Deaths</div>
+                            <div class="w-18 cursor-pointer p-2 m-1 overflow-hidden" :class="sort_stats.key == 'recovered' ? 'bg-hoverslab' : '' " @click="toggleSort('recovered')">Recovered</div>
                         </div>
-                        <simplebar data-simplebar-auto-hide="false" class="absolute bottom-0 right-0 left-0 mx-4 mb-4 mr-2" style="position:absolute; top: 120px">
-                            <div
-                                v-for="(country_row,key,index) in countries_sorted"
-                                :class="isSelected(key) ? 'bg-hoverslab' : ''"
-                            >
-                                <div
-                                    class="flex hover:bg-lightslab cursor-pointer items-center"
-                                    @click="selectCountry(country_row['name'])"
-                                >
-                                    <div class="text-sm w-56 px-2 m-1">{{country_row['name']}}</div>
-                                    <div>{{country_row['stats']}}</div>
-                                    <div class="text-xs w-20 px-2 m-1">{{country_row['total']['c']}}</div>
-                                    <div class="text-xs w-20 px-2 m-1">{{country_row['total']['d']}}</div>
-                                    <div class="text-xs w-20 px-2 m-1">{{country_row['total']['r']}}</div>
-                                </div>
-                                <div v-for="row in country_row.states" class="ml-4 hover:bg-lightslab cursor-pointer py-1 flex items-center text-xs">
-                                    <div class="w-52 px-2 m-1">
-                                        <div class="px-2 m-1">{{row['name']}}</div>
-                                    </div>
-                                    <div v-if="row.total && row.total.c" class="w-20 px-2 m-1">{{row['total']['c']}}</div>
-                                    <div v-if="row.total && row.total.d" class="w-20 px-2 m-1">{{row['total']['d']}}</div>
-                                    <div v-if="row.total && row.total.r" class="w-20 px-2 m-1">{{row['total']['r']}}</div>
-                                </div>
-                            </div>
+                        <simplebar data-simplebar-auto-hide="false" class="absolute bottom-0 right-0 left-0 mx-4 mb-4 mr-2 ml-2" style="position:absolute; top: 120px">
+                            <CountryStateItem
+                                v-for="(data,key,index) in countries_sorted"
+                                v-on:selectCountry="selectCountry"
+                                :data="data"
+                                :country_key="key"
+                            />
 
                         </simplebar>
                     </div>
@@ -68,7 +52,7 @@
                             <div class="w-20 cursor-pointer p-2 m-1" :class="sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmed')">Confirmed</div>
                             <div class="w-20 cursor-pointer p-2 m-1" :class="sort_stats.key == 'deaths' ? 'bg-hoverslab' : '' " @click="toggleSort('deaths')">Deaths</div>
                             <div class="w-20 cursor-pointer p-2 m-1" :class="sort_stats.key == 'recovered' ? 'bg-hoverslab' : '' " @click="toggleSort('recovered')">Recovered</div>
-                        </div>sssss
+                        </div>
                         <simplebar data-simplebar-auto-hide="false" class="absolute top-0 bottom-0 right-0 left-0 mt-20 mx-4 mb-4 mr-2" style="position:absolute" >
 <!--                            <div-->
 <!--                                class="flex hover:bg-lightslab cursor-pointer text-sm"-->
@@ -85,7 +69,7 @@
                     </div>
                 </div>
             </div>
-            <div class="m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded" style="left: 528px; bottom: 64px">
+            <div class="m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded" style="left: 480px; bottom: 64px">
                 <div class="p-4">
                 <h1 class="font-bold">Compare country stats</h1>
                 <p class="text-xs">Select up to three countries from the left to compare.</p>
@@ -96,9 +80,10 @@
                             <div v-if="compare.length > 0">
                                 <Daily
                                     v-on:remove="removeCompare"
-                                    :name="stats[compare[0]].country"
+                                    :name="stats[compare[0][0]].country"
                                     :data="compare1"
-                                    :country="compare[0]"
+                                    :country="compare[0][0]"
+                                    :state="compare[0][1]"
                                 />
                             </div>
                             <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
@@ -109,9 +94,10 @@
                             <div v-if="compare.length > 1">
                                 <Daily
                                     v-on:remove="removeCompare"
-                                    :name="stats[compare[1]].country"
+                                    :name="stats[compare[1][0]].country"
                                     :data="compare2"
-                                    :country="compare[1]"
+                                    :country="parseInt(compare[1][0])"
+                                    :state="compare[1][1]"
                                 />
                             </div>
                             <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
@@ -122,9 +108,10 @@
                             <div v-if="compare.length > 2">
                                 <Daily
                                     v-on:remove="removeCompare"
-                                    :name="stats[compare[2]].country"
+                                    :name="stats[compare[2][0]].country"
                                     :data="compare3"
-                                    :country="compare[2]"
+                                    :country="compare[2][0]"
+                                    :state="compare[2][1]"
                                 />
                             </div>
                             <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
@@ -157,7 +144,7 @@
                                             }
                                         }],
                                         yAxes: [{
-                                            type: 'logarithmic', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                            type: 'logarithmic',
                                             display: true,
                                             position: 'left',
                                             id: 'y-1',
@@ -168,7 +155,7 @@
                                                 }
                                             }
                                         }, {
-                                            type: 'logarithmic', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                            type: 'logarithmic',
                                             display: true,
                                             position: 'right',
                                             id: 'y-2',
@@ -184,7 +171,7 @@
                                                 }
                                             }
                                         }, {
-                                            type: 'logarithmic', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                            type: 'logarithmic',
                                             display: true,
                                             position: 'right',
                                             id: 'y-3',
@@ -218,7 +205,7 @@
     import 'simplebar/dist/simplebar.min.css';
     import Daily from "../components/Daily";
     import Comparison from "./Comparison";
-
+    import CountryStateItem from "../components/CountryStateItem";
     import moment from 'moment'
 
     export default {
@@ -227,7 +214,8 @@
             simplebar,
             LineChart,
             Daily,
-            Comparison
+            Comparison,
+            CountryStateItem,
         },
         data()
         {
@@ -241,6 +229,7 @@
                     'order' : 'asc',
                 },
                 'compare' : [],
+                'comparison' : [],
                 'raw_countries': [],
                 'raw_stats': [],
                 'selectedCountry': 2,
@@ -286,12 +275,76 @@
                     this.sort_stats.key = key;
                 }
             },
+            findCompare(item)
+            {
+                var found = false;
+                console.log(item);
+                console.log(this.compare);
+                for(var x in this.compare)
+                {
+                    if(this.compare[x][0] == item[0])
+                    {
+                        if(this.compare[x][1] == item[1])
+                        {
+                            found = x;
+                            break;
+                        }
+                    }
+                }
+                console.log('Found: ' + found);
+                return found;
+            },
             removeCompare(item)
             {
-                var index = this.compare.indexOf(item);
-                if (index !== -1) this.compare.splice(index, 1);
+                var found = this.findCompare(item);
+                if(found)
+                {
+                    this.compare.splice(found, 1);
+                }
             },
-            getDaily(stats){
+            getDaily(compare)
+            {
+                if(compare && compare[0])
+                {
+                    if(!compare[1])
+                    {
+                        return this.getCountryDaily(this.stats[compare[0]]);
+                    }
+                    else
+                    {
+                        return this.getStateDaily(compare);
+                    }
+                }
+                return [];
+            },
+            getStateDaily(item)
+            {
+                var country = item[0],
+                    state = item[1],
+                    data = [];
+                if(this.stats[country])
+                {
+                    for(var x in this.stats[country].content.daily)
+                    {
+                        for(var y in this.stats[country].content.daily[x].state)
+                        {
+                            if(this.stats[country].content.daily[x].state[y].state == state)
+                            {
+                                var row = this.stats[country].content.daily[x].state[y]
+                                data.push({
+                                    'date' : x,
+                                    'confirmed' : parseInt(row.c),
+                                    'deaths' : parseInt(row.d),
+                                    'recovered' : parseInt(row.r)
+                                });
+                            }
+                        }
+                    }
+                }
+
+                return data;
+            },
+            getCountryDaily(stats){
                 var data = [];
                 if (stats && stats.content && stats.content.daily)
                 {
@@ -323,18 +376,23 @@
                 }
                 return null;
             },
-            selectCountry(country){
 
+            selectCompare(item){
+                if(this.comparison.length < 3)
+                {
+
+                }
+            },
+            selectCountry(country,state){
                 var key = this.getCountryId(country);
 
                 if(this.compare.length < 3)
                 {
-                    if (this.compare.indexOf(key) === -1)
+                    if(!this.findCompare([key,state]))
                     {
-                        this.compare.push(key);
+                        this.compare.push([key,state]);
                     }
                 }
-                this.selectedCountry = key
             },
             isSelected(key){
                 return false;
@@ -344,21 +402,21 @@
             compare1(){
                 if(this.compare.length > 0)
                 {
-                    return this.getDaily(this.stats[this.compare[0]]);
+                    return this.getDaily(this.compare[0]);
                 }
                 return [];
             },
             compare2(){
                 if(this.compare.length > 1)
                 {
-                    return this.getDaily(this.stats[this.compare[1]]);
+                    return this.getDaily(this.compare[1]);
                 }
                 return [];
             },
             compare3(){
                 if(this.compare.length > 2)
                 {
-                    return this.getDaily(this.stats[this.compare[2]]);
+                    return this.getDaily(this.compare[2]);
                 }
                 return [];
             },
@@ -604,7 +662,9 @@
                     // Get start and end dates
                     for(var x in this.compare)
                     {
-                        var stats = this.stats[this.compare[x]];
+                        var stats = this.stats[this.compare[x][0]];
+                        console.log('COMPARE STATS');
+                        console.log(stats);
                         for(var y in stats.content.daily)
                         {
                             if(start.length === 0 || moment(y).format('YYYY-MM-DD') < start)
@@ -619,6 +679,7 @@
                         }
                     }
 
+                    console.log('Start: ' + start + ' End: ' + end);
 
 
 
@@ -639,7 +700,7 @@
                             '1' : [],
                             '2' : [],
                         };
-                    for(var x = 0; x < moment(end).diff(moment(start),'days'); x++)
+                    for(var x = 0; x <= moment(end).diff(moment(start),'days'); x++)
                     {
 
                         var current_date = _.clone(moment(start).add(x,'days').format('YYYY-MM-DD'))
@@ -647,14 +708,18 @@
                         for(var y in this.compare)
                         {
 
-                            var stats = this.stats[this.compare[y]];
-
-                            if(this.getDaily(stats))
+                            if(this.getDaily(this.compare[y]))
                             {
+
                                 var found = false;
-                                for(var z in this.getDaily(stats))
+                                var stats = this.getDaily(this.compare[y]);
+
+                                console.log('Daily:');
+                                console.log(stats);
+
+                                for(var z in stats)
                                 {
-                                    var row = this.getDaily(stats)[z];
+                                    var row = stats[z];
                                     if(moment(row.date).format('YYYY-MM-DD') === current_date)
                                     {
                                         confirmed[y].push(row.confirmed);
@@ -690,21 +755,21 @@
                         data.datasets.push(
                             {
                                 type: 'line',
-                                label: 'Confirmed (' + this.stats[this.compare[x]].country + ')',
+                                label: 'Confirmed (' + this.stats[this.compare[x][0]].country + ')',
                                 backgroundColor: bgConfirmed[x],
                                 data: _.cloneDeep(confirmed[x]),
                                 yAxisID: 'y-1'
                             },
                             {
                                 type: 'bar',
-                                label: 'Deaths (' + this.stats[this.compare[x]].country + ')',
+                                label: 'Deaths (' + this.stats[this.compare[x][0]].country + ')',
                                 backgroundColor: bgDeaths[x],
                                 data: _.cloneDeep(deaths[x]),
                                 yAxisID: 'y-2'
                             },
                             {
                                 type: 'bar',
-                                label: 'Recovered (' + this.stats[this.compare[x]].country + ')',
+                                label: 'Recovered (' + this.stats[this.compare[x][0]].country + ')',
                                 backgroundColor: bgRecovered[x],
                                 data: _.cloneDeep(recovered[x]),
                                 yAxisID: 'y-3'

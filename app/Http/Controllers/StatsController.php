@@ -131,9 +131,11 @@ class StatsController extends Controller
                     ]
                 ];
             }
+            if (strlen($row['Province_State']) == 0)
+                $row['Province_State'] = '(Unspecified)';
             if(
-                strlen($row['Province_State']) > 0 &&
-                strlen(trim($row['Admin2'])) === 0
+                strlen($row['Province_State']) > 0
+//                && strlen(trim($row['Admin2'])) === 0
             )
             {
                 $data[$row['Country_Region']]['states'][$row['Province_State']] = [
@@ -175,21 +177,35 @@ class StatsController extends Controller
 
                     if(isset($data[$row[1]]))
                     {
+                        if(strlen($row[0]) == 0)
+                        {
+                            $state = 'Unspecified';
+                        }
+                        else
+                        {
+                            $state = $row[0];
+                        }
                         if(!isset($data[$row[1]]['daily'][$date]))
                         {
                             $data[$row[1]]['daily'][$date] = [
                                 'states' => []
                             ];
                         }
-                        $data[$row[1]]['daily'][$date]['states'][] = [
-                            'name' => $row[0],
-                            'lat' => null,
-                            'lng' => null,
-                            'l' => $row[2],
-                            'c' => $row[3],
-                            'd' => $row[4],
-                            'r' => $row[5],
-                        ];
+                        if(!isset($data[$row[1]]['daily'][$date]['states'][$state]))
+                        {
+                            $data[$row[1]]['daily'][$date]['states'][$state] = [
+                                'name' => $row[0],
+                                'lat' => '',
+                                'lng' => '',
+                                'l' => $row[2],
+                                'c' => 0,
+                                'd' => 0,
+                                'r' => 0
+                            ];
+                        }
+                        $data[$row[1]]['daily'][$date]['states'][$state]['c'] += (int)$row[3];
+                        $data[$row[1]]['daily'][$date]['states'][$state]['d'] += (int)$row[4];
+                        $data[$row[1]]['daily'][$date]['states'][$state]['r'] += (int)$row[5];
                     }
                 }
                 else if(count($row) == 8)
@@ -206,21 +222,35 @@ class StatsController extends Controller
                     //]
                     if(isset($data[$row[1]]))
                     {
+                        if(strlen($row[0]) == 0)
+                        {
+                            $state = 'Unspecified';
+                        }
+                        else
+                        {
+                            $state = $row[0];
+                        }
                         if(!isset($data[$row[1]]['daily'][$date]))
                         {
                             $data[$row[1]]['daily'][$date] = [
                                 'states' => []
                             ];
                         }
-                        $data[$row[1]]['daily'][$date]['states'][] = [
-                            'name' => $row[0],
-                            'lat' => $row[6],
-                            'lng' => $row[7],
-                            'l' => $row[2],
-                            'c' => $row[3],
-                            'd' => $row[4],
-                            'r' => $row[5]
-                        ];
+                        if(!isset($data[$row[1]]['daily'][$date]['states'][$state]))
+                        {
+                            $data[$row[1]]['daily'][$date]['states'][$state] = [
+                                'name' => $row[0],
+                                'lat' => $row[6],
+                                'lng' => $row[7],
+                                'l' => $row[2],
+                                'c' => 0,
+                                'd' => 0,
+                                'r' => 0
+                            ];
+                        }
+                        $data[$row[1]]['daily'][$date]['states'][$state]['c'] += (int)$row[3];
+                        $data[$row[1]]['daily'][$date]['states'][$state]['d'] += (int)$row[4];
+                        $data[$row[1]]['daily'][$date]['states'][$state]['r'] += (int)$row[5];
                     }
                 }
                 else if(count($row) == 12) {
@@ -240,24 +270,41 @@ class StatsController extends Controller
                     //]
                     if (isset($data[$row[3]]))
                     {
+                        if(strlen($row[2]) == 0)
+                        {
+                            $state = 'Unspecified';
+                        }
+                        else
+                        {
+                            $state = $row[2];
+                        }
+
+
                         if (!isset($data[$row[3]]['daily'][$date])) {
                             $data[$row[3]]['daily'][$date] = [
                                 'states' => []
                             ];
                         }
-                        $data[$row[3]]['daily'][$date]['states'][] = [
-                            'name' => $row[2],
-                            'lat' => $row[5],
-                            'lng' => $row[6],
-                            'l' => $row[4],
-                            'c' => $row[7],
-                            'd' => $row[8],
-                            'r' => $row[9]
-                        ];
+                        if(!isset($data[$row[3]]['daily'][$date]['states'][$state]))
+                        {
+                            $data[$row[3]]['daily'][$date]['states'][$state] = [
+                                'name' => $state,
+                                'lat' => $row[6],
+                                'lng' => $row[7],
+                                'l' => $row[4],
+                                'c' => 0,
+                                'd' => 0,
+                                'r' => 0
+                            ];
+                        }
+                        $data[$row[3]]['daily'][$date]['states'][$state]['c'] += (int)$row[7];
+                        $data[$row[3]]['daily'][$date]['states'][$state]['d'] += (int)$row[8];
+                        $data[$row[3]]['daily'][$date]['states'][$state]['r'] += (int)$row[9];
                     }
                 }
             }
         }
+//        dump($data['Canada']['daily']['04-08-2020']);
 
         // Get total
         foreach($data AS $country => $row)
@@ -300,7 +347,25 @@ class StatsController extends Controller
                 }
             }
         }
+
+
+        // Cleanup
+        foreach($data AS $index=>$row)
+        {
+            // Remove state data from single state countries
+            if(count($row['states']) == 1)
+            {
+                unset($data[$index]['states']['(Unspecified)']);
+            }
+            // Remove empty unknown states
+            else if(!isset($row['states']['(Unspecified)']) || !isset($row['states']['(Unspecified)']['total']))
+            {
+                unset($data[$index]['states']['(Unspecified)']);
+            }
+        }
+        dd($data['US']);
         unset($data['Cruise Ship']);
+//        dd($data['United Kingdom']);
 
         // Write the file
         file_put_contents(STATS . 'master.json',json_encode($data));

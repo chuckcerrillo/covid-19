@@ -2,15 +2,20 @@ module.exports = {
   theme: {
       extend: {
           colors: {
-              slab: '#116466',
-              lightslab: '#4e8f93',
-              hoverslab: '#1f8082',
-              base: '#2c3531',
-              heading: '#d1e8e2',
-              orangeslab: '#d9b08c',
-
+              slab : '#116466',
+              lightslab : '#4e8f93',
+              hoverslab : '#1f8082',
+              base : '#2c3531',
+              heading : '#d1e8e2',
+              orangeslab : '#d9b08c',
+              'slab-primary' : '#0c5658',
+              'slab-secondary' : '#116466',
+          },
+          margin: {
+              '52' : '13rem',
           },
           width: {
+              '18' : '4.5rem',
               '20' : '5rem',
               '24' : '6rem',
               '25' : '6.25rem',
