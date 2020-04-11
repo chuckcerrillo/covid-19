@@ -2054,6 +2054,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2065,6 +2075,17 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     remove: function remove(item) {
       this.$emit('remove', item);
+    },
+    delta: function delta(field, offset) {
+      var result = 0;
+
+      if (offset > 0) {
+        result = this.data[offset][field] - this.data[offset - 1][field];
+      } else {
+        result = this.data[offset][field];
+      }
+
+      return result;
     }
   },
   computed: {
@@ -80853,7 +80874,7 @@ var render = function() {
           staticStyle: { position: "absolute" },
           attrs: { "data-simplebar-auto-hide": "false" }
         },
-        _vm._l(_vm.data, function(row) {
+        _vm._l(_vm.data, function(row, key, index) {
           return _c(
             "div",
             { staticClass: "flex p-2 text-xs justify-between" },
@@ -80862,15 +80883,46 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "w-full flex justify-end" }, [
                 _c("div", { staticClass: "w-20" }, [
-                  _vm._v(_vm._s(isNaN(row.confirmed) ? 0 : row.confirmed))
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(isNaN(row.confirmed) ? 0 : row.confirmed) +
+                      "\n                    "
+                  ),
+                  _vm.delta("confirmed", key) >= 0
+                    ? _c("span", { staticClass: "text-green-400" }, [
+                        _vm._v("(+" + _vm._s(_vm.delta("confirmed", key)) + ")")
+                      ])
+                    : _c("span", { staticClass: "text-red-400" }, [
+                        _vm._v("(" + _vm._s(_vm.delta("confirmed", key)) + ")")
+                      ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "w-20" }, [
-                  _vm._v(_vm._s(isNaN(row.deaths) ? 0 : row.deaths))
+                  _vm._v(
+                    _vm._s(isNaN(row.deaths) ? 0 : row.deaths) +
+                      "\n                    "
+                  ),
+                  _vm.delta("deaths", key) >= 0
+                    ? _c("span", { staticClass: "text-green-400" }, [
+                        _vm._v("(+" + _vm._s(_vm.delta("deaths", key)) + ")")
+                      ])
+                    : _c("span", { staticClass: "text-red-400" }, [
+                        _vm._v("(" + _vm._s(_vm.delta("deaths", key)) + ")")
+                      ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "w-20" }, [
-                  _vm._v(_vm._s(isNaN(row.recovered) ? 0 : row.recovered))
+                  _vm._v(
+                    _vm._s(isNaN(row.recovered) ? 0 : row.recovered) +
+                      "\n                    "
+                  ),
+                  _vm.delta("recovered", key) >= 0
+                    ? _c("span", { staticClass: "text-green-400" }, [
+                        _vm._v("(+" + _vm._s(_vm.delta("recovered", key)) + ")")
+                      ])
+                    : _c("span", { staticClass: "text-red-400" }, [
+                        _vm._v("(" + _vm._s(_vm.delta("recovered", key)) + ")")
+                      ])
                 ])
               ])
             ]

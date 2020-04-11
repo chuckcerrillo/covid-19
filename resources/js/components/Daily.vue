@@ -34,13 +34,23 @@
         <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 left-0 bottom-0 mt-52 mx-4 mb-4 mr-4" style="position:absolute;" >
             <div
                 class="flex p-2 text-xs justify-between"
-                v-for="row in data"
+                v-for="(row, key, index) in data"
             >
                 <div class="w-20">{{row['date']}}</div>
                 <div class="w-full flex justify-end">
-                    <div class="w-20">{{ isNaN(row.confirmed) ? 0 : row.confirmed }}</div>
-                    <div class="w-20">{{ isNaN(row.deaths) ? 0 : row.deaths }}</div>
-                    <div class="w-20">{{ isNaN(row.recovered) ? 0 : row.recovered }}</div>
+                    <div class="w-20">
+                        {{ isNaN(row.confirmed) ? 0 : row.confirmed }}
+                        <span class="text-green-400" v-if="delta('confirmed',key) >= 0">(+{{delta('confirmed',key)}})</span>
+                        <span class="text-red-400" v-else>({{delta('confirmed',key)}})</span>
+                    </div>
+                    <div class="w-20">{{ isNaN(row.deaths) ? 0 : row.deaths }}
+                        <span class="text-green-400" v-if="delta('deaths',key) >= 0">(+{{delta('deaths',key)}})</span>
+                        <span class="text-red-400" v-else>({{delta('deaths',key)}})</span>
+                    </div>
+                    <div class="w-20">{{ isNaN(row.recovered) ? 0 : row.recovered }}
+                        <span class="text-green-400" v-if="delta('recovered',key) >= 0">(+{{delta('recovered',key)}})</span>
+                        <span class="text-red-400" v-else>({{delta('recovered',key)}})</span>
+                    </div>
                 </div>
             </div>
         </simplebar>
@@ -64,6 +74,20 @@
         methods: {
             remove(item){
                 this.$emit('remove',item);
+            },
+            delta(field,offset)
+            {
+                var result = 0;
+
+                if(offset>0){
+                    result = this.data[offset][field] - this.data[offset-1][field];
+                }
+                else
+                {
+                    result = this.data[offset][field];
+                }
+
+                return result;
             }
         },
         computed: {
