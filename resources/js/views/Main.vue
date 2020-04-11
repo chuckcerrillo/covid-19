@@ -278,8 +278,6 @@
             findCompare(item)
             {
                 var found = false;
-                console.log(item);
-                console.log(this.compare);
                 for(var x in this.compare)
                 {
                     if(this.compare[x][0] == item[0])
@@ -291,7 +289,6 @@
                         }
                     }
                 }
-                console.log('Found: ' + found);
                 return found;
             },
             removeCompare(item)
@@ -663,8 +660,6 @@
                     for(var x in this.compare)
                     {
                         var stats = this.stats[this.compare[x][0]];
-                        console.log('COMPARE STATS');
-                        console.log(stats);
                         for(var y in stats.content.daily)
                         {
                             if(start.length === 0 || moment(y).format('YYYY-MM-DD') < start)
@@ -678,11 +673,6 @@
                             }
                         }
                     }
-
-                    console.log('Start: ' + start + ' End: ' + end);
-
-
-
                     var labels = [];
                     var confirmed = {
                             '0' : [],
@@ -713,9 +703,6 @@
 
                                 var found = false;
                                 var stats = this.getDaily(this.compare[y]);
-
-                                console.log('Daily:');
-                                console.log(stats);
 
                                 for(var z in stats)
                                 {

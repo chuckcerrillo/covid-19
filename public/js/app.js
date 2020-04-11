@@ -2492,8 +2492,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     findCompare: function findCompare(item) {
       var found = false;
-      console.log(item);
-      console.log(this.compare);
 
       for (var x in this.compare) {
         if (this.compare[x][0] == item[0]) {
@@ -2504,7 +2502,6 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      console.log('Found: ' + found);
       return found;
     },
     removeCompare: function removeCompare(item) {
@@ -2764,8 +2761,6 @@ __webpack_require__.r(__webpack_exports__);
 
         for (var x in this.compare) {
           var stats = this.stats[this.compare[x][0]];
-          console.log('COMPARE STATS');
-          console.log(stats);
 
           for (var y in stats.content.daily) {
             if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_6___default()(y).format('YYYY-MM-DD') < start) {
@@ -2778,7 +2773,6 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
 
-        console.log('Start: ' + start + ' End: ' + end);
         var labels = [];
         var confirmed = {
           '0': [],
@@ -2805,8 +2799,6 @@ __webpack_require__.r(__webpack_exports__);
             if (this.getDaily(this.compare[y])) {
               var found = false;
               var stats = this.getDaily(this.compare[y]);
-              console.log('Daily:');
-              console.log(stats);
 
               for (var z in stats) {
                 var row = stats[z];
