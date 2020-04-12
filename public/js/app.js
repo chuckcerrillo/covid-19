@@ -81344,21 +81344,6 @@ var render = function() {
           {
             staticClass:
               "text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading",
-            class: _vm.checkMode("growth"),
-            on: {
-              click: function($event) {
-                return _vm.setMode("growth")
-              }
-            }
-          },
-          [_vm._v("Growth factor")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass:
-              "text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading",
             class: _vm.checkMode("delta"),
             on: {
               click: function($event) {
@@ -81367,6 +81352,21 @@ var render = function() {
             }
           },
           [_vm._v("Delta")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading",
+            class: _vm.checkMode("growth"),
+            on: {
+              click: function($event) {
+                return _vm.setMode("growth")
+              }
+            }
+          },
+          [_vm._v("Growth factor (to-do)")]
         )
       ]),
       _vm._v(" "),
