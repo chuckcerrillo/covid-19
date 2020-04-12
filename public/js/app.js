@@ -81509,7 +81509,7 @@ var render = function() {
               }
             }
           },
-          [_vm._v("Growth factor (to-do)")]
+          [_vm._v("Growth factor (confirmed cases)")]
         )
       ]),
       _vm._v(" "),

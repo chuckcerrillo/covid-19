@@ -4,7 +4,7 @@
             <div class="text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading" :class="checkMode('chronological')" @click="setMode('chronological')">Chronological</div>
             <div class="text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading" :class="checkMode('100')" @click="setMode('100')">From 100 cases</div>
             <div class="text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading" :class="checkMode('delta')" @click="setMode('delta')">Delta</div>
-            <div class="text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading" :class="checkMode('growth')" @click="setMode('growth')">Growth factor (to-do)</div>
+            <div class="text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading" :class="checkMode('growth')" @click="setMode('growth')">Growth factor (confirmed cases)</div>
         </div>
         <LineChart :data="dataset" class="bg-hoverslab p-2 absolute rounded left-0 right-0 bottom-0" style="top: 48px;"
                    :options="{
