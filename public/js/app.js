@@ -2469,7 +2469,6 @@ __webpack_require__.r(__webpack_exports__);
       };
 
       for (var x in this.data) {
-        var day = 1;
         var found = false;
         var stats = this.data[x].daily;
 
@@ -2481,10 +2480,21 @@ __webpack_require__.r(__webpack_exports__);
             confirmed[x].push(row.confirmed);
             deaths[x].push(row.deaths);
             recovered[x].push(row.recovered);
-            data.labels.push('Day ' + day);
-            day++;
           }
         }
+      } // Assemble labels
+
+
+      var max = 1;
+
+      for (var x in this.data) {
+        if (confirmed[x].length > max) {
+          max = confirmed[x].length;
+        }
+      }
+
+      for (var x = 1; x <= max; x++) {
+        data.labels.push('Day ' + x);
       } // Assemble labels
 
 
