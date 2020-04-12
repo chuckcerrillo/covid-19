@@ -80,7 +80,7 @@
                             <div v-if="compare.length > 0">
                                 <Daily
                                     v-on:remove="removeCompare"
-                                    :name="stats[compare[0][0]].country"
+                                    :name="stats[compare[0][0]].name"
                                     :data="compare1"
                                     :country="compare[0][0]"
                                     :state="compare[0][1]"
@@ -94,7 +94,7 @@
                             <div v-if="compare.length > 1">
                                 <Daily
                                     v-on:remove="removeCompare"
-                                    :name="stats[compare[1][0]].country"
+                                    :name="stats[compare[1][0]].name"
                                     :data="compare2"
                                     :country="parseInt(compare[1][0])"
                                     :state="compare[1][1]"
@@ -108,7 +108,7 @@
                             <div v-if="compare.length > 2">
                                 <Daily
                                     v-on:remove="removeCompare"
-                                    :name="stats[compare[2][0]].country"
+                                    :name="stats[compare[2][0]].name"
                                     :data="compare3"
                                     :country="compare[2][0]"
                                     :state="compare[2][1]"
@@ -257,15 +257,6 @@
                 .catch(error => {
 
                 });
-
-            axios.get('/api/stats/full')
-                .then(res => {
-                    this.raw_stats = res.data;
-                    this.loading.raw_stats = true;
-                })
-                .catch(error => {
-
-                });
         },
         methods:{
             toggleSort(key)
@@ -316,7 +307,7 @@
                 {
                     if(!compare[1])
                     {
-                        return this.getCountryDaily(this.stats[compare[0]]);
+                        return this.getCountryDaily(compare);
                     }
                     else
                     {
@@ -327,13 +318,12 @@
             },
             getStateDaily(item)
             {
-                var country = this.stats[item[0]].country,
+                var country = this.stats[item[0]].name,
                     state = item[1],
                     data = [];
 
                 if(this.states[country])
                 {
-                    console.log(this.states[country]);
                     for(var x in this.states[country].states)
                     {
 
@@ -355,23 +345,23 @@
 
                 return data;
             },
-            getCountryDaily(stats){
-                var data = [];
-                if (stats && stats.content && stats.content.daily)
-                {
+            getCountryDaily(item){
+                var country = item[0],
+                    data = [];
 
-                    for(var x in stats.content.daily)
+                if(this.stats[country].daily)
+                {
+                    for(var x in this.stats[country].daily)
                     {
 
-                        var row = stats.content.daily[x];
+                        var row = this.stats[country].daily[x];
 
                         data.push({
                             'date' : x,
-                            'confirmed' : parseInt(row.c),
-                            'deaths' : parseInt(row.d),
-                            'recovered' : parseInt(row.r)
+                            'confirmed' : row.total.c,
+                            'deaths' : row.total.d,
+                            'recovered' : row.total.r
                         });
-
                     }
                 }
 
@@ -381,11 +371,26 @@
             {
                 for(var x in this.stats)
                 {
-                    if (this.stats[x].country === country){
+                    if (this.stats[x] && this.stats[x].name && this.stats[x].name === country){
                         return x;
                     }
                 }
                 return null;
+            },
+            getCompareName(item)
+            {
+                if(item && item[0])
+                {
+                    if(item[1])
+                    {
+                        return item[1] + ' - ' + this.stats[item[0]].name;
+                    }
+                    else
+                    {
+                        return this.stats[item[0]].name;
+                    }
+                }
+                return '';
             },
 
             selectCompare(item){
@@ -395,6 +400,7 @@
                 }
             },
             selectCountry(country,state){
+
                 var key = this.getCountryId(country);
 
                 if(this.compare.length < 3)
@@ -479,7 +485,7 @@
             },
             loaded()
             {
-                if (this.loading.countries && this.loading.raw_stats && this.loading.states)
+                if (this.loading.countries && this.loading.states)
                 {
                     return true;
                 }
@@ -487,7 +493,7 @@
             },
             stats()
             {
-                return this.raw_stats;
+                return this.countries;
             },
             states()
             {
@@ -496,34 +502,35 @@
             sorted_stats()
             {
                 var sort = this.sort_stats;
-                return this.raw_stats.sort(function (a, b) {
+                var data = _.cloneDeep(this.countries);
+                return data.sort(function (a, b) {
                     if (sort.key == 'country')
                     {
                         if (sort.order == 'asc')
-                            return a.country.toUpperCase() > b.country.toUpperCase() ? 1 : -1;
+                            return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;
                         else
-                            return a.country.toUpperCase() < b.country.toUpperCase() ? 1 : -1;
+                            return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
                     }
 
                     else if (sort.key == 'confirmed') {
                         if (sort.order == 'desc')
-                            return a.content.total.c < b.content.total.c ? 1 : -1;
+                            return a.total.c < b.total.c ? 1 : -1;
                         else
-                            return a.content.total.c > b.content.total.c ? 1 : -1;
+                            return a.total.c > b.total.c ? 1 : -1;
                     }
 
                     else if (sort.key == 'deaths') {
                         if (sort.order == 'desc')
-                            return a.content.total.d < b.content.total.d ? 1 : -1;
+                            return a.total.d < b.total.d ? 1 : -1;
                         else
-                            return a.content.total.d > b.content.total.d ? 1 : -1;
+                            return a.total.d > b.total.d ? 1 : -1;
                     }
 
                     else if (sort.key == 'recovered') {
                         if (sort.order == 'desc')
-                            return a.content.total.r < b.content.total.r ? 1 : -1;
+                            return a.total.r < b.total.r ? 1 : -1;
                         else
-                            return a.content.total.r > b.content.total.r ? 1 : -1;
+                            return a.total.r > b.total.r ? 1 : -1;
                     }
                 });
 
@@ -677,20 +684,22 @@
                     // Get start and end dates
                     for(var x in this.compare)
                     {
-                        var stats = this.stats[this.compare[x][0]];
-                        for(var y in stats.content.daily)
+                        var stats = this.getDaily(this.compare[x]);
+                        for(var y in stats)
                         {
-                            if(start.length === 0 || moment(y).format('YYYY-MM-DD') < start)
+                            var date = stats[y].date;
+                            if(start.length === 0 || moment(date).format('YYYY-MM-DD') < start)
                             {
-                                start = moment(y).format('YYYY-MM-DD');
+                                start = moment(date).format('YYYY-MM-DD');
                             }
 
-                            if(end.length === 0 || moment(stats.content.daily[y].last_update).format('YYYY-MM-DD') > end)
+                            if(end.length === 0 || moment(date).format('YYYY-MM-DD') > end)
                             {
-                                end = moment(y).format('YYYY-MM-DD');
+                                end = moment(date).format('YYYY-MM-DD');
                             }
                         }
                     }
+                    console.log('Start: ' + start + ' End: ' + end);
                     var labels = [];
                     var confirmed = {
                             '0' : [],
@@ -760,21 +769,21 @@
                         data.datasets.push(
                             {
                                 type: 'line',
-                                label: 'Confirmed (' + this.stats[this.compare[x][0]].country + ')',
+                                label: 'Confirmed (' + this.getCompareName(this.compare[x]) + ')',
                                 backgroundColor: bgConfirmed[x],
                                 data: _.cloneDeep(confirmed[x]),
                                 yAxisID: 'y-1'
                             },
                             {
                                 type: 'bar',
-                                label: 'Deaths (' + this.stats[this.compare[x][0]].country + ')',
+                                label: 'Deaths (' + this.getCompareName(this.compare[x]) + ')',
                                 backgroundColor: bgDeaths[x],
                                 data: _.cloneDeep(deaths[x]),
                                 yAxisID: 'y-2'
                             },
                             {
                                 type: 'bar',
-                                label: 'Recovered (' + this.stats[this.compare[x][0]].country + ')',
+                                label: 'Recovered (' + this.getCompareName(this.compare[x]) + ')',
                                 backgroundColor: bgRecovered[x],
                                 data: _.cloneDeep(recovered[x]),
                                 yAxisID: 'y-3'

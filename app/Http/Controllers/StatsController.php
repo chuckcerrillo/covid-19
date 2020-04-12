@@ -197,7 +197,12 @@ class StatsController extends Controller
                         if(!isset($data[$row[1]]['daily'][$date]))
                         {
                             $data[$row[1]]['daily'][$date] = [
-                                'states' => []
+                                'states' => [],
+                                'total' => [
+                                    'c' => 0,
+                                    'd' => 0,
+                                    'r' => 0,
+                                ]
                             ];
                         }
                         if(!isset($data[$row[1]]['daily'][$date]['states'][$state]))
@@ -215,6 +220,10 @@ class StatsController extends Controller
                         $data[$row[1]]['daily'][$date]['states'][$state]['c'] += (int)$row[3];
                         $data[$row[1]]['daily'][$date]['states'][$state]['d'] += (int)$row[4];
                         $data[$row[1]]['daily'][$date]['states'][$state]['r'] += (int)$row[5];
+
+                        $data[$row[1]]['daily'][$date]['total']['c'] += (int)$row[3];
+                        $data[$row[1]]['daily'][$date]['total']['d'] += (int)$row[4];
+                        $data[$row[1]]['daily'][$date]['total']['r'] += (int)$row[5];
                     }
                 }
                 else if(count($row) == 8)
@@ -242,7 +251,12 @@ class StatsController extends Controller
                         if(!isset($data[$row[1]]['daily'][$date]))
                         {
                             $data[$row[1]]['daily'][$date] = [
-                                'states' => []
+                                'states' => [],
+                                'total' => [
+                                    'c' => 0,
+                                    'd' => 0,
+                                    'r' => 0,
+                                ]
                             ];
                         }
                         if(!isset($data[$row[1]]['daily'][$date]['states'][$state]))
@@ -260,6 +274,10 @@ class StatsController extends Controller
                         $data[$row[1]]['daily'][$date]['states'][$state]['c'] += (int)$row[3];
                         $data[$row[1]]['daily'][$date]['states'][$state]['d'] += (int)$row[4];
                         $data[$row[1]]['daily'][$date]['states'][$state]['r'] += (int)$row[5];
+
+                        $data[$row[1]]['daily'][$date]['total']['c'] += (int)$row[3];
+                        $data[$row[1]]['daily'][$date]['total']['d'] += (int)$row[4];
+                        $data[$row[1]]['daily'][$date]['total']['r'] += (int)$row[5];
                     }
                 }
                 else if(count($row) == 12) {
@@ -291,7 +309,12 @@ class StatsController extends Controller
 
                         if (!isset($data[$row[3]]['daily'][$date])) {
                             $data[$row[3]]['daily'][$date] = [
-                                'states' => []
+                                'states' => [],
+                                'total' => [
+                                    'c' => 0,
+                                    'd' => 0,
+                                    'r' => 0,
+                                ]
                             ];
                         }
                         if(!isset($data[$row[3]]['daily'][$date]['states'][$state]))
@@ -309,6 +332,10 @@ class StatsController extends Controller
                         $data[$row[3]]['daily'][$date]['states'][$state]['c'] += (int)$row[7];
                         $data[$row[3]]['daily'][$date]['states'][$state]['d'] += (int)$row[8];
                         $data[$row[3]]['daily'][$date]['states'][$state]['r'] += (int)$row[9];
+
+                        $data[$row[3]]['daily'][$date]['total']['c'] += (int)$row[7];
+                        $data[$row[3]]['daily'][$date]['total']['d'] += (int)$row[8];
+                        $data[$row[3]]['daily'][$date]['total']['r'] += (int)$row[9];
                     }
                 }
             }
@@ -576,6 +603,10 @@ class StatsController extends Controller
         $allcountries = [];
         foreach($data['country'] AS $country=>$content)
         {
+            if($country == 'United Kingom')
+            {
+                $country = 'United Kingdom';
+            }
             $allcountries[] = [
                 'country' => $country,
                 'content' => $content

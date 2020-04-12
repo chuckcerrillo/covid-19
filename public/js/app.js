@@ -2500,10 +2500,6 @@ __webpack_require__.r(__webpack_exports__);
       _this.raw_state_data = res.data;
       _this.loading.states = true;
     })["catch"](function (error) {});
-    axios.get('/api/stats/full').then(function (res) {
-      _this.raw_stats = res.data;
-      _this.loading.raw_stats = true;
-    })["catch"](function (error) {});
   },
   methods: {
     toggleSort: function toggleSort(key) {
@@ -2541,7 +2537,7 @@ __webpack_require__.r(__webpack_exports__);
     getDaily: function getDaily(compare) {
       if (compare && compare[0]) {
         if (!compare[1]) {
-          return this.getCountryDaily(this.stats[compare[0]]);
+          return this.getCountryDaily(compare);
         } else {
           return this.getStateDaily(compare);
         }
@@ -2550,13 +2546,11 @@ __webpack_require__.r(__webpack_exports__);
       return [];
     },
     getStateDaily: function getStateDaily(item) {
-      var country = this.stats[item[0]].country,
+      var country = this.stats[item[0]].name,
           state = item[1],
           data = [];
 
       if (this.states[country]) {
-        console.log(this.states[country]);
-
         for (var x in this.states[country].states) {
           var row = this.states[country].states[x];
 
@@ -2575,17 +2569,18 @@ __webpack_require__.r(__webpack_exports__);
 
       return data;
     },
-    getCountryDaily: function getCountryDaily(stats) {
-      var data = [];
+    getCountryDaily: function getCountryDaily(item) {
+      var country = item[0],
+          data = [];
 
-      if (stats && stats.content && stats.content.daily) {
-        for (var x in stats.content.daily) {
-          var row = stats.content.daily[x];
+      if (this.stats[country].daily) {
+        for (var x in this.stats[country].daily) {
+          var row = this.stats[country].daily[x];
           data.push({
             'date': x,
-            'confirmed': parseInt(row.c),
-            'deaths': parseInt(row.d),
-            'recovered': parseInt(row.r)
+            'confirmed': row.total.c,
+            'deaths': row.total.d,
+            'recovered': row.total.r
           });
         }
       }
@@ -2594,12 +2589,23 @@ __webpack_require__.r(__webpack_exports__);
     },
     getCountryId: function getCountryId(country) {
       for (var x in this.stats) {
-        if (this.stats[x].country === country) {
+        if (this.stats[x] && this.stats[x].name && this.stats[x].name === country) {
           return x;
         }
       }
 
       return null;
+    },
+    getCompareName: function getCompareName(item) {
+      if (item && item[0]) {
+        if (item[1]) {
+          return item[1] + ' - ' + this.stats[item[0]].name;
+        } else {
+          return this.stats[item[0]].name;
+        }
+      }
+
+      return '';
     },
     selectCompare: function selectCompare(item) {
       if (this.comparison.length < 3) {}
@@ -2667,29 +2673,32 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     loaded: function loaded() {
-      if (this.loading.countries && this.loading.raw_stats && this.loading.states) {
+      if (this.loading.countries && this.loading.states) {
         return true;
       }
 
       return false;
     },
     stats: function stats() {
-      return this.raw_stats;
+      return this.countries;
     },
     states: function states() {
       return this.raw_state_data;
     },
     sorted_stats: function sorted_stats() {
       var sort = this.sort_stats;
-      return this.raw_stats.sort(function (a, b) {
+
+      var data = _.cloneDeep(this.countries);
+
+      return data.sort(function (a, b) {
         if (sort.key == 'country') {
-          if (sort.order == 'asc') return a.country.toUpperCase() > b.country.toUpperCase() ? 1 : -1;else return a.country.toUpperCase() < b.country.toUpperCase() ? 1 : -1;
+          if (sort.order == 'asc') return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;else return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
         } else if (sort.key == 'confirmed') {
-          if (sort.order == 'desc') return a.content.total.c < b.content.total.c ? 1 : -1;else return a.content.total.c > b.content.total.c ? 1 : -1;
+          if (sort.order == 'desc') return a.total.c < b.total.c ? 1 : -1;else return a.total.c > b.total.c ? 1 : -1;
         } else if (sort.key == 'deaths') {
-          if (sort.order == 'desc') return a.content.total.d < b.content.total.d ? 1 : -1;else return a.content.total.d > b.content.total.d ? 1 : -1;
+          if (sort.order == 'desc') return a.total.d < b.total.d ? 1 : -1;else return a.total.d > b.total.d ? 1 : -1;
         } else if (sort.key == 'recovered') {
-          if (sort.order == 'desc') return a.content.total.r < b.content.total.r ? 1 : -1;else return a.content.total.r > b.content.total.r ? 1 : -1;
+          if (sort.order == 'desc') return a.total.r < b.total.r ? 1 : -1;else return a.total.r > b.total.r ? 1 : -1;
         }
       });
     },
@@ -2793,19 +2802,22 @@ __webpack_require__.r(__webpack_exports__);
             end = ''; // Get start and end dates
 
         for (var x in this.compare) {
-          var stats = this.stats[this.compare[x][0]];
+          var stats = this.getDaily(this.compare[x]);
 
-          for (var y in stats.content.daily) {
-            if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_6___default()(y).format('YYYY-MM-DD') < start) {
-              start = moment__WEBPACK_IMPORTED_MODULE_6___default()(y).format('YYYY-MM-DD');
+          for (var y in stats) {
+            var date = stats[y].date;
+
+            if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_6___default()(date).format('YYYY-MM-DD') < start) {
+              start = moment__WEBPACK_IMPORTED_MODULE_6___default()(date).format('YYYY-MM-DD');
             }
 
-            if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_6___default()(stats.content.daily[y].last_update).format('YYYY-MM-DD') > end) {
-              end = moment__WEBPACK_IMPORTED_MODULE_6___default()(y).format('YYYY-MM-DD');
+            if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_6___default()(date).format('YYYY-MM-DD') > end) {
+              end = moment__WEBPACK_IMPORTED_MODULE_6___default()(date).format('YYYY-MM-DD');
             }
           }
         }
 
+        console.log('Start: ' + start + ' End: ' + end);
         var labels = [];
         var confirmed = {
           '0': [],
@@ -2864,19 +2876,19 @@ __webpack_require__.r(__webpack_exports__);
         for (var x in this.compare) {
           data.datasets.push({
             type: 'line',
-            label: 'Confirmed (' + this.stats[this.compare[x][0]].country + ')',
+            label: 'Confirmed (' + this.getCompareName(this.compare[x]) + ')',
             backgroundColor: bgConfirmed[x],
             data: _.cloneDeep(confirmed[x]),
             yAxisID: 'y-1'
           }, {
             type: 'bar',
-            label: 'Deaths (' + this.stats[this.compare[x][0]].country + ')',
+            label: 'Deaths (' + this.getCompareName(this.compare[x]) + ')',
             backgroundColor: bgDeaths[x],
             data: _.cloneDeep(deaths[x]),
             yAxisID: 'y-2'
           }, {
             type: 'bar',
-            label: 'Recovered (' + this.stats[this.compare[x][0]].country + ')',
+            label: 'Recovered (' + this.getCompareName(this.compare[x]) + ')',
             backgroundColor: bgRecovered[x],
             data: _.cloneDeep(recovered[x]),
             yAxisID: 'y-3'
@@ -81459,8 +81471,7 @@ var render = function() {
                                 [
                                   _c("Daily", {
                                     attrs: {
-                                      name:
-                                        _vm.stats[_vm.compare[0][0]].country,
+                                      name: _vm.stats[_vm.compare[0][0]].name,
                                       data: _vm.compare1,
                                       country: _vm.compare[0][0],
                                       state: _vm.compare[0][1]
@@ -81497,8 +81508,7 @@ var render = function() {
                                 [
                                   _c("Daily", {
                                     attrs: {
-                                      name:
-                                        _vm.stats[_vm.compare[1][0]].country,
+                                      name: _vm.stats[_vm.compare[1][0]].name,
                                       data: _vm.compare2,
                                       country: parseInt(_vm.compare[1][0]),
                                       state: _vm.compare[1][1]
@@ -81535,8 +81545,7 @@ var render = function() {
                                 [
                                   _c("Daily", {
                                     attrs: {
-                                      name:
-                                        _vm.stats[_vm.compare[2][0]].country,
+                                      name: _vm.stats[_vm.compare[2][0]].name,
                                       data: _vm.compare3,
                                       country: _vm.compare[2][0],
                                       state: _vm.compare[2][1]
