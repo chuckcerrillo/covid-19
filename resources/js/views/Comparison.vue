@@ -6,7 +6,7 @@
             <div class="text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading" :class="checkMode('delta')" @click="setMode('delta')">Delta</div>
             <div class="text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading" :class="checkMode('growth')" @click="setMode('growth')">Growth factor (confirmed cases)</div>
         </div>
-        <LineChart :data="dataset" class="bg-hoverslab p-2 absolute rounded left-0 right-0 bottom-0" style="top: 48px;"
+        <LineChart :data="dataset.data" class="bg-hoverslab p-2 absolute rounded left-0 right-0 bottom-0" style="top: 48px;"
                    :options="{
 
                                     responsive: true,
@@ -150,6 +150,7 @@
                         labels: [],
                         datasets: [],
                     },
+                    options,
                     key,
                     bgConfirmed = [
                         '#19aade',
@@ -286,7 +287,10 @@
                         }
                     );
                 }
-                return data;
+                return {
+                    data: data,
+                    options: options
+                };
             },
             dataset100()
             {
@@ -294,6 +298,7 @@
                         labels: [],
                         datasets: [],
                     },
+                    options,
                     key,
                     bgConfirmed = [
                         '#19aade',
@@ -403,7 +408,10 @@
 
                 console.log(data);
 
-                return data;
+                return {
+                    data: data,
+                    options: options
+                };
             },
             datasetDelta()
             {
@@ -411,6 +419,7 @@
                         labels: [],
                         datasets: [],
                     },
+                    options,
                     key,
                     bgConfirmed = [
                         '#19aade',
@@ -549,7 +558,10 @@
                 }
                 console.log('Delta');
                 console.log(data);
-                return data;
+                return {
+                    data: data,
+                    options: options
+                };
             },
             datasetGrowth()
             {
@@ -559,6 +571,7 @@
                         labels: [],
                         datasets: [],
                     },
+                    options,
                     key,
                     bgConfirmed = [
                         '#19aade',
@@ -604,59 +617,6 @@
                     }
                 }
 
-                var labels = [];
-                var confirmed = [
-                ];
-                console.log(this.data);
-
-                // Gather confirmed cases
-                for(var x = 0; x <= moment(end).diff(moment(start),'days'); x++)
-                {
-
-                    var current_date = _.clone(moment(start).add(x,'days').format('YYYY-MM-DD'))
-                    data.labels.push(current_date);
-
-                    for(var country_index = 0; country_index < this.data.length; country_index++)
-                    {
-                        if(!confirmed[country_index])
-                        {
-                            confirmed[country_index] = [];
-                        }
-
-                        if(this.data[country_index].daily)
-                        {
-                            var found = false,
-                                stats = this.data[country_index].daily;
-
-                            // Look for current date in stats
-                            for(var stats_index = 0; stats_index < stats.length; stats_index++)
-                            {
-                                var row = stats[stats_index];
-                                if(moment(row.date).format('YYYY-MM-DD') == current_date)
-                                {
-                                    confirmed[country_index].push(row.confirmed);
-                                    found = true;
-                                    break;
-                                }
-                            }
-
-                            // If today's data is missing, use previous day's
-                            if (!found)
-                            {
-                                if (confirmed[country_index].length > 0)
-                                {
-                                    confirmed[country_index].push(confirmed[country_index].length-1);
-                                }
-                                else
-                                {
-                                    confirmed[country_index].push(0);
-                                }
-                            }
-                        }
-                    }
-                }
-
-
                 // Assemble labels
                 for(var country_index in this.data)
                 {
@@ -671,56 +631,33 @@
                     );
                 }
 
-                for(var country_index = 0; country_index < confirmed.length; country_index++)
+
+                console.log('DATA!');
+
+                for(var x in this.data)
                 {
-                    var dataset = data.datasets[country_index].data,
-                        growth = [],
-                        set = [],
-                        average = [];
-                    for(var y in confirmed[country_index])
+                    console.log(this.data);
+                    for(var y in this.data[x].growthFactor)
                     {
-                        // First 4 items
-                        if(parseInt(y) - 5 <= 0)
+                        var gf = 0;
+                        gf = parseFloat(this.data[x].growthFactor[y]).toFixed(2);
+                        if(isNaN(gf))
                         {
-                            set = confirmed[country_index].slice(null,parseInt(y)+1);
+                            gf = 0;
                         }
-                        else
-                        {
-                            set = confirmed[country_index].slice(parseInt(y)-5,parseInt(y)+1);
-                        }
-
-
-                        if(set.length > 0)
-                        {
-                            average.push(arrAvg(set));
-                        }
-                        else {
-                            average.push(0);
-                        }
+                        data.datasets[x].data.push(gf);
                     }
-
-                    for(var y = 0; y < average.length; y++)
-                    {
-                        console.log('double check')
-                        console.log(moment(data.labels[y]).format('YYYY-MM-DD') + ' < ' + moment(this.data[country_index].daily[0].date).format('YYYY-MM-DD'))
-                        console.log(moment(data.labels[y]) < moment(this.data[country_index].daily[0].date))
-                        if(
-                            moment(data.labels[y]) < moment(this.data[country_index].daily[0].date)
-                            || moment(data.labels[y]) > moment(this.data[country_index].daily[this.data[country_index].daily.length-1].date)
-                        )
-                        {
-                            growth.push(null);
-                        }
-                        else
-                        {
-                            growth.push(average[y-1]/average[y]);
-                        }
-                    }
-
-                    data.datasets[country_index].data = _.clone(growth);
                 }
 
-                return data;
+                for(var x = 0; x <= moment(end).diff(moment(start),'days'); x++) {
+                    var current_date = _.clone(moment(start).add(x, 'days').format('YYYY-MM-DD'))
+                    data.labels.push(current_date);
+                }
+
+                return {
+                    data: data,
+                    options: options
+                };
             }
         }
     }

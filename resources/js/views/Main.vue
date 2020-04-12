@@ -191,6 +191,7 @@
         methods:{
             getComparisonData()
             {
+                const arrAvg = arr => arr.reduce((a,b) => a + b, 0) / arr.length;
                 var data = [],
                     row = [];
 
@@ -203,6 +204,9 @@
                             name: this.getCompareName(this.compare[x]),
                             daily: this.getDaily(this.compare[x]),
                             delta: [],
+                            growth: [],
+                            average: [],
+                            growthFactor: [],
                         }
 
                         var count = 0;
@@ -227,6 +231,46 @@
                             count++;
                         }
                         row.total = previous;
+
+                        for(var y in row.delta)
+                        {
+                            row.growth.push(
+                                row.delta[y].confirmed
+                            )
+                        }
+
+                        for(var y = 0; y < row.growth.length; y++)
+                        {
+                            var avg = 0;
+                            if(y < 5)
+                            {
+                                avg = arrAvg(row.growth.slice(0,y+1));
+                            }
+                            else
+                            {
+                                avg = arrAvg(row.growth.slice(y-5,y+1));
+                            }
+                            row.average.push(avg.toFixed(1));
+                        }
+
+                        for(var y = 0; y < row.average.length; y++)
+                        {
+                            var gf = 0;
+                            if(y == 1 || row.average[y-1] == 0)
+                            {
+                                gf = (row.average[y]/1).toFixed(2);
+                            }
+                            else
+                            {
+                                gf = (row.average[y]/row.average[y-1]).toFixed(2);
+                            }
+                            if(isNaN(gf))
+                            {
+                                gf = 0;
+                            }
+                            row.growthFactor.push(gf);
+                        }
+
                         data.push(row);
                     }
                 }
@@ -320,7 +364,8 @@
             },
             getCountryDaily(item){
                 var country = item[0],
-                    data = [];
+                    data = [],
+                    empty = true;
 
                 if(this.stats[country].daily)
                 {
@@ -328,7 +373,10 @@
                     {
 
                         var row = this.stats[country].daily[x];
-
+                        if(empty && row.total.c == 0)
+                        {
+                            continue;
+                        }
                         data.push({
                             'date' : x,
                             'confirmed' : row.total.c,

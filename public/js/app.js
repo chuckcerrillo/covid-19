@@ -2066,6 +2066,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2074,12 +2086,72 @@ __webpack_require__.r(__webpack_exports__);
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: ['data'],
+  data: function data() {
+    return {
+      growth_factor: [],
+      recomputed_data: []
+    };
+  },
   methods: {
     remove: function remove(item) {
       this.$emit('remove', item);
+    },
+    recomputeGrowth: function recomputeGrowth() {
+      var arrAvg = function arrAvg(arr) {
+        return arr.reduce(function (a, b) {
+          return a + b;
+        }, 0) / arr.length;
+      };
+
+      this.recomputed_data = this.data;
+      this.recomputed_data.growth = [];
+      this.recomputed_data.average = [];
+      this.recomputed_data.growthFactor = [];
+
+      for (var x in this.recomputed_data.delta) {
+        this.recomputed_data.growth.push(this.recomputed_data.delta[x].confirmed);
+      }
+
+      for (var x = 0; x < this.recomputed_data.growth.length; x++) {
+        var avg = 0;
+
+        if (x < 5) {
+          avg = arrAvg(this.recomputed_data.growth.slice(0, x + 1));
+        } else {
+          avg = arrAvg(this.recomputed_data.growth.slice(x - 5, x + 1));
+        }
+
+        this.recomputed_data.average.push(avg.toFixed(1));
+      }
+
+      for (var x = 0; x < this.recomputed_data.average.length; x++) {
+        var gf = 0;
+
+        if (x == 1 || this.recomputed_data.average[x - 1] == 0) {
+          gf = (this.recomputed_data.average[x] / 1).toFixed(2);
+        } else {
+          gf = (this.recomputed_data.average[x] / this.recomputed_data.average[x - 1]).toFixed(2);
+        }
+
+        if (isNaN(gf)) {
+          gf = 0;
+        }
+
+        this.recomputed_data.growthFactor.push(gf);
+      }
     }
   },
-  computed: {}
+  computed: {
+    recomputed: function recomputed() {
+      this.recomputeGrowth();
+      return this.recomputed_data;
+    }
+  },
+  watch: {
+    data: function data() {
+      this.recomputeGrowth();
+    }
+  }
 });
 
 /***/ }),
@@ -2329,6 +2401,7 @@ __webpack_require__.r(__webpack_exports__);
         labels: [],
         datasets: []
       },
+          options,
           key,
           bgConfirmed = ['#19aade', '#af4bce', '#de542c'],
           bgRecovered = ['#1de4bd', '#ea7369', '#eabd3b'],
@@ -2436,13 +2509,17 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
 
-      return data;
+      return {
+        data: data,
+        options: options
+      };
     },
     dataset100: function dataset100() {
       var data = {
         labels: [],
         datasets: []
       },
+          options,
           key,
           bgConfirmed = ['#19aade', '#af4bce', '#de542c'],
           bgRecovered = ['#1de4bd', '#ea7369', '#eabd3b'],
@@ -2524,13 +2601,17 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       console.log(data);
-      return data;
+      return {
+        data: data,
+        options: options
+      };
     },
     datasetDelta: function datasetDelta() {
       var data = {
         labels: [],
         datasets: []
       },
+          options,
           key,
           bgConfirmed = ['#19aade', '#af4bce', '#de542c'],
           bgRecovered = ['#1de4bd', '#ea7369', '#eabd3b'],
@@ -2640,7 +2721,10 @@ __webpack_require__.r(__webpack_exports__);
 
       console.log('Delta');
       console.log(data);
-      return data;
+      return {
+        data: data,
+        options: options
+      };
     },
     datasetGrowth: function datasetGrowth() {
       var arrAvg = function arrAvg(arr) {
@@ -2653,6 +2737,7 @@ __webpack_require__.r(__webpack_exports__);
         labels: [],
         datasets: []
       },
+          options,
           key,
           bgConfirmed = ['#19aade', '#af4bce', '#de542c'],
           bgRecovered = ['#1de4bd', '#ea7369', '#eabd3b'],
@@ -2681,46 +2766,6 @@ __webpack_require__.r(__webpack_exports__);
             end = moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('YYYY-MM-DD');
           }
         }
-      }
-
-      var labels = [];
-      var confirmed = [];
-      console.log(this.data); // Gather confirmed cases
-
-      for (var x = 0; x <= moment__WEBPACK_IMPORTED_MODULE_4___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_4___default()(start), 'days'); x++) {
-        var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_4___default()(start).add(x, 'days').format('YYYY-MM-DD'));
-
-        data.labels.push(current_date);
-
-        for (var country_index = 0; country_index < this.data.length; country_index++) {
-          if (!confirmed[country_index]) {
-            confirmed[country_index] = [];
-          }
-
-          if (this.data[country_index].daily) {
-            var found = false,
-                stats = this.data[country_index].daily; // Look for current date in stats
-
-            for (var stats_index = 0; stats_index < stats.length; stats_index++) {
-              var row = stats[stats_index];
-
-              if (moment__WEBPACK_IMPORTED_MODULE_4___default()(row.date).format('YYYY-MM-DD') == current_date) {
-                confirmed[country_index].push(row.confirmed);
-                found = true;
-                break;
-              }
-            } // If today's data is missing, use previous day's
-
-
-            if (!found) {
-              if (confirmed[country_index].length > 0) {
-                confirmed[country_index].push(confirmed[country_index].length - 1);
-              } else {
-                confirmed[country_index].push(0);
-              }
-            }
-          }
-        }
       } // Assemble labels
 
 
@@ -2734,43 +2779,33 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
 
-      for (var country_index = 0; country_index < confirmed.length; country_index++) {
-        var dataset = data.datasets[country_index].data,
-            growth = [],
-            set = [],
-            average = [];
+      console.log('DATA!');
 
-        for (var y in confirmed[country_index]) {
-          // First 4 items
-          if (parseInt(y) - 5 <= 0) {
-            set = confirmed[country_index].slice(null, parseInt(y) + 1);
-          } else {
-            set = confirmed[country_index].slice(parseInt(y) - 5, parseInt(y) + 1);
+      for (var x in this.data) {
+        console.log(this.data);
+
+        for (var y in this.data[x].growthFactor) {
+          var gf = 0;
+          gf = parseFloat(this.data[x].growthFactor[y]).toFixed(2);
+
+          if (isNaN(gf)) {
+            gf = 0;
           }
 
-          if (set.length > 0) {
-            average.push(arrAvg(set));
-          } else {
-            average.push(0);
-          }
+          data.datasets[x].data.push(gf);
         }
-
-        for (var y = 0; y < average.length; y++) {
-          console.log('double check');
-          console.log(moment__WEBPACK_IMPORTED_MODULE_4___default()(data.labels[y]).format('YYYY-MM-DD') + ' < ' + moment__WEBPACK_IMPORTED_MODULE_4___default()(this.data[country_index].daily[0].date).format('YYYY-MM-DD'));
-          console.log(moment__WEBPACK_IMPORTED_MODULE_4___default()(data.labels[y]) < moment__WEBPACK_IMPORTED_MODULE_4___default()(this.data[country_index].daily[0].date));
-
-          if (moment__WEBPACK_IMPORTED_MODULE_4___default()(data.labels[y]) < moment__WEBPACK_IMPORTED_MODULE_4___default()(this.data[country_index].daily[0].date) || moment__WEBPACK_IMPORTED_MODULE_4___default()(data.labels[y]) > moment__WEBPACK_IMPORTED_MODULE_4___default()(this.data[country_index].daily[this.data[country_index].daily.length - 1].date)) {
-            growth.push(null);
-          } else {
-            growth.push(average[y - 1] / average[y]);
-          }
-        }
-
-        data.datasets[country_index].data = _.clone(growth);
       }
 
-      return data;
+      for (var x = 0; x <= moment__WEBPACK_IMPORTED_MODULE_4___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_4___default()(start), 'days'); x++) {
+        var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_4___default()(start).add(x, 'days').format('YYYY-MM-DD'));
+
+        data.labels.push(current_date);
+      }
+
+      return {
+        data: data,
+        options: options
+      };
     }
   }
 });
@@ -2976,6 +3011,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getComparisonData: function getComparisonData() {
+      var arrAvg = function arrAvg(arr) {
+        return arr.reduce(function (a, b) {
+          return a + b;
+        }, 0) / arr.length;
+      };
+
       var data = [],
           row = [];
 
@@ -2984,7 +3025,10 @@ __webpack_require__.r(__webpack_exports__);
           row = {
             name: this.getCompareName(this.compare[x]),
             daily: this.getDaily(this.compare[x]),
-            delta: []
+            delta: [],
+            growth: [],
+            average: [],
+            growthFactor: []
           };
           var count = 0;
           var previous = {};
@@ -3008,6 +3052,39 @@ __webpack_require__.r(__webpack_exports__);
           }
 
           row.total = previous;
+
+          for (var y in row.delta) {
+            row.growth.push(row.delta[y].confirmed);
+          }
+
+          for (var y = 0; y < row.growth.length; y++) {
+            var avg = 0;
+
+            if (y < 5) {
+              avg = arrAvg(row.growth.slice(0, y + 1));
+            } else {
+              avg = arrAvg(row.growth.slice(y - 5, y + 1));
+            }
+
+            row.average.push(avg.toFixed(1));
+          }
+
+          for (var y = 0; y < row.average.length; y++) {
+            var gf = 0;
+
+            if (y == 1 || row.average[y - 1] == 0) {
+              gf = (row.average[y] / 1).toFixed(2);
+            } else {
+              gf = (row.average[y] / row.average[y - 1]).toFixed(2);
+            }
+
+            if (isNaN(gf)) {
+              gf = 0;
+            }
+
+            row.growthFactor.push(gf);
+          }
+
           data.push(row);
         }
       }
@@ -3083,11 +3160,17 @@ __webpack_require__.r(__webpack_exports__);
     },
     getCountryDaily: function getCountryDaily(item) {
       var country = item[0],
-          data = [];
+          data = [],
+          empty = true;
 
       if (this.stats[country].daily) {
         for (var x in this.stats[country].daily) {
           var row = this.stats[country].daily[x];
+
+          if (empty && row.total.c == 0) {
+            continue;
+          }
+
           data.push({
             'date': x,
             'confirmed': row.total.c,
@@ -81234,11 +81317,11 @@ var render = function() {
       _c(
         "simplebar",
         {
-          staticClass: "top-0 right-0 left-0 bottom-0 mt-52 mx-4 mb-4 mr-4",
+          staticClass: "top-0 right-0 left-0 bottom-0 mt-56 mx-4 mb-4 mr-4",
           staticStyle: { position: "absolute" },
           attrs: { "data-simplebar-auto-hide": "false" }
         },
-        _vm._l(_vm.data.daily, function(row, key, index) {
+        _vm._l(_vm.recomputed.daily, function(row, key, index) {
           return _c(
             "div",
             { staticClass: "flex p-2 text-xs justify-between" },
@@ -81248,9 +81331,9 @@ var render = function() {
               _c("div", { staticClass: "w-full flex justify-end" }, [
                 _c("div", { staticClass: "w-20" }, [
                   _vm._v(
-                    "\n                    " +
+                    "\n                        " +
                       _vm._s(isNaN(row.confirmed) ? 0 : row.confirmed) +
-                      "\n                    "
+                      "\n                        "
                   ),
                   _vm.data.delta[key].confirmed >= 0
                     ? _c("span", { staticClass: "text-green-400" }, [
@@ -81267,9 +81350,9 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "w-20" }, [
                   _vm._v(
-                    "\n                    " +
+                    "\n                        " +
                       _vm._s(isNaN(row.deaths) ? 0 : row.deaths) +
-                      "\n                    "
+                      "\n                        "
                   ),
                   _vm.data.delta[key].deaths >= 0
                     ? _c("span", { staticClass: "text-green-400" }, [
@@ -81282,9 +81365,9 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "w-20" }, [
                   _vm._v(
-                    "\n                    " +
+                    "\n                        " +
                       _vm._s(isNaN(row.recovered) ? 0 : row.recovered) +
-                      "\n                    "
+                      "\n                        "
                   ),
                   _vm.data.delta[key].recovered >= 0
                     ? _c("span", { staticClass: "text-green-400" }, [
@@ -81297,6 +81380,14 @@ var render = function() {
                           "(" + _vm._s(_vm.data.delta[key].recovered) + ")"
                         )
                       ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "w-20" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(_vm.data.growthFactor[key]) +
+                      "\n                    "
+                  )
                 ])
               ])
             ]
@@ -81324,7 +81415,9 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("div", { staticClass: "w-20" }, [_vm._v("Deaths")]),
           _vm._v(" "),
-          _c("div", { staticClass: "w-20" }, [_vm._v("Recovered")])
+          _c("div", { staticClass: "w-20" }, [_vm._v("Recovered")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "w-20" }, [_vm._v("Growth Factor")])
         ])
       ]
     )
@@ -81518,7 +81611,7 @@ var render = function() {
           "bg-hoverslab p-2 absolute rounded left-0 right-0 bottom-0",
         staticStyle: { top: "48px" },
         attrs: {
-          data: _vm.dataset,
+          data: _vm.dataset.data,
           options: {
             responsive: true,
             maintainAspectRatio: false,
