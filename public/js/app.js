@@ -2319,6 +2319,9 @@ __webpack_require__.r(__webpack_exports__);
         return this.dataset100;
       } else if (this.options.mode == 'delta') {
         return this.datasetDelta;
+      } else if (this.options.mode == 'growth') {
+        console.log(this.datasetGrowth);
+        return this.datasetGrowth;
       }
     },
     datasetChronological: function datasetChronological() {
@@ -2637,6 +2640,136 @@ __webpack_require__.r(__webpack_exports__);
 
       console.log('Delta');
       console.log(data);
+      return data;
+    },
+    datasetGrowth: function datasetGrowth() {
+      var arrAvg = function arrAvg(arr) {
+        return arr.reduce(function (a, b) {
+          return a + b;
+        }, 0) / arr.length;
+      };
+
+      var data = {
+        labels: [],
+        datasets: []
+      },
+          key,
+          bgConfirmed = ['#19aade', '#af4bce', '#de542c'],
+          bgRecovered = ['#1de4bd', '#ea7369', '#eabd3b'],
+          bgDeaths = ['#c7f9ee', '#f0a58f', '#e7e34e'];
+      var count = 0;
+
+      for (var x in this.data) {
+        count++;
+      }
+
+      if (count == 0) return data;
+      var start = '',
+          end = ''; // Get start and end dates
+
+      for (var x in this.data) {
+        var stats = this.data[x].daily;
+
+        for (var y in stats) {
+          var date = stats[y].date;
+
+          if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('YYYY-MM-DD') < start) {
+            start = moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('YYYY-MM-DD');
+          }
+
+          if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('YYYY-MM-DD') > end) {
+            end = moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('YYYY-MM-DD');
+          }
+        }
+      }
+
+      var labels = [];
+      var confirmed = [];
+      console.log(this.data); // Gather confirmed cases
+
+      for (var x = 0; x <= moment__WEBPACK_IMPORTED_MODULE_4___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_4___default()(start), 'days'); x++) {
+        var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_4___default()(start).add(x, 'days').format('YYYY-MM-DD'));
+
+        data.labels.push(current_date);
+
+        for (var country_index = 0; country_index < this.data.length; country_index++) {
+          if (!confirmed[country_index]) {
+            confirmed[country_index] = [];
+          }
+
+          if (this.data[country_index].daily) {
+            var found = false,
+                stats = this.data[country_index].daily; // Look for current date in stats
+
+            for (var stats_index = 0; stats_index < stats.length; stats_index++) {
+              var row = stats[stats_index];
+
+              if (moment__WEBPACK_IMPORTED_MODULE_4___default()(row.date).format('YYYY-MM-DD') == current_date) {
+                confirmed[country_index].push(row.confirmed);
+                found = true;
+                break;
+              }
+            } // If today's data is missing, use previous day's
+
+
+            if (!found) {
+              if (confirmed[country_index].length > 0) {
+                confirmed[country_index].push(confirmed[country_index].length - 1);
+              } else {
+                confirmed[country_index].push(0);
+              }
+            }
+          }
+        }
+      } // Assemble labels
+
+
+      for (var country_index in this.data) {
+        data.datasets.push({
+          type: 'line',
+          label: this.data[country_index].name.full,
+          backgroundColor: bgConfirmed[country_index],
+          data: [],
+          yAxisID: 'y-1'
+        });
+      }
+
+      for (var country_index = 0; country_index < confirmed.length; country_index++) {
+        var dataset = data.datasets[country_index].data,
+            growth = [],
+            set = [],
+            average = [];
+
+        for (var y in confirmed[country_index]) {
+          // First 4 items
+          if (parseInt(y) - 5 <= 0) {
+            set = confirmed[country_index].slice(null, parseInt(y) + 1);
+          } else {
+            set = confirmed[country_index].slice(parseInt(y) - 5, parseInt(y) + 1);
+          }
+
+          if (set.length > 0) {
+            average.push(arrAvg(set));
+          } else {
+            average.push(0);
+          }
+        }
+
+        for (var y = 0; y < average.length; y++) {
+          console.log('double check');
+          console.log(moment__WEBPACK_IMPORTED_MODULE_4___default()(data.labels[y]).format('YYYY-MM-DD') + ' < ' + moment__WEBPACK_IMPORTED_MODULE_4___default()(this.data[country_index].daily[0].date).format('YYYY-MM-DD'));
+          console.log(moment__WEBPACK_IMPORTED_MODULE_4___default()(data.labels[y]) < moment__WEBPACK_IMPORTED_MODULE_4___default()(this.data[country_index].daily[0].date));
+
+          if (moment__WEBPACK_IMPORTED_MODULE_4___default()(data.labels[y]) < moment__WEBPACK_IMPORTED_MODULE_4___default()(this.data[country_index].daily[0].date) || moment__WEBPACK_IMPORTED_MODULE_4___default()(data.labels[y]) > moment__WEBPACK_IMPORTED_MODULE_4___default()(this.data[country_index].daily[this.data[country_index].daily.length - 1].date)) {
+            growth.push(null);
+          } else {
+            growth.push(average[y - 1] / average[y]);
+          }
+        }
+
+        data.datasets[country_index].data = _.clone(growth);
+      }
+
       return data;
     }
   }
