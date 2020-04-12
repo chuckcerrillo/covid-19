@@ -7,70 +7,7 @@
             <div class="text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading" :class="checkMode('growth')" @click="setMode('growth')">Growth factor (confirmed cases)</div>
         </div>
         <LineChart :data="dataset.data" class="bg-hoverslab p-2 absolute rounded left-0 right-0 bottom-0" style="top: 48px;"
-                   :options="{
-
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    hoverMode: 'index',
-                                    stacked: false,
-                                    legend: {
-                                        labels: {
-                                            fontColor: '#d1e8e2'
-                                        }
-                                    },
-                                    scales: {
-                                        xAxes: [{
-                                            ticks: {
-                                                fontColor: '#d1e8e2',
-                                            }
-                                        }],
-                                        yAxes: [{
-                                            type: 'logarithmic',
-                                            display: true,
-                                            position: 'left',
-                                            id: 'y-1',
-                                            ticks: {
-                                                fontColor: '#d1e8e2',
-                                                callback: function(tick, index, ticks) {
-                                                    return tick.toLocaleString()
-                                                }
-                                            }
-                                        }, {
-                                            type: 'logarithmic',
-                                            display: true,
-                                            position: 'right',
-                                            id: 'y-2',
-
-                                            // grid line settings
-                                            gridLines: {
-                                                drawOnChartArea: false, // only want the grid lines for one axis to show up
-                                            },
-                                            ticks: {
-                                                fontColor: '#d1e8e2',
-                                                callback: function(tick, index, ticks) {
-                                                    return tick.toLocaleString()
-                                                }
-                                            }
-                                        }, {
-                                            type: 'logarithmic',
-                                            display: true,
-                                            position: 'right',
-                                            id: 'y-3',
-
-                                            // grid line settings
-                                            gridLines: {
-                                                drawOnChartArea: false, // only want the grid lines for one axis to show up
-                                            },
-                                            ticks: {
-                                                fontColor: '#d1e8e2',
-                                                callback: function(tick, index, ticks) {
-                                                    return tick.toLocaleString()
-                                                }
-                                            }
-                                        }
-                                        ],
-                                    }
-                                }" />
+                   :options="dataset.options" />
     </div>
 </template>
 
@@ -138,8 +75,44 @@
                 }
                 else if (this.options.mode == 'growth')
                 {
-                    console.log(this.datasetGrowth)
                     return this.datasetGrowth;
+                }
+                else
+                {
+                    return {
+                        data: [],
+                        options: {
+
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                hoverMode: 'index',
+                                stacked: false,
+                                legend: {
+                                    labels: {
+                                        fontColor: '#d1e8e2'
+                                    }
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        ticks: {
+                                            fontColor: '#d1e8e2',
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        type: 'logarithmic',
+                                        display: true,
+                                        position: 'left',
+                                        id: 'y-1',
+                                        ticks: {
+                                            fontColor: '#d1e8e2',
+                                            callback: function(tick, index, ticks) {
+                                                return tick.toLocaleString()
+                                            }
+                                        }
+                                    }],
+                                }
+                        }
+                    }
                 }
 
             },
@@ -287,6 +260,75 @@
                         }
                     );
                 }
+
+
+                // OPTIONS
+
+                options = {
+
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    hoverMode: 'index',
+                    stacked: false,
+                    legend: {
+                        labels: {
+                            fontColor: '#d1e8e2'
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                fontColor: '#d1e8e2',
+                            }
+                        }],
+                        yAxes: [{
+                            type: 'logarithmic',
+                            display: true,
+                            position: 'left',
+                            id: 'y-1',
+                            ticks: {
+                                fontColor: '#d1e8e2',
+                                callback: function(tick, index, ticks) {
+                                    return tick.toLocaleString()
+                                }
+                            }
+                        }, {
+                            type: 'logarithmic',
+                            display: true,
+                            position: 'right',
+                            id: 'y-2',
+
+                            // grid line settings
+                            gridLines: {
+                                drawOnChartArea: false, // only want the grid lines for one axis to show up
+                            },
+                            ticks: {
+                                fontColor: '#d1e8e2',
+                                callback: function(tick, index, ticks) {
+                                    return tick.toLocaleString()
+                                }
+                            }
+                        }, {
+                            type: 'logarithmic',
+                            display: true,
+                            position: 'right',
+                            id: 'y-3',
+
+                            // grid line settings
+                            gridLines: {
+                                drawOnChartArea: false, // only want the grid lines for one axis to show up
+                            },
+                            ticks: {
+                                fontColor: '#d1e8e2',
+                                callback: function(tick, index, ticks) {
+                                    return tick.toLocaleString()
+                                }
+                            }
+                        }
+                        ],
+                    }
+                };
+
                 return {
                     data: data,
                     options: options
@@ -406,7 +448,72 @@
                     );
                 }
 
-                console.log(data);
+                // OPTIONS
+
+                options = {
+
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    hoverMode: 'index',
+                    stacked: false,
+                    legend: {
+                        labels: {
+                            fontColor: '#d1e8e2'
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                fontColor: '#d1e8e2',
+                            }
+                        }],
+                        yAxes: [{
+                            type: 'logarithmic',
+                            display: true,
+                            position: 'left',
+                            id: 'y-1',
+                            ticks: {
+                                fontColor: '#d1e8e2',
+                                callback: function(tick, index, ticks) {
+                                    return tick.toLocaleString()
+                                }
+                            }
+                        }, {
+                            type: 'logarithmic',
+                            display: true,
+                            position: 'right',
+                            id: 'y-2',
+
+                            // grid line settings
+                            gridLines: {
+                                drawOnChartArea: false, // only want the grid lines for one axis to show up
+                            },
+                            ticks: {
+                                fontColor: '#d1e8e2',
+                                callback: function(tick, index, ticks) {
+                                    return tick.toLocaleString()
+                                }
+                            }
+                        }, {
+                            type: 'logarithmic',
+                            display: true,
+                            position: 'right',
+                            id: 'y-3',
+
+                            // grid line settings
+                            gridLines: {
+                                drawOnChartArea: false, // only want the grid lines for one axis to show up
+                            },
+                            ticks: {
+                                fontColor: '#d1e8e2',
+                                callback: function(tick, index, ticks) {
+                                    return tick.toLocaleString()
+                                }
+                            }
+                        }
+                        ],
+                    }
+                };
 
                 return {
                     data: data,
@@ -556,8 +663,76 @@
                         }
                     );
                 }
-                console.log('Delta');
-                console.log(data);
+
+
+                // OPTIONS
+
+                options = {
+
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        hoverMode: 'index',
+                        stacked: false,
+                        legend: {
+                        labels: {
+                            fontColor: '#d1e8e2'
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                fontColor: '#d1e8e2',
+                            }
+                        }],
+                            yAxes: [{
+                            type: 'logarithmic',
+                            display: true,
+                            position: 'left',
+                            id: 'y-1',
+                            ticks: {
+                                fontColor: '#d1e8e2',
+                                callback: function(tick, index, ticks) {
+                                    return tick.toLocaleString()
+                                }
+                            }
+                        }, {
+                            type: 'logarithmic',
+                            display: true,
+                            position: 'right',
+                            id: 'y-2',
+
+                            // grid line settings
+                            gridLines: {
+                                drawOnChartArea: false, // only want the grid lines for one axis to show up
+                            },
+                            ticks: {
+                                fontColor: '#d1e8e2',
+                                callback: function(tick, index, ticks) {
+                                    return tick.toLocaleString()
+                                }
+                            }
+                        }, {
+                            type: 'logarithmic',
+                            display: true,
+                            position: 'right',
+                            id: 'y-3',
+
+                            // grid line settings
+                            gridLines: {
+                                drawOnChartArea: false, // only want the grid lines for one axis to show up
+                            },
+                            ticks: {
+                                fontColor: '#d1e8e2',
+                                callback: function(tick, index, ticks) {
+                                    return tick.toLocaleString()
+                                }
+                            }
+                        }
+                        ],
+                    }
+                };
+
+
                 return {
                     data: data,
                     options: options
@@ -631,12 +806,8 @@
                     );
                 }
 
-
-                console.log('DATA!');
-
                 for(var x in this.data)
                 {
-                    console.log(this.data);
                     for(var y in this.data[x].growthFactor)
                     {
                         var gf = 0;
@@ -653,6 +824,42 @@
                     var current_date = _.clone(moment(start).add(x, 'days').format('YYYY-MM-DD'))
                     data.labels.push(current_date);
                 }
+
+
+                // OPTIONS
+
+                options = {
+
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    hoverMode: 'index',
+                    stacked: false,
+                    legend: {
+                        labels: {
+                            fontColor: '#d1e8e2'
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                fontColor: '#d1e8e2',
+                            }
+                        }],
+                        yAxes: [{
+                            type: 'logarithmic',
+                            display: true,
+                            position: 'left',
+                            id: 'y-1',
+                            ticks: {
+                                fontColor: '#d1e8e2',
+                                callback: function(tick, index, ticks) {
+                                    return tick.toLocaleString()
+                                }
+                            }
+                        }
+                        ],
+                    }
+                };
 
                 return {
                     data: data,

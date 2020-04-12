@@ -2283,69 +2283,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -2392,8 +2329,41 @@ __webpack_require__.r(__webpack_exports__);
       } else if (this.options.mode == 'delta') {
         return this.datasetDelta;
       } else if (this.options.mode == 'growth') {
-        console.log(this.datasetGrowth);
         return this.datasetGrowth;
+      } else {
+        return {
+          data: [],
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            hoverMode: 'index',
+            stacked: false,
+            legend: {
+              labels: {
+                fontColor: '#d1e8e2'
+              }
+            },
+            scales: {
+              xAxes: [{
+                ticks: {
+                  fontColor: '#d1e8e2'
+                }
+              }],
+              yAxes: [{
+                type: 'logarithmic',
+                display: true,
+                position: 'left',
+                id: 'y-1',
+                ticks: {
+                  fontColor: '#d1e8e2',
+                  callback: function callback(tick, index, ticks) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }]
+            }
+          }
+        };
       }
     },
     datasetChronological: function datasetChronological() {
@@ -2507,8 +2477,71 @@ __webpack_require__.r(__webpack_exports__);
           data: _.cloneDeep(recovered[x]),
           yAxisID: 'y-3'
         });
-      }
+      } // OPTIONS
 
+
+      options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        hoverMode: 'index',
+        stacked: false,
+        legend: {
+          labels: {
+            fontColor: '#d1e8e2'
+          }
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              fontColor: '#d1e8e2'
+            }
+          }],
+          yAxes: [{
+            type: 'logarithmic',
+            display: true,
+            position: 'left',
+            id: 'y-1',
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }, {
+            type: 'logarithmic',
+            display: true,
+            position: 'right',
+            id: 'y-2',
+            // grid line settings
+            gridLines: {
+              drawOnChartArea: false // only want the grid lines for one axis to show up
+
+            },
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }, {
+            type: 'logarithmic',
+            display: true,
+            position: 'right',
+            id: 'y-3',
+            // grid line settings
+            gridLines: {
+              drawOnChartArea: false // only want the grid lines for one axis to show up
+
+            },
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }]
+        }
+      };
       return {
         data: data,
         options: options
@@ -2598,9 +2631,71 @@ __webpack_require__.r(__webpack_exports__);
           data: _.cloneDeep(recovered[x]),
           yAxisID: 'y-3'
         });
-      }
+      } // OPTIONS
 
-      console.log(data);
+
+      options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        hoverMode: 'index',
+        stacked: false,
+        legend: {
+          labels: {
+            fontColor: '#d1e8e2'
+          }
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              fontColor: '#d1e8e2'
+            }
+          }],
+          yAxes: [{
+            type: 'logarithmic',
+            display: true,
+            position: 'left',
+            id: 'y-1',
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }, {
+            type: 'logarithmic',
+            display: true,
+            position: 'right',
+            id: 'y-2',
+            // grid line settings
+            gridLines: {
+              drawOnChartArea: false // only want the grid lines for one axis to show up
+
+            },
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }, {
+            type: 'logarithmic',
+            display: true,
+            position: 'right',
+            id: 'y-3',
+            // grid line settings
+            gridLines: {
+              drawOnChartArea: false // only want the grid lines for one axis to show up
+
+            },
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }]
+        }
+      };
       return {
         data: data,
         options: options
@@ -2717,10 +2812,71 @@ __webpack_require__.r(__webpack_exports__);
           data: _.cloneDeep(recovered[x]),
           yAxisID: 'y-3'
         });
-      }
+      } // OPTIONS
 
-      console.log('Delta');
-      console.log(data);
+
+      options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        hoverMode: 'index',
+        stacked: false,
+        legend: {
+          labels: {
+            fontColor: '#d1e8e2'
+          }
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              fontColor: '#d1e8e2'
+            }
+          }],
+          yAxes: [{
+            type: 'logarithmic',
+            display: true,
+            position: 'left',
+            id: 'y-1',
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }, {
+            type: 'logarithmic',
+            display: true,
+            position: 'right',
+            id: 'y-2',
+            // grid line settings
+            gridLines: {
+              drawOnChartArea: false // only want the grid lines for one axis to show up
+
+            },
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }, {
+            type: 'logarithmic',
+            display: true,
+            position: 'right',
+            id: 'y-3',
+            // grid line settings
+            gridLines: {
+              drawOnChartArea: false // only want the grid lines for one axis to show up
+
+            },
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }]
+        }
+      };
       return {
         data: data,
         options: options
@@ -2779,11 +2935,7 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
 
-      console.log('DATA!');
-
       for (var x in this.data) {
-        console.log(this.data);
-
         for (var y in this.data[x].growthFactor) {
           var gf = 0;
           gf = parseFloat(this.data[x].growthFactor[y]).toFixed(2);
@@ -2800,8 +2952,39 @@ __webpack_require__.r(__webpack_exports__);
         var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_4___default()(start).add(x, 'days').format('YYYY-MM-DD'));
 
         data.labels.push(current_date);
-      }
+      } // OPTIONS
 
+
+      options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        hoverMode: 'index',
+        stacked: false,
+        legend: {
+          labels: {
+            fontColor: '#d1e8e2'
+          }
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              fontColor: '#d1e8e2'
+            }
+          }],
+          yAxes: [{
+            type: 'logarithmic',
+            display: true,
+            position: 'left',
+            id: 'y-1',
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }]
+        }
+      };
       return {
         data: data,
         options: options
@@ -81610,77 +81793,7 @@ var render = function() {
         staticClass:
           "bg-hoverslab p-2 absolute rounded left-0 right-0 bottom-0",
         staticStyle: { top: "48px" },
-        attrs: {
-          data: _vm.dataset.data,
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            hoverMode: "index",
-            stacked: false,
-            legend: {
-              labels: {
-                fontColor: "#d1e8e2"
-              }
-            },
-            scales: {
-              xAxes: [
-                {
-                  ticks: {
-                    fontColor: "#d1e8e2"
-                  }
-                }
-              ],
-              yAxes: [
-                {
-                  type: "logarithmic",
-                  display: true,
-                  position: "left",
-                  id: "y-1",
-                  ticks: {
-                    fontColor: "#d1e8e2",
-                    callback: function(tick, index, ticks) {
-                      return tick.toLocaleString()
-                    }
-                  }
-                },
-                {
-                  type: "logarithmic",
-                  display: true,
-                  position: "right",
-                  id: "y-2",
-
-                  // grid line settings
-                  gridLines: {
-                    drawOnChartArea: false // only want the grid lines for one axis to show up
-                  },
-                  ticks: {
-                    fontColor: "#d1e8e2",
-                    callback: function(tick, index, ticks) {
-                      return tick.toLocaleString()
-                    }
-                  }
-                },
-                {
-                  type: "logarithmic",
-                  display: true,
-                  position: "right",
-                  id: "y-3",
-
-                  // grid line settings
-                  gridLines: {
-                    drawOnChartArea: false // only want the grid lines for one axis to show up
-                  },
-                  ticks: {
-                    fontColor: "#d1e8e2",
-                    callback: function(tick, index, ticks) {
-                      return tick.toLocaleString()
-                    }
-                  }
-                }
-              ]
-            }
-          }
-        }
+        attrs: { data: _vm.dataset.data, options: _vm.dataset.options }
       })
     ],
     1
