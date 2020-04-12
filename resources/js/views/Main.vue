@@ -71,7 +71,7 @@
             </div>
             <div class="m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded" style="left: 480px; bottom: 64px">
                 <div class="p-4">
-                <h1 class="font-bold">Compare country stats</h1>
+                <h1 @click="getComparisonData()" class="font-bold">Compare country stats</h1>
                 <p class="text-xs">Select up to three countries from the left to compare.</p>
                 </div>
                 <div class="mx-4 h-full">
@@ -119,79 +119,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="absolute left-0 right-0 bottom-0 m-4 mt-0" style="top: 60%;">
-                        <div class="flex">
-                            <div class="bg-hoverslab px-2 py-1 rounded m-1">Chronological</div>
-                            <div class="text-lightslab border border-hoverslab px-2 py-1 rounded m-1">From 100 cases</div>
-                            <div class="text-lightslab border border-hoverslab px-2 py-1 rounded m-1">Delta</div>
-                        </div>
-                        <LineChart :data="comparisonDataset" class="bg-hoverslab p-2 absolute rounded left-0 right-0 bottom-0" style="top: 48px;"
-                                   :options="{
-
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    hoverMode: 'index',
-                                    stacked: false,
-                                    legend: {
-                                        labels: {
-                                            fontColor: '#d1e8e2'
-                                        }
-                                    },
-                                    scales: {
-                                        xAxes: [{
-                                            ticks: {
-                                                fontColor: '#d1e8e2',
-                                            }
-                                        }],
-                                        yAxes: [{
-                                            type: 'logarithmic',
-                                            display: true,
-                                            position: 'left',
-                                            id: 'y-1',
-                                            ticks: {
-                                                fontColor: '#d1e8e2',
-                                                callback: function(tick, index, ticks) {
-                                                    return tick.toLocaleString()
-                                                }
-                                            }
-                                        }, {
-                                            type: 'logarithmic',
-                                            display: true,
-                                            position: 'right',
-                                            id: 'y-2',
-
-                                            // grid line settings
-                                            gridLines: {
-                                                drawOnChartArea: false, // only want the grid lines for one axis to show up
-                                            },
-                                            ticks: {
-                                                fontColor: '#d1e8e2',
-                                                callback: function(tick, index, ticks) {
-                                                    return tick.toLocaleString()
-                                                }
-                                            }
-                                        }, {
-                                            type: 'logarithmic',
-                                            display: true,
-                                            position: 'right',
-                                            id: 'y-3',
-
-                                            // grid line settings
-                                            gridLines: {
-                                                drawOnChartArea: false, // only want the grid lines for one axis to show up
-                                            },
-                                            ticks: {
-                                                fontColor: '#d1e8e2',
-                                                callback: function(tick, index, ticks) {
-                                                    return tick.toLocaleString()
-                                                }
-                                            }
-                                        }
-                                        ],
-                                    }
-                                }" />
-                    </div>
-
+                    <Comparison class="absolute left-0 right-0 bottom-0 m-4 mt-0" style="top: 60%;"
+                                :data="comparisonDataset"
+                    />
                 </div>
 
             </div>
@@ -259,6 +189,49 @@
                 });
         },
         methods:{
+            getComparisonData()
+            {
+                var data = [],
+                    row = [];
+
+                if(this.compare.length > 0)
+                {
+
+                    for(var x in this.compare)
+                    {
+                        row = {
+                            name: this.getCompareName(this.compare[x]),
+                            daily: this.getDaily(this.compare[x]),
+                            delta: [],
+                        }
+
+                        var count = 0;
+                        var previous = {};
+                        for(var y in row.daily)
+                        {
+                            if (count == 0)
+                            {
+                                row.delta[y] = row.daily[y];
+                                previous = row.daily[y];
+                                count++;
+                                continue;
+                            }
+
+                            row.delta[y] = {
+                                date: row.daily[y].date,
+                                confirmed: parseInt(row.daily[y].confirmed) - parseInt(previous.confirmed),
+                                deaths: parseInt(row.daily[y].deaths) - parseInt(previous.deaths),
+                                recovered: parseInt(row.daily[y].recovered) - parseInt(previous.recovered),
+                            }
+                            previous = row.daily[y];
+                            count++;
+                        }
+                        row.total = previous;
+                        data.push(row);
+                    }
+                }
+                return data;
+            },
             toggleSort(key)
             {
                 if(this.sort_stats.key == key)
@@ -381,13 +354,24 @@
             {
                 if(item && item[0])
                 {
+                    var country = this.stats[item[0]].name;
                     if(item[1])
                     {
-                        return item[1] + ' - ' + this.stats[item[0]].name;
+                        return {
+                            full: item[1] + ' - ' + country,
+                            country: country,
+                            state: item[1],
+                            country_id: item[0],
+                        };
                     }
                     else
                     {
-                        return this.stats[item[0]].name;
+                        return {
+                            full: country,
+                            country: country,
+                            state: '',
+                            country_id: item[0],
+                        }
                     }
                 }
                 return '';
@@ -419,21 +403,21 @@
             compare1(){
                 if(this.compare.length > 0)
                 {
-                    return this.getDaily(this.compare[0]);
+                    return this.getComparisonData()[0];
                 }
                 return [];
             },
             compare2(){
                 if(this.compare.length > 1)
                 {
-                    return this.getDaily(this.compare[1]);
+                    return this.getComparisonData()[1];
                 }
                 return [];
             },
             compare3(){
                 if(this.compare.length > 2)
                 {
-                    return this.getDaily(this.compare[2]);
+                    return this.getComparisonData()[2];
                 }
                 return [];
             },
@@ -546,252 +530,9 @@
                 else
                     return this.getDaily(this.selectedStats);
             },
-            dailyChart()
-            {
-                var data = {
-                    labels: [],
-                    datasets: [
-
-                        {
-                            type: 'line',
-                            label: 'Confirmed',
-                            backgroundColor: '#dfd27d',
-                            fill: false,
-                            data: [],
-                            yAxisID: 'y-1'
-                        },
-                        {
-                            type: 'bar',
-                            label: 'Deaths',
-                            backgroundColor: '#d54242',
-                            data: [],
-                            yAxisID: 'y-2'
-                        },
-                        {
-                            type: 'bar',
-                            label: 'Recovered',
-                            backgroundColor: '#14a76c',
-                            data: [],
-                            yAxisID: 'y-3'
-                        },
-                    ]
-                };
-
-                if (this.daily)
-                {
-
-                    for(var x in this.daily)
-                    {
-                        // Labels
-                        data.labels.push(this.daily[x].date);
-
-                        // Confirmed
-                        data.datasets[0].data.push(this.daily[x].confirmed);
-
-                        // Deaths
-                        data.datasets[1].data.push(this.daily[x].deaths);
-
-                        // Recovered
-                        data.datasets[2].data.push(this.daily[x].recovered);
-                    }
-
-
-                }
-
-                return data;
-
-            },
-            singleDataset()
-            {
-                var data = {
-                    labels: [],
-                    datasets: [
-
-                        {
-                            type: 'line',
-                            label: 'Confirmed',
-                            backgroundColor: '#dfd27d',
-                            data: [],
-                            yAxisID: 'y-1'
-                        },
-                        {
-                            type: 'bar',
-                            label: 'Deaths',
-                            backgroundColor: '#d54242',
-                            data: [],
-                            yAxisID: 'y-2'
-                        },
-                        {
-                            type: 'bar',
-                            label: 'Recovered',
-                            backgroundColor: '#14a76c',
-                            data: [],
-                            yAxisID: 'y-3'
-                        },
-                    ]
-                };
-
-                if (this.daily)
-                {
-
-                    for(var x in this.daily)
-                    {
-                        // Labels
-                        data.labels.push(this.daily[x].date);
-
-                        // Confirmed
-                        data.datasets[0].data.push(this.daily[x].confirmed);
-
-                        // Deaths
-                        data.datasets[1].data.push(this.daily[x].deaths);
-
-                        // Recovered
-                        data.datasets[2].data.push(this.daily[x].recovered);
-                    }
-
-
-                }
-
-                return data;
-            },
             comparisonDataset()
             {
-                var data = {
-                        labels: [],
-                        datasets: [],
-                    },
-                    key,
-                    bgConfirmed = [
-                        '#19aade',
-                        '#af4bce',
-                        '#de542c'
-                    ],
-                    bgRecovered = [
-                        '#1de4bd',
-                        '#ea7369',
-                        '#eabd3b'
-                    ],
-                    bgDeaths = [
-                        '#c7f9ee',
-                        '#f0a58f',
-                        '#e7e34e'
-                    ]
-
-                if(this.compare.length > 0)
-                {
-                    var start = '', end = '';
-
-                    // Get start and end dates
-                    for(var x in this.compare)
-                    {
-                        var stats = this.getDaily(this.compare[x]);
-                        for(var y in stats)
-                        {
-                            var date = stats[y].date;
-                            if(start.length === 0 || moment(date).format('YYYY-MM-DD') < start)
-                            {
-                                start = moment(date).format('YYYY-MM-DD');
-                            }
-
-                            if(end.length === 0 || moment(date).format('YYYY-MM-DD') > end)
-                            {
-                                end = moment(date).format('YYYY-MM-DD');
-                            }
-                        }
-                    }
-                    console.log('Start: ' + start + ' End: ' + end);
-                    var labels = [];
-                    var confirmed = {
-                            '0' : [],
-                            '1' : [],
-                            '2' : [],
-                        }
-                        ,
-                        deaths = {
-                            '0' : [],
-                            '1' : [],
-                            '2' : [],
-                        },
-                        recovered = {
-                            '0' : [],
-                            '1' : [],
-                            '2' : [],
-                        };
-                    for(var x = 0; x <= moment(end).diff(moment(start),'days'); x++)
-                    {
-
-                        var current_date = _.clone(moment(start).add(x,'days').format('YYYY-MM-DD'))
-                        data.labels.push(current_date);
-                        for(var y in this.compare)
-                        {
-
-                            if(this.getDaily(this.compare[y]))
-                            {
-
-                                var found = false;
-                                var stats = this.getDaily(this.compare[y]);
-
-                                for(var z in stats)
-                                {
-                                    var row = stats[z];
-                                    if(moment(row.date).format('YYYY-MM-DD') === current_date)
-                                    {
-                                        confirmed[y].push(row.confirmed);
-                                        deaths[y].push(row.deaths);
-                                        recovered[y].push(row.recovered);
-                                        found = true;
-                                    }
-                                }
-
-                                // If today's data is missing, use previous day's
-                                if (!found)
-                                {
-                                    if (confirmed[y].length > 0)
-                                    {
-                                        confirmed[y].push(confirmed[confirmed[y].length]);
-                                        deaths[y].push(deaths[deaths[y].length]);
-                                        recovered[y].push(recovered[recovered[y].length]);
-                                    }
-                                    else
-                                    {
-                                        confirmed[y].push(0);
-                                        deaths[y].push(0);
-                                        recovered[y].push(0);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    // Assemble labels
-                    for(var x in this.compare)
-                    {
-                        data.datasets.push(
-                            {
-                                type: 'line',
-                                label: 'Confirmed (' + this.getCompareName(this.compare[x]) + ')',
-                                backgroundColor: bgConfirmed[x],
-                                data: _.cloneDeep(confirmed[x]),
-                                yAxisID: 'y-1'
-                            },
-                            {
-                                type: 'bar',
-                                label: 'Deaths (' + this.getCompareName(this.compare[x]) + ')',
-                                backgroundColor: bgDeaths[x],
-                                data: _.cloneDeep(deaths[x]),
-                                yAxisID: 'y-2'
-                            },
-                            {
-                                type: 'bar',
-                                label: 'Recovered (' + this.getCompareName(this.compare[x]) + ')',
-                                backgroundColor: bgRecovered[x],
-                                data: _.cloneDeep(recovered[x]),
-                                yAxisID: 'y-3'
-                            }
-                        );
-                    }
-                }
-                return data;
+                return this.getComparisonData();
             },
             global(){
                 var data = {

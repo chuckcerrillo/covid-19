@@ -2064,6 +2064,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2071,33 +2073,13 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  props: ['name', 'data', 'country', 'state'],
+  props: ['data'],
   methods: {
     remove: function remove(item) {
       this.$emit('remove', item);
-    },
-    delta: function delta(field, offset) {
-      var result = 0;
-
-      if (offset > 0) {
-        result = isNaN(this.data[offset][field]) ? 0 : this.data[offset][field] - isNaN(this.data[offset - 1][field]) ? 0 : this.data[offset - 1][field];
-      } else {
-        result = this.data[offset][field];
-      }
-
-      return result;
     }
   },
-  computed: {
-    state_name: function state_name() {
-      if (this.state) return this.state;
-      return '';
-    },
-    last_update: function last_update() {
-      return moment__WEBPACK_IMPORTED_MODULE_0___default()(this.data[this.data.length - 1].date).format('YYYY-MM-DD');
-      return false;
-    }
-  }
+  computed: {}
 });
 
 /***/ }),
@@ -2214,10 +2196,85 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! simplebar/dist/simplebar.min.css */ "./node_modules/simplebar/dist/simplebar.min.css");
 /* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _components_Daily__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Daily */ "./resources/js/components/Daily.vue");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_4__);
 //
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -2229,7 +2286,350 @@ __webpack_require__.r(__webpack_exports__);
     LineChart: _components_charts_LineChart__WEBPACK_IMPORTED_MODULE_0__["default"],
     Daily: _components_Daily__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
-  props: ['stats', 'compare']
+  data: function data() {
+    return {
+      'options': {
+        'mode': 'chronological'
+      }
+    };
+  },
+  props: ['data'],
+  methods: {
+    checkMode: function checkMode(mode) {
+      if (mode == this.options.mode) {
+        return 'bg-hoverslab text-heading border-hoverslab';
+      } else {
+        return 'text-lightslab border-hoverslab';
+      }
+    },
+    setMode: function setMode(mode) {
+      if (mode != this.options.mode) {
+        this.options.mode = mode;
+      }
+    }
+  },
+  computed: {
+    comparison: function comparison() {
+      return this.data;
+    },
+    dataset: function dataset() {
+      if (this.options.mode == 'chronological') {
+        return this.datasetChronological;
+      } else if (this.options.mode == '100') {
+        return this.dataset100;
+      } else if (this.options.mode == 'delta') {
+        return this.datasetDelta;
+      }
+    },
+    datasetChronological: function datasetChronological() {
+      var data = {
+        labels: [],
+        datasets: []
+      },
+          key,
+          bgConfirmed = ['#19aade', '#af4bce', '#de542c'],
+          bgRecovered = ['#1de4bd', '#ea7369', '#eabd3b'],
+          bgDeaths = ['#c7f9ee', '#f0a58f', '#e7e34e'];
+      var count = 0;
+
+      for (var x in this.data) {
+        count++;
+      }
+
+      if (count == 0) return data;
+      var start = '',
+          end = ''; // Get start and end dates
+
+      for (var x in this.data) {
+        var stats = this.data[x].daily;
+
+        for (var y in stats) {
+          var date = stats[y].date;
+
+          if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('YYYY-MM-DD') < start) {
+            start = moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('YYYY-MM-DD');
+          }
+
+          if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('YYYY-MM-DD') > end) {
+            end = moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('YYYY-MM-DD');
+          }
+        }
+      }
+
+      var labels = [];
+      var confirmed = {
+        '0': [],
+        '1': [],
+        '2': []
+      },
+          deaths = {
+        '0': [],
+        '1': [],
+        '2': []
+      },
+          recovered = {
+        '0': [],
+        '1': [],
+        '2': []
+      };
+
+      for (var x = 0; x <= moment__WEBPACK_IMPORTED_MODULE_4___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_4___default()(start), 'days'); x++) {
+        var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_4___default()(start).add(x, 'days').format('YYYY-MM-DD'));
+
+        data.labels.push(current_date);
+
+        for (var y in this.data) {
+          if (this.data[y].daily) {
+            var found = false;
+            var stats = this.data[y].daily;
+
+            for (var z in stats) {
+              var row = stats[z];
+
+              if (moment__WEBPACK_IMPORTED_MODULE_4___default()(row.date).format('YYYY-MM-DD') === current_date) {
+                confirmed[y].push(row.confirmed);
+                deaths[y].push(row.deaths);
+                recovered[y].push(row.recovered);
+                found = true;
+              }
+            } // If today's data is missing, use previous day's
+
+
+            if (!found) {
+              if (confirmed[y].length > 0) {
+                confirmed[y].push(confirmed[confirmed[y].length]);
+                deaths[y].push(deaths[deaths[y].length]);
+                recovered[y].push(recovered[recovered[y].length]);
+              } else {
+                confirmed[y].push(0);
+                deaths[y].push(0);
+                recovered[y].push(0);
+              }
+            }
+          }
+        }
+      } // Assemble labels
+
+
+      for (var x in this.data) {
+        data.datasets.push({
+          type: 'line',
+          label: 'Confirmed (' + this.data[x].name.full + ')',
+          backgroundColor: bgConfirmed[x],
+          data: _.cloneDeep(confirmed[x]),
+          yAxisID: 'y-1'
+        }, {
+          type: 'bar',
+          label: 'Deaths (' + this.data[x].name.full + ')',
+          backgroundColor: bgDeaths[x],
+          data: _.cloneDeep(deaths[x]),
+          yAxisID: 'y-2'
+        }, {
+          type: 'bar',
+          label: 'Recovered (' + this.data[x].name.full + ')',
+          backgroundColor: bgRecovered[x],
+          data: _.cloneDeep(recovered[x]),
+          yAxisID: 'y-3'
+        });
+      }
+
+      return data;
+    },
+    dataset100: function dataset100() {
+      var data = {
+        labels: [],
+        datasets: []
+      },
+          key,
+          bgConfirmed = ['#19aade', '#af4bce', '#de542c'],
+          bgRecovered = ['#1de4bd', '#ea7369', '#eabd3b'],
+          bgDeaths = ['#c7f9ee', '#f0a58f', '#e7e34e'];
+      var count = 0;
+
+      for (var x in this.data) {
+        count++;
+      }
+
+      if (count == 0) return data;
+      var labels = [];
+      var confirmed = {
+        '0': [],
+        '1': [],
+        '2': []
+      },
+          deaths = {
+        '0': [],
+        '1': [],
+        '2': []
+      },
+          recovered = {
+        '0': [],
+        '1': [],
+        '2': []
+      };
+
+      for (var x in this.data) {
+        var day = 1;
+        var found = false;
+        var stats = this.data[x].daily;
+
+        for (var y in stats) {
+          var row = stats[y];
+
+          if (found || row.confirmed >= 100) {
+            found = true;
+            confirmed[x].push(row.confirmed);
+            deaths[x].push(row.deaths);
+            recovered[x].push(row.recovered);
+            data.labels.push('Day ' + day);
+            day++;
+          }
+        }
+      } // Assemble labels
+
+
+      for (var x in this.data) {
+        data.datasets.push({
+          type: 'line',
+          label: 'Confirmed (' + this.data[x].name.full + ')',
+          backgroundColor: bgConfirmed[x],
+          data: _.cloneDeep(confirmed[x]),
+          yAxisID: 'y-1'
+        }, {
+          type: 'bar',
+          label: 'Deaths (' + this.data[x].name.full + ')',
+          backgroundColor: bgDeaths[x],
+          data: _.cloneDeep(deaths[x]),
+          yAxisID: 'y-2'
+        }, {
+          type: 'bar',
+          label: 'Recovered (' + this.data[x].name.full + ')',
+          backgroundColor: bgRecovered[x],
+          data: _.cloneDeep(recovered[x]),
+          yAxisID: 'y-3'
+        });
+      }
+
+      console.log(data);
+      return data;
+    },
+    datasetDelta: function datasetDelta() {
+      var data = {
+        labels: [],
+        datasets: []
+      },
+          key,
+          bgConfirmed = ['#19aade', '#af4bce', '#de542c'],
+          bgRecovered = ['#1de4bd', '#ea7369', '#eabd3b'],
+          bgDeaths = ['#c7f9ee', '#f0a58f', '#e7e34e'];
+      var count = 0;
+
+      for (var x in this.data) {
+        count++;
+      }
+
+      if (count == 0) return data;
+      var start = '',
+          end = ''; // Get start and end dates
+
+      for (var x in this.data) {
+        var stats = this.data[x].delta;
+
+        for (var y in stats) {
+          var date = stats[y].date;
+
+          if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('YYYY-MM-DD') < start) {
+            start = moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('YYYY-MM-DD');
+          }
+
+          if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('YYYY-MM-DD') > end) {
+            end = moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('YYYY-MM-DD');
+          }
+        }
+      }
+
+      var labels = [];
+      var confirmed = {
+        '0': [],
+        '1': [],
+        '2': []
+      },
+          deaths = {
+        '0': [],
+        '1': [],
+        '2': []
+      },
+          recovered = {
+        '0': [],
+        '1': [],
+        '2': []
+      };
+
+      for (var x = 0; x <= moment__WEBPACK_IMPORTED_MODULE_4___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_4___default()(start), 'days'); x++) {
+        var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_4___default()(start).add(x, 'days').format('YYYY-MM-DD'));
+
+        data.labels.push(current_date);
+
+        for (var y in this.data) {
+          if (this.data[y].delta) {
+            var found = false;
+            var stats = this.data[y].delta;
+
+            for (var z in stats) {
+              var row = stats[z];
+
+              if (moment__WEBPACK_IMPORTED_MODULE_4___default()(row.date).format('YYYY-MM-DD') === current_date) {
+                confirmed[y].push(row.confirmed);
+                deaths[y].push(row.deaths);
+                recovered[y].push(row.recovered);
+                found = true;
+              }
+            } // If today's data is missing, use previous day's
+
+
+            if (!found) {
+              if (confirmed[y].length > 0) {
+                confirmed[y].push(confirmed[confirmed[y].length]);
+                deaths[y].push(deaths[deaths[y].length]);
+                recovered[y].push(recovered[recovered[y].length]);
+              } else {
+                confirmed[y].push(0);
+                deaths[y].push(0);
+                recovered[y].push(0);
+              }
+            }
+          }
+        }
+      } // Assemble labels
+
+
+      for (var x in this.data) {
+        data.datasets.push({
+          type: 'line',
+          label: 'Confirmed (' + this.data[x].name.full + ')',
+          backgroundColor: bgConfirmed[x],
+          data: _.cloneDeep(confirmed[x]),
+          yAxisID: 'y-1'
+        }, {
+          type: 'bar',
+          label: 'Deaths (' + this.data[x].name.full + ')',
+          backgroundColor: bgDeaths[x],
+          data: _.cloneDeep(deaths[x]),
+          yAxisID: 'y-2'
+        }, {
+          type: 'bar',
+          label: 'Recovered (' + this.data[x].name.full + ')',
+          backgroundColor: bgRecovered[x],
+          data: _.cloneDeep(recovered[x]),
+          yAxisID: 'y-3'
+        });
+      }
+
+      console.log('Delta');
+      console.log(data);
+      return data;
+    }
+  }
 });
 
 /***/ }),
@@ -2252,76 +2652,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_CountryStateItem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/CountryStateItem */ "./resources/js/components/CountryStateItem.vue");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_6__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2502,6 +2832,45 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (error) {});
   },
   methods: {
+    getComparisonData: function getComparisonData() {
+      var data = [],
+          row = [];
+
+      if (this.compare.length > 0) {
+        for (var x in this.compare) {
+          row = {
+            name: this.getCompareName(this.compare[x]),
+            daily: this.getDaily(this.compare[x]),
+            delta: []
+          };
+          var count = 0;
+          var previous = {};
+
+          for (var y in row.daily) {
+            if (count == 0) {
+              row.delta[y] = row.daily[y];
+              previous = row.daily[y];
+              count++;
+              continue;
+            }
+
+            row.delta[y] = {
+              date: row.daily[y].date,
+              confirmed: parseInt(row.daily[y].confirmed) - parseInt(previous.confirmed),
+              deaths: parseInt(row.daily[y].deaths) - parseInt(previous.deaths),
+              recovered: parseInt(row.daily[y].recovered) - parseInt(previous.recovered)
+            };
+            previous = row.daily[y];
+            count++;
+          }
+
+          row.total = previous;
+          data.push(row);
+        }
+      }
+
+      return data;
+    },
     toggleSort: function toggleSort(key) {
       if (this.sort_stats.key == key) {
         if (this.sort_stats.order == 'asc') {
@@ -2598,10 +2967,22 @@ __webpack_require__.r(__webpack_exports__);
     },
     getCompareName: function getCompareName(item) {
       if (item && item[0]) {
+        var country = this.stats[item[0]].name;
+
         if (item[1]) {
-          return item[1] + ' - ' + this.stats[item[0]].name;
+          return {
+            full: item[1] + ' - ' + country,
+            country: country,
+            state: item[1],
+            country_id: item[0]
+          };
         } else {
-          return this.stats[item[0]].name;
+          return {
+            full: country,
+            country: country,
+            state: '',
+            country_id: item[0]
+          };
         }
       }
 
@@ -2626,21 +3007,21 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     compare1: function compare1() {
       if (this.compare.length > 0) {
-        return this.getDaily(this.compare[0]);
+        return this.getComparisonData()[0];
       }
 
       return [];
     },
     compare2: function compare2() {
       if (this.compare.length > 1) {
-        return this.getDaily(this.compare[1]);
+        return this.getComparisonData()[1];
       }
 
       return [];
     },
     compare3: function compare3() {
       if (this.compare.length > 2) {
-        return this.getDaily(this.compare[2]);
+        return this.getComparisonData()[2];
       }
 
       return [];
@@ -2708,195 +3089,8 @@ __webpack_require__.r(__webpack_exports__);
     daily: function daily() {
       if (this.compare.length > 1) return this.comparisonDataset;else return this.getDaily(this.selectedStats);
     },
-    dailyChart: function dailyChart() {
-      var data = {
-        labels: [],
-        datasets: [{
-          type: 'line',
-          label: 'Confirmed',
-          backgroundColor: '#dfd27d',
-          fill: false,
-          data: [],
-          yAxisID: 'y-1'
-        }, {
-          type: 'bar',
-          label: 'Deaths',
-          backgroundColor: '#d54242',
-          data: [],
-          yAxisID: 'y-2'
-        }, {
-          type: 'bar',
-          label: 'Recovered',
-          backgroundColor: '#14a76c',
-          data: [],
-          yAxisID: 'y-3'
-        }]
-      };
-
-      if (this.daily) {
-        for (var x in this.daily) {
-          // Labels
-          data.labels.push(this.daily[x].date); // Confirmed
-
-          data.datasets[0].data.push(this.daily[x].confirmed); // Deaths
-
-          data.datasets[1].data.push(this.daily[x].deaths); // Recovered
-
-          data.datasets[2].data.push(this.daily[x].recovered);
-        }
-      }
-
-      return data;
-    },
-    singleDataset: function singleDataset() {
-      var data = {
-        labels: [],
-        datasets: [{
-          type: 'line',
-          label: 'Confirmed',
-          backgroundColor: '#dfd27d',
-          data: [],
-          yAxisID: 'y-1'
-        }, {
-          type: 'bar',
-          label: 'Deaths',
-          backgroundColor: '#d54242',
-          data: [],
-          yAxisID: 'y-2'
-        }, {
-          type: 'bar',
-          label: 'Recovered',
-          backgroundColor: '#14a76c',
-          data: [],
-          yAxisID: 'y-3'
-        }]
-      };
-
-      if (this.daily) {
-        for (var x in this.daily) {
-          // Labels
-          data.labels.push(this.daily[x].date); // Confirmed
-
-          data.datasets[0].data.push(this.daily[x].confirmed); // Deaths
-
-          data.datasets[1].data.push(this.daily[x].deaths); // Recovered
-
-          data.datasets[2].data.push(this.daily[x].recovered);
-        }
-      }
-
-      return data;
-    },
     comparisonDataset: function comparisonDataset() {
-      var data = {
-        labels: [],
-        datasets: []
-      },
-          key,
-          bgConfirmed = ['#19aade', '#af4bce', '#de542c'],
-          bgRecovered = ['#1de4bd', '#ea7369', '#eabd3b'],
-          bgDeaths = ['#c7f9ee', '#f0a58f', '#e7e34e'];
-
-      if (this.compare.length > 0) {
-        var start = '',
-            end = ''; // Get start and end dates
-
-        for (var x in this.compare) {
-          var stats = this.getDaily(this.compare[x]);
-
-          for (var y in stats) {
-            var date = stats[y].date;
-
-            if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_6___default()(date).format('YYYY-MM-DD') < start) {
-              start = moment__WEBPACK_IMPORTED_MODULE_6___default()(date).format('YYYY-MM-DD');
-            }
-
-            if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_6___default()(date).format('YYYY-MM-DD') > end) {
-              end = moment__WEBPACK_IMPORTED_MODULE_6___default()(date).format('YYYY-MM-DD');
-            }
-          }
-        }
-
-        console.log('Start: ' + start + ' End: ' + end);
-        var labels = [];
-        var confirmed = {
-          '0': [],
-          '1': [],
-          '2': []
-        },
-            deaths = {
-          '0': [],
-          '1': [],
-          '2': []
-        },
-            recovered = {
-          '0': [],
-          '1': [],
-          '2': []
-        };
-
-        for (var x = 0; x <= moment__WEBPACK_IMPORTED_MODULE_6___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_6___default()(start), 'days'); x++) {
-          var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_6___default()(start).add(x, 'days').format('YYYY-MM-DD'));
-
-          data.labels.push(current_date);
-
-          for (var y in this.compare) {
-            if (this.getDaily(this.compare[y])) {
-              var found = false;
-              var stats = this.getDaily(this.compare[y]);
-
-              for (var z in stats) {
-                var row = stats[z];
-
-                if (moment__WEBPACK_IMPORTED_MODULE_6___default()(row.date).format('YYYY-MM-DD') === current_date) {
-                  confirmed[y].push(row.confirmed);
-                  deaths[y].push(row.deaths);
-                  recovered[y].push(row.recovered);
-                  found = true;
-                }
-              } // If today's data is missing, use previous day's
-
-
-              if (!found) {
-                if (confirmed[y].length > 0) {
-                  confirmed[y].push(confirmed[confirmed[y].length]);
-                  deaths[y].push(deaths[deaths[y].length]);
-                  recovered[y].push(recovered[recovered[y].length]);
-                } else {
-                  confirmed[y].push(0);
-                  deaths[y].push(0);
-                  recovered[y].push(0);
-                }
-              }
-            }
-          }
-        } // Assemble labels
-
-
-        for (var x in this.compare) {
-          data.datasets.push({
-            type: 'line',
-            label: 'Confirmed (' + this.getCompareName(this.compare[x]) + ')',
-            backgroundColor: bgConfirmed[x],
-            data: _.cloneDeep(confirmed[x]),
-            yAxisID: 'y-1'
-          }, {
-            type: 'bar',
-            label: 'Deaths (' + this.getCompareName(this.compare[x]) + ')',
-            backgroundColor: bgDeaths[x],
-            data: _.cloneDeep(deaths[x]),
-            yAxisID: 'y-2'
-          }, {
-            type: 'bar',
-            label: 'Recovered (' + this.getCompareName(this.compare[x]) + ')',
-            backgroundColor: bgRecovered[x],
-            data: _.cloneDeep(recovered[x]),
-            yAxisID: 'y-3'
-          });
-        }
-      }
-
-      return data;
+      return this.getComparisonData();
     },
     global: function global() {
       var data = {
@@ -80833,11 +81027,11 @@ var render = function() {
     [
       _c("div", { staticClass: "mx-6 pt-4 relative" }, [
         _c("h2", { staticClass: "font-bold text-2xl" }, [
-          _vm._v(_vm._s(_vm.name))
+          _vm._v(_vm._s(_vm.data.name.country))
         ]),
         _vm._v(" "),
         _c("h3", { staticClass: "h-4 font-bold" }, [
-          _vm._v(_vm._s(_vm.state_name))
+          _vm._v(_vm._s(_vm.data.name.state))
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "flex text-sm mt-4 w-full items-center" }, [
@@ -80847,7 +81041,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "text-3xl font-bold" }, [
-              _vm._v(_vm._s(parseInt(_vm.data[_vm.data.length - 1].confirmed)))
+              _vm._v(_vm._s(parseInt(_vm.data.total.confirmed)))
             ])
           ]),
           _vm._v(" "),
@@ -80855,7 +81049,7 @@ var render = function() {
             _c("div", { staticClass: "text-xs font-bold" }, [_vm._v("Deaths")]),
             _vm._v(" "),
             _c("div", { staticClass: "text-3xl font-bold" }, [
-              _vm._v(_vm._s(parseInt(_vm.data[_vm.data.length - 1].deaths)))
+              _vm._v(_vm._s(parseInt(_vm.data.total.deaths)))
             ])
           ]),
           _vm._v(" "),
@@ -80865,13 +81059,13 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "text-3xl font-bold" }, [
-              _vm._v(_vm._s(parseInt(_vm.data[_vm.data.length - 1].recovered)))
+              _vm._v(_vm._s(parseInt(_vm.data.total.recovered)))
             ])
           ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "text-xs mb-4" }, [
-          _vm._v("As of " + _vm._s(_vm.last_update))
+          _vm._v("As of " + _vm._s(_vm.data.total.date))
         ]),
         _vm._v(" "),
         _c(
@@ -80881,7 +81075,10 @@ var render = function() {
               "absolute top-0 right-0 text-xs pt-4 hover:text-white cursor-pointer",
             on: {
               click: function($event) {
-                return _vm.remove([_vm.country, _vm.state])
+                return _vm.remove([
+                  _vm.data.name.country_id,
+                  _vm.data.name.state
+                ])
               }
             }
           },
@@ -80898,7 +81095,7 @@ var render = function() {
           staticStyle: { position: "absolute" },
           attrs: { "data-simplebar-auto-hide": "false" }
         },
-        _vm._l(_vm.data, function(row, key, index) {
+        _vm._l(_vm.data.daily, function(row, key, index) {
           return _c(
             "div",
             { staticClass: "flex p-2 text-xs justify-between" },
@@ -80912,40 +81109,50 @@ var render = function() {
                       _vm._s(isNaN(row.confirmed) ? 0 : row.confirmed) +
                       "\n                    "
                   ),
-                  _vm.delta("confirmed", key) >= 0
+                  _vm.data.delta[key].confirmed >= 0
                     ? _c("span", { staticClass: "text-green-400" }, [
-                        _vm._v("(+" + _vm._s(_vm.delta("confirmed", key)) + ")")
+                        _vm._v(
+                          "(+" + _vm._s(_vm.data.delta[key].confirmed) + ")"
+                        )
                       ])
                     : _c("span", { staticClass: "text-red-400" }, [
-                        _vm._v("(" + _vm._s(_vm.delta("confirmed", key)) + ")")
+                        _vm._v(
+                          "(" + _vm._s(_vm.data.delta[key].confirmed) + ")"
+                        )
                       ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "w-20" }, [
                   _vm._v(
-                    _vm._s(isNaN(row.deaths) ? 0 : row.deaths) +
+                    "\n                    " +
+                      _vm._s(isNaN(row.deaths) ? 0 : row.deaths) +
                       "\n                    "
                   ),
-                  _vm.delta("deaths", key) >= 0
+                  _vm.data.delta[key].deaths >= 0
                     ? _c("span", { staticClass: "text-green-400" }, [
-                        _vm._v("(+" + _vm._s(_vm.delta("deaths", key)) + ")")
+                        _vm._v("(+" + _vm._s(_vm.data.delta[key].deaths) + ")")
                       ])
                     : _c("span", { staticClass: "text-red-400" }, [
-                        _vm._v("(" + _vm._s(_vm.delta("deaths", key)) + ")")
+                        _vm._v("(" + _vm._s(_vm.data.delta[key].deaths) + ")")
                       ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "w-20" }, [
                   _vm._v(
-                    _vm._s(isNaN(row.recovered) ? 0 : row.recovered) +
+                    "\n                    " +
+                      _vm._s(isNaN(row.recovered) ? 0 : row.recovered) +
                       "\n                    "
                   ),
-                  _vm.delta("recovered", key) >= 0
+                  _vm.data.delta[key].recovered >= 0
                     ? _c("span", { staticClass: "text-green-400" }, [
-                        _vm._v("(+" + _vm._s(_vm.delta("recovered", key)) + ")")
+                        _vm._v(
+                          "(+" + _vm._s(_vm.data.delta[key].recovered) + ")"
+                        )
                       ])
                     : _c("span", { staticClass: "text-red-400" }, [
-                        _vm._v("(" + _vm._s(_vm.delta("recovered", key)) + ")")
+                        _vm._v(
+                          "(" + _vm._s(_vm.data.delta[key].recovered) + ")"
+                        )
                       ])
                 ])
               ])
@@ -81098,7 +81305,150 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "flex" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading",
+            class: _vm.checkMode("chronological"),
+            on: {
+              click: function($event) {
+                return _vm.setMode("chronological")
+              }
+            }
+          },
+          [_vm._v("Chronological")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading",
+            class: _vm.checkMode("100"),
+            on: {
+              click: function($event) {
+                return _vm.setMode("100")
+              }
+            }
+          },
+          [_vm._v("From 100 cases")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading",
+            class: _vm.checkMode("growth"),
+            on: {
+              click: function($event) {
+                return _vm.setMode("growth")
+              }
+            }
+          },
+          [_vm._v("Growth factor")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "text-sm border px-2 py-1 rounded m-1 cursor-pointer hover:bg-hoverslab hover:text-heading",
+            class: _vm.checkMode("delta"),
+            on: {
+              click: function($event) {
+                return _vm.setMode("delta")
+              }
+            }
+          },
+          [_vm._v("Delta")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("LineChart", {
+        staticClass:
+          "bg-hoverslab p-2 absolute rounded left-0 right-0 bottom-0",
+        staticStyle: { top: "48px" },
+        attrs: {
+          data: _vm.dataset,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            hoverMode: "index",
+            stacked: false,
+            legend: {
+              labels: {
+                fontColor: "#d1e8e2"
+              }
+            },
+            scales: {
+              xAxes: [
+                {
+                  ticks: {
+                    fontColor: "#d1e8e2"
+                  }
+                }
+              ],
+              yAxes: [
+                {
+                  type: "logarithmic",
+                  display: true,
+                  position: "left",
+                  id: "y-1",
+                  ticks: {
+                    fontColor: "#d1e8e2",
+                    callback: function(tick, index, ticks) {
+                      return tick.toLocaleString()
+                    }
+                  }
+                },
+                {
+                  type: "logarithmic",
+                  display: true,
+                  position: "right",
+                  id: "y-2",
+
+                  // grid line settings
+                  gridLines: {
+                    drawOnChartArea: false // only want the grid lines for one axis to show up
+                  },
+                  ticks: {
+                    fontColor: "#d1e8e2",
+                    callback: function(tick, index, ticks) {
+                      return tick.toLocaleString()
+                    }
+                  }
+                },
+                {
+                  type: "logarithmic",
+                  display: true,
+                  position: "right",
+                  id: "y-3",
+
+                  // grid line settings
+                  gridLines: {
+                    drawOnChartArea: false // only want the grid lines for one axis to show up
+                  },
+                  ticks: {
+                    fontColor: "#d1e8e2",
+                    callback: function(tick, index, ticks) {
+                      return tick.toLocaleString()
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -81449,266 +81799,175 @@ var render = function() {
                 staticStyle: { left: "480px", bottom: "64px" }
               },
               [
-                _vm._m(0),
-                _vm._v(" "),
-                _c("div", { staticClass: "mx-4 h-full" }, [
+                _c("div", { staticClass: "p-4" }, [
                   _c(
-                    "div",
+                    "h1",
                     {
-                      staticClass: "flex w-full absolute left-0 right-0 px-2",
-                      staticStyle: { bottom: "40%", top: "70px" }
+                      staticClass: "font-bold",
+                      on: {
+                        click: function($event) {
+                          return _vm.getComparisonData()
+                        }
+                      }
                     },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "rounded bg-hoverslab m-2 w-1/3 relative"
-                        },
-                        [
-                          _vm.compare.length > 0
-                            ? _c(
-                                "div",
-                                [
-                                  _c("Daily", {
-                                    attrs: {
-                                      name: _vm.stats[_vm.compare[0][0]].name,
-                                      data: _vm.compare1,
-                                      country: _vm.compare[0][0],
-                                      state: _vm.compare[0][1]
-                                    },
-                                    on: { remove: _vm.removeCompare }
-                                  })
-                                ],
-                                1
-                              )
-                            : _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "flex items-center justify-center h-full text-2xl text-gray-200"
-                                },
-                                [
-                                  _c("div", [
-                                    _vm._v("Select a country/state to compare")
-                                  ])
-                                ]
-                              )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "rounded bg-hoverslab m-2 w-1/3 relative"
-                        },
-                        [
-                          _vm.compare.length > 1
-                            ? _c(
-                                "div",
-                                [
-                                  _c("Daily", {
-                                    attrs: {
-                                      name: _vm.stats[_vm.compare[1][0]].name,
-                                      data: _vm.compare2,
-                                      country: parseInt(_vm.compare[1][0]),
-                                      state: _vm.compare[1][1]
-                                    },
-                                    on: { remove: _vm.removeCompare }
-                                  })
-                                ],
-                                1
-                              )
-                            : _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "flex items-center justify-center h-full text-2xl text-gray-200"
-                                },
-                                [
-                                  _c("div", [
-                                    _vm._v("Select a country/state to compare")
-                                  ])
-                                ]
-                              )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "rounded bg-hoverslab m-2 w-1/3 relative"
-                        },
-                        [
-                          _vm.compare.length > 2
-                            ? _c(
-                                "div",
-                                [
-                                  _c("Daily", {
-                                    attrs: {
-                                      name: _vm.stats[_vm.compare[2][0]].name,
-                                      data: _vm.compare3,
-                                      country: _vm.compare[2][0],
-                                      state: _vm.compare[2][1]
-                                    },
-                                    on: { remove: _vm.removeCompare }
-                                  })
-                                ],
-                                1
-                              )
-                            : _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "flex items-center justify-center h-full text-2xl text-gray-200"
-                                },
-                                [
-                                  _c("div", [
-                                    _vm._v("Select a country/state to compare")
-                                  ])
-                                ]
-                              )
-                        ]
-                      )
-                    ]
+                    [_vm._v("Compare country stats")]
                   ),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    {
+                  _c("p", { staticClass: "text-xs" }, [
+                    _vm._v(
+                      "Select up to three countries from the left to compare."
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "mx-4 h-full" },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "flex w-full absolute left-0 right-0 px-2",
+                        staticStyle: { bottom: "40%", top: "70px" }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "rounded bg-hoverslab m-2 w-1/3 relative"
+                          },
+                          [
+                            _vm.compare.length > 0
+                              ? _c(
+                                  "div",
+                                  [
+                                    _c("Daily", {
+                                      attrs: {
+                                        name: _vm.stats[_vm.compare[0][0]].name,
+                                        data: _vm.compare1,
+                                        country: _vm.compare[0][0],
+                                        state: _vm.compare[0][1]
+                                      },
+                                      on: { remove: _vm.removeCompare }
+                                    })
+                                  ],
+                                  1
+                                )
+                              : _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "flex items-center justify-center h-full text-2xl text-gray-200"
+                                  },
+                                  [
+                                    _c("div", [
+                                      _vm._v(
+                                        "Select a country/state to compare"
+                                      )
+                                    ])
+                                  ]
+                                )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "rounded bg-hoverslab m-2 w-1/3 relative"
+                          },
+                          [
+                            _vm.compare.length > 1
+                              ? _c(
+                                  "div",
+                                  [
+                                    _c("Daily", {
+                                      attrs: {
+                                        name: _vm.stats[_vm.compare[1][0]].name,
+                                        data: _vm.compare2,
+                                        country: parseInt(_vm.compare[1][0]),
+                                        state: _vm.compare[1][1]
+                                      },
+                                      on: { remove: _vm.removeCompare }
+                                    })
+                                  ],
+                                  1
+                                )
+                              : _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "flex items-center justify-center h-full text-2xl text-gray-200"
+                                  },
+                                  [
+                                    _c("div", [
+                                      _vm._v(
+                                        "Select a country/state to compare"
+                                      )
+                                    ])
+                                  ]
+                                )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "rounded bg-hoverslab m-2 w-1/3 relative"
+                          },
+                          [
+                            _vm.compare.length > 2
+                              ? _c(
+                                  "div",
+                                  [
+                                    _c("Daily", {
+                                      attrs: {
+                                        name: _vm.stats[_vm.compare[2][0]].name,
+                                        data: _vm.compare3,
+                                        country: _vm.compare[2][0],
+                                        state: _vm.compare[2][1]
+                                      },
+                                      on: { remove: _vm.removeCompare }
+                                    })
+                                  ],
+                                  1
+                                )
+                              : _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "flex items-center justify-center h-full text-2xl text-gray-200"
+                                  },
+                                  [
+                                    _c("div", [
+                                      _vm._v(
+                                        "Select a country/state to compare"
+                                      )
+                                    ])
+                                  ]
+                                )
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("Comparison", {
                       staticClass: "absolute left-0 right-0 bottom-0 m-4 mt-0",
-                      staticStyle: { top: "60%" }
-                    },
-                    [
-                      _vm._m(1),
-                      _vm._v(" "),
-                      _c("LineChart", {
-                        staticClass:
-                          "bg-hoverslab p-2 absolute rounded left-0 right-0 bottom-0",
-                        staticStyle: { top: "48px" },
-                        attrs: {
-                          data: _vm.comparisonDataset,
-                          options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            hoverMode: "index",
-                            stacked: false,
-                            legend: {
-                              labels: {
-                                fontColor: "#d1e8e2"
-                              }
-                            },
-                            scales: {
-                              xAxes: [
-                                {
-                                  ticks: {
-                                    fontColor: "#d1e8e2"
-                                  }
-                                }
-                              ],
-                              yAxes: [
-                                {
-                                  type: "logarithmic",
-                                  display: true,
-                                  position: "left",
-                                  id: "y-1",
-                                  ticks: {
-                                    fontColor: "#d1e8e2",
-                                    callback: function(tick, index, ticks) {
-                                      return tick.toLocaleString()
-                                    }
-                                  }
-                                },
-                                {
-                                  type: "logarithmic",
-                                  display: true,
-                                  position: "right",
-                                  id: "y-2",
-
-                                  // grid line settings
-                                  gridLines: {
-                                    drawOnChartArea: false // only want the grid lines for one axis to show up
-                                  },
-                                  ticks: {
-                                    fontColor: "#d1e8e2",
-                                    callback: function(tick, index, ticks) {
-                                      return tick.toLocaleString()
-                                    }
-                                  }
-                                },
-                                {
-                                  type: "logarithmic",
-                                  display: true,
-                                  position: "right",
-                                  id: "y-3",
-
-                                  // grid line settings
-                                  gridLines: {
-                                    drawOnChartArea: false // only want the grid lines for one axis to show up
-                                  },
-                                  ticks: {
-                                    fontColor: "#d1e8e2",
-                                    callback: function(tick, index, ticks) {
-                                      return tick.toLocaleString()
-                                    }
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ])
+                      staticStyle: { top: "60%" },
+                      attrs: { data: _vm.comparisonDataset }
+                    })
+                  ],
+                  1
+                )
               ]
             )
           ]
         )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "p-4" }, [
-      _c("h1", { staticClass: "font-bold" }, [_vm._v("Compare country stats")]),
-      _vm._v(" "),
-      _c("p", { staticClass: "text-xs" }, [
-        _vm._v("Select up to three countries from the left to compare.")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex" }, [
-      _c("div", { staticClass: "bg-hoverslab px-2 py-1 rounded m-1" }, [
-        _vm._v("Chronological")
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass:
-            "text-lightslab border border-hoverslab px-2 py-1 rounded m-1"
-        },
-        [_vm._v("From 100 cases")]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass:
-            "text-lightslab border border-hoverslab px-2 py-1 rounded m-1"
-        },
-        [_vm._v("Delta")]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
