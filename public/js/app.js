@@ -2306,6 +2306,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "FullCountry",
@@ -81978,8 +81985,9 @@ var render = function() {
               _c(
                 "simplebar",
                 {
-                  staticClass: "top-0 right-0 left-0 bottom-0 mt-64 mx-4 mr-4",
-                  staticStyle: { bottom: "0", position: "absolute" },
+                  staticClass:
+                    "top-0 right-0 left-0 mt-64 mx-4 mr-4 border-b border-lightslab",
+                  staticStyle: { bottom: "320px", position: "absolute" },
                   attrs: { "data-simplebar-auto-hide": "false" }
                 },
                 _vm._l(_vm.data.daily, function(row, key, index) {
@@ -82172,59 +82180,78 @@ var render = function() {
                   ])
                 }),
                 0
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "h-76 absolute bottom-0 left-0 right-0 m-2 p-4 mb-0 pt-0 rounded bg-hoverslab"
+                },
+                [
+                  _c("div", { staticClass: "font-bold my-1" }, [
+                    _vm._v("Events")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "simplebar",
+                    {
+                      staticClass: "h-68 text-sm",
+                      attrs: { "data-simplebar-auto-hide": "false" }
+                    },
+                    [
+                      _c(
+                        "ul",
+                        [
+                          _vm.annotations.length == 0
+                            ? _c("li", { staticClass: "text-xs p-4" }, [
+                                _vm._v(
+                                  "\n                            Nothing to show here.\n                        "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm._l(_vm.annotations, function(note) {
+                            return _c(
+                              "li",
+                              {
+                                staticClass:
+                                  "flex text-xs items-start justify-start"
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "mr-1 w-20 text-date-slab" },
+                                  [_vm._v(_vm._s(note.date))]
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "w-full" }, [
+                                  note.state.length > 0
+                                    ? _c(
+                                        "span",
+                                        { staticClass: "font-bold mr-1" },
+                                        [_vm._v("[" + _vm._s(note.state) + "]")]
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _c("span", [_vm._v(_vm._s(note.notes))])
+                                ])
+                              ]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ]
+                  )
+                ],
+                1
               )
             ],
             1
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "h-full relative w-full" }, [
-            _c(
-              "div",
-              { staticClass: "h-76" },
-              [
-                _c("div", { staticClass: "font-bold" }, [_vm._v("Events")]),
-                _vm._v(" "),
-                _c(
-                  "simplebar",
-                  {
-                    staticClass: "h-68 text-sm",
-                    attrs: { "data-simplebar-auto-hide": "false" }
-                  },
-                  [
-                    _c(
-                      "ul",
-                      _vm._l(_vm.annotations, function(note) {
-                        return _c("li", { staticClass: "flex" }, [
-                          _c("div", { staticClass: "font-bold mr-1" }, [
-                            _vm._v(_vm._s(note.date))
-                          ]),
-                          _vm._v(" "),
-                          note.state.length > 0
-                            ? _c("div", { staticClass: "mx-1" }, [
-                                _vm._v("[" + _vm._s(note.state) + "]")
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c("div", [_vm._v(_vm._s(note.notes))])
-                        ])
-                      }),
-                      0
-                    )
-                  ]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "absolute left-0 right-0 bottom-0 mt-80 border top-0 p-4"
-              },
-              [_vm._v("\n                TO-DO: Graph\n            ")]
-            )
-          ])
+          _vm._m(1)
         ]
       )
     ]
@@ -82260,6 +82287,18 @@ var staticRenderFns = [
         ])
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "h-full relative w-full" }, [
+      _c(
+        "div",
+        { staticClass: "absolute left-0 right-0 bottom-0 border top-0 p-4" },
+        [_vm._v("\n                TO-DO: Graph\n            ")]
+      )
+    ])
   }
 ]
 render._withStripped = true

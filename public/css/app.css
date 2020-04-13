@@ -1091,6 +1091,10 @@ video {
   background-color: #116466;
 }
 
+.bg-date-slab {
+  background-color: #80cbcd;
+}
+
 .hover\:bg-transparent:hover {
   background-color: transparent;
 }
@@ -1495,6 +1499,10 @@ video {
   background-color: #116466;
 }
 
+.hover\:bg-date-slab:hover {
+  background-color: #80cbcd;
+}
+
 .focus\:bg-transparent:focus {
   background-color: transparent;
 }
@@ -1897,6 +1905,10 @@ video {
 
 .focus\:bg-slab-secondary:focus {
   background-color: #116466;
+}
+
+.focus\:bg-date-slab:focus {
+  background-color: #80cbcd;
 }
 
 .bg-bottom {
@@ -2383,6 +2395,10 @@ video {
   border-color: #116466;
 }
 
+.border-date-slab {
+  border-color: #80cbcd;
+}
+
 .hover\:border-transparent:hover {
   border-color: transparent;
 }
@@ -2787,6 +2803,10 @@ video {
   border-color: #116466;
 }
 
+.hover\:border-date-slab:hover {
+  border-color: #80cbcd;
+}
+
 .focus\:border-transparent:focus {
   border-color: transparent;
 }
@@ -3189,6 +3209,10 @@ video {
 
 .focus\:border-slab-secondary:focus {
   border-color: #116466;
+}
+
+.focus\:border-date-slab:focus {
+  border-color: #80cbcd;
 }
 
 .rounded-none {
@@ -8461,6 +8485,26 @@ video {
   color: #116466;
 }
 
+.placeholder-date-slab::-webkit-input-placeholder {
+  color: #80cbcd;
+}
+
+.placeholder-date-slab::-moz-placeholder {
+  color: #80cbcd;
+}
+
+.placeholder-date-slab:-ms-input-placeholder {
+  color: #80cbcd;
+}
+
+.placeholder-date-slab::-ms-input-placeholder {
+  color: #80cbcd;
+}
+
+.placeholder-date-slab::placeholder {
+  color: #80cbcd;
+}
+
 .focus\:placeholder-transparent:focus::-webkit-input-placeholder {
   color: transparent;
 }
@@ -10481,6 +10525,26 @@ video {
   color: #116466;
 }
 
+.focus\:placeholder-date-slab:focus::-webkit-input-placeholder {
+  color: #80cbcd;
+}
+
+.focus\:placeholder-date-slab:focus::-moz-placeholder {
+  color: #80cbcd;
+}
+
+.focus\:placeholder-date-slab:focus:-ms-input-placeholder {
+  color: #80cbcd;
+}
+
+.focus\:placeholder-date-slab:focus::-ms-input-placeholder {
+  color: #80cbcd;
+}
+
+.focus\:placeholder-date-slab:focus::placeholder {
+  color: #80cbcd;
+}
+
 .pointer-events-none {
   pointer-events: none;
 }
@@ -11160,6 +11224,10 @@ video {
   color: #116466;
 }
 
+.text-date-slab {
+  color: #80cbcd;
+}
+
 .hover\:text-transparent:hover {
   color: transparent;
 }
@@ -11564,6 +11632,10 @@ video {
   color: #116466;
 }
 
+.hover\:text-date-slab:hover {
+  color: #80cbcd;
+}
+
 .focus\:text-transparent:focus {
   color: transparent;
 }
@@ -11966,6 +12038,10 @@ video {
 
 .focus\:text-slab-secondary:focus {
   color: #116466;
+}
+
+.focus\:text-date-slab:focus {
+  color: #80cbcd;
 }
 
 .text-xs {
@@ -15523,6 +15599,10 @@ video {
     background-color: #116466;
   }
 
+  .sm\:bg-date-slab {
+    background-color: #80cbcd;
+  }
+
   .sm\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -15927,6 +16007,10 @@ video {
     background-color: #116466;
   }
 
+  .sm\:hover\:bg-date-slab:hover {
+    background-color: #80cbcd;
+  }
+
   .sm\:focus\:bg-transparent:focus {
     background-color: transparent;
   }
@@ -16329,6 +16413,10 @@ video {
 
   .sm\:focus\:bg-slab-secondary:focus {
     background-color: #116466;
+  }
+
+  .sm\:focus\:bg-date-slab:focus {
+    background-color: #80cbcd;
   }
 
   .sm\:bg-bottom {
@@ -16815,6 +16903,10 @@ video {
     border-color: #116466;
   }
 
+  .sm\:border-date-slab {
+    border-color: #80cbcd;
+  }
+
   .sm\:hover\:border-transparent:hover {
     border-color: transparent;
   }
@@ -17219,6 +17311,10 @@ video {
     border-color: #116466;
   }
 
+  .sm\:hover\:border-date-slab:hover {
+    border-color: #80cbcd;
+  }
+
   .sm\:focus\:border-transparent:focus {
     border-color: transparent;
   }
@@ -17621,6 +17717,10 @@ video {
 
   .sm\:focus\:border-slab-secondary:focus {
     border-color: #116466;
+  }
+
+  .sm\:focus\:border-date-slab:focus {
+    border-color: #80cbcd;
   }
 
   .sm\:rounded-none {
@@ -22893,6 +22993,26 @@ video {
     color: #116466;
   }
 
+  .sm\:placeholder-date-slab::-webkit-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .sm\:placeholder-date-slab::-moz-placeholder {
+    color: #80cbcd;
+  }
+
+  .sm\:placeholder-date-slab:-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .sm\:placeholder-date-slab::-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .sm\:placeholder-date-slab::placeholder {
+    color: #80cbcd;
+  }
+
   .sm\:focus\:placeholder-transparent:focus::-webkit-input-placeholder {
     color: transparent;
   }
@@ -24913,6 +25033,26 @@ video {
     color: #116466;
   }
 
+  .sm\:focus\:placeholder-date-slab:focus::-webkit-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .sm\:focus\:placeholder-date-slab:focus::-moz-placeholder {
+    color: #80cbcd;
+  }
+
+  .sm\:focus\:placeholder-date-slab:focus:-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .sm\:focus\:placeholder-date-slab:focus::-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .sm\:focus\:placeholder-date-slab:focus::placeholder {
+    color: #80cbcd;
+  }
+
   .sm\:pointer-events-none {
     pointer-events: none;
   }
@@ -25592,6 +25732,10 @@ video {
     color: #116466;
   }
 
+  .sm\:text-date-slab {
+    color: #80cbcd;
+  }
+
   .sm\:hover\:text-transparent:hover {
     color: transparent;
   }
@@ -25996,6 +26140,10 @@ video {
     color: #116466;
   }
 
+  .sm\:hover\:text-date-slab:hover {
+    color: #80cbcd;
+  }
+
   .sm\:focus\:text-transparent:focus {
     color: transparent;
   }
@@ -26398,6 +26546,10 @@ video {
 
   .sm\:focus\:text-slab-secondary:focus {
     color: #116466;
+  }
+
+  .sm\:focus\:text-date-slab:focus {
+    color: #80cbcd;
   }
 
   .sm\:text-xs {
@@ -29956,6 +30108,10 @@ video {
     background-color: #116466;
   }
 
+  .md\:bg-date-slab {
+    background-color: #80cbcd;
+  }
+
   .md\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -30360,6 +30516,10 @@ video {
     background-color: #116466;
   }
 
+  .md\:hover\:bg-date-slab:hover {
+    background-color: #80cbcd;
+  }
+
   .md\:focus\:bg-transparent:focus {
     background-color: transparent;
   }
@@ -30762,6 +30922,10 @@ video {
 
   .md\:focus\:bg-slab-secondary:focus {
     background-color: #116466;
+  }
+
+  .md\:focus\:bg-date-slab:focus {
+    background-color: #80cbcd;
   }
 
   .md\:bg-bottom {
@@ -31248,6 +31412,10 @@ video {
     border-color: #116466;
   }
 
+  .md\:border-date-slab {
+    border-color: #80cbcd;
+  }
+
   .md\:hover\:border-transparent:hover {
     border-color: transparent;
   }
@@ -31652,6 +31820,10 @@ video {
     border-color: #116466;
   }
 
+  .md\:hover\:border-date-slab:hover {
+    border-color: #80cbcd;
+  }
+
   .md\:focus\:border-transparent:focus {
     border-color: transparent;
   }
@@ -32054,6 +32226,10 @@ video {
 
   .md\:focus\:border-slab-secondary:focus {
     border-color: #116466;
+  }
+
+  .md\:focus\:border-date-slab:focus {
+    border-color: #80cbcd;
   }
 
   .md\:rounded-none {
@@ -37326,6 +37502,26 @@ video {
     color: #116466;
   }
 
+  .md\:placeholder-date-slab::-webkit-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .md\:placeholder-date-slab::-moz-placeholder {
+    color: #80cbcd;
+  }
+
+  .md\:placeholder-date-slab:-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .md\:placeholder-date-slab::-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .md\:placeholder-date-slab::placeholder {
+    color: #80cbcd;
+  }
+
   .md\:focus\:placeholder-transparent:focus::-webkit-input-placeholder {
     color: transparent;
   }
@@ -39346,6 +39542,26 @@ video {
     color: #116466;
   }
 
+  .md\:focus\:placeholder-date-slab:focus::-webkit-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .md\:focus\:placeholder-date-slab:focus::-moz-placeholder {
+    color: #80cbcd;
+  }
+
+  .md\:focus\:placeholder-date-slab:focus:-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .md\:focus\:placeholder-date-slab:focus::-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .md\:focus\:placeholder-date-slab:focus::placeholder {
+    color: #80cbcd;
+  }
+
   .md\:pointer-events-none {
     pointer-events: none;
   }
@@ -40025,6 +40241,10 @@ video {
     color: #116466;
   }
 
+  .md\:text-date-slab {
+    color: #80cbcd;
+  }
+
   .md\:hover\:text-transparent:hover {
     color: transparent;
   }
@@ -40429,6 +40649,10 @@ video {
     color: #116466;
   }
 
+  .md\:hover\:text-date-slab:hover {
+    color: #80cbcd;
+  }
+
   .md\:focus\:text-transparent:focus {
     color: transparent;
   }
@@ -40831,6 +41055,10 @@ video {
 
   .md\:focus\:text-slab-secondary:focus {
     color: #116466;
+  }
+
+  .md\:focus\:text-date-slab:focus {
+    color: #80cbcd;
   }
 
   .md\:text-xs {
@@ -44389,6 +44617,10 @@ video {
     background-color: #116466;
   }
 
+  .lg\:bg-date-slab {
+    background-color: #80cbcd;
+  }
+
   .lg\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -44793,6 +45025,10 @@ video {
     background-color: #116466;
   }
 
+  .lg\:hover\:bg-date-slab:hover {
+    background-color: #80cbcd;
+  }
+
   .lg\:focus\:bg-transparent:focus {
     background-color: transparent;
   }
@@ -45195,6 +45431,10 @@ video {
 
   .lg\:focus\:bg-slab-secondary:focus {
     background-color: #116466;
+  }
+
+  .lg\:focus\:bg-date-slab:focus {
+    background-color: #80cbcd;
   }
 
   .lg\:bg-bottom {
@@ -45681,6 +45921,10 @@ video {
     border-color: #116466;
   }
 
+  .lg\:border-date-slab {
+    border-color: #80cbcd;
+  }
+
   .lg\:hover\:border-transparent:hover {
     border-color: transparent;
   }
@@ -46085,6 +46329,10 @@ video {
     border-color: #116466;
   }
 
+  .lg\:hover\:border-date-slab:hover {
+    border-color: #80cbcd;
+  }
+
   .lg\:focus\:border-transparent:focus {
     border-color: transparent;
   }
@@ -46487,6 +46735,10 @@ video {
 
   .lg\:focus\:border-slab-secondary:focus {
     border-color: #116466;
+  }
+
+  .lg\:focus\:border-date-slab:focus {
+    border-color: #80cbcd;
   }
 
   .lg\:rounded-none {
@@ -51759,6 +52011,26 @@ video {
     color: #116466;
   }
 
+  .lg\:placeholder-date-slab::-webkit-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .lg\:placeholder-date-slab::-moz-placeholder {
+    color: #80cbcd;
+  }
+
+  .lg\:placeholder-date-slab:-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .lg\:placeholder-date-slab::-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .lg\:placeholder-date-slab::placeholder {
+    color: #80cbcd;
+  }
+
   .lg\:focus\:placeholder-transparent:focus::-webkit-input-placeholder {
     color: transparent;
   }
@@ -53779,6 +54051,26 @@ video {
     color: #116466;
   }
 
+  .lg\:focus\:placeholder-date-slab:focus::-webkit-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .lg\:focus\:placeholder-date-slab:focus::-moz-placeholder {
+    color: #80cbcd;
+  }
+
+  .lg\:focus\:placeholder-date-slab:focus:-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .lg\:focus\:placeholder-date-slab:focus::-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .lg\:focus\:placeholder-date-slab:focus::placeholder {
+    color: #80cbcd;
+  }
+
   .lg\:pointer-events-none {
     pointer-events: none;
   }
@@ -54458,6 +54750,10 @@ video {
     color: #116466;
   }
 
+  .lg\:text-date-slab {
+    color: #80cbcd;
+  }
+
   .lg\:hover\:text-transparent:hover {
     color: transparent;
   }
@@ -54862,6 +55158,10 @@ video {
     color: #116466;
   }
 
+  .lg\:hover\:text-date-slab:hover {
+    color: #80cbcd;
+  }
+
   .lg\:focus\:text-transparent:focus {
     color: transparent;
   }
@@ -55264,6 +55564,10 @@ video {
 
   .lg\:focus\:text-slab-secondary:focus {
     color: #116466;
+  }
+
+  .lg\:focus\:text-date-slab:focus {
+    color: #80cbcd;
   }
 
   .lg\:text-xs {
@@ -58822,6 +59126,10 @@ video {
     background-color: #116466;
   }
 
+  .xl\:bg-date-slab {
+    background-color: #80cbcd;
+  }
+
   .xl\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -59226,6 +59534,10 @@ video {
     background-color: #116466;
   }
 
+  .xl\:hover\:bg-date-slab:hover {
+    background-color: #80cbcd;
+  }
+
   .xl\:focus\:bg-transparent:focus {
     background-color: transparent;
   }
@@ -59628,6 +59940,10 @@ video {
 
   .xl\:focus\:bg-slab-secondary:focus {
     background-color: #116466;
+  }
+
+  .xl\:focus\:bg-date-slab:focus {
+    background-color: #80cbcd;
   }
 
   .xl\:bg-bottom {
@@ -60114,6 +60430,10 @@ video {
     border-color: #116466;
   }
 
+  .xl\:border-date-slab {
+    border-color: #80cbcd;
+  }
+
   .xl\:hover\:border-transparent:hover {
     border-color: transparent;
   }
@@ -60518,6 +60838,10 @@ video {
     border-color: #116466;
   }
 
+  .xl\:hover\:border-date-slab:hover {
+    border-color: #80cbcd;
+  }
+
   .xl\:focus\:border-transparent:focus {
     border-color: transparent;
   }
@@ -60920,6 +61244,10 @@ video {
 
   .xl\:focus\:border-slab-secondary:focus {
     border-color: #116466;
+  }
+
+  .xl\:focus\:border-date-slab:focus {
+    border-color: #80cbcd;
   }
 
   .xl\:rounded-none {
@@ -66192,6 +66520,26 @@ video {
     color: #116466;
   }
 
+  .xl\:placeholder-date-slab::-webkit-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .xl\:placeholder-date-slab::-moz-placeholder {
+    color: #80cbcd;
+  }
+
+  .xl\:placeholder-date-slab:-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .xl\:placeholder-date-slab::-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .xl\:placeholder-date-slab::placeholder {
+    color: #80cbcd;
+  }
+
   .xl\:focus\:placeholder-transparent:focus::-webkit-input-placeholder {
     color: transparent;
   }
@@ -68212,6 +68560,26 @@ video {
     color: #116466;
   }
 
+  .xl\:focus\:placeholder-date-slab:focus::-webkit-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .xl\:focus\:placeholder-date-slab:focus::-moz-placeholder {
+    color: #80cbcd;
+  }
+
+  .xl\:focus\:placeholder-date-slab:focus:-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .xl\:focus\:placeholder-date-slab:focus::-ms-input-placeholder {
+    color: #80cbcd;
+  }
+
+  .xl\:focus\:placeholder-date-slab:focus::placeholder {
+    color: #80cbcd;
+  }
+
   .xl\:pointer-events-none {
     pointer-events: none;
   }
@@ -68891,6 +69259,10 @@ video {
     color: #116466;
   }
 
+  .xl\:text-date-slab {
+    color: #80cbcd;
+  }
+
   .xl\:hover\:text-transparent:hover {
     color: transparent;
   }
@@ -69295,6 +69667,10 @@ video {
     color: #116466;
   }
 
+  .xl\:hover\:text-date-slab:hover {
+    color: #80cbcd;
+  }
+
   .xl\:focus\:text-transparent:focus {
     color: transparent;
   }
@@ -69697,6 +70073,10 @@ video {
 
   .xl\:focus\:text-slab-secondary:focus {
     color: #116466;
+  }
+
+  .xl\:focus\:text-date-slab:focus {
+    color: #80cbcd;
   }
 
   .xl\:text-xs {

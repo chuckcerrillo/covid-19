@@ -37,7 +37,7 @@
                         <div class="w-12">Growth Factor</div>
                     </div>
                 </div>
-                <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 left-0 bottom-0 mt-64 mx-4 mr-4" style="bottom: 0; position:absolute;" >
+                <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 left-0 mt-64 mx-4 mr-4 border-b border-lightslab" style="bottom: 320px; position:absolute;" >
                     <div
 
                         v-for="(row, key, index) in data.daily"
@@ -83,21 +83,28 @@
                         </div>
                     </div>
                 </simplebar>
-            </div>
-            <div class="h-full relative w-full">
-                <div class="h-76">
-                    <div class="font-bold">Events</div>
+
+                <div class="h-76 absolute bottom-0 left-0 right-0 m-2 p-4 mb-0 pt-0 rounded bg-hoverslab">
+                    <div class="font-bold my-1">Events</div>
                     <simplebar data-simplebar-auto-hide="false" class="h-68 text-sm" >
                         <ul>
-                            <li v-for="note in annotations" class="flex">
-                                <div class="font-bold mr-1">{{note.date}}</div>
-                                <div v-if="note.state.length > 0" class="mx-1">[{{note.state}}]</div>
-                                <div>{{note.notes}}</div>
+                            <li v-if="annotations.length == 0" class="text-xs p-4">
+                                Nothing to show here.
+                            </li>
+                            <li v-for="note in annotations" class="flex text-xs items-start justify-start">
+                                <div class="mr-1 w-20 text-date-slab">{{note.date}}</div>
+                                <div class="w-full">
+                                    <span v-if="note.state.length > 0" class="font-bold mr-1">[{{note.state}}]</span>
+                                    <span>{{note.notes}}</span>
+                                </div>
                             </li>
                         </ul>
                     </simplebar>
                 </div>
-                <div class="absolute left-0 right-0 bottom-0 mt-80 border top-0 p-4">
+            </div>
+            <div class="h-full relative w-full">
+
+                <div class="absolute left-0 right-0 bottom-0 border top-0 p-4">
                     TO-DO: Graph
                 </div>
             </div>
