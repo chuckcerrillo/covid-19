@@ -10,6 +10,7 @@ module.exports = {
               orangeslab : '#d9b08c',
               'slab-primary' : '#0c5658',
               'slab-secondary' : '#116466',
+              'date-slab': '#80cbcd',
           },
           margin: {
               '52' : '13rem',

@@ -1,12 +1,16 @@
 <template>
     <div class="flex flex-col flex-1 h-screen overflow-y-hidden">
-        <Nav v-on:showAbout="showAbout" />
+        <Nav
+            v-on:showAbout="showAbout"
+            v-on:setMode="setMode"
+            :mode="mode"
+        />
         <About
             v-show="about"
             v-on:showAbout="showAbout"
             class="fixed top-0 right-0 bottom-0 left-0 z-20"
         />
-        <router-view></router-view>
+        <router-view :mode="mode"></router-view>
     </div>
 </template>
 
@@ -19,6 +23,7 @@
         {
             return {
                 about: false,
+                mode: 'comparison'
             }
         },
         components: {
@@ -29,6 +34,10 @@
             showAbout()
             {
                 this.about = !this.about;
+            },
+            setMode(mode)
+            {
+                this.mode = mode;
             }
         }
     }

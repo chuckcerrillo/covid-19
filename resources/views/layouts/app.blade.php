@@ -18,6 +18,26 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+
+    <?php
+    if($_SERVER['SERVER_NAME'] == 'coronavirus.makeitsimpler.com.au')
+    {
+    ?>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163429737-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-163429737-1');
+    </script>
+
+    <?php
+        }
+    ?>
 </head>
 <body class="bg-gray-400 text-gray-800 antialiased font-sans">
     <div id="app">

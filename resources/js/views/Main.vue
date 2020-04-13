@@ -119,7 +119,7 @@
                             </div>
                         </div>
                     </div>
-                    <Comparison class="absolute left-0 right-0 bottom-0 m-4 mt-0" style="top: 60%;"
+                    <ComparisonChart class="absolute left-0 right-0 bottom-0 m-4 mt-0" style="top: 60%;"
                                 :data="comparisonDataset"
                     />
                 </div>
@@ -134,17 +134,20 @@
     import LineChart from "../components/charts/LineChart";
     import 'simplebar/dist/simplebar.min.css';
     import Daily from "../components/Daily";
-    import Comparison from "./Comparison";
+    import ComparisonChart from "../components/ComparisonChart";
     import CountryStateItem from "../components/CountryStateItem";
     import moment from 'moment'
 
     export default {
         name: "Start",
+        props: [
+            'mode'
+        ],
         components:{
             simplebar,
             LineChart,
             Daily,
-            Comparison,
+            ComparisonChart,
             CountryStateItem,
         },
         data()
