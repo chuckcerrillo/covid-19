@@ -82378,11 +82378,14 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("p", [
             _vm._v(
-              "This COVID-19 tracker uses data from the COVID-10 data repository by Johns Hopkins CSSE. ("
+              "This COVID-19 tracker uses data from the COVID-19 data repository by Johns Hopkins CSSE. ("
             ),
             _c(
               "a",
-              { attrs: { href: "https://github.com/CSSEGISandData/COVID-19" } },
+              {
+                staticClass: "hover:text-lightslab",
+                attrs: { href: "https://github.com/CSSEGISandData/COVID-19" }
+              },
               [_vm._v("https://github.com/CSSEGISandData/COVID-19")]
             ),
             _vm._v(")")
