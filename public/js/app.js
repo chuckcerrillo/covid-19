@@ -1921,6 +1921,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2449,8 +2450,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "About"
+  name: "About",
+  methods: {
+    close: function close() {
+      this.$emit('showAbout');
+    }
+  }
 });
 
 /***/ }),
@@ -81436,7 +81444,8 @@ var render = function() {
             expression: "about"
           }
         ],
-        staticClass: "fixed top-0 right-0 bottom-0 left-0 z-20"
+        staticClass: "fixed top-0 right-0 bottom-0 left-0 z-20",
+        on: { showAbout: _vm.showAbout }
       }),
       _vm._v(" "),
       _c("router-view")
@@ -82352,47 +82361,72 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    {
+      staticClass:
+        "flex items-center justify-center h-full fixed top-0 right-0 bottom-0 left-0 z-10"
+    },
+    [
+      _c("div", {
+        staticClass:
+          "bg-black opacity-50 absolute top-0 right-0 bottom-0 left-0 z-0",
+        on: {
+          click: function($event) {
+            return _vm.close()
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "bg-slab w-200 rounded z-10 p-4 text-sm relative" },
+        [
+          _c(
+            "div",
+            {
+              staticClass:
+                "absolute top-0 right-0 px-4 py-2 bg-slab border border-lightslab cursor-pointer hover:bg-lightslab",
+              on: {
+                click: function($event) {
+                  return _vm.close()
+                }
+              }
+            },
+            [_vm._v("Close")]
+          ),
+          _vm._v(" "),
+          _c("h1", { staticClass: "text-2xl font-bold mb-2" }, [
+            _vm._v("About")
+          ]),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _c("p", { staticClass: "mt-4" }, [_vm._v("© Simpler Solutions")])
+        ]
+      )
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "flex items-center justify-center h-full fixed top-0 right-0 bottom-0 left-0 z-10"
-      },
-      [
-        _c("div", {
-          staticClass:
-            "bg-black opacity-50 absolute top-0 right-0 bottom-0 left-0 z-0"
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "bg-slab w-256 h-128 rounded z-10 p-4" }, [
-          _c("h1", { staticClass: "text-2xl font-bold mb-2" }, [
-            _vm._v("About")
-          ]),
-          _vm._v(" "),
-          _c("p", [
-            _vm._v(
-              "This COVID-19 tracker uses data from the COVID-19 data repository by Johns Hopkins CSSE. ("
-            ),
-            _c(
-              "a",
-              {
-                staticClass: "hover:text-lightslab",
-                attrs: { href: "https://github.com/CSSEGISandData/COVID-19" }
-              },
-              [_vm._v("https://github.com/CSSEGISandData/COVID-19")]
-            ),
-            _vm._v(")")
-          ])
-        ])
-      ]
-    )
+    return _c("p", [
+      _vm._v(
+        "This COVID-19 tracker uses data from the COVID-19 data repository by Johns Hopkins CSSE. ("
+      ),
+      _c(
+        "a",
+        {
+          staticClass: "hover:text-lightslab",
+          attrs: { href: "https://github.com/CSSEGISandData/COVID-19" }
+        },
+        [_vm._v("https://github.com/CSSEGISandData/COVID-19")]
+      ),
+      _vm._v(")")
+    ])
   }
 ]
 render._withStripped = true
