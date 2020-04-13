@@ -4,7 +4,7 @@
         <div class="m-4 bg-slab rounded p-4 absolute top-0 right-0 bottom-0 left-0 z-10 flex items-start">
             <div class="relative w-140 h-full mb-4">
                 <div class="mx-6 pt-4 relative">
-                    <h2 class="font-bold text-2xl">{{data.name.country}}</h2>
+                    <h2 class="font-bold text-3xl">{{data.name.country}}</h2>
                     <h3 class="h-4 font-bold">{{data.name.state}}</h3>
                     <div class="flex text-sm mt-4 w-full items-center">
                         <div class="text-center pr-4">
@@ -89,7 +89,7 @@
                     <div class="font-bold">Events</div>
                     <simplebar data-simplebar-auto-hide="false" class="h-68 text-sm" >
                         <ul>
-                            <li v-for="note in data.annotations" class="flex">
+                            <li v-for="note in annotations" class="flex">
                                 <div class="font-bold mr-1">{{note.date}}</div>
                                 <div v-if="note.state.length > 0" class="mx-1">[{{note.state}}]</div>
                                 <div>{{note.notes}}</div>
@@ -97,8 +97,8 @@
                         </ul>
                     </simplebar>
                 </div>
-                <div class="absolute left-0 right-0 bottom-0 mt-80 border top-0">
-                    Graph here
+                <div class="absolute left-0 right-0 bottom-0 mt-80 border top-0 p-4">
+                    TO-DO: Graph
                 </div>
             </div>
         </div>
@@ -123,9 +123,30 @@
             getDayNotes(date)
             {
                 var data = [];
-                for(var x in this.data.annotations)
+                for(var x in this.annotations)
                 {
                     if (this.data.annotations[x].date == date)
+                    {
+                        data.push(this.data.annotations[x]);
+                    }
+                }
+                return data;
+            }
+        },
+        computed: {
+            annotations()
+            {
+                var data = [];
+                for(var x in this.data.annotations)
+                {
+                    if(this.data.name.state)
+                    {
+                        if(this.data.name.state.length == 0 || ( this.data.name.state.length > 0 && this.data.name.state == this.data.annotations[x].state))
+                        {
+                            data.push(this.data.annotations[x]);
+                        }
+                    }
+                    else
                     {
                         data.push(this.data.annotations[x]);
                     }

@@ -807,10 +807,27 @@
                     );
                 }
 
+                for(var x = 0; x <= moment(end).diff(moment(start),'days'); x++) {
+                    var current_date = _.clone(moment(start).add(x, 'days').format('YYYY-MM-DD'))
+                    data.labels.push(current_date);
+                }
+
+
                 for(var x in this.data)
                 {
+                    var diff = moment(this.data[x].daily[0].date).diff(moment(start),'days');
+                    if (moment(this.data[x].daily[0].date) > moment(start))
+                    {
+
+                        for(var y = 0; y < diff; y++)
+                        {
+                            data.datasets[x].data.push(0)
+                        }
+                    }
+
                     for(var y in this.data[x].growthFactor)
                     {
+
                         var gf = 0;
                         gf = parseFloat(this.data[x].growthFactor[y]).toFixed(2);
                         if(isNaN(gf))
@@ -819,11 +836,6 @@
                         }
                         data.datasets[x].data.push(gf);
                     }
-                }
-
-                for(var x = 0; x <= moment(end).diff(moment(start),'days'); x++) {
-                    var current_date = _.clone(moment(start).add(x, 'days').format('YYYY-MM-DD'))
-                    data.labels.push(current_date);
                 }
 
 

@@ -1909,6 +1909,11 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Nav__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Nav */ "./resources/js/components/Nav.vue");
+/* harmony import */ var _views_About__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../views/About */ "./resources/js/views/About.vue");
+//
+//
+//
+//
 //
 //
 //
@@ -1917,10 +1922,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "App",
+  data: function data() {
+    return {
+      about: false
+    };
+  },
   components: {
-    Nav: _Nav__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Nav: _Nav__WEBPACK_IMPORTED_MODULE_0__["default"],
+    About: _views_About__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  methods: {
+    showAbout: function showAbout() {
+      this.about = !this.about;
+    }
   }
 });
 
@@ -2302,8 +2319,25 @@ __webpack_require__.r(__webpack_exports__);
     getDayNotes: function getDayNotes(date) {
       var data = [];
 
-      for (var x in this.data.annotations) {
+      for (var x in this.annotations) {
         if (this.data.annotations[x].date == date) {
+          data.push(this.data.annotations[x]);
+        }
+      }
+
+      return data;
+    }
+  },
+  computed: {
+    annotations: function annotations() {
+      var data = [];
+
+      for (var x in this.data.annotations) {
+        if (this.data.name.state) {
+          if (this.data.name.state.length == 0 || this.data.name.state.length > 0 && this.data.name.state == this.data.annotations[x].state) {
+            data.push(this.data.annotations[x]);
+          }
+        } else {
           data.push(this.data.annotations[x]);
         }
       }
@@ -2347,6 +2381,9 @@ __webpack_require__.r(__webpack_exports__);
     isActive: function isActive(selected, current, classes) {
       if (selected === current) return classes;
       return '';
+    },
+    showAbout: function showAbout() {
+      this.$emit('showAbout');
     }
   }
 });
@@ -2401,6 +2438,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3095,7 +3137,21 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
 
+      for (var x = 0; x <= moment__WEBPACK_IMPORTED_MODULE_4___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_4___default()(start), 'days'); x++) {
+        var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_4___default()(start).add(x, 'days').format('YYYY-MM-DD'));
+
+        data.labels.push(current_date);
+      }
+
       for (var x in this.data) {
+        var diff = moment__WEBPACK_IMPORTED_MODULE_4___default()(this.data[x].daily[0].date).diff(moment__WEBPACK_IMPORTED_MODULE_4___default()(start), 'days');
+
+        if (moment__WEBPACK_IMPORTED_MODULE_4___default()(this.data[x].daily[0].date) > moment__WEBPACK_IMPORTED_MODULE_4___default()(start)) {
+          for (var y = 0; y < diff; y++) {
+            data.datasets[x].data.push(0);
+          }
+        }
+
         for (var y in this.data[x].growthFactor) {
           var gf = 0;
           gf = parseFloat(this.data[x].growthFactor[y]).toFixed(2);
@@ -3106,12 +3162,6 @@ __webpack_require__.r(__webpack_exports__);
 
           data.datasets[x].data.push(gf);
         }
-      }
-
-      for (var x = 0; x <= moment__WEBPACK_IMPORTED_MODULE_4___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_4___default()(start), 'days'); x++) {
-        var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_4___default()(start).add(x, 'days').format('YYYY-MM-DD'));
-
-        data.labels.push(current_date);
       } // OPTIONS
 
 
@@ -81374,7 +81424,23 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "flex flex-col flex-1 h-screen overflow-y-hidden" },
-    [_c("Nav"), _vm._v(" "), _c("router-view")],
+    [
+      _c("Nav", { on: { showAbout: _vm.showAbout } }),
+      _vm._v(" "),
+      _c("About", {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.about,
+            expression: "about"
+          }
+        ],
+        staticClass: "fixed top-0 right-0 bottom-0 left-0 z-20"
+      }),
+      _vm._v(" "),
+      _c("router-view")
+    ],
     1
   )
 }
@@ -81835,7 +81901,7 @@ var render = function() {
             { staticClass: "relative w-140 h-full mb-4" },
             [
               _c("div", { staticClass: "mx-6 pt-4 relative" }, [
-                _c("h2", { staticClass: "font-bold text-2xl" }, [
+                _c("h2", { staticClass: "font-bold text-3xl" }, [
                   _vm._v(_vm._s(_vm.data.name.country))
                 ]),
                 _vm._v(" "),
@@ -82118,7 +82184,7 @@ var render = function() {
                   [
                     _c(
                       "ul",
-                      _vm._l(_vm.data.annotations, function(note) {
+                      _vm._l(_vm.annotations, function(note) {
                         return _c("li", { staticClass: "flex" }, [
                           _c("div", { staticClass: "font-bold mr-1" }, [
                             _vm._v(_vm._s(note.date))
@@ -82145,9 +82211,9 @@ var render = function() {
               "div",
               {
                 staticClass:
-                  "absolute left-0 right-0 bottom-0 mt-80 border top-0"
+                  "absolute left-0 right-0 bottom-0 mt-80 border top-0 p-4"
               },
-              [_vm._v("\n                Graph here\n            ")]
+              [_vm._v("\n                TO-DO: Graph\n            ")]
             )
           ])
         ]
@@ -82215,9 +82281,7 @@ var render = function() {
         staticClass: "py-2 px-2 flex text-heading items-center justify-center"
       },
       [
-        _c("div", { staticClass: "w-128 py-2 px-2 font-bold mx-2" }, [
-          _vm._v("COVID-19 Tracker")
-        ]),
+        _vm._m(0),
         _vm._v(" "),
         _c(
           "router-link",
@@ -82239,11 +82303,15 @@ var render = function() {
         ),
         _vm._v(" "),
         _c(
-          "router-link",
+          "div",
           {
             staticClass: "p-2 px-4 cursor-pointer hover:text-white",
             class: _vm.isActive(_vm.selected, "about", "bg-hoverslab"),
-            attrs: { to: "/about" }
+            on: {
+              click: function($event) {
+                return _vm.showAbout()
+              }
+            }
           },
           [_vm._v("About")]
         )
@@ -82252,7 +82320,17 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-128 py-2 px-2 font-bold mx-2" }, [
+      _vm._v("COVID-19 Tracker "),
+      _c("sup", { staticClass: "font-normal" }, [_vm._v("beta")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -82281,7 +82359,37 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("About")])])
+    return _c(
+      "div",
+      {
+        staticClass:
+          "flex items-center justify-center h-full fixed top-0 right-0 bottom-0 left-0 z-10"
+      },
+      [
+        _c("div", {
+          staticClass:
+            "bg-black opacity-50 absolute top-0 right-0 bottom-0 left-0 z-0"
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "bg-slab w-256 h-128 rounded z-10 p-4" }, [
+          _c("h1", { staticClass: "text-2xl font-bold mb-2" }, [
+            _vm._v("About")
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "This COVID-19 tracker uses data from the COVID-10 data repository by Johns Hopkins CSSE. ("
+            ),
+            _c(
+              "a",
+              { attrs: { href: "https://github.com/CSSEGISandData/COVID-19" } },
+              [_vm._v("https://github.com/CSSEGISandData/COVID-19")]
+            ),
+            _vm._v(")")
+          ])
+        ])
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -98491,11 +98599,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
     path: '/',
     name: 'home',
     component: _views_Main__WEBPACK_IMPORTED_MODULE_2__["default"]
-  }, {
-    path: '/about',
-    name: 'about',
-    component: _views_About__WEBPACK_IMPORTED_MODULE_3__["default"]
-  }]
+  } // {
+  //     path: '/about', name: 'about', component: About,
+  // }
+  ]
 }));
 
 /***/ }),
