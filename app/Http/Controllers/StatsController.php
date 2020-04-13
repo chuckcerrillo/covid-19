@@ -442,6 +442,31 @@ class StatsController extends Controller
         file_put_contents(STATS . 'states.json',json_encode($states));
 
 
+        // Annotations
+
+        https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1Pov2AbAscAXUNphDrjd3ZmzlbuvMy_Pd195bXlylwgdDnu1OQ0CBKXfMeDAHBZWbtLL9t5McfIcD/pubhtml
+        $url = 'https://spreadsheets.google.com/feeds/list/1XfndFdJ0VSJnLqY83s8ITmuRVgsUSWPhCm-Fvd_rNb4/oejzle4/public/values?alt=json';
+        $file= file_get_contents($url);
+
+        $json = json_decode($file,true);
+        $rows = $json['feed']['entry'];
+        $data = [];
+        foreach($rows AS $row)
+        {
+            if($row['gsx$publish']['$t'] == 'Y')
+            {
+                $data[$row['gsx$country']['$t']][] = [
+                    'country' => $row['gsx$country']['$t'],
+                    'state' => $row['gsx$state']['$t'],
+                    'date' => $row['gsx$date']['$t'],
+                    'notes' => $row['gsx$notes']['$t'],
+                    'url' => $row['gsx$url']['$t'],
+                ];
+            }
+        }
+        file_put_contents(STATS . 'annotations.json',json_encode($data));
+
+
         return response('Done harvesting data')->setStatusCode(Response::HTTP_OK);
     }
 
@@ -621,7 +646,39 @@ class StatsController extends Controller
         file_put_contents(STATS . 'cases.json',json_encode($allcountries));
         file_put_contents(STATS . 'countries.json',json_encode($countries));
 
+        // Annotations
+
+        https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1Pov2AbAscAXUNphDrjd3ZmzlbuvMy_Pd195bXlylwgdDnu1OQ0CBKXfMeDAHBZWbtLL9t5McfIcD/pubhtml
+        $url = 'https://spreadsheets.google.com/feeds/list/1XfndFdJ0VSJnLqY83s8ITmuRVgsUSWPhCm-Fvd_rNb4/oejzle4/public/values?alt=json';
+        $file= file_get_contents($url);
+
+        $json = json_decode($file,true);
+        $rows = $json['feed']['entry'];
+        $data = [];
+        foreach($rows AS $row)
+        {
+            if($row['gsx$publish']['$t'] == 'Y')
+            {
+                $data[$row['gsx$country']['$t']][] = [
+                    'country' => $row['gsx$country']['$t'],
+                    'state' => $row['gsx$state']['$t'],
+                    'date' => $row['gsx$date']['$t'],
+                    'notes' => $row['gsx$notes']['$t'],
+                    'url' => $row['gsx$url']['$t'],
+                ];
+            }
+        }
+        file_put_contents(STATS . 'annotations.json',json_encode($data));
 
         return response('Done harvesting data')->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function annotations()
+    {
+
+        $filename = STATS . 'annotations.json';
+        $file = fopen($filename,'r');
+        $countries = fread($file,filesize($filename));
+        return response($countries)->setStatusCode(Response::HTTP_OK);
     }
 }

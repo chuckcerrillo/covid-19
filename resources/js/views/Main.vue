@@ -152,8 +152,8 @@
             return {
                 'loading': {
                     'countries' : false,
-                    'raw_stats': false,
                     'states' : false,
+                    'annotations' : false,
                 },
                 'sort_stats' : {
                     'key' : 'country',
@@ -187,6 +187,15 @@
                 .catch(error => {
 
                 });
+
+            axios.get('/api/stats/annotations')
+                .then(res => {
+                    this.raw_annotations = res.data;
+                    this.loading.annotations = true;
+                })
+                .catch(error => {
+
+                });
         },
         methods:{
             getComparisonData()
@@ -207,6 +216,7 @@
                             growth: [],
                             average: [],
                             growthFactor: [],
+                            annotations: [],
                         }
 
                         var count = 0;
@@ -270,6 +280,8 @@
                             }
                             row.growthFactor.push(gf);
                         }
+
+                        row.annotations = this.raw_annotations[row.name.country];
 
                         data.push(row);
                     }
@@ -517,7 +529,7 @@
             },
             loaded()
             {
-                if (this.loading.countries && this.loading.states)
+                if (this.loading.countries && this.loading.states && this.loading.annotations)
                 {
                     return true;
                 }

@@ -22,6 +22,10 @@
                 class="absolute top-0 right-0 text-xs pt-4 hover:text-white cursor-pointer"
                 @click="remove([data.name.country_id,data.name.state])"
             >Remove</div>
+            <div
+                class="absolute top-0 right-0 text-xs pt-4 mt-8 hover:text-white cursor-pointer"
+                @click="toggleExpand()"
+            >Expand</div>
         </div>
         <div class="mx-6 flex text-xs font-bold py-2 justify-between">
             <div class="w-20">Date</div>
@@ -68,16 +72,23 @@
                 </div>
             </div>
         </simplebar>
+        <FullCountry v-if="expanded"
+                     :data="recomputed"
+                    v-on:close="toggleExpand"
+        />
     </div>
 </template>
 
 <script>
     import moment from 'moment'
     import simplebar from 'simplebar-vue';
+    import FullCountry from "./FullCountry";
+
     export default {
         name: "Daily",
         components: {
-            simplebar
+            simplebar,
+            FullCountry
         },
         props: [
             'data',
@@ -86,9 +97,14 @@
             return {
                 growth_factor: [],
                 recomputed_data: [],
+                expanded: false,
             }
         },
         methods: {
+            toggleExpand()
+            {
+                this.expanded = !this.expanded;
+            },
             remove(item){
                 this.$emit('remove',item);
             },
