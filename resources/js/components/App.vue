@@ -23,7 +23,7 @@
         {
             return {
                 about: false,
-                mode: 'comparison'
+                mode: 'single'
             }
         },
         components: {

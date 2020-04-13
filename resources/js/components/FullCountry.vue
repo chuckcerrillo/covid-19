@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div class="text-xs mb-4">As of {{data.total.date}}</div>
-                    <div
+                    <div v-if="modal"
                         class="absolute top-0 right-0 text-xs pt-4 mt-8 hover:text-white cursor-pointer"
                         @click="close()"
                     >Close</div>
@@ -121,6 +121,7 @@
         },
         props: [
             'data',
+            'modal'
         ],
         methods: {
             close()

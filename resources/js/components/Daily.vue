@@ -74,6 +74,7 @@
         </simplebar>
         <FullCountry v-if="expanded"
                      :data="recomputed"
+                     :modal="true"
                     v-on:close="toggleExpand"
         />
     </div>

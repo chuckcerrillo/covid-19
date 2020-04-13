@@ -1933,7 +1933,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       about: false,
-      mode: 'comparison'
+      mode: 'single'
     };
   },
   components: {
@@ -2753,16 +2753,39 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    isSelected: function isSelected(key) {
-      if (this.compare && this.compare.length > 0) {}
-
+    isSelected: function isSelected(item) {
+      // if(item && this.compare.length > 0)
+      // {
+      //
+      //     for(var x in this.compare)
+      //     {
+      //         if (this.compare[x][0] == item[0])
+      //         {
+      //             return true;
+      //         }
+      //     }
+      // }
       return false;
     },
     selectCountry: function selectCountry(country, state) {
-      this.$emit('selectCountry', country, state);
+      this.$emit('selectCountry', country, state, this.country_key);
     },
     toggleExpand: function toggleExpand() {
       this.expanded = !this.expanded;
+    },
+    findCompare: function findCompare(item) {
+      var found = false;
+
+      for (var x in this.compare) {
+        if (this.compare[x][0] == item[0]) {
+          if (this.compare[x][1] == item[1]) {
+            found = x;
+            break;
+          }
+        }
+      }
+
+      return found;
     }
   }
 });
@@ -2782,6 +2805,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var simplebar_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! simplebar-vue */ "./node_modules/simplebar-vue/dist/simplebar-vue.esm.js");
 /* harmony import */ var _FullCountry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FullCountry */ "./resources/js/components/FullCountry.vue");
+//
 //
 //
 //
@@ -3077,7 +3101,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ['data'],
+  props: ['data', 'modal'],
   methods: {
     close: function close() {
       this.$emit('close');
@@ -3245,6 +3269,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_CountryStateItem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/CountryStateItem */ "./resources/js/components/CountryStateItem.vue");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _Single__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Single */ "./resources/js/views/Single.vue");
 //
 //
 //
@@ -3381,15 +3406,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 
@@ -3405,7 +3422,8 @@ __webpack_require__.r(__webpack_exports__);
     LineChart: _components_charts_LineChart__WEBPACK_IMPORTED_MODULE_1__["default"],
     Daily: _components_Daily__WEBPACK_IMPORTED_MODULE_3__["default"],
     ComparisonChart: _components_ComparisonChart__WEBPACK_IMPORTED_MODULE_4__["default"],
-    CountryStateItem: _components_CountryStateItem__WEBPACK_IMPORTED_MODULE_5__["default"]
+    CountryStateItem: _components_CountryStateItem__WEBPACK_IMPORTED_MODULE_5__["default"],
+    Summary: _Single__WEBPACK_IMPORTED_MODULE_7__["default"]
   },
   data: function data() {
     return {
@@ -3571,8 +3589,9 @@ __webpack_require__.r(__webpack_exports__);
       return [];
     },
     getStateDaily: function getStateDaily(item) {
-      var country = this.stats[item[0]].name,
-          state = item[1],
+      var country = this.stats[item[2]].name,
+          // var country = this.stats[this.getCountryId(country)].name,
+      state = item[1],
           data = [];
 
       if (this.states[country]) {
@@ -3595,7 +3614,8 @@ __webpack_require__.r(__webpack_exports__);
       return data;
     },
     getCountryDaily: function getCountryDaily(item) {
-      var country = item[0],
+      // var country = this.getCountryId(item[0]),
+      var country = item[2],
           data = [],
           empty = true;
 
@@ -3629,21 +3649,23 @@ __webpack_require__.r(__webpack_exports__);
     },
     getCompareName: function getCompareName(item) {
       if (item && item[0]) {
-        var country = this.stats[item[0]].name;
+        // var key = this.getCountryId(item[0]);
+        var key = item[2];
+        var country = this.stats[key].name;
 
         if (item[1]) {
           return {
             full: item[1] + ' - ' + country,
             country: country,
             state: item[1],
-            country_id: item[0]
+            country_id: key
           };
         } else {
           return {
             full: country,
             country: country,
             state: '',
-            country_id: item[0]
+            country_id: key
           };
         }
       }
@@ -3653,17 +3675,27 @@ __webpack_require__.r(__webpack_exports__);
     selectCompare: function selectCompare(item) {
       if (this.comparison.length < 3) {}
     },
-    selectCountry: function selectCountry(country, state) {
-      var key = this.getCountryId(country);
+    selectCountry: function selectCountry(country, state, key) {
+      if (!key) {
+        key = this.getCountryId(country);
+      }
 
-      if (this.compare.length < 3) {
-        if (!this.findCompare([key, state])) {
-          this.compare.push([key, state]);
+      console.log('Country: ' + country + ' State: ' + state + ' Key: ' + key);
+
+      if (this.mode == 'single') {
+        if (!this.findCompare([country, state])) {
+          this.compare = [];
+          this.compare.push([country, state, key]);
+        }
+      } else {
+        if (this.compare.length < 3) {
+          if (!this.findCompare([country, state])) {
+            this.compare.push([country, state, key]);
+          }
         }
       }
-    },
-    isSelected: function isSelected(key) {
-      return false;
+
+      console.log(this.compare);
     }
   },
   computed: {
@@ -3775,6 +3807,108 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return data;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Single.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Single.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_FullCountry__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/FullCountry */ "./resources/js/components/FullCountry.vue");
+/* harmony import */ var simplebar_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! simplebar-vue */ "./node_modules/simplebar-vue/dist/simplebar-vue.esm.js");
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Single",
+  components: {
+    FullCountry: _components_FullCountry__WEBPACK_IMPORTED_MODULE_0__["default"],
+    simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  props: ['data'],
+  data: function data() {
+    return {
+      growth_factor: [],
+      recomputed_data: [],
+      expanded: false
+    };
+  },
+  methods: {
+    toggleExpand: function toggleExpand() {
+      this.expanded = !this.expanded;
+    },
+    remove: function remove(item) {
+      this.$emit('remove', item);
+    },
+    recomputeGrowth: function recomputeGrowth() {
+      var arrAvg = function arrAvg(arr) {
+        return arr.reduce(function (a, b) {
+          return a + b;
+        }, 0) / arr.length;
+      };
+
+      this.recomputed_data = this.data;
+      this.recomputed_data.growth = [];
+      this.recomputed_data.average = [];
+      this.recomputed_data.growthFactor = [];
+
+      for (var x in this.recomputed_data.delta) {
+        this.recomputed_data.growth.push(this.recomputed_data.delta[x].confirmed);
+      }
+
+      for (var x = 0; x < this.recomputed_data.growth.length; x++) {
+        var avg = 0;
+
+        if (x < 5) {
+          avg = arrAvg(this.recomputed_data.growth.slice(0, x + 1));
+        } else {
+          avg = arrAvg(this.recomputed_data.growth.slice(x - 5, x + 1));
+        }
+
+        this.recomputed_data.average.push(avg.toFixed(1));
+      }
+
+      for (var x = 0; x < this.recomputed_data.average.length; x++) {
+        var gf = 0;
+
+        if (x == 1 || this.recomputed_data.average[x - 1] == 0) {
+          gf = (this.recomputed_data.average[x] / 1).toFixed(2);
+        } else {
+          gf = (this.recomputed_data.average[x] / this.recomputed_data.average[x - 1]).toFixed(2);
+        }
+
+        if (isNaN(gf)) {
+          gf = 0;
+        }
+
+        this.recomputed_data.growthFactor.push(gf);
+      }
+    }
+  },
+  computed: {
+    recomputed: function recomputed() {
+      this.recomputeGrowth();
+      return this.recomputed_data;
+    }
+  },
+  watch: {
+    data: function data() {
+      this.recomputeGrowth();
     }
   }
 });
@@ -81611,7 +81745,7 @@ var render = function() {
         "div",
         {
           staticClass: "flex hover:bg-lightslab cursor-pointer items-center",
-          class: _vm.isSelected("country", _vm.country_key)
+          class: _vm.isSelected([_vm.country_key, false])
             ? "bg-hoverslab"
             : _vm.country_key % 2 == 0
             ? "bg-slab-primary"
@@ -81706,7 +81840,7 @@ var render = function() {
             ],
             staticClass:
               "pb-1 hover:bg-lightslab cursor-pointer flex items-center text-xs",
-            class: _vm.isSelected("state", row.name)
+            class: _vm.isSelected([_vm.country_key, row.name])
               ? "bg-hoverslab"
               : row.name % 2 == 0
               ? "bg-slab-primary"
@@ -81965,7 +82099,7 @@ var render = function() {
       _vm._v(" "),
       _vm.expanded
         ? _c("FullCountry", {
-            attrs: { data: _vm.recomputed },
+            attrs: { data: _vm.recomputed, modal: true },
             on: { close: _vm.toggleExpand }
           })
         : _vm._e()
@@ -82087,19 +82221,21 @@ var render = function() {
                   _vm._v("As of " + _vm._s(_vm.data.total.date))
                 ]),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "absolute top-0 right-0 text-xs pt-4 mt-8 hover:text-white cursor-pointer",
-                    on: {
-                      click: function($event) {
-                        return _vm.close()
-                      }
-                    }
-                  },
-                  [_vm._v("Close")]
-                )
+                _vm.modal
+                  ? _c(
+                      "div",
+                      {
+                        staticClass:
+                          "absolute top-0 right-0 text-xs pt-4 mt-8 hover:text-white cursor-pointer",
+                        on: {
+                          click: function($event) {
+                            return _vm.close()
+                          }
+                        }
+                      },
+                      [_vm._v("Close")]
+                    )
+                  : _vm._e()
               ]),
               _vm._v(" "),
               _vm._m(0),
@@ -82834,7 +82970,13 @@ var render = function() {
                               index
                             ) {
                               return _c("CountryStateItem", {
-                                attrs: { data: data, country_key: key },
+                                attrs: {
+                                  data: data,
+                                  compare: _vm.compare,
+                                  country_key: _vm.getCountryId(
+                                    data.name.country
+                                  )
+                                },
                                 on: { selectCountry: _vm.selectCountry }
                               })
                             }),
@@ -82955,191 +83097,215 @@ var render = function() {
             _c(
               "div",
               {
-                staticClass:
-                  "m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded",
-                staticStyle: { left: "480px", bottom: "64px" }
+                staticClass: "m-4 absolute top-0 right-0 overflow-hidden",
+                staticStyle: { left: "480px", bottom: "4rem" }
               },
               [
-                _vm.mode == "single" ? _c("div", [_vm._m(0)]) : _vm._e(),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.mode == "single",
+                        expression: "mode == 'single'"
+                      }
+                    ],
+                    staticClass:
+                      "bg-slab rounded absolute top-0 right-0 bottom-0 left-0"
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "p-4" },
+                      [_c("Summary", { attrs: { data: _vm.compare1 } })],
+                      1
+                    )
+                  ]
+                ),
                 _vm._v(" "),
-                _vm.mode == "trends" ? _c("div", [_vm._m(1)]) : _vm._e(),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.mode == "trends",
+                        expression: "mode == 'trends'"
+                      }
+                    ]
+                  },
+                  [_vm._m(0)]
+                ),
                 _vm._v(" "),
-                _vm.mode == "comparison"
-                  ? _c("div", [
-                      _c("div", { staticClass: "p-4" }, [
-                        _c(
-                          "h1",
-                          {
-                            staticClass: "font-bold",
-                            on: {
-                              click: function($event) {
-                                return _vm.getComparisonData()
-                              }
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.mode == "comparison",
+                        expression: "mode == 'comparison'"
+                      }
+                    ],
+                    staticClass:
+                      "bg-slab rounded absolute top-0 right-0 bottom-0 left-0"
+                  },
+                  [
+                    _c("div", { staticClass: "p-4" }, [
+                      _c(
+                        "h1",
+                        {
+                          staticClass: "font-bold",
+                          on: {
+                            click: function($event) {
+                              return _vm.getComparisonData()
                             }
+                          }
+                        },
+                        [_vm._v("Compare country stats")]
+                      ),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-xs" }, [
+                        _vm._v(
+                          "Select up to three countries from the left to compare."
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "mx-4 h-full" },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "flex w-full absolute left-0 right-0 px-2",
+                            staticStyle: { bottom: "40%", top: "70px" }
                           },
-                          [_vm._v("Compare country stats")]
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "rounded bg-hoverslab m-2 w-1/3 relative"
+                              },
+                              [
+                                _vm.compare.length > 0
+                                  ? _c(
+                                      "div",
+                                      [
+                                        _c("Daily", {
+                                          attrs: { data: _vm.compare1 },
+                                          on: { remove: _vm.removeCompare }
+                                        })
+                                      ],
+                                      1
+                                    )
+                                  : _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "flex items-center justify-center h-full text-2xl text-gray-200"
+                                      },
+                                      [
+                                        _c("div", [
+                                          _vm._v(
+                                            "Select a country/state to compare"
+                                          )
+                                        ])
+                                      ]
+                                    )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "rounded bg-hoverslab m-2 w-1/3 relative"
+                              },
+                              [
+                                _vm.compare.length > 1
+                                  ? _c(
+                                      "div",
+                                      [
+                                        _c("Daily", {
+                                          attrs: { data: _vm.compare2 },
+                                          on: { remove: _vm.removeCompare }
+                                        })
+                                      ],
+                                      1
+                                    )
+                                  : _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "flex items-center justify-center h-full text-2xl text-gray-200"
+                                      },
+                                      [
+                                        _c("div", [
+                                          _vm._v(
+                                            "Select a country/state to compare"
+                                          )
+                                        ])
+                                      ]
+                                    )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "rounded bg-hoverslab m-2 w-1/3 relative"
+                              },
+                              [
+                                _vm.compare.length > 2
+                                  ? _c(
+                                      "div",
+                                      [
+                                        _c("Daily", {
+                                          attrs: { data: _vm.compare3 },
+                                          on: { remove: _vm.removeCompare }
+                                        })
+                                      ],
+                                      1
+                                    )
+                                  : _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "flex items-center justify-center h-full text-2xl text-gray-200"
+                                      },
+                                      [
+                                        _c("div", [
+                                          _vm._v(
+                                            "Select a country/state to compare"
+                                          )
+                                        ])
+                                      ]
+                                    )
+                              ]
+                            )
+                          ]
                         ),
                         _vm._v(" "),
-                        _c("p", { staticClass: "text-xs" }, [
-                          _vm._v(
-                            "Select up to three countries from the left to compare."
-                          )
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "mx-4 h-full" },
-                        [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "flex w-full absolute left-0 right-0 px-2",
-                              staticStyle: { bottom: "40%", top: "70px" }
-                            },
-                            [
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "rounded bg-hoverslab m-2 w-1/3 relative"
-                                },
-                                [
-                                  _vm.compare.length > 0
-                                    ? _c(
-                                        "div",
-                                        [
-                                          _c("Daily", {
-                                            attrs: {
-                                              name:
-                                                _vm.stats[_vm.compare[0][0]]
-                                                  .name,
-                                              data: _vm.compare1,
-                                              country: _vm.compare[0][0],
-                                              state: _vm.compare[0][1]
-                                            },
-                                            on: { remove: _vm.removeCompare }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    : _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "flex items-center justify-center h-full text-2xl text-gray-200"
-                                        },
-                                        [
-                                          _c("div", [
-                                            _vm._v(
-                                              "Select a country/state to compare"
-                                            )
-                                          ])
-                                        ]
-                                      )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "rounded bg-hoverslab m-2 w-1/3 relative"
-                                },
-                                [
-                                  _vm.compare.length > 1
-                                    ? _c(
-                                        "div",
-                                        [
-                                          _c("Daily", {
-                                            attrs: {
-                                              name:
-                                                _vm.stats[_vm.compare[1][0]]
-                                                  .name,
-                                              data: _vm.compare2,
-                                              country: parseInt(
-                                                _vm.compare[1][0]
-                                              ),
-                                              state: _vm.compare[1][1]
-                                            },
-                                            on: { remove: _vm.removeCompare }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    : _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "flex items-center justify-center h-full text-2xl text-gray-200"
-                                        },
-                                        [
-                                          _c("div", [
-                                            _vm._v(
-                                              "Select a country/state to compare"
-                                            )
-                                          ])
-                                        ]
-                                      )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "rounded bg-hoverslab m-2 w-1/3 relative"
-                                },
-                                [
-                                  _vm.compare.length > 2
-                                    ? _c(
-                                        "div",
-                                        [
-                                          _c("Daily", {
-                                            attrs: {
-                                              name:
-                                                _vm.stats[_vm.compare[2][0]]
-                                                  .name,
-                                              data: _vm.compare3,
-                                              country: _vm.compare[2][0],
-                                              state: _vm.compare[2][1]
-                                            },
-                                            on: { remove: _vm.removeCompare }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    : _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "flex items-center justify-center h-full text-2xl text-gray-200"
-                                        },
-                                        [
-                                          _c("div", [
-                                            _vm._v(
-                                              "Select a country/state to compare"
-                                            )
-                                          ])
-                                        ]
-                                      )
-                                ]
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("ComparisonChart", {
-                            staticClass:
-                              "absolute left-0 right-0 bottom-0 m-4 mt-0",
-                            staticStyle: { top: "60%" },
-                            attrs: { data: _vm.comparisonDataset }
-                          })
-                        ],
-                        1
-                      )
-                    ])
-                  : _vm._e()
+                        _c("ComparisonChart", {
+                          staticClass:
+                            "absolute left-0 right-0 bottom-0 m-4 mt-0",
+                          staticStyle: { top: "60%" },
+                          attrs: { data: _vm.comparisonDataset }
+                        })
+                      ],
+                      1
+                    )
+                  ]
+                )
               ]
             )
           ]
@@ -83152,22 +83318,40 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "p-4" }, [
-      _c("h1", [_vm._v("Statistics about a single country will appear here")]),
-      _vm._v(" "),
-      _c("p", [_vm._v("TO-DO")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "p-4" }, [
       _c("h1", [_vm._v("Massive graphs / trends on this section")]),
       _vm._v(" "),
       _c("p", [_vm._v("TO-DO")])
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Single.vue?vue&type=template&id=261c4bb2&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Single.vue?vue&type=template&id=261c4bb2&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm.data
+      ? _c("div", [_vm._v("\n        " + _vm._s(_vm.data) + "\n    ")])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -98971,6 +99155,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Main_vue_vue_type_template_id_2ad93e50_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Main_vue_vue_type_template_id_2ad93e50_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/Single.vue":
+/*!***************************************!*\
+  !*** ./resources/js/views/Single.vue ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Single_vue_vue_type_template_id_261c4bb2_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Single.vue?vue&type=template&id=261c4bb2&scoped=true& */ "./resources/js/views/Single.vue?vue&type=template&id=261c4bb2&scoped=true&");
+/* harmony import */ var _Single_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Single.vue?vue&type=script&lang=js& */ "./resources/js/views/Single.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Single_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Single_vue_vue_type_template_id_261c4bb2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Single_vue_vue_type_template_id_261c4bb2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "261c4bb2",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/Single.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/Single.vue?vue&type=script&lang=js&":
+/*!****************************************************************!*\
+  !*** ./resources/js/views/Single.vue?vue&type=script&lang=js& ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Single_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Single.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Single.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Single_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/Single.vue?vue&type=template&id=261c4bb2&scoped=true&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/views/Single.vue?vue&type=template&id=261c4bb2&scoped=true& ***!
+  \**********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Single_vue_vue_type_template_id_261c4bb2_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Single.vue?vue&type=template&id=261c4bb2&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Single.vue?vue&type=template&id=261c4bb2&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Single_vue_vue_type_template_id_261c4bb2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Single_vue_vue_type_template_id_261c4bb2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
