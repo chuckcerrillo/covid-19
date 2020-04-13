@@ -70,58 +70,72 @@
                 </div>
             </div>
             <div class="m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded" style="left: 480px; bottom: 64px">
-                <div class="p-4">
-                <h1 @click="getComparisonData()" class="font-bold">Compare country stats</h1>
-                <p class="text-xs">Select up to three countries from the left to compare.</p>
-                </div>
-                <div class="mx-4 h-full">
-                    <div class="flex w-full absolute left-0 right-0 px-2" style="bottom: 40%; top: 70px;">
-                        <div class="rounded bg-hoverslab m-2 w-1/3 relative">
-                            <div v-if="compare.length > 0">
-                                <Daily
-                                    v-on:remove="removeCompare"
-                                    :name="stats[compare[0][0]].name"
-                                    :data="compare1"
-                                    :country="compare[0][0]"
-                                    :state="compare[0][1]"
-                                />
-                            </div>
-                            <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
-                                <div>Select a country/state to compare</div>
-                            </div>
-                        </div>
-                        <div class="rounded bg-hoverslab m-2 w-1/3 relative">
-                            <div v-if="compare.length > 1">
-                                <Daily
-                                    v-on:remove="removeCompare"
-                                    :name="stats[compare[1][0]].name"
-                                    :data="compare2"
-                                    :country="parseInt(compare[1][0])"
-                                    :state="compare[1][1]"
-                                />
-                            </div>
-                            <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
-                                <div>Select a country/state to compare</div>
-                            </div>
-                        </div>
-                        <div class="rounded bg-hoverslab m-2 w-1/3 relative">
-                            <div v-if="compare.length > 2">
-                                <Daily
-                                    v-on:remove="removeCompare"
-                                    :name="stats[compare[2][0]].name"
-                                    :data="compare3"
-                                    :country="compare[2][0]"
-                                    :state="compare[2][1]"
-                                />
-                            </div>
-                            <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
-                                <div>Select a country/state to compare</div>
-                            </div>
-                        </div>
+                <div v-if="mode == 'single'">
+                    <div class="p-4">
+                        <h1>Statistics about a single country will appear here</h1>
+                        <p>TO-DO</p>
                     </div>
-                    <ComparisonChart class="absolute left-0 right-0 bottom-0 m-4 mt-0" style="top: 60%;"
-                                :data="comparisonDataset"
-                    />
+                </div>
+                <div v-if="mode == 'trends'">
+                    <div class="p-4">
+                        <h1>Massive graphs / trends on this section</h1>
+                        <p>TO-DO</p>
+                    </div>
+                </div>
+                <div v-if="mode == 'comparison'">
+                    <div class="p-4">
+                    <h1 @click="getComparisonData()" class="font-bold">Compare country stats</h1>
+                    <p class="text-xs">Select up to three countries from the left to compare.</p>
+                    </div>
+                    <div class="mx-4 h-full">
+                        <div class="flex w-full absolute left-0 right-0 px-2" style="bottom: 40%; top: 70px;">
+                            <div class="rounded bg-hoverslab m-2 w-1/3 relative">
+                                <div v-if="compare.length > 0">
+                                    <Daily
+                                        v-on:remove="removeCompare"
+                                        :name="stats[compare[0][0]].name"
+                                        :data="compare1"
+                                        :country="compare[0][0]"
+                                        :state="compare[0][1]"
+                                    />
+                                </div>
+                                <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
+                                    <div>Select a country/state to compare</div>
+                                </div>
+                            </div>
+                            <div class="rounded bg-hoverslab m-2 w-1/3 relative">
+                                <div v-if="compare.length > 1">
+                                    <Daily
+                                        v-on:remove="removeCompare"
+                                        :name="stats[compare[1][0]].name"
+                                        :data="compare2"
+                                        :country="parseInt(compare[1][0])"
+                                        :state="compare[1][1]"
+                                    />
+                                </div>
+                                <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
+                                    <div>Select a country/state to compare</div>
+                                </div>
+                            </div>
+                            <div class="rounded bg-hoverslab m-2 w-1/3 relative">
+                                <div v-if="compare.length > 2">
+                                    <Daily
+                                        v-on:remove="removeCompare"
+                                        :name="stats[compare[2][0]].name"
+                                        :data="compare3"
+                                        :country="compare[2][0]"
+                                        :state="compare[2][1]"
+                                    />
+                                </div>
+                                <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">
+                                    <div>Select a country/state to compare</div>
+                                </div>
+                            </div>
+                        </div>
+                        <ComparisonChart class="absolute left-0 right-0 bottom-0 m-4 mt-0" style="top: 60%;"
+                                    :data="comparisonDataset"
+                        />
+                    </div>
                 </div>
 
             </div>

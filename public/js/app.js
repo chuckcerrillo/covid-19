@@ -3376,6 +3376,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -82946,175 +82960,214 @@ var render = function() {
                 staticStyle: { left: "480px", bottom: "64px" }
               },
               [
-                _c("div", { staticClass: "p-4" }, [
-                  _c(
-                    "h1",
-                    {
-                      staticClass: "font-bold",
-                      on: {
-                        click: function($event) {
-                          return _vm.getComparisonData()
-                        }
-                      }
-                    },
-                    [_vm._v("Compare country stats")]
-                  ),
-                  _vm._v(" "),
-                  _c("p", { staticClass: "text-xs" }, [
-                    _vm._v(
-                      "Select up to three countries from the left to compare."
-                    )
-                  ])
-                ]),
+                _vm.mode == "single" ? _c("div", [_vm._m(0)]) : _vm._e(),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "mx-4 h-full" },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "flex w-full absolute left-0 right-0 px-2",
-                        staticStyle: { bottom: "40%", top: "70px" }
-                      },
-                      [
+                _vm.mode == "trends" ? _c("div", [_vm._m(1)]) : _vm._e(),
+                _vm._v(" "),
+                _vm.mode == "comparison"
+                  ? _c("div", [
+                      _c("div", { staticClass: "p-4" }, [
                         _c(
-                          "div",
+                          "h1",
                           {
-                            staticClass:
-                              "rounded bg-hoverslab m-2 w-1/3 relative"
+                            staticClass: "font-bold",
+                            on: {
+                              click: function($event) {
+                                return _vm.getComparisonData()
+                              }
+                            }
                           },
-                          [
-                            _vm.compare.length > 0
-                              ? _c(
-                                  "div",
-                                  [
-                                    _c("Daily", {
-                                      attrs: {
-                                        name: _vm.stats[_vm.compare[0][0]].name,
-                                        data: _vm.compare1,
-                                        country: _vm.compare[0][0],
-                                        state: _vm.compare[0][1]
-                                      },
-                                      on: { remove: _vm.removeCompare }
-                                    })
-                                  ],
-                                  1
-                                )
-                              : _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "flex items-center justify-center h-full text-2xl text-gray-200"
-                                  },
-                                  [
-                                    _c("div", [
-                                      _vm._v(
-                                        "Select a country/state to compare"
-                                      )
-                                    ])
-                                  ]
-                                )
-                          ]
+                          [_vm._v("Compare country stats")]
                         ),
                         _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "rounded bg-hoverslab m-2 w-1/3 relative"
-                          },
-                          [
-                            _vm.compare.length > 1
-                              ? _c(
-                                  "div",
-                                  [
-                                    _c("Daily", {
-                                      attrs: {
-                                        name: _vm.stats[_vm.compare[1][0]].name,
-                                        data: _vm.compare2,
-                                        country: parseInt(_vm.compare[1][0]),
-                                        state: _vm.compare[1][1]
-                                      },
-                                      on: { remove: _vm.removeCompare }
-                                    })
-                                  ],
-                                  1
-                                )
-                              : _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "flex items-center justify-center h-full text-2xl text-gray-200"
-                                  },
-                                  [
-                                    _c("div", [
-                                      _vm._v(
-                                        "Select a country/state to compare"
+                        _c("p", { staticClass: "text-xs" }, [
+                          _vm._v(
+                            "Select up to three countries from the left to compare."
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "mx-4 h-full" },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "flex w-full absolute left-0 right-0 px-2",
+                              staticStyle: { bottom: "40%", top: "70px" }
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "rounded bg-hoverslab m-2 w-1/3 relative"
+                                },
+                                [
+                                  _vm.compare.length > 0
+                                    ? _c(
+                                        "div",
+                                        [
+                                          _c("Daily", {
+                                            attrs: {
+                                              name:
+                                                _vm.stats[_vm.compare[0][0]]
+                                                  .name,
+                                              data: _vm.compare1,
+                                              country: _vm.compare[0][0],
+                                              state: _vm.compare[0][1]
+                                            },
+                                            on: { remove: _vm.removeCompare }
+                                          })
+                                        ],
+                                        1
                                       )
-                                    ])
-                                  ]
-                                )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "rounded bg-hoverslab m-2 w-1/3 relative"
-                          },
-                          [
-                            _vm.compare.length > 2
-                              ? _c(
-                                  "div",
-                                  [
-                                    _c("Daily", {
-                                      attrs: {
-                                        name: _vm.stats[_vm.compare[2][0]].name,
-                                        data: _vm.compare3,
-                                        country: _vm.compare[2][0],
-                                        state: _vm.compare[2][1]
-                                      },
-                                      on: { remove: _vm.removeCompare }
-                                    })
-                                  ],
-                                  1
-                                )
-                              : _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "flex items-center justify-center h-full text-2xl text-gray-200"
-                                  },
-                                  [
-                                    _c("div", [
-                                      _vm._v(
-                                        "Select a country/state to compare"
+                                    : _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "flex items-center justify-center h-full text-2xl text-gray-200"
+                                        },
+                                        [
+                                          _c("div", [
+                                            _vm._v(
+                                              "Select a country/state to compare"
+                                            )
+                                          ])
+                                        ]
                                       )
-                                    ])
-                                  ]
-                                )
-                          ]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("ComparisonChart", {
-                      staticClass: "absolute left-0 right-0 bottom-0 m-4 mt-0",
-                      staticStyle: { top: "60%" },
-                      attrs: { data: _vm.comparisonDataset }
-                    })
-                  ],
-                  1
-                )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "rounded bg-hoverslab m-2 w-1/3 relative"
+                                },
+                                [
+                                  _vm.compare.length > 1
+                                    ? _c(
+                                        "div",
+                                        [
+                                          _c("Daily", {
+                                            attrs: {
+                                              name:
+                                                _vm.stats[_vm.compare[1][0]]
+                                                  .name,
+                                              data: _vm.compare2,
+                                              country: parseInt(
+                                                _vm.compare[1][0]
+                                              ),
+                                              state: _vm.compare[1][1]
+                                            },
+                                            on: { remove: _vm.removeCompare }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    : _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "flex items-center justify-center h-full text-2xl text-gray-200"
+                                        },
+                                        [
+                                          _c("div", [
+                                            _vm._v(
+                                              "Select a country/state to compare"
+                                            )
+                                          ])
+                                        ]
+                                      )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "rounded bg-hoverslab m-2 w-1/3 relative"
+                                },
+                                [
+                                  _vm.compare.length > 2
+                                    ? _c(
+                                        "div",
+                                        [
+                                          _c("Daily", {
+                                            attrs: {
+                                              name:
+                                                _vm.stats[_vm.compare[2][0]]
+                                                  .name,
+                                              data: _vm.compare3,
+                                              country: _vm.compare[2][0],
+                                              state: _vm.compare[2][1]
+                                            },
+                                            on: { remove: _vm.removeCompare }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    : _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "flex items-center justify-center h-full text-2xl text-gray-200"
+                                        },
+                                        [
+                                          _c("div", [
+                                            _vm._v(
+                                              "Select a country/state to compare"
+                                            )
+                                          ])
+                                        ]
+                                      )
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("ComparisonChart", {
+                            staticClass:
+                              "absolute left-0 right-0 bottom-0 m-4 mt-0",
+                            staticStyle: { top: "60%" },
+                            attrs: { data: _vm.comparisonDataset }
+                          })
+                        ],
+                        1
+                      )
+                    ])
+                  : _vm._e()
               ]
             )
           ]
         )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "p-4" }, [
+      _c("h1", [_vm._v("Statistics about a single country will appear here")]),
+      _vm._v(" "),
+      _c("p", [_vm._v("TO-DO")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "p-4" }, [
+      _c("h1", [_vm._v("Massive graphs / trends on this section")]),
+      _vm._v(" "),
+      _c("p", [_vm._v("TO-DO")])
+    ])
+  }
+]
 render._withStripped = true
 
 
