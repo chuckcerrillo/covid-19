@@ -77,8 +77,8 @@
                 'graphControls' : {
                     'x' : [
                         ['chronological','Chronological'],
-                        ['ordinal','From first case'],
-                        ['from100','From 100 cases'],
+                        ['ordinal','From first case (todo)'],
+                        ['from100','From 100 cases (todo)'],
                     ],
                     'y' : [
                         ['confirmed','Confirmed cases'],

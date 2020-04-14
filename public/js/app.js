@@ -3304,7 +3304,7 @@ __webpack_require__.r(__webpack_exports__);
         'secondary': false
       },
       'graphControls': {
-        'x': [['chronological', 'Chronological'], ['ordinal', 'From first case'], ['from100', 'From 100 cases']],
+        'x': [['chronological', 'Chronological'], ['ordinal', 'From first case (todo)'], ['from100', 'From 100 cases (todo)']],
         'y': [['confirmed', 'Confirmed cases'], ['deltaConfirmed', 'New confirmed cases per day'], ['deaths', 'Deaths'], ['deltaDeaths', 'New deaths per day'], ['recovered', 'Recoveries'], ['deltaRecovered', 'New recoveries per day'], ['average', 'Average new cases (5 day spread)'], ['growthFactor', 'Growth factor']]
       },
       stats: {}
