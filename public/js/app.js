@@ -3013,11 +3013,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var simplebar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! simplebar-vue */ "./node_modules/simplebar-vue/dist/simplebar-vue.esm.js");
-//
-//
-//
-//
-//
+/* harmony import */ var _StatsChart__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StatsChart */ "./resources/js/components/StatsChart.vue");
 //
 //
 //
@@ -3130,12 +3126,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "FullCountry",
   components: {
-    simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    StatsChart: _StatsChart__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: ['data'],
+  data: function data() {
+    return {};
+  },
   methods: {
     close: function close() {
       this.$emit('close');
@@ -3208,6 +3209,1043 @@ __webpack_require__.r(__webpack_exports__);
     },
     setMode: function setMode(mode) {
       this.$emit('setMode', mode);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StatsChart.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/StatsChart.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _charts_LineChart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./charts/LineChart */ "./resources/js/components/charts/LineChart.vue");
+/* harmony import */ var simplebar_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! simplebar-vue */ "./node_modules/simplebar-vue/dist/simplebar-vue.esm.js");
+/* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! simplebar/dist/simplebar.min.css */ "./node_modules/simplebar/dist/simplebar.min.css");
+/* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Comparison",
+  components: {
+    simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    LineChart: _charts_LineChart__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      'options': {
+        'mode': 'chronological',
+        'controls': {
+          'primary': 'confirmed',
+          'secondary': ''
+        }
+      },
+      ui: {
+        'primary': false,
+        'secondary': false
+      },
+      'graphControls': {
+        'x': [['chronological', 'Chronological'], ['ordinal', 'From first case'], ['from100', 'From 100 cases']],
+        'y': [['confirmed', 'Confirmed cases'], ['deltaConfirmed', 'New confirmed cases per day'], ['deaths', 'Deaths'], ['deltaDeaths', 'New deaths per day'], ['recovered', 'Recoveries'], ['deltaRecovered', 'New recoveries per day'], ['average', 'Average new cases (5 day spread)'], ['growthFactor', 'Growth factor']]
+      },
+      stats: {}
+    };
+  },
+  props: ['data'],
+  methods: {
+    getFieldName: function getFieldName(key) {
+      if (key) {
+        for (var x in this.graphControls['y']) {
+          if (this.graphControls['y'][x][0] == key) {
+            return this.graphControls['y'][x][1];
+          }
+        }
+      }
+
+      return '';
+    },
+    selectedMode: function selectedMode(key) {
+      if (key == this.options.mode) {
+        return true;
+      }
+
+      return false;
+    },
+    selectField: function selectField(key, level) {
+      if (level) {
+        this.options.controls[level] = key;
+      }
+
+      this.ui[level] = false;
+    },
+    selectedField: function selectedField(key, level) {
+      if (level) {
+        if (this.options.controls[level] == key) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+    getLabels: function getLabels() {
+      var data = [];
+
+      for (var x in this.data) {}
+
+      return data;
+    },
+    getRows: function getRows(options) {
+      for (var x in this.data) {
+        var country = this.data[x];
+      }
+    }
+  },
+  computed: {
+    xAxis: function xAxis() {
+      return [this.options.mode];
+    },
+    yAxis: function yAxis() {
+      var data = [];
+      if (this.options.controls.primary) data.push(this.options.controls.primary);
+      if (this.options.controls.secondary) data.push(this.options.controls.secondary);
+      return data;
+    },
+    comparison: function comparison() {
+      return this.data;
+    },
+    full_stats: function full_stats() {
+      var data = _.cloneDeep(this.data);
+
+      for (var x in data) {}
+
+      console.log(data);
+      return data;
+    },
+    dataset: function dataset() {
+      var xAxis = this.xAxis,
+          yAxis = this.yAxis;
+
+      if (this.xAxis == 'chronological') {
+        return this.datasetChronological;
+      } else if (this.xAxis == '100') {
+        return this.dataset100;
+      } else if (this.xAxis == 'delta') {
+        return this.datasetDelta;
+      } else if (this.xAxis == 'growth') {
+        return this.datasetGrowth;
+      } else {
+        return {
+          data: [],
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            hoverMode: 'index',
+            stacked: false,
+            legend: {
+              labels: {
+                fontColor: '#d1e8e2'
+              }
+            },
+            scales: {
+              xAxes: [{
+                ticks: {
+                  fontColor: '#d1e8e2'
+                }
+              }],
+              yAxes: [{
+                type: 'logarithmic',
+                display: true,
+                position: 'left',
+                id: 'y-1',
+                ticks: {
+                  fontColor: '#d1e8e2',
+                  callback: function callback(tick, index, ticks) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }]
+            }
+          }
+        };
+      }
+    },
+    datasetChronological: function datasetChronological() {
+      var data = {
+        labels: [],
+        datasets: []
+      },
+          options,
+          key,
+          content = [],
+          background = [{
+        primary: '#19aade',
+        secondary: '#eabd3b',
+        confirmed: '#19aade',
+        deaths: '#c7f9ee',
+        recovered: '#1de4bd',
+        growthFactor: '#1de4bd',
+        deltaConfirmed: '#1de4bd',
+        deltaDeaths: '#1de4bd',
+        deltaRecovered: '#1de4bd',
+        average: '#1de4bd'
+      }, {
+        confirmed: '#af4bce',
+        deaths: '#f0a58f',
+        recovered: '#ea7369',
+        growthFactor: '#ea7369',
+        deltaConfirmed: '#1de4bd',
+        deltaDeaths: '#1de4bd',
+        deltaRecovered: '#1de4bd',
+        average: '#1de4bd'
+      }, {
+        confirmed: '#de542c',
+        deaths: '#e7e34e',
+        recovered: '#eabd3b',
+        growthFactor: '#eabd3b',
+        deltaConfirmed: '#1de4bd',
+        deltaDeaths: '#1de4bd',
+        deltaRecovered: '#1de4bd',
+        average: '#1de4bd'
+      }]; // OPTIONS
+
+      options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        hoverMode: 'index',
+        stacked: false,
+        legend: {
+          labels: {
+            fontColor: '#d1e8e2'
+          }
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              fontColor: '#d1e8e2'
+            }
+          }],
+          yAxes: []
+        }
+      };
+      var count = 0;
+
+      for (var x in this.data) {
+        count++;
+      }
+
+      if (count == 0) return data;
+      var start = '',
+          end = ''; // Get start and end dates
+
+      for (var x in this.data) {
+        var stats = this.data[x].daily;
+
+        for (var y in stats) {
+          var date = stats[y].date;
+
+          if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD') < start) {
+            start = moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD');
+          }
+
+          if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD') > end) {
+            end = moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD');
+          }
+        }
+      } // Assemble content
+
+
+      for (var x = 0; x <= moment__WEBPACK_IMPORTED_MODULE_3___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_3___default()(start), 'days'); x++) {
+        var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_3___default()(start).add(x, 'days').format('YYYY-MM-DD'));
+
+        data.labels.push(current_date);
+
+        for (var y = 0; y < this.data.length; y++) {
+          if (!content[y]) {
+            content.push({
+              confirmed: [],
+              deaths: [],
+              recovered: [],
+              deltaConfirmed: [],
+              deltaDeaths: [],
+              deltaRecovered: [],
+              average: [],
+              growthFactor: []
+            });
+          }
+
+          if (this.data[y].daily) {
+            var found = false;
+            var stats = this.data[y].daily;
+
+            for (var z in stats) {
+              var row = stats[z];
+
+              if (moment__WEBPACK_IMPORTED_MODULE_3___default()(row.date).format('YYYY-MM-DD') === current_date) {
+                content[y].confirmed.push(row.confirmed);
+                content[y].deaths.push(row.deaths);
+                content[y].recovered.push(row.recovered);
+                content[y].deltaConfirmed.push(this.data[y].delta[z].confirmed);
+                content[y].deltaDeaths.push(this.data[y].delta[z].deaths);
+                content[y].deltaRecovered.push(this.data[y].delta[z].recovered);
+                content[y].average.push(this.data[y].average[z]);
+                content[y].growthFactor.push(this.data[y].growthFactor[z]);
+                found = true;
+              }
+            } // If today's data is missing, use previous day's
+
+
+            if (!found) {
+              if (content[y].confirmed.length > 0) {
+                content[y].confirmed.push(content[y].confirmed.slice(-1));
+                content[y].deaths.push(content[y].deaths.slice(-1));
+                content[y].recovered.push(content[y].recovered.slice(-1));
+              } else {
+                content[y].confirmed.push(0);
+                content[y].deaths.push(0);
+                content[y].recovered.push(0);
+              }
+            }
+          }
+        }
+      }
+
+      var position = '',
+          chartType = '',
+          metric = ''; // Assemble labels
+
+      for (var x = 0; x < this.data.length; x++) {
+        for (var y in this.yAxis) {
+          if (y == 0) {
+            position = 'left';
+            chartType = 'line';
+            metric = 'primary';
+          } else {
+            position = 'right';
+            chartType = 'bar';
+            metric = 'secondary';
+          }
+
+          if (this.yAxis[y] == 'confirmed') {
+            data.datasets.push({
+              type: chartType,
+              label: 'Confirmed (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              fill: false,
+              data: _.cloneDeep(content[x].confirmed),
+              yAxisID: 'y-confirmed'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-confirmed',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deaths') {
+            data.datasets.push({
+              type: chartType,
+              label: 'Deaths (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              data: _.cloneDeep(content[x].deaths),
+              yAxisID: 'y-deaths'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-deaths',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'recovered') {
+            data.datasets.push({
+              type: chartType,
+              label: 'Recovered (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              data: _.cloneDeep(content[x].recovered),
+              yAxisID: 'y-recovered'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-recovered',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deltaConfirmed') {
+            data.datasets.push({
+              type: chartType,
+              label: 'New cases per day (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              data: _.cloneDeep(content[x].deltaConfirmed),
+              yAxisID: 'y-deltaConfirmed'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-deltaConfirmed',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deltaDeaths') {
+            data.datasets.push({
+              type: chartType,
+              label: 'New cases per day (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              data: _.cloneDeep(content[x].deltaDeaths),
+              yAxisID: 'y-deltaDeaths'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-deltaDeaths',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deltaRecovered') {
+            data.datasets.push({
+              type: chartType,
+              label: 'New cases per day (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              data: _.cloneDeep(content[x].deltaRecovered),
+              yAxisID: 'y-deltaRecovered'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-deltaRecovered',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'average') {
+            data.datasets.push({
+              type: chartType,
+              label: 'Growth factor (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              fill: false,
+              data: _.cloneDeep(content[x].average),
+              yAxisID: 'y-average'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-average',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'growthFactor') {
+            data.datasets.push({
+              type: chartType,
+              label: 'Growth factor (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              fill: false,
+              data: _.cloneDeep(content[x].growthFactor),
+              yAxisID: 'y-growthFactor'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-growthFactor',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          }
+        }
+      }
+
+      return {
+        data: data,
+        options: options
+      };
+    },
+    dataset100: function dataset100() {
+      var data = {
+        labels: [],
+        datasets: []
+      },
+          options,
+          key,
+          bgConfirmed = ['#19aade', '#af4bce', '#de542c'],
+          bgRecovered = ['#1de4bd', '#ea7369', '#eabd3b'],
+          bgDeaths = ['#c7f9ee', '#f0a58f', '#e7e34e'];
+      var count = 0;
+
+      for (var x in this.data) {
+        count++;
+      }
+
+      if (count == 0) return data;
+      var labels = [];
+      var confirmed = {
+        '0': [],
+        '1': [],
+        '2': []
+      },
+          deaths = {
+        '0': [],
+        '1': [],
+        '2': []
+      },
+          recovered = {
+        '0': [],
+        '1': [],
+        '2': []
+      };
+
+      for (var x in this.data) {
+        var found = false;
+        var stats = this.data[x].daily;
+
+        for (var y in stats) {
+          var row = stats[y];
+
+          if (found || row.confirmed >= 100) {
+            found = true;
+            confirmed[x].push(row.confirmed);
+            deaths[x].push(row.deaths);
+            recovered[x].push(row.recovered);
+          }
+        }
+      } // Assemble labels
+
+
+      var max = 1;
+
+      for (var x in this.data) {
+        if (confirmed[x].length > max) {
+          max = confirmed[x].length;
+        }
+      }
+
+      for (var x = 1; x <= max; x++) {
+        data.labels.push('Day ' + x);
+      } // Assemble labels
+
+
+      for (var x in this.data) {
+        data.datasets.push({
+          type: 'line',
+          label: 'Confirmed (' + this.data[x].name.full + ')',
+          backgroundColor: bgConfirmed[x],
+          data: _.cloneDeep(confirmed[x]),
+          yAxisID: 'y-1'
+        }, {
+          type: 'bar',
+          label: 'Deaths (' + this.data[x].name.full + ')',
+          backgroundColor: bgDeaths[x],
+          data: _.cloneDeep(deaths[x]),
+          yAxisID: 'y-2'
+        }, {
+          type: 'bar',
+          label: 'Recovered (' + this.data[x].name.full + ')',
+          backgroundColor: bgRecovered[x],
+          data: _.cloneDeep(recovered[x]),
+          yAxisID: 'y-3'
+        });
+      } // OPTIONS
+
+
+      options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        hoverMode: 'index',
+        stacked: false,
+        legend: {
+          labels: {
+            fontColor: '#d1e8e2'
+          }
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              fontColor: '#d1e8e2'
+            }
+          }],
+          yAxes: [{
+            type: 'logarithmic',
+            display: true,
+            position: 'left',
+            id: 'y-1',
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }, {
+            type: 'logarithmic',
+            display: true,
+            position: 'right',
+            id: 'y-2',
+            // grid line settings
+            gridLines: {
+              drawOnChartArea: false // only want the grid lines for one axis to show up
+
+            },
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }, {
+            type: 'logarithmic',
+            display: true,
+            position: 'right',
+            id: 'y-3',
+            // grid line settings
+            gridLines: {
+              drawOnChartArea: false // only want the grid lines for one axis to show up
+
+            },
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }]
+        }
+      };
+      return {
+        data: data,
+        options: options
+      };
+    },
+    datasetDelta: function datasetDelta() {
+      var data = {
+        labels: [],
+        datasets: []
+      },
+          options,
+          key,
+          bgConfirmed = ['#19aade', '#af4bce', '#de542c'],
+          bgRecovered = ['#1de4bd', '#ea7369', '#eabd3b'],
+          bgDeaths = ['#c7f9ee', '#f0a58f', '#e7e34e'];
+      var count = 0;
+
+      for (var x in this.data) {
+        count++;
+      }
+
+      if (count == 0) return data;
+      var start = '',
+          end = ''; // Get start and end dates
+
+      for (var x in this.data) {
+        var stats = this.data[x].delta;
+
+        for (var y in stats) {
+          var date = stats[y].date;
+
+          if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD') < start) {
+            start = moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD');
+          }
+
+          if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD') > end) {
+            end = moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD');
+          }
+        }
+      }
+
+      var labels = [];
+      var confirmed = {
+        '0': [],
+        '1': [],
+        '2': []
+      },
+          deaths = {
+        '0': [],
+        '1': [],
+        '2': []
+      },
+          recovered = {
+        '0': [],
+        '1': [],
+        '2': []
+      };
+
+      for (var x = 0; x <= moment__WEBPACK_IMPORTED_MODULE_3___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_3___default()(start), 'days'); x++) {
+        var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_3___default()(start).add(x, 'days').format('YYYY-MM-DD'));
+
+        data.labels.push(current_date);
+
+        for (var y in this.data) {
+          if (this.data[y].delta) {
+            var found = false;
+            var stats = this.data[y].delta;
+
+            for (var z in stats) {
+              var row = stats[z];
+
+              if (moment__WEBPACK_IMPORTED_MODULE_3___default()(row.date).format('YYYY-MM-DD') === current_date) {
+                confirmed[y].push(row.confirmed);
+                deaths[y].push(row.deaths);
+                recovered[y].push(row.recovered);
+                found = true;
+              }
+            } // If today's data is missing, use previous day's
+
+
+            if (!found) {
+              if (confirmed[y].length > 0) {
+                confirmed[y].push(confirmed[confirmed[y].length]);
+                deaths[y].push(deaths[deaths[y].length]);
+                recovered[y].push(recovered[recovered[y].length]);
+              } else {
+                confirmed[y].push(0);
+                deaths[y].push(0);
+                recovered[y].push(0);
+              }
+            }
+          }
+        }
+      } // Assemble labels
+
+
+      for (var x in this.data) {
+        data.datasets.push({
+          type: 'line',
+          label: 'Confirmed (' + this.data[x].name.full + ')',
+          backgroundColor: bgConfirmed[x],
+          data: _.cloneDeep(confirmed[x]),
+          yAxisID: 'y-1'
+        }, {
+          type: 'bar',
+          label: 'Deaths (' + this.data[x].name.full + ')',
+          backgroundColor: bgDeaths[x],
+          data: _.cloneDeep(deaths[x]),
+          yAxisID: 'y-2'
+        }, {
+          type: 'bar',
+          label: 'Recovered (' + this.data[x].name.full + ')',
+          backgroundColor: bgRecovered[x],
+          data: _.cloneDeep(recovered[x]),
+          yAxisID: 'y-3'
+        });
+      } // OPTIONS
+
+
+      options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        hoverMode: 'index',
+        stacked: false,
+        legend: {
+          labels: {
+            fontColor: '#d1e8e2'
+          }
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              fontColor: '#d1e8e2'
+            }
+          }],
+          yAxes: [{
+            type: 'logarithmic',
+            display: true,
+            position: 'left',
+            id: 'y-1',
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }, {
+            type: 'logarithmic',
+            display: true,
+            position: 'right',
+            id: 'y-2',
+            // grid line settings
+            gridLines: {
+              drawOnChartArea: false // only want the grid lines for one axis to show up
+
+            },
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }, {
+            type: 'logarithmic',
+            display: true,
+            position: 'right',
+            id: 'y-3',
+            // grid line settings
+            gridLines: {
+              drawOnChartArea: false // only want the grid lines for one axis to show up
+
+            },
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }]
+        }
+      };
+      return {
+        data: data,
+        options: options
+      };
+    },
+    datasetGrowth: function datasetGrowth() {
+      var arrAvg = function arrAvg(arr) {
+        return arr.reduce(function (a, b) {
+          return a + b;
+        }, 0) / arr.length;
+      };
+
+      var data = {
+        labels: [],
+        datasets: []
+      },
+          options,
+          key,
+          bgConfirmed = ['#19aade', '#af4bce', '#de542c'],
+          bgRecovered = ['#1de4bd', '#ea7369', '#eabd3b'],
+          bgDeaths = ['#c7f9ee', '#f0a58f', '#e7e34e'];
+      var count = 0;
+
+      for (var x in this.data) {
+        count++;
+      }
+
+      if (count == 0) return data;
+      var start = '',
+          end = ''; // Get start and end dates
+
+      for (var x in this.data) {
+        var stats = this.data[x].daily;
+
+        for (var y in stats) {
+          var date = stats[y].date;
+
+          if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD') < start) {
+            start = moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD');
+          }
+
+          if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD') > end) {
+            end = moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD');
+          }
+        }
+      } // Assemble labels
+
+
+      for (var country_index in this.data) {
+        data.datasets.push({
+          type: 'line',
+          label: this.data[country_index].name.full,
+          backgroundColor: bgConfirmed[country_index],
+          data: [],
+          yAxisID: 'y-1'
+        });
+      }
+
+      for (var x = 0; x <= moment__WEBPACK_IMPORTED_MODULE_3___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_3___default()(start), 'days'); x++) {
+        var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_3___default()(start).add(x, 'days').format('YYYY-MM-DD'));
+
+        data.labels.push(current_date);
+      }
+
+      for (var x in this.data) {
+        var diff = moment__WEBPACK_IMPORTED_MODULE_3___default()(this.data[x].daily[0].date).diff(moment__WEBPACK_IMPORTED_MODULE_3___default()(start), 'days');
+
+        if (moment__WEBPACK_IMPORTED_MODULE_3___default()(this.data[x].daily[0].date) > moment__WEBPACK_IMPORTED_MODULE_3___default()(start)) {
+          for (var y = 0; y < diff; y++) {
+            data.datasets[x].data.push(0);
+          }
+        }
+
+        for (var y in this.data[x].growthFactor) {
+          var gf = 0;
+          gf = parseFloat(this.data[x].growthFactor[y]).toFixed(2);
+
+          if (isNaN(gf)) {
+            gf = 0;
+          }
+
+          data.datasets[x].data.push(gf);
+        }
+      } // OPTIONS
+
+
+      options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        hoverMode: 'index',
+        stacked: false,
+        legend: {
+          labels: {
+            fontColor: '#d1e8e2'
+          }
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              fontColor: '#d1e8e2'
+            }
+          }],
+          yAxes: [{
+            type: 'logarithmic',
+            display: true,
+            position: 'left',
+            id: 'y-1',
+            ticks: {
+              fontColor: '#d1e8e2',
+              callback: function callback(tick, index, ticks) {
+                return tick.toLocaleString();
+              }
+            }
+          }]
+        }
+      };
+      return {
+        data: data,
+        options: options
+      };
     }
   }
 });
@@ -3782,17 +4820,18 @@ __webpack_require__.r(__webpack_exports__);
         this.compare.push([key, country, state]);
       } else if (this.mode == 'comparison') {
         var key = this.getCountryId(country);
+        var find = this.findCompare([country, state]);
 
-        if (this.compare.length <= 3) {
-          var find = this.findCompare([country, state]);
+        if (find !== false) {
+          console.log('Found at  ' + find + ', removing');
+          this.compare.splice(find, 1);
+        } else {
+          if (this.compare.length >= 3) {
+            this.compare.shift();
+          }
 
-          if (find !== false) {
-            console.log('Found at  ' + find + ', removing');
-            this.compare.splice(find, 1);
-          } else {
-            if (this.compare.length < 3) {
-              this.compare.push([key, country, state]);
-            }
+          if (this.compare.length < 3) {
+            this.compare.push([key, country, state]);
           }
         }
       }
@@ -82049,7 +83088,7 @@ var render = function() {
             _c("div", { staticClass: "p-2 text-xs" }, [
               _c("div", { staticClass: "w-full flex justify-end" }, [
                 _c("div", { staticClass: "w-20" }, [
-                  _vm._v(_vm._s(row["date"]))
+                  _vm._v(_vm._s(_vm.moment(row["date"]).format("YYYY-MM-DD")))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "w-20" }, [
@@ -82248,14 +83287,14 @@ var render = function() {
         "div",
         {
           staticClass:
-            "m-4 bg-slab rounded p-4 absolute top-0 right-0 bottom-0 left-0 z-10 flex items-start"
+            "m-4 bg-slab rounded p-2 absolute top-0 right-0 bottom-0 left-0 z-10 flex items-start"
         },
         [
           _c(
             "div",
-            { staticClass: "relative w-140 h-full mb-4" },
+            { staticClass: "relative w-140 h-full mb-4 ml-0" },
             [
-              _c("div", { staticClass: "mx-6 pt-4 relative" }, [
+              _c("div", { staticClass: "mx-6 pt-4 relative ml-2" }, [
                 _c("h2", { staticClass: "font-bold text-3xl" }, [
                   _vm._v(_vm._s(_vm.data.name.country))
                 ]),
@@ -82325,7 +83364,7 @@ var render = function() {
                 "simplebar",
                 {
                   staticClass:
-                    "top-0 right-0 left-0 mt-64 mx-4 mr-4 border-b border-lightslab",
+                    "top-0 right-0 left-0 mt-64 mx-2 border-b border-lightslab",
                   staticStyle: { bottom: "320px", position: "absolute" },
                   attrs: { "data-simplebar-auto-hide": "false" }
                 },
@@ -82335,7 +83374,7 @@ var render = function() {
                       "div",
                       {
                         staticClass:
-                          "flex p-2 text-xs items-start justify-between"
+                          "flex p-2 text-xs items-start bg-slab-primary"
                       },
                       [
                         _c("div", { staticClass: "w-20" }, [
@@ -82344,140 +83383,86 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "w-full flex-col" }, [
-                          _c(
-                            "div",
-                            { staticClass: "w-full flex justify-end" },
-                            [
-                              _c("div", { staticClass: "w-20" }, [
+                        _c("div", { staticClass: "w-20" }, [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(isNaN(row.confirmed) ? 0 : row.confirmed) +
+                              "\n                                "
+                          ),
+                          _vm.data.delta[key].confirmed >= 0
+                            ? _c("span", { staticClass: "text-green-400" }, [
                                 _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(
-                                      isNaN(row.confirmed) ? 0 : row.confirmed
-                                    ) +
-                                    "\n                                        "
-                                ),
-                                _vm.data.delta[key].confirmed >= 0
-                                  ? _c(
-                                      "span",
-                                      { staticClass: "text-green-400" },
-                                      [
-                                        _vm._v(
-                                          "(+" +
-                                            _vm._s(
-                                              _vm.data.delta[key].confirmed
-                                            ) +
-                                            ")"
-                                        )
-                                      ]
-                                    )
-                                  : _c(
-                                      "span",
-                                      { staticClass: "text-red-400" },
-                                      [
-                                        _vm._v(
-                                          "(" +
-                                            _vm._s(
-                                              _vm.data.delta[key].confirmed
-                                            ) +
-                                            ")"
-                                        )
-                                      ]
-                                    )
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "w-20" }, [
-                                _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(isNaN(row.deaths) ? 0 : row.deaths) +
-                                    "\n                                        "
-                                ),
-                                _vm.data.delta[key].deaths >= 0
-                                  ? _c(
-                                      "span",
-                                      { staticClass: "text-green-400" },
-                                      [
-                                        _vm._v(
-                                          "(+" +
-                                            _vm._s(_vm.data.delta[key].deaths) +
-                                            ")"
-                                        )
-                                      ]
-                                    )
-                                  : _c(
-                                      "span",
-                                      { staticClass: "text-red-400" },
-                                      [
-                                        _vm._v(
-                                          "(" +
-                                            _vm._s(_vm.data.delta[key].deaths) +
-                                            ")"
-                                        )
-                                      ]
-                                    )
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "w-20" }, [
-                                _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(
-                                      isNaN(row.recovered) ? 0 : row.recovered
-                                    ) +
-                                    "\n                                        "
-                                ),
-                                _vm.data.delta[key].recovered >= 0
-                                  ? _c(
-                                      "span",
-                                      { staticClass: "text-green-400" },
-                                      [
-                                        _vm._v(
-                                          "(+" +
-                                            _vm._s(
-                                              _vm.data.delta[key].recovered
-                                            ) +
-                                            ")"
-                                        )
-                                      ]
-                                    )
-                                  : _c(
-                                      "span",
-                                      { staticClass: "text-red-400" },
-                                      [
-                                        _vm._v(
-                                          "(" +
-                                            _vm._s(
-                                              _vm.data.delta[key].recovered
-                                            ) +
-                                            ")"
-                                        )
-                                      ]
-                                    )
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "w-12" }, [
-                                _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(_vm.data.growth[key]) +
-                                    "\n                                    "
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "w-20" }, [
-                                _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(_vm.data.average[key]) +
-                                    "\n                                    "
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "w-12" }, [
-                                _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(_vm.data.growthFactor[key]) +
-                                    "\n                                    "
+                                  "(+" +
+                                    _vm._s(_vm.data.delta[key].confirmed) +
+                                    ")"
                                 )
                               ])
-                            ]
+                            : _c("span", { staticClass: "text-red-400" }, [
+                                _vm._v(
+                                  "(" +
+                                    _vm._s(_vm.data.delta[key].confirmed) +
+                                    ")"
+                                )
+                              ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-16" }, [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(isNaN(row.deaths) ? 0 : row.deaths) +
+                              "\n                                "
+                          ),
+                          _vm.data.delta[key].deaths >= 0
+                            ? _c("span", { staticClass: "text-green-400" }, [
+                                _vm._v(
+                                  "(+" +
+                                    _vm._s(_vm.data.delta[key].deaths) +
+                                    ")"
+                                )
+                              ])
+                            : _c("span", { staticClass: "text-red-400" }, [
+                                _vm._v(
+                                  "(" + _vm._s(_vm.data.delta[key].deaths) + ")"
+                                )
+                              ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-16" }, [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(isNaN(row.recovered) ? 0 : row.recovered) +
+                              "\n                                "
+                          ),
+                          _vm.data.delta[key].recovered >= 0
+                            ? _c("span", { staticClass: "text-green-400" }, [
+                                _vm._v(
+                                  "(+" +
+                                    _vm._s(_vm.data.delta[key].recovered) +
+                                    ")"
+                                )
+                              ])
+                            : _c("span", { staticClass: "text-red-400" }, [
+                                _vm._v(
+                                  "(" +
+                                    _vm._s(_vm.data.delta[key].recovered) +
+                                    ")"
+                                )
+                              ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-16" }, [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.data.average[key]) +
+                              "\n                            "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-16" }, [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.data.growthFactor[key]) +
+                              "\n                            "
                           )
                         ])
                       ]
@@ -82525,7 +83510,7 @@ var render = function() {
                 "div",
                 {
                   staticClass:
-                    "h-76 absolute bottom-0 left-0 right-0 m-2 p-4 mb-0 pt-0 rounded bg-hoverslab"
+                    "h-76 absolute bottom-0 left-0 right-0 m-2 p-4 mb-0 ml-0 pt-0 rounded bg-hoverslab"
                 },
                 [
                   _c("div", { staticClass: "font-bold my-1" }, [
@@ -82604,7 +83589,16 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _vm._m(1)
+          _c(
+            "div",
+            { staticClass: "h-full relative w-full" },
+            [
+              _c("StatsChart", {
+                attrs: { data: [_vm.data], annotations: _vm.annotations }
+              })
+            ],
+            1
+          )
         ]
       )
     ]
@@ -82617,41 +83611,25 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      { staticClass: "mx-6 flex text-xs font-bold py-2 justify-between" },
+      { staticClass: "mx-4 flex justify-between text-xs font-bold py-2" },
       [
         _c("div", { staticClass: "w-20" }, [_vm._v("Date")]),
         _vm._v(" "),
-        _c("div", { staticClass: "justify-end flex w-full" }, [
-          _c("div", { staticClass: "w-20" }, [_vm._v("Confirmed")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-20" }, [_vm._v("Deaths")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-20" }, [_vm._v("Recovered")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-12" }, [_vm._v("New Cases")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-20" }, [
-            _vm._v("Avg New Cases "),
-            _c("br"),
-            _vm._v(" (5 days)")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-12" }, [_vm._v("Growth Factor")])
-        ])
+        _c("div", { staticClass: "w-20" }, [_vm._v("Confirmed")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "w-16" }, [_vm._v("Deaths")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "w-16" }, [_vm._v("Recovered")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "w-16" }, [
+          _vm._v("Avg New Cases "),
+          _c("br"),
+          _vm._v(" (5 days)")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "w-16" }, [_vm._v("Growth Factor")])
       ]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "h-full relative w-full" }, [
-      _c(
-        "div",
-        { staticClass: "absolute left-0 right-0 bottom-0 border top-0 p-4" },
-        [_vm._v("\n                    TO-DO: Graph\n                ")]
-      )
-    ])
   }
 ]
 render._withStripped = true
@@ -82735,6 +83713,261 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StatsChart.vue?vue&type=template&id=0a4383aa&scoped=true&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/StatsChart.vue?vue&type=template&id=0a4383aa&scoped=true& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", [
+      _c("div", { staticClass: "absolute left-0 right-0 bottom-0 top-0 p-4" }, [
+        _c("div", { staticClass: "text-xs flex items-start justify-between" }, [
+          _c("div", { staticClass: "flex items-center" }, [
+            _c("div", { staticClass: "mr-2" }, [_vm._v("Time mode")]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "flex" },
+              _vm._l(_vm.graphControls.x, function(row) {
+                return _c(
+                  "div",
+                  {
+                    staticClass:
+                      "p-2 border border-hoverslab m-1 cursor-pointer",
+                    class: _vm.selectedMode(row[0]) ? "bg-hoverslab" : ""
+                  },
+                  [
+                    _vm._v(
+                      "\n                                " +
+                        _vm._s(row[1]) +
+                        "\n                            "
+                    )
+                  ]
+                )
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex items-center" }, [
+            _c("div", { staticClass: "mr-2" }, [_vm._v("Metrics")]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "flex border border-hoverslab m-1 cursor-pointer p-2 relative"
+              },
+              [
+                _vm.options.controls.primary
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "w-48",
+                        on: {
+                          click: function($event) {
+                            _vm.ui.primary = !_vm.ui.primary
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          _vm._s(_vm.getFieldName(_vm.options.controls.primary))
+                        )
+                      ]
+                    )
+                  : _c(
+                      "div",
+                      {
+                        staticClass: "w-48",
+                        on: {
+                          click: function($event) {
+                            _vm.ui.primary = !_vm.ui.primary
+                          }
+                        }
+                      },
+                      [_vm._v("Select primary metric")]
+                    ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.ui.primary,
+                        expression: "ui.primary"
+                      }
+                    ],
+                    staticClass:
+                      "absolute z-10 bg-hoverslab shadow w-52 right-0 top-0 p-2"
+                  },
+                  _vm._l(_vm.graphControls.y, function(row) {
+                    return _c(
+                      "div",
+                      {
+                        staticClass: "p-2 m-1",
+                        on: {
+                          click: function($event) {
+                            return _vm.selectField(row[0], "primary")
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(row[1]) +
+                            "\n                                "
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "flex border border-hoverslab m-1 cursor-pointer p-2 relative"
+              },
+              [
+                _vm.options.controls.secondary
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "w-48",
+                        on: {
+                          click: function($event) {
+                            _vm.ui.secondary = !_vm.ui.secondary
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          _vm._s(
+                            _vm.getFieldName(_vm.options.controls.secondary)
+                          )
+                        )
+                      ]
+                    )
+                  : _c(
+                      "div",
+                      {
+                        staticClass: "w-48",
+                        on: {
+                          click: function($event) {
+                            _vm.ui.secondary = !_vm.ui.secondary
+                          }
+                        }
+                      },
+                      [_vm._v("Select secondary metric")]
+                    ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.ui.secondary,
+                        expression: "ui.secondary"
+                      }
+                    ],
+                    staticClass:
+                      "absolute z-10 bg-hoverslab shadow w-52 right-0 top-0 p-2"
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "p-2 m-1",
+                        on: {
+                          click: function($event) {
+                            return _vm.selectField("", "secondary")
+                          }
+                        }
+                      },
+                      [_vm._v("None")]
+                    ),
+                    _vm._v(" "),
+                    _vm._l(_vm.graphControls.y, function(row) {
+                      return _c(
+                        "div",
+                        {
+                          staticClass: "p-2 m-1",
+                          on: {
+                            click: function($event) {
+                              return _vm.selectField(row[0], "secondary")
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                    " +
+                              _vm._s(row[1]) +
+                              "\n                                "
+                          )
+                        ]
+                      )
+                    })
+                  ],
+                  2
+                )
+              ]
+            )
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass:
+          "bg-hoverslab p-2 absolute rounded left-0 top-0 right-0 bottom-0 mt-16"
+      },
+      [
+        _c(
+          "simplebar",
+          {
+            staticClass: "h-full",
+            attrs: { "data-simplebar-auto-hide": "false" }
+          },
+          [
+            _c("LineChart", {
+              staticClass: "h-200 m-4 mb-0",
+              attrs: { data: _vm.dataset.data, options: _vm.dataset.options }
+            })
+          ],
+          1
+        )
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -99228,6 +100461,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Nav_vue_vue_type_template_id_7cd4f788_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Nav_vue_vue_type_template_id_7cd4f788_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/StatsChart.vue":
+/*!************************************************!*\
+  !*** ./resources/js/components/StatsChart.vue ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _StatsChart_vue_vue_type_template_id_0a4383aa_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StatsChart.vue?vue&type=template&id=0a4383aa&scoped=true& */ "./resources/js/components/StatsChart.vue?vue&type=template&id=0a4383aa&scoped=true&");
+/* harmony import */ var _StatsChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StatsChart.vue?vue&type=script&lang=js& */ "./resources/js/components/StatsChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _StatsChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _StatsChart_vue_vue_type_template_id_0a4383aa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _StatsChart_vue_vue_type_template_id_0a4383aa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "0a4383aa",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/StatsChart.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/StatsChart.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/StatsChart.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StatsChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./StatsChart.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StatsChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StatsChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/StatsChart.vue?vue&type=template&id=0a4383aa&scoped=true&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/StatsChart.vue?vue&type=template&id=0a4383aa&scoped=true& ***!
+  \*******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StatsChart_vue_vue_type_template_id_0a4383aa_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./StatsChart.vue?vue&type=template&id=0a4383aa&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StatsChart.vue?vue&type=template&id=0a4383aa&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StatsChart_vue_vue_type_template_id_0a4383aa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StatsChart_vue_vue_type_template_id_0a4383aa_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
