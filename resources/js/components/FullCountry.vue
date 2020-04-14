@@ -79,6 +79,7 @@
                             >
                                 <div v-if="annotation.state.length > 0" class="font-bold mr-2">{{annotation.state}}</div>
                                 <div>{{annotation.notes}}</div>
+<!--                                <div v-if="annotation.url"><a class="underline hover:text-white" :href="annotation.url">(source)</a></div>-->
                             </div>
                         </div>
                     </div>
@@ -96,6 +97,7 @@
                                 <div class="w-full">
                                     <span v-if="note.state.length > 0" class="font-bold mr-1">[{{note.state}}]</span>
                                     <span>{{note.notes}}</span>
+                                    <span v-if="note.url"><a class="underline hover:text-white" :href="note.url">(source)</a></span>
                                 </div>
                             </li>
                         </ul>

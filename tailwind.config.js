@@ -14,7 +14,10 @@ module.exports = {
           },
           margin: {
               '52' : '13rem',
+              '60' : '15rem',
               '80' : '20rem',
+              '100' : '25rem',
+              '112' : '28rem',
           },
           width: {
               '18' : '4.5rem',
