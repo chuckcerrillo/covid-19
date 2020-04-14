@@ -2875,6 +2875,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2893,6 +2906,17 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    getDayNotes: function getDayNotes(date) {
+      var data = [];
+
+      for (var x in this.annotations) {
+        if (this.data.annotations[x].date == date) {
+          data.push(this.data.annotations[x]);
+        }
+      }
+
+      return data;
+    },
     toggleExpand: function toggleExpand() {
       this.expanded = !this.expanded;
     },
@@ -2945,6 +2969,21 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
+    annotations: function annotations() {
+      var data = [];
+
+      for (var x in this.data.annotations) {
+        if (this.data.name.state) {
+          if (this.data.name.state.length == 0 || this.data.name.state.length > 0 && this.data.name.state == this.data.annotations[x].state) {
+            data.push(this.data.annotations[x]);
+          }
+        } else {
+          data.push(this.data.annotations[x]);
+        }
+      }
+
+      return data;
+    },
     recomputed: function recomputed() {
       this.recomputeGrowth();
       return this.recomputed_data;
@@ -2969,6 +3008,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var simplebar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! simplebar-vue */ "./node_modules/simplebar-vue/dist/simplebar-vue.esm.js");
+//
+//
 //
 //
 //
@@ -3228,6 +3269,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "About",
   methods: {
@@ -3258,6 +3300,57 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _Single__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Single */ "./resources/js/views/Single.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3443,6 +3536,7 @@ __webpack_require__.r(__webpack_exports__);
       'raw_state_data': [],
       'raw_stats': [],
       'selectedCountry': 2,
+      'selectedCompareTab': 1,
       'show_countries': true
     };
   },
@@ -3561,8 +3655,8 @@ __webpack_require__.r(__webpack_exports__);
       var found = false;
 
       for (var x in this.compare) {
-        if (this.compare[x][0] == item[0]) {
-          if (this.compare[x][1] == item[1]) {
+        if (this.compare[x][1] == item[0]) {
+          if (this.compare[x][2] == item[1]) {
             found = x;
             break;
           }
@@ -3650,11 +3744,11 @@ __webpack_require__.r(__webpack_exports__);
       if (item && item[0]) {
         var country = item[1];
 
-        if (item[1]) {
+        if (item[2]) {
           return {
             full: item[2] + ' - ' + country,
             country: country,
-            state: item[1],
+            state: item[2],
             country_id: item[0]
           };
         } else {
@@ -3683,9 +3777,16 @@ __webpack_require__.r(__webpack_exports__);
       } else if (this.mode == 'comparison') {
         var key = this.getCountryId(country);
 
-        if (this.compare.length < 3) {
-          if (!this.findCompare([key, state])) {
-            this.compare.push([key, country, state]);
+        if (this.compare.length <= 3) {
+          var find = this.findCompare([country, state]);
+
+          if (find !== false) {
+            console.log('Found at  ' + find + ', removing');
+            this.compare.splice(find, 1);
+          } else {
+            if (this.compare.length < 3) {
+              this.compare.push([key, country, state]);
+            }
           }
         }
       }
@@ -3818,6 +3919,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -81904,10 +82006,7 @@ var render = function() {
               "absolute top-0 right-0 text-xs pt-4 hover:text-white cursor-pointer",
             on: {
               click: function($event) {
-                return _vm.remove([
-                  _vm.data.name.country_id,
-                  _vm.data.name.state
-                ])
+                return _vm.remove([_vm.data.name.country, _vm.data.name.state])
               }
             }
           },
@@ -81934,23 +82033,24 @@ var render = function() {
       _c(
         "simplebar",
         {
-          staticClass: "top-0 right-0 left-0 bottom-0 mt-56 mx-4 mb-4 mr-4",
+          staticClass:
+            "top-0 right-0 left-0 bottom-0 mt-60 mx-4 mb-4 mr-4 bg-slab rounded-b",
           staticStyle: { position: "absolute" },
           attrs: { "data-simplebar-auto-hide": "false" }
         },
         _vm._l(_vm.recomputed.daily, function(row, key, index) {
-          return _c(
-            "div",
-            { staticClass: "flex p-2 text-xs justify-between" },
-            [
-              _c("div", { staticClass: "w-20" }, [_vm._v(_vm._s(row["date"]))]),
-              _vm._v(" "),
+          return _c("div", [
+            _c("div", { staticClass: "p-2 text-xs" }, [
               _c("div", { staticClass: "w-full flex justify-end" }, [
                 _c("div", { staticClass: "w-20" }, [
+                  _vm._v(_vm._s(row["date"]))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "w-20" }, [
                   _vm._v(
-                    "\n                        " +
+                    "\n                            " +
                       _vm._s(isNaN(row.confirmed) ? 0 : row.confirmed) +
-                      "\n                        "
+                      "\n                            "
                   ),
                   _vm.data.delta[key].confirmed >= 0
                     ? _c("span", { staticClass: "text-green-400" }, [
@@ -81967,9 +82067,9 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "w-20" }, [
                   _vm._v(
-                    "\n                        " +
+                    "\n                            " +
                       _vm._s(isNaN(row.deaths) ? 0 : row.deaths) +
-                      "\n                        "
+                      "\n                            "
                   ),
                   _vm.data.delta[key].deaths >= 0
                     ? _c("span", { staticClass: "text-green-400" }, [
@@ -81982,9 +82082,9 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "w-20" }, [
                   _vm._v(
-                    "\n                        " +
+                    "\n                            " +
                       _vm._s(isNaN(row.recovered) ? 0 : row.recovered) +
-                      "\n                        "
+                      "\n                            "
                   ),
                   _vm.data.delta[key].recovered >= 0
                     ? _c("span", { staticClass: "text-green-400" }, [
@@ -82001,14 +82101,45 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "w-20" }, [
                   _vm._v(
-                    "\n                        " +
+                    "\n                            " +
                       _vm._s(_vm.data.growthFactor[key]) +
-                      "\n                    "
+                      "\n                        "
                   )
                 ])
               ])
-            ]
-          )
+            ]),
+            _vm._v(" "),
+            _vm.getDayNotes(_vm.moment(row["date"]).format("YYYY-MM-DD"))
+              .length > 0
+              ? _c(
+                  "div",
+                  _vm._l(
+                    _vm.getDayNotes(
+                      _vm.moment(row["date"]).format("YYYY-MM-DD")
+                    ),
+                    function(annotation) {
+                      return _c(
+                        "div",
+                        {
+                          staticClass:
+                            "p-1 m-1 text-xs rounded bg-slab-primary flex"
+                        },
+                        [
+                          annotation.state.length > 0
+                            ? _c("div", { staticClass: "font-bold mr-2" }, [
+                                _vm._v(_vm._s(annotation.state))
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("div", [_vm._v(_vm._s(annotation.notes))])
+                        ]
+                      )
+                    }
+                  ),
+                  0
+                )
+              : _vm._e()
+          ])
         }),
         0
       ),
@@ -82030,11 +82161,14 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      { staticClass: "mx-6 flex text-xs font-bold py-2 justify-between" },
+      {
+        staticClass:
+          "px-2 mx-4 py-2 pb-4 flex text-xs font-bold justify-between bg-slab-primary rounded-t"
+      },
       [
-        _c("div", { staticClass: "w-20" }, [_vm._v("Date")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "justify-end flex w-full" }, [
+        _c("div", { staticClass: "justify-end flex w-full items-end" }, [
+          _c("div", { staticClass: "w-20" }, [_vm._v("Date")]),
+          _vm._v(" "),
           _c("div", { staticClass: "w-20" }, [_vm._v("Confirmed")]),
           _vm._v(" "),
           _c("div", { staticClass: "w-20" }, [_vm._v("Deaths")]),
@@ -82184,11 +82318,11 @@ var render = function() {
                             [
                               _c("div", { staticClass: "w-20" }, [
                                 _vm._v(
-                                  "\n                                    " +
+                                  "\n                                        " +
                                     _vm._s(
                                       isNaN(row.confirmed) ? 0 : row.confirmed
                                     ) +
-                                    "\n                                    "
+                                    "\n                                        "
                                 ),
                                 _vm.data.delta[key].confirmed >= 0
                                   ? _c(
@@ -82221,9 +82355,9 @@ var render = function() {
                               _vm._v(" "),
                               _c("div", { staticClass: "w-20" }, [
                                 _vm._v(
-                                  "\n                                    " +
+                                  "\n                                        " +
                                     _vm._s(isNaN(row.deaths) ? 0 : row.deaths) +
-                                    "\n                                    "
+                                    "\n                                        "
                                 ),
                                 _vm.data.delta[key].deaths >= 0
                                   ? _c(
@@ -82252,11 +82386,11 @@ var render = function() {
                               _vm._v(" "),
                               _c("div", { staticClass: "w-20" }, [
                                 _vm._v(
-                                  "\n                                    " +
+                                  "\n                                        " +
                                     _vm._s(
                                       isNaN(row.recovered) ? 0 : row.recovered
                                     ) +
-                                    "\n                                    "
+                                    "\n                                        "
                                 ),
                                 _vm.data.delta[key].recovered >= 0
                                   ? _c(
@@ -82289,25 +82423,25 @@ var render = function() {
                               _vm._v(" "),
                               _c("div", { staticClass: "w-12" }, [
                                 _vm._v(
-                                  "\n                                    " +
+                                  "\n                                        " +
                                     _vm._s(_vm.data.growth[key]) +
-                                    "\n                                "
+                                    "\n                                    "
                                 )
                               ]),
                               _vm._v(" "),
                               _c("div", { staticClass: "w-20" }, [
                                 _vm._v(
-                                  "\n                                    " +
+                                  "\n                                        " +
                                     _vm._s(_vm.data.average[key]) +
-                                    "\n                                "
+                                    "\n                                    "
                                 )
                               ]),
                               _vm._v(" "),
                               _c("div", { staticClass: "w-12" }, [
                                 _vm._v(
-                                  "\n                                    " +
+                                  "\n                                        " +
                                     _vm._s(_vm.data.growthFactor[key]) +
-                                    "\n                                "
+                                    "\n                                    "
                                 )
                               ])
                             ]
@@ -82378,7 +82512,7 @@ var render = function() {
                           _vm.annotations.length == 0
                             ? _c("li", { staticClass: "text-xs p-4" }, [
                                 _vm._v(
-                                  "\n                            Nothing to show here.\n                        "
+                                  "\n                                Nothing to show here.\n                            "
                                 )
                               ])
                             : _vm._e(),
@@ -82406,7 +82540,21 @@ var render = function() {
                                       )
                                     : _vm._e(),
                                   _vm._v(" "),
-                                  _c("span", [_vm._v(_vm._s(note.notes))])
+                                  _c("span", [_vm._v(_vm._s(note.notes))]),
+                                  _vm._v(" "),
+                                  note.url
+                                    ? _c("span", [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass:
+                                              "underline hover:text-white",
+                                            attrs: { href: note.url }
+                                          },
+                                          [_vm._v("(source)")]
+                                        )
+                                      ])
+                                    : _vm._e()
                                 ])
                               ]
                             )
@@ -82468,7 +82616,7 @@ var staticRenderFns = [
       _c(
         "div",
         { staticClass: "absolute left-0 right-0 bottom-0 border top-0 p-4" },
-        [_vm._v("\n                TO-DO: Graph\n            ")]
+        [_vm._v("\n                    TO-DO: Graph\n                ")]
       )
     ])
   }
@@ -82502,20 +82650,6 @@ var render = function() {
       },
       [
         _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "p-2 px-4 cursor-pointer hover:text-white",
-            class: _vm.isActive(_vm.mode, "single", "bg-hoverslab"),
-            on: {
-              click: function($event) {
-                return _vm.setMode("single")
-              }
-            }
-          },
-          [_vm._v("Statistics (to-do)")]
-        ),
         _vm._v(" "),
         _c(
           "div",
@@ -82635,6 +82769,8 @@ var render = function() {
           _vm._v(" "),
           _vm._m(0),
           _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
           _c("p", { staticClass: "mt-4" }, [_vm._v("© Simpler Solutions")])
         ]
       )
@@ -82646,19 +82782,42 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", [
+    return _c("p", { staticClass: "my-2" }, [
       _vm._v(
         "This COVID-19 tracker uses data from the COVID-19 data repository by Johns Hopkins CSSE. ("
       ),
       _c(
         "a",
         {
-          staticClass: "hover:text-lightslab",
+          staticClass: "underline hover:text-lightslab",
           attrs: { href: "https://github.com/CSSEGISandData/COVID-19" }
         },
         [_vm._v("https://github.com/CSSEGISandData/COVID-19")]
       ),
       _vm._v(")")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "my-2" }, [
+      _vm._v('"Growth Factor" '),
+      _c(
+        "a",
+        {
+          staticClass: "underline hover:text-lightslab",
+          attrs: {
+            href:
+              "https://www.abc.net.au/news/2020-04-10/coronavirus-data-australia-growth-factor-covid-19/12132478"
+          }
+        },
+        [_vm._v("according to ABC Australia")]
+      ),
+      _vm._v(" is a measure of "),
+      _c("em", [
+        _vm._v("how fast the number of new cases is going up or down.")
+      ])
     ])
   }
 ]
@@ -82690,536 +82849,740 @@ var render = function() {
           "div",
           { staticClass: "flex flex-1 h-screen overflow-y-auto relative" },
           [
-            _c("div", { staticClass: "w-116 relative" }, [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "m-4 absolute left-0 top-0 w-full overflow-hidden bg-lightslab rounded h-48 z-10 p-4"
-                },
-                [
+            _vm.mode == "comparison"
+              ? _c("div", { staticClass: "w-116 relative" }, [
                   _c(
                     "div",
-                    { staticClass: "text-2xl tracking-tight font-bold" },
-                    [_vm._v("Global tally")]
+                    {
+                      staticClass:
+                        "m-4 absolute left-0 top-0 w-full overflow-hidden bg-lightslab rounded h-48 z-10 p-4"
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "text-2xl tracking-tight font-bold" },
+                        [_vm._v("Global tally")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "text-xs mb-4" }, [
+                        _vm._v("as of " + _vm._s(_vm.global.last_update))
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "flex font-bold justify-between items-center"
+                        },
+                        [
+                          _c("div", { staticClass: "m-2" }, [
+                            _c("div", { staticClass: "text-sm" }, [
+                              _vm._v("Confirmed")
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "text-3xl text-white" }, [
+                              _vm._v(_vm._s(_vm.global.confirmed))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "m-2" }, [
+                            _c("div", { staticClass: "text-sm" }, [
+                              _vm._v("Deaths")
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "text-3xl text-white" }, [
+                              _vm._v(_vm._s(_vm.global.deaths))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "m-2" }, [
+                            _c("div", { staticClass: "text-sm" }, [
+                              _vm._v("Recovered")
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "text-3xl text-white" }, [
+                              _vm._v(_vm._s(_vm.global.recovered))
+                            ])
+                          ])
+                        ]
+                      )
+                    ]
                   ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "text-xs mb-4" }, [
-                    _vm._v("as of " + _vm._s(_vm.global.last_update))
-                  ]),
                   _vm._v(" "),
                   _c(
                     "div",
                     {
-                      staticClass: "flex font-bold justify-between items-center"
+                      staticClass:
+                        "w-full m-4 absolute left-0 overflow-hidden bg-slab rounded p-2",
+                      staticStyle: { top: "13rem", bottom: "56px" }
                     },
                     [
-                      _c("div", { staticClass: "m-2" }, [
-                        _c("div", { staticClass: "text-sm" }, [
-                          _vm._v("Confirmed")
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "text-3xl text-white" }, [
-                          _vm._v(_vm._s(_vm.global.confirmed))
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "m-2" }, [
-                        _c("div", { staticClass: "text-sm" }, [
-                          _vm._v("Deaths")
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "text-3xl text-white" }, [
-                          _vm._v(_vm._s(_vm.global.deaths))
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "m-2" }, [
-                        _c("div", { staticClass: "text-sm" }, [
-                          _vm._v("Recovered")
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "text-3xl text-white" }, [
-                          _vm._v(_vm._s(_vm.global.recovered))
-                        ])
-                      ])
-                    ]
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "w-full m-4 absolute left-0 overflow-hidden bg-slab rounded p-2",
-                  staticStyle: { top: "13rem", bottom: "64px" }
-                },
-                [
-                  _vm.show_countries
-                    ? _c(
-                        "div",
-                        { staticClass: "mx-2 pt-2" },
-                        [
-                          _c(
+                      _vm.show_countries
+                        ? _c(
                             "div",
-                            {
-                              staticClass: "text-2xl tracking-tight font-bold"
-                            },
-                            [
-                              _vm._v(
-                                "Countries and states (" +
-                                  _vm._s(_vm.countries.length) +
-                                  " total)"
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "text-xs text-right" }, [
-                            _vm._v(
-                              "Sorting by " +
-                                _vm._s(_vm.sort_stats.key) +
-                                " " +
-                                _vm._s(_vm.sort_stats.order)
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "flex font-bold py-2 text-xs items-center"
-                            },
-                            [
-                              _c("div", { staticClass: "w-4 p-2 m-1 ml-0" }),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "w-32 cursor-pointer p-2 m-1 overflow-hidden",
-                                  class:
-                                    _vm.sort_stats.key == "country"
-                                      ? "bg-hoverslab"
-                                      : "",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.toggleSort("country")
-                                    }
-                                  }
-                                },
-                                [_vm._v("Country / Region")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "w-18 cursor-pointer p-2 m-1 overflow-hidden",
-                                  class:
-                                    _vm.sort_stats.key == "confirmed"
-                                      ? "bg-hoverslab"
-                                      : "",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.toggleSort("confirmed")
-                                    }
-                                  }
-                                },
-                                [_vm._v("Confirmed")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "w-18 cursor-pointer p-2 m-1 overflow-hidden",
-                                  class:
-                                    _vm.sort_stats.key == "deaths"
-                                      ? "bg-hoverslab"
-                                      : "",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.toggleSort("deaths")
-                                    }
-                                  }
-                                },
-                                [_vm._v("Deaths")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "w-18 cursor-pointer p-2 m-1 overflow-hidden",
-                                  class:
-                                    _vm.sort_stats.key == "recovered"
-                                      ? "bg-hoverslab"
-                                      : "",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.toggleSort("recovered")
-                                    }
-                                  }
-                                },
-                                [_vm._v("Recovered")]
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "simplebar",
-                            {
-                              staticClass:
-                                "absolute bottom-0 right-0 left-0 mx-4 mb-4 mr-2 ml-2",
-                              staticStyle: {
-                                position: "absolute",
-                                top: "120px"
-                              },
-                              attrs: { "data-simplebar-auto-hide": "false" }
-                            },
-                            _vm._l(_vm.countries_sorted, function(
-                              data,
-                              key,
-                              index
-                            ) {
-                              return _c("CountryStateItem", {
-                                attrs: {
-                                  data: data,
-                                  country_key: key,
-                                  compare: _vm.compare
-                                },
-                                on: { selectCountry: _vm.selectCountry }
-                              })
-                            }),
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    : _c(
-                        "div",
-                        { staticClass: "mx-4 pt-2" },
-                        [
-                          _c("div", { staticClass: "text-xs text-right" }, [
-                            _vm._v(
-                              "Sorting by " +
-                                _vm._s(_vm.sort_stats.key) +
-                                " " +
-                                _vm._s(_vm.sort_stats.order)
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "flex font-bold py-2 text-sm items-center"
-                            },
+                            { staticClass: "mx-2 pt-2" },
                             [
                               _c(
                                 "div",
                                 {
-                                  staticClass: "w-56 cursor-pointer p-2 m-1",
-                                  class:
-                                    _vm.sort_stats.key == "country"
-                                      ? "bg-hoverslab"
-                                      : "",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.toggleSort("country")
-                                    }
-                                  }
+                                  staticClass:
+                                    "text-2xl tracking-tight font-bold"
                                 },
                                 [
                                   _vm._v(
-                                    "Country / Region (" +
-                                      _vm._s(_vm.stats.length) +
+                                    "Countries and states (" +
+                                      _vm._s(_vm.countries.length) +
                                       " total)"
                                   )
                                 ]
                               ),
                               _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "w-20 cursor-pointer p-2 m-1",
-                                  class:
-                                    _vm.sort_stats.key == "confirmed"
-                                      ? "bg-hoverslab"
-                                      : "",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.toggleSort("confirmed")
-                                    }
-                                  }
-                                },
-                                [_vm._v("Confirmed")]
-                              ),
+                              _c("div", { staticClass: "text-xs text-right" }, [
+                                _vm._v(
+                                  "Sorting by " +
+                                    _vm._s(_vm.sort_stats.key) +
+                                    " " +
+                                    _vm._s(_vm.sort_stats.order)
+                                )
+                              ]),
                               _vm._v(" "),
                               _c(
                                 "div",
                                 {
-                                  staticClass: "w-20 cursor-pointer p-2 m-1",
-                                  class:
-                                    _vm.sort_stats.key == "deaths"
-                                      ? "bg-hoverslab"
-                                      : "",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.toggleSort("deaths")
-                                    }
-                                  }
+                                  staticClass:
+                                    "flex font-bold py-2 text-xs items-center"
                                 },
-                                [_vm._v("Deaths")]
+                                [
+                                  _c("div", {
+                                    staticClass: "w-4 p-2 m-1 ml-0"
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "w-32 cursor-pointer p-2 m-1 overflow-hidden",
+                                      class:
+                                        _vm.sort_stats.key == "country"
+                                          ? "bg-hoverslab"
+                                          : "",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.toggleSort("country")
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Country / Region")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "w-18 cursor-pointer p-2 m-1 overflow-hidden",
+                                      class:
+                                        _vm.sort_stats.key == "confirmed"
+                                          ? "bg-hoverslab"
+                                          : "",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.toggleSort("confirmed")
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Confirmed")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "w-18 cursor-pointer p-2 m-1 overflow-hidden",
+                                      class:
+                                        _vm.sort_stats.key == "deaths"
+                                          ? "bg-hoverslab"
+                                          : "",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.toggleSort("deaths")
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Deaths")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "w-18 cursor-pointer p-2 m-1 overflow-hidden",
+                                      class:
+                                        _vm.sort_stats.key == "recovered"
+                                          ? "bg-hoverslab"
+                                          : "",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.toggleSort("recovered")
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Recovered")]
+                                  )
+                                ]
                               ),
                               _vm._v(" "),
                               _c(
-                                "div",
+                                "simplebar",
                                 {
-                                  staticClass: "w-20 cursor-pointer p-2 m-1",
-                                  class:
-                                    _vm.sort_stats.key == "recovered"
-                                      ? "bg-hoverslab"
-                                      : "",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.toggleSort("recovered")
-                                    }
-                                  }
+                                  staticClass:
+                                    "absolute bottom-0 right-0 left-0 mx-4 mb-4 mr-2 ml-2",
+                                  staticStyle: {
+                                    position: "absolute",
+                                    top: "120px"
+                                  },
+                                  attrs: { "data-simplebar-auto-hide": "false" }
                                 },
-                                [_vm._v("Recovered")]
+                                _vm._l(_vm.countries_sorted, function(
+                                  data,
+                                  key,
+                                  index
+                                ) {
+                                  return _c("CountryStateItem", {
+                                    attrs: {
+                                      data: data,
+                                      country_key: key,
+                                      compare: _vm.compare
+                                    },
+                                    on: { selectCountry: _vm.selectCountry }
+                                  })
+                                }),
+                                1
                               )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("simplebar", {
-                            staticClass:
-                              "absolute top-0 bottom-0 right-0 left-0 mt-20 mx-4 mb-4 mr-2",
-                            staticStyle: { position: "absolute" },
-                            attrs: { "data-simplebar-auto-hide": "false" }
-                          })
-                        ],
-                        1
-                      )
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "m-4 absolute top-0 right-0 overflow-hidden bg-slab rounded",
-                staticStyle: { left: "480px", bottom: "64px" }
-              },
-              [
-                _vm.mode == "single"
-                  ? _c("div", [
-                      _c(
-                        "div",
-                        { staticClass: "p-4" },
-                        [
-                          _c("h1", [
-                            _vm._v(
-                              "Statistics about a single country will appear here"
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [_vm._v("TO-DO")]),
-                          _vm._v(" "),
-                          _c("Single", { attrs: { data: _vm.compare1 } })
-                        ],
-                        1
-                      )
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.mode == "trends" ? _c("div", [_vm._m(0)]) : _vm._e(),
-                _vm._v(" "),
-                _vm.mode == "comparison"
-                  ? _c("div", [
-                      _c("div", { staticClass: "p-4" }, [
-                        _c(
-                          "h1",
-                          {
-                            staticClass: "font-bold",
-                            on: {
-                              click: function($event) {
-                                return _vm.getComparisonData()
-                              }
-                            }
-                          },
-                          [_vm._v("Compare country stats")]
-                        ),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "text-xs" }, [
-                          _vm._v(
-                            "Select up to three countries from the left to compare."
+                            ],
+                            1
                           )
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "mx-4 h-full" },
-                        [
+                        : _c(
+                            "div",
+                            { staticClass: "mx-4 pt-2" },
+                            [
+                              _c("div", { staticClass: "text-xs text-right" }, [
+                                _vm._v(
+                                  "Sorting by " +
+                                    _vm._s(_vm.sort_stats.key) +
+                                    " " +
+                                    _vm._s(_vm.sort_stats.order)
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "flex font-bold py-2 text-sm items-center"
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "w-56 cursor-pointer p-2 m-1",
+                                      class:
+                                        _vm.sort_stats.key == "country"
+                                          ? "bg-hoverslab"
+                                          : "",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.toggleSort("country")
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "Country / Region (" +
+                                          _vm._s(_vm.stats.length) +
+                                          " total)"
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "w-20 cursor-pointer p-2 m-1",
+                                      class:
+                                        _vm.sort_stats.key == "confirmed"
+                                          ? "bg-hoverslab"
+                                          : "",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.toggleSort("confirmed")
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Confirmed")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "w-20 cursor-pointer p-2 m-1",
+                                      class:
+                                        _vm.sort_stats.key == "deaths"
+                                          ? "bg-hoverslab"
+                                          : "",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.toggleSort("deaths")
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Deaths")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "w-20 cursor-pointer p-2 m-1",
+                                      class:
+                                        _vm.sort_stats.key == "recovered"
+                                          ? "bg-hoverslab"
+                                          : "",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.toggleSort("recovered")
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Recovered")]
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("simplebar", {
+                                staticClass:
+                                  "absolute top-0 bottom-0 right-0 left-0 mt-20 mx-4 mb-4 mr-2",
+                                staticStyle: { position: "absolute" },
+                                attrs: { "data-simplebar-auto-hide": "false" }
+                              })
+                            ],
+                            1
+                          )
+                    ]
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.mode == "comparison"
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "m-4 absolute top-0 right-0 overflow-hidden",
+                    staticStyle: { left: "480px", bottom: "56px" }
+                  },
+                  [
+                    _vm.mode == "single"
+                      ? _c("div", { staticClass: "w-full h-full" }, [
+                          _vm._m(0),
+                          _vm._v(" "),
                           _c(
                             "div",
                             {
                               staticClass:
-                                "flex w-full absolute left-0 right-0 px-2",
-                              staticStyle: { bottom: "40%", top: "70px" }
+                                "bg-slab rounded absolute top-0 right-0 bottom-0 left-0 p-4 mt-10"
                             },
-                            [
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "rounded bg-hoverslab m-2 w-1/3 relative"
-                                },
-                                [
-                                  _vm.compare.length > 0
-                                    ? _c(
-                                        "div",
-                                        [
-                                          _c("Daily", {
-                                            attrs: {
-                                              name:
-                                                _vm.stats[_vm.compare[0][0]]
-                                                  .name,
-                                              data: _vm.compare1,
-                                              country: _vm.compare[0][0],
-                                              state: _vm.compare[0][1]
-                                            },
-                                            on: { remove: _vm.removeCompare }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    : _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "flex items-center justify-center h-full text-2xl text-gray-200"
-                                        },
-                                        [
-                                          _c("div", [
-                                            _vm._v(
-                                              "Select a country/state to compare"
-                                            )
-                                          ])
-                                        ]
-                                      )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "rounded bg-hoverslab m-2 w-1/3 relative"
-                                },
-                                [
-                                  _vm.compare.length > 1
-                                    ? _c(
-                                        "div",
-                                        [
-                                          _c("Daily", {
-                                            attrs: {
-                                              name:
-                                                _vm.stats[_vm.compare[1][0]]
-                                                  .name,
-                                              data: _vm.compare2,
-                                              country: parseInt(
-                                                _vm.compare[1][0]
-                                              ),
-                                              state: _vm.compare[1][1]
-                                            },
-                                            on: { remove: _vm.removeCompare }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    : _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "flex items-center justify-center h-full text-2xl text-gray-200"
-                                        },
-                                        [
-                                          _c("div", [
-                                            _vm._v(
-                                              "Select a country/state to compare"
-                                            )
-                                          ])
-                                        ]
-                                      )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "rounded bg-hoverslab m-2 w-1/3 relative"
-                                },
-                                [
-                                  _vm.compare.length > 2
-                                    ? _c(
-                                        "div",
-                                        [
-                                          _c("Daily", {
-                                            attrs: {
-                                              name:
-                                                _vm.stats[_vm.compare[2][0]]
-                                                  .name,
-                                              data: _vm.compare3,
-                                              country: _vm.compare[2][0],
-                                              state: _vm.compare[2][1]
-                                            },
-                                            on: { remove: _vm.removeCompare }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    : _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "flex items-center justify-center h-full text-2xl text-gray-200"
-                                        },
-                                        [
-                                          _c("div", [
-                                            _vm._v(
-                                              "Select a country/state to compare"
-                                            )
-                                          ])
-                                        ]
-                                      )
-                                ]
+                            [_c("Single", { attrs: { data: _vm.compare1 } })],
+                            1
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "bg-slab rounded absolute top-0 right-0 bottom-0 left-0"
+                      },
+                      [
+                        _c("div", [
+                          _c("div", { staticClass: "m-4" }, [
+                            _c(
+                              "h1",
+                              {
+                                staticClass: "font-bold",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.getComparisonData()
+                                  }
+                                }
+                              },
+                              [_vm._v("Compare country stats")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", { staticClass: "text-xs" }, [
+                              _vm._v(
+                                "Select up to three countries from the left to compare."
                               )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("ComparisonChart", {
+                            ])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
                             staticClass:
-                              "absolute left-0 right-0 bottom-0 m-4 mt-0",
-                            staticStyle: { top: "60%" },
-                            attrs: { data: _vm.comparisonDataset }
-                          })
-                        ],
-                        1
-                      )
-                    ])
-                  : _vm._e()
-              ]
-            )
+                              "absolute top-0 right-0 bottom-0 left-0 m-4 mt-20"
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "w-full h-full relative" },
+                              [
+                                _c("div", {
+                                  staticClass: "w-64 bg-hoverslab rounded mr-2 "
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "w-108 absolute top-0 left-0 bottom-0"
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass: "flex w-full h-8 text-xs"
+                                      },
+                                      [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "w-28 cursor-pointer rounded rounded-b-none py-2 px-4 mx-1 whitespace-no-wrap overflow-hidden truncate ...",
+                                            class:
+                                              _vm.selectedCompareTab == 1
+                                                ? "bg-hoverslab"
+                                                : "bg-slab-primary",
+                                            on: {
+                                              click: function($event) {
+                                                _vm.selectedCompareTab = 1
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.compare.length > 0
+                                                  ? _vm.compare[0][1]
+                                                  : "(none)"
+                                              )
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "w-28 cursor-pointer rounded rounded-b-none py-2 px-4 mr-1 whitespace-no-wrap overflow-hidden truncate ...",
+                                            class:
+                                              _vm.selectedCompareTab == 2
+                                                ? "bg-hoverslab"
+                                                : "bg-slab-primary",
+                                            on: {
+                                              click: function($event) {
+                                                _vm.selectedCompareTab = 2
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.compare.length > 1
+                                                  ? _vm.compare[1][1]
+                                                  : "(none)"
+                                              )
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "w-28 cursor-pointer rounded rounded-b-none py-2 px-4 mr-1 whitespace-no-wrap overflow-hidden truncate ...",
+                                            class:
+                                              _vm.selectedCompareTab == 3
+                                                ? "bg-hoverslab"
+                                                : "bg-slab-primary",
+                                            on: {
+                                              click: function($event) {
+                                                _vm.selectedCompareTab = 3
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.compare.length > 2
+                                                  ? _vm.compare[2][1]
+                                                  : "(none)"
+                                              )
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "w-full absolute top-0 right-0 bottom-0 left-0 mt-8"
+                                      },
+                                      [
+                                        _c(
+                                          "div",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "show",
+                                                rawName: "v-show",
+                                                value:
+                                                  _vm.selectedCompareTab == 1,
+                                                expression:
+                                                  "selectedCompareTab == 1"
+                                              }
+                                            ],
+                                            staticClass:
+                                              "w-full bg-hoverslab rounded h-full"
+                                          },
+                                          [
+                                            _vm.compare.length > 0
+                                              ? _c(
+                                                  "div",
+                                                  [
+                                                    _c("Daily", {
+                                                      attrs: {
+                                                        data: _vm.compare1
+                                                      },
+                                                      on: {
+                                                        remove:
+                                                          _vm.removeCompare
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
+                                              : _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "flex items-center justify-center text-2xl text-gray-200 h-full"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "text-center p-4"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "Select a country/state to compare"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "show",
+                                                rawName: "v-show",
+                                                value:
+                                                  _vm.selectedCompareTab == 2,
+                                                expression:
+                                                  "selectedCompareTab == 2"
+                                              }
+                                            ],
+                                            staticClass:
+                                              "w-full h-full bg-hoverslab rounded h-full"
+                                          },
+                                          [
+                                            _vm.compare.length > 1
+                                              ? _c(
+                                                  "div",
+                                                  [
+                                                    _c("Daily", {
+                                                      attrs: {
+                                                        data: _vm.compare2
+                                                      },
+                                                      on: {
+                                                        remove:
+                                                          _vm.removeCompare
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
+                                              : _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "flex items-center justify-center h-full text-2xl text-gray-200 h-full"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "text-center p-4"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "Select a country/state to compare"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "show",
+                                                rawName: "v-show",
+                                                value:
+                                                  _vm.selectedCompareTab == 3,
+                                                expression:
+                                                  "selectedCompareTab == 3"
+                                              }
+                                            ],
+                                            staticClass:
+                                              "w-full h-full bg-hoverslab rounded h-full"
+                                          },
+                                          [
+                                            _vm.compare.length > 2
+                                              ? _c(
+                                                  "div",
+                                                  [
+                                                    _c("Daily", {
+                                                      attrs: {
+                                                        data: _vm.compare3
+                                                      },
+                                                      on: {
+                                                        remove:
+                                                          _vm.removeCompare
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
+                                              : _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "flex items-center justify-center h-full text-2xl text-gray-200 h-full"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "text-center p-4"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "Select a country/state to compare"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "absolute top-0 bottom-0 right-0 left-0 ml-112"
+                                  },
+                                  [
+                                    _c("ComparisonChart", {
+                                      staticClass:
+                                        "absolute left-0 right-0 bottom-0 top-0",
+                                      attrs: { data: _vm.comparisonDataset }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.mode == "trends"
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "flex items-center justify-center m-4 bg-slab rounded absolute top-0 right-0 bottom-0 left-0 text-center",
+                    staticStyle: { bottom: "56px" }
+                  },
+                  [_vm._m(1)]
+                )
+              : _vm._e()
           ]
         )
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex items-end h-10" }, [
+      _c(
+        "div",
+        {
+          staticClass: "rounded rounded-b-none bg-slab text-xs py-2 px-4 mx-1"
+        },
+        [_vm._v("Stats and events")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "rounded rounded-b-none bg-slab-primary text-xs py-2 px-4 mr-1"
+        },
+        [_vm._v("Graphs")]
+      )
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -83252,7 +83615,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    " + _vm._s(_vm.data) + "\n")])
+  return _c("div", [_c("div", {}), _vm._v("\n    " + _vm._s(_vm.data) + "\n")])
 }
 var staticRenderFns = []
 render._withStripped = true

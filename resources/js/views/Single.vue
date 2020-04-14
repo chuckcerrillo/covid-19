@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div class=""></div>
         {{data}}
     </div>
 </template>
