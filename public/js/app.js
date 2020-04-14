@@ -83001,6 +83001,20 @@ var render = function() {
   return _c(
     "div",
     [
+      _c(
+        "div",
+        {
+          staticClass:
+            "absolute top-0 right-0 text-xs px-4 py-2 hover:text-white cursor-pointer hover:bg-lightslab rounded",
+          on: {
+            click: function($event) {
+              return _vm.remove([_vm.data.name.country, _vm.data.name.state])
+            }
+          }
+        },
+        [_vm._v("Remove")]
+      ),
+      _vm._v(" "),
       _c("div", { staticClass: "mx-6 pt-4 relative" }, [
         _c("h2", { staticClass: "font-bold text-2xl" }, [
           _vm._v(_vm._s(_vm.data.name.country))
@@ -83048,28 +83062,14 @@ var render = function() {
           "div",
           {
             staticClass:
-              "absolute top-0 right-0 text-xs pt-4 hover:text-white cursor-pointer",
-            on: {
-              click: function($event) {
-                return _vm.remove([_vm.data.name.country, _vm.data.name.state])
-              }
-            }
-          },
-          [_vm._v("Remove")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass:
-              "absolute top-0 right-0 text-xs pt-4 mt-8 hover:text-white cursor-pointer",
+              "absolute top-0 right-0 text-xs px-4 py-2 mt-28 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab",
             on: {
               click: function($event) {
                 return _vm.toggleExpand()
               }
             }
           },
-          [_vm._v("Expand")]
+          [_vm._v("View full stats")]
         )
       ]),
       _vm._v(" "),
