@@ -47,7 +47,7 @@
 <!--                     :class="key % 2 == 1 ? 'bg-slab-secondary' : ''"-->
 
                     <div class="w-full flex justify-end">
-                        <div class="w-20">{{row['date']}}</div>
+                        <div class="w-20">{{moment(row['date']).format('YYYY-MM-DD')}}</div>
                         <div class="w-20">
                             {{ isNaN(row.confirmed) ? 0 : row.confirmed }}
                             <span class="text-green-400" v-if="data.delta[key].confirmed >= 0">(+{{data.delta[key].confirmed}})</span>

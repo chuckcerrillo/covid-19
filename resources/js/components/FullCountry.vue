@@ -1,9 +1,9 @@
 <template>
     <div class="fixed top-0 left-0 bottom-0 right-0 z-10">
         <div class="absolute top-0 right-0 bottom-0 left-0 z-0 bg-black opacity-50"></div>
-        <div class="m-4 bg-slab rounded p-4 absolute top-0 right-0 bottom-0 left-0 z-10 flex items-start">
-            <div class="relative w-140 h-full mb-4">
-                <div class="mx-6 pt-4 relative">
+        <div class="m-4 bg-slab rounded p-2 absolute top-0 right-0 bottom-0 left-0 z-10 flex items-start">
+            <div class="relative w-140 h-full mb-4 ml-0">
+                <div class="mx-6 pt-4 relative ml-2">
                     <h2 class="font-bold text-3xl">{{data.name.country}}</h2>
                     <h3 class="h-4 font-bold">{{data.name.state}}</h3>
                     <div class="flex text-sm mt-4 w-full items-center">
@@ -26,51 +26,45 @@
                         @click="close()"
                     >Close</div>
                 </div>
-                <div class="mx-6 flex text-xs font-bold py-2 justify-between">
-                    <div class="w-20">Date</div>
-                    <div class="justify-end flex w-full">
+                <div class="mx-4 flex justify-between text-xs font-bold py-2">
+                        <div class="w-20">Date</div>
                         <div class="w-20">Confirmed</div>
-                        <div class="w-20">Deaths</div>
-                        <div class="w-20">Recovered</div>
-                        <div class="w-12">New Cases</div>
-                        <div class="w-20">Avg New Cases <br /> (5 days)</div>
-                        <div class="w-12">Growth Factor</div>
-                    </div>
+                        <div class="w-16">Deaths</div>
+                        <div class="w-16">Recovered</div>
+<!--                        <div class="w-12">New Cases</div>-->
+                        <div class="w-16">Avg New Cases <br /> (5 days)</div>
+                        <div class="w-16">Growth Factor</div>
                 </div>
-                <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 left-0 mt-64 mx-4 mr-4 border-b border-lightslab" style="bottom: 320px; position:absolute;" >
+                <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 left-0 mt-64 mx-2 border-b border-lightslab" style="bottom: 320px; position:absolute;" >
                     <div
 
                         v-for="(row, key, index) in data.daily"
                     >
-                        <div class="flex p-2 text-xs items-start justify-between">
+                        <div class="flex p-2 text-xs items-start bg-slab-primary">
                             <div class="w-20">{{moment(row['date']).format('YYYY-MM-DD')}}</div>
-                            <div class="w-full flex-col">
-                                <div class="w-full flex justify-end">
-                                    <div class="w-20">
-                                        {{ isNaN(row.confirmed) ? 0 : row.confirmed }}
-                                        <span class="text-green-400" v-if="data.delta[key].confirmed >= 0">(+{{data.delta[key].confirmed}})</span>
-                                        <span class="text-red-400" v-else>({{data.delta[key].confirmed}})</span>
-                                    </div>
-                                    <div class="w-20">
-                                        {{ isNaN(row.deaths) ? 0 : row.deaths }}
-                                        <span class="text-green-400" v-if="data.delta[key].deaths >= 0">(+{{data.delta[key].deaths}})</span>
-                                        <span class="text-red-400" v-else>({{data.delta[key].deaths}})</span>
-                                    </div>
-                                    <div class="w-20">
-                                        {{ isNaN(row.recovered) ? 0 : row.recovered }}
-                                        <span class="text-green-400" v-if="data.delta[key].recovered >= 0">(+{{data.delta[key].recovered}})</span>
-                                        <span class="text-red-400" v-else>({{data.delta[key].recovered}})</span>
-                                    </div>
-                                    <div class="w-12">
-                                        {{data.growth[key]}}
-                                    </div>
-                                    <div class="w-20">
-                                        {{data.average[key]}}
-                                    </div>
-                                    <div class="w-12">
-                                        {{data.growthFactor[key]}}
-                                    </div>
-                                </div>
+                            <div class="w-20">
+                                {{ isNaN(row.confirmed) ? 0 : row.confirmed }}
+                                <span class="text-green-400" v-if="data.delta[key].confirmed >= 0">(+{{data.delta[key].confirmed}})</span>
+                                <span class="text-red-400" v-else>({{data.delta[key].confirmed}})</span>
+                            </div>
+                            <div class="w-16">
+                                {{ isNaN(row.deaths) ? 0 : row.deaths }}
+                                <span class="text-green-400" v-if="data.delta[key].deaths >= 0">(+{{data.delta[key].deaths}})</span>
+                                <span class="text-red-400" v-else>({{data.delta[key].deaths}})</span>
+                            </div>
+                            <div class="w-16">
+                                {{ isNaN(row.recovered) ? 0 : row.recovered }}
+                                <span class="text-green-400" v-if="data.delta[key].recovered >= 0">(+{{data.delta[key].recovered}})</span>
+                                <span class="text-red-400" v-else>({{data.delta[key].recovered}})</span>
+                            </div>
+<!--                                    <div class="w-12">-->
+<!--                                        {{data.growth[key]}}-->
+<!--                                    </div>-->
+                            <div class="w-16">
+                                {{data.average[key]}}
+                            </div>
+                            <div class="w-16">
+                                {{data.growthFactor[key]}}
                             </div>
                         </div>
                         <div v-if="getDayNotes(moment(row['date']).format('YYYY-MM-DD')).length > 0">
@@ -85,7 +79,7 @@
                     </div>
                 </simplebar>
 
-                <div class="h-76 absolute bottom-0 left-0 right-0 m-2 p-4 mb-0 pt-0 rounded bg-hoverslab">
+                <div class="h-76 absolute bottom-0 left-0 right-0 m-2 p-4 mb-0 ml-0 pt-0 rounded bg-hoverslab">
                     <div class="font-bold my-1">Events</div>
                     <simplebar data-simplebar-auto-hide="false" class="h-68 text-sm" >
                         <ul>
@@ -106,9 +100,10 @@
             </div>
             <div class="h-full relative w-full">
 
-                <div class="absolute left-0 right-0 bottom-0 border top-0 p-4">
-                    TO-DO: Graph
-                </div>
+                <StatsChart
+                    :data="[data]"
+                    :annotations="annotations"
+                />
             </div>
         </div>
     </div>
@@ -116,14 +111,20 @@
 
 <script>
     import simplebar from 'simplebar-vue';
+    import StatsChart from "./StatsChart";
     export default {
         name: "FullCountry",
         components: {
-            simplebar
+            simplebar,
+            StatsChart
         },
         props: [
             'data',
         ],
+        data(){
+            return {
+            }
+        },
         methods: {
             close()
             {
