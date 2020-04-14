@@ -2888,6 +2888,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -3177,6 +3182,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -82131,7 +82137,34 @@ var render = function() {
                               ])
                             : _vm._e(),
                           _vm._v(" "),
-                          _c("div", [_vm._v(_vm._s(annotation.notes))])
+                          _c("div", [
+                            _c("div", [_vm._v(_vm._s(annotation.notes))]),
+                            _vm._v(" "),
+                            annotation.url
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "flex items-center text-lightslab"
+                                  },
+                                  [
+                                    _c("div", { staticClass: "mr-1" }, [
+                                      _vm._v("Source:")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c(
+                                      "a",
+                                      {
+                                        staticClass:
+                                          "underline hover:text-white truncate ... inline-block w-64",
+                                        attrs: { href: annotation.url }
+                                      },
+                                      [_vm._v(_vm._s(annotation.url))]
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          ])
                         ]
                       )
                     }
@@ -82668,15 +82701,10 @@ var render = function() {
         _c(
           "div",
           {
-            staticClass: "p-2 px-4 cursor-pointer hover:text-white",
-            class: _vm.isActive(_vm.mode, "trends", "bg-hoverslab"),
-            on: {
-              click: function($event) {
-                return _vm.setMode("trends")
-              }
-            }
+            staticClass: "p-2 px-4 cursor-pointer text-lightslab",
+            class: _vm.isActive(_vm.mode, "trends", "bg-hoverslab")
           },
-          [_vm._v("Trends (to-do)")]
+          [_vm._v("Trends (coming soon...)")]
         ),
         _vm._v(" "),
         _c(

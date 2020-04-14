@@ -79,8 +79,13 @@
                          class="p-1 m-1 text-xs rounded bg-slab-primary flex"
                     >
                         <div v-if="annotation.state.length > 0" class="font-bold mr-2">{{annotation.state}}</div>
-                        <div>{{annotation.notes}}</div>
-                        <!--                                <div v-if="annotation.url"><a class="underline hover:text-white" :href="annotation.url">(source)</a></div>-->
+                        <div>
+                            <div>{{annotation.notes}}</div>
+                            <div v-if="annotation.url" class="flex items-center text-lightslab">
+                                <div class="mr-1">Source:</div>
+                                <a class="underline hover:text-white truncate ... inline-block w-64" :href="annotation.url">{{annotation.url}}</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
