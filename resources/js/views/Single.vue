@@ -1,10 +1,15 @@
 <template>
-
+    <div>
+        {{data}}
+    </div>
 </template>
 
 <script>
     export default {
-        name: "Single"
+        name: "Single",
+        props: [
+            'data'
+        ]
     }
 </script>
 

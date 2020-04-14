@@ -41,6 +41,7 @@
                                 v-on:selectCountry="selectCountry"
                                 :data="data"
                                 :country_key="key"
+                                :compare="compare"
                             />
 
                         </simplebar>
@@ -74,6 +75,9 @@
                     <div class="p-4">
                         <h1>Statistics about a single country will appear here</h1>
                         <p>TO-DO</p>
+
+                        <Single :data="compare1"
+                                />
                     </div>
                 </div>
                 <div v-if="mode == 'trends'">
@@ -151,6 +155,7 @@
     import ComparisonChart from "../components/ComparisonChart";
     import CountryStateItem from "../components/CountryStateItem";
     import moment from 'moment'
+    import Single from "./Single";
 
     export default {
         name: "Start",
@@ -163,6 +168,7 @@
             Daily,
             ComparisonChart,
             CountryStateItem,
+            Single
         },
         data()
         {
@@ -351,7 +357,7 @@
             {
                 if(compare && compare[0])
                 {
-                    if(!compare[1])
+                    if(!compare[2])
                     {
                         return this.getCountryDaily(compare);
                     }
@@ -365,7 +371,7 @@
             getStateDaily(item)
             {
                 var country = this.stats[item[0]].name,
-                    state = item[1],
+                    state = item[2],
                     data = [];
 
                 if(this.states[country])
@@ -431,11 +437,11 @@
             {
                 if(item && item[0])
                 {
-                    var country = this.stats[item[0]].name;
+                    var country = item[1];
                     if(item[1])
                     {
                         return {
-                            full: item[1] + ' - ' + country,
+                            full: item[2] + ' - ' + country,
                             country: country,
                             state: item[1],
                             country_id: item[0],
@@ -460,17 +466,30 @@
 
                 }
             },
-            selectCountry(country,state){
+            selectCountry(country,state,key){
 
-                var key = this.getCountryId(country);
-
-                if(this.compare.length < 3)
+                if (!key)
                 {
-                    if(!this.findCompare([key,state]))
+                    var key = this.getCountryId(country);
+                }
+                if (this.mode == 'single')
+                {
+                    this.compare = [];
+                    this.compare.push([key,country,state]);
+                }
+                else if (this.mode == 'comparison')
+                {
+                    var key = this.getCountryId(country);
+
+                    if(this.compare.length < 3)
                     {
-                        this.compare.push([key,state]);
+                        if(!this.findCompare([key,state]))
+                        {
+                            this.compare.push([key,country,state]);
+                        }
                     }
                 }
+
             },
             isSelected(key){
                 return false;

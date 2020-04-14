@@ -2,7 +2,7 @@
     <div>
         <div
             class="flex hover:bg-lightslab cursor-pointer items-center"
-            :class="isSelected('country',country_key) ? 'bg-hoverslab' : (country_key % 2 == 0) ? 'bg-slab-primary':'bg-slab-secondary'"
+            :class="isSelected(data.name,false) ? 'bg-hoverslab' : (country_key % 2 == 0) ? 'bg-slab-primary':'bg-slab-secondary'"
         >
             <div v-if="data.states.length == 0" class="w-4 p-2 m-1 ml-0"></div>
             <div v-else
@@ -18,7 +18,7 @@
             <div @click="selectCountry(data['name'],false)" class="text-xs w-18 m-1">{{data['total']['r']}}</div>
         </div>
         <div v-for="row in data.states" class="pb-1 hover:bg-lightslab cursor-pointer flex items-center text-xs" v-show="expanded"
-             :class="isSelected('state',row.name) ? 'bg-hoverslab' : (row.name % 2 == 0) ? 'bg-slab-primary':'bg-slab-secondary'"
+             :class="isSelected(data.name,row.name) ? 'bg-hoverslab' : (row.name % 2 == 0) ? 'bg-slab-primary':'bg-slab-secondary'"
         >
             <div class="w-4 p-2 m-1 ml-0"></div>
             <div @click="selectCountry(data['name'],row['name'])" class="w-36 px-2 m-1">
@@ -45,11 +45,25 @@
             }
         },
         methods: {
-            isSelected(key)
+            isSelected(country,state)
             {
                 if(this.compare && this.compare.length > 0)
                 {
-
+                    for(var x in this.compare)
+                    {
+                        var item = this.compare[x];
+                        if(country == item[1])
+                        {
+                            if (state == false)
+                            {
+                                return true;
+                            }
+                            else if (state == item[2])
+                            {
+                                return true;
+                            }
+                        }
+                    }
                 }
                 return false;
             },
