@@ -532,20 +532,21 @@
                 {
                     var key = this.getCountryId(country);
 
-                    if(this.compare.length <= 3)
+                    var find = this.findCompare([country,state]);
+                    if(find !== false)
                     {
-                        var find = this.findCompare([country,state]);
-                        if(find !== false)
+                        console.log('Found at  ' + find + ', removing');
+                        this.compare.splice(find,1);
+                    }
+                    else
+                    {
+                        if(this.compare.length >= 3)
                         {
-                            console.log('Found at  ' + find + ', removing');
-                            this.compare.splice(find,1);
+                            this.compare.shift();
                         }
-                        else
+                        if(this.compare.length < 3)
                         {
-                            if(this.compare.length < 3)
-                            {
-                                this.compare.push([key,country,state]);
-                            }
+                            this.compare.push([key,country,state]);
                         }
                     }
                 }
