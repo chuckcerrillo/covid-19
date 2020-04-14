@@ -13,6 +13,7 @@ module.exports = {
               'date-slab': '#80cbcd',
           },
           margin: {
+              '28' : '7rem',
               '52' : '13rem',
               '60' : '15rem',
               '80' : '20rem',

@@ -1,5 +1,9 @@
 <template>
     <div>
+        <div
+            class="absolute top-0 right-0 text-xs px-4 py-2 hover:text-white cursor-pointer hover:bg-lightslab rounded"
+            @click="remove([data.name.country,data.name.state])"
+        >Remove</div>
         <div class="mx-6 pt-4 relative">
             <h2 class="font-bold text-2xl">{{data.name.country}}</h2>
             <h3 class="h-4 font-bold">{{data.name.state}}</h3>
@@ -19,13 +23,9 @@
             </div>
             <div class="text-xs mb-4">As of {{data.total.date}}</div>
             <div
-                class="absolute top-0 right-0 text-xs pt-4 hover:text-white cursor-pointer"
-                @click="remove([data.name.country,data.name.state])"
-            >Remove</div>
-            <div
-                class="absolute top-0 right-0 text-xs pt-4 mt-8 hover:text-white cursor-pointer"
+                class="absolute top-0 right-0 text-xs px-4 py-2 mt-28 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab"
                 @click="toggleExpand()"
-            >Expand</div>
+            >View full stats</div>
         </div>
         <div class="px-2 mx-4 py-2 pb-4 flex text-xs font-bold justify-between bg-slab-primary rounded-t">
             <div class="justify-end flex w-full items-end">
