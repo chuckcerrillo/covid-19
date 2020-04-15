@@ -22,10 +22,6 @@
                 </div>
             </div>
             <div class="text-xs mb-4">As of {{data.total.date}}</div>
-            <div
-                class="absolute top-0 right-0 text-xs px-4 py-2 mt-28 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab"
-                @click="toggleExpand()"
-            >View full stats</div>
         </div>
         <div class="px-2 mx-4 py-2 pb-4 flex text-xs font-bold justify-between bg-slab-primary rounded-t">
             <div class="justify-end flex w-full items-end">
@@ -38,7 +34,7 @@
                 <div class="w-20">Growth Factor</div>
             </div>
         </div>
-        <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 left-0 bottom-0 mt-60 mx-4 mb-4 mr-4 bg-slab rounded-b" style="position:absolute;" >
+        <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 left-0 bottom-0 mt-60 mx-4 mb-16 mr-4 bg-slab rounded-b" style="position:absolute;" >
             <div
 
                 v-for="(row, key, index) in recomputed.daily"
@@ -90,6 +86,10 @@
                 </div>
             </div>
         </simplebar>
+        <div
+            class="absolute right-0 bottom-0 mr-4 mb-4 text-xs px-4 py-2 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab"
+            @click="toggleExpand()"
+        >View full stats</div>
         <FullCountry v-if="expanded"
                      :data="recomputed"
                     v-on:close="toggleExpand"
