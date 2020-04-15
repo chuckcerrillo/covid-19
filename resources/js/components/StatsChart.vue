@@ -12,22 +12,34 @@
                         </div>
                     </div>
                     <div class="flex items-center">
+                        <div class="mr-2">Scale</div>
+                        <div class="flex">
+                            <div v-for="row in graphControls.scaleType"
+                                 class="p-2 border border-hoverslab m-1 cursor-pointer"
+                                 :class="selectedScaleType(row[0]) ? 'bg-hoverslab':''"
+                                 @click="selectScaleType(row[0])"
+                            >
+                                {{row[1]}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
                         <div class="mr-2">Metrics</div>
-                        <div class="flex border border-hoverslab m-1 cursor-pointer p-2 relative">
+                        <div class="flex border border-hoverslab bg-hoverslab m-1 cursor-pointer p-2 relative">
                             <div @click="ui.primary = !ui.primary" class="w-48" v-if="options.controls.primary">{{getFieldName(options.controls.primary)}}</div>
                             <div @click="ui.primary = !ui.primary" class="w-48" v-else>Select primary metric</div>
-                            <div v-show="ui.primary" class="absolute z-10 bg-hoverslab shadow w-52 right-0 top-0 p-2">
-                                <div v-for="row in graphControls.y" class="p-2 m-1" @click="selectField(row[0],'primary')">
+                            <div v-show="ui.primary" class="absolute z-10 bg-slab border-hoverslab shadow w-52 right-0 top-0 p-2">
+                                <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" @click="selectField(row[0],'primary')">
                                     {{row[1]}}
                                 </div>
                             </div>
                         </div>
-                        <div class="flex border border-hoverslab m-1 cursor-pointer p-2 relative">
+                        <div class="flex border border-hoverslab bg-hoverslab m-1 cursor-pointer p-2 relative">
                             <div @click="ui.secondary = !ui.secondary"class="w-48" v-if="options.controls.secondary">{{getFieldName(options.controls.secondary)}}</div>
                             <div @click="ui.secondary = !ui.secondary" class="w-48" v-else>Select secondary metric</div>
-                            <div v-show="ui.secondary" class="absolute z-10 bg-hoverslab shadow w-52 right-0 top-0 p-2">
-                                <div class="p-2 m-1"  @click="selectField('','secondary')">None</div>
-                                <div v-for="row in graphControls.y" class="p-2 m-1" @click="selectField(row[0],'secondary')">
+                            <div v-show="ui.secondary" class="absolute z-10 bg-slab border-hoverslab shadow w-52 right-0 top-0 p-2">
+                                <div class="p-2 m-1 hover:bg-hoverslab"  @click="selectField('','secondary')">None</div>
+                                <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" @click="selectField(row[0],'secondary')">
                                     {{row[1]}}
                                 </div>
                             </div>
@@ -90,6 +102,10 @@
                         ['deltaRecovered','New recoveries per day'],
                         ['average','Average new cases (5 day spread)'],
                         ['growthFactor','Growth factor'],
+                    ],
+                    'scaleType' : [
+                        ['logarithmic','Logarithmic'],
+                        ['linear','Linear'],
                     ]
                 },
                 stats: {}
@@ -120,6 +136,18 @@
                     return true;
                 }
                 return false;
+            },
+            selectedScaleType(key)
+            {
+                if (key == this.options.controls.scaleType)
+                {
+                    return true;
+                }
+                return false;
+            },
+            selectScaleType(key)
+            {
+                this.options.controls.scaleType = key;
             },
             selectField(key,level)
             {
@@ -264,8 +292,8 @@
                     content = [],
                     background = [
                         {
-                            primary: '#19aade',
-                            secondary: '#eabd3b',
+                            primary: '#3984b6',
+                            secondary: '#a73b8f',
                             confirmed: '#19aade',
                             deaths: '#c7f9ee',
                             recovered: '#1de4bd',
@@ -277,8 +305,8 @@
 
                         },
                         {
-                            confirmed: '#af4bce',
-                            deaths: '#f0a58f',
+                            confirmed: '#3984b6',
+                            deaths: '#a73b8f',
                             recovered: '#ea7369',
                             growthFactor: '#ea7369',
                             deltaConfirmed: '#1de4bd',
@@ -287,8 +315,8 @@
                             average: '#1de4bd',
                         },
                         {
-                            confirmed: '#de542c',
-                            deaths: '#e7e34e',
+                            confirmed: '#3984b6',
+                            deaths: '#a73b8f',
                             recovered: '#eabd3b',
                             growthFactor: '#eabd3b',
                             deltaConfirmed: '#1de4bd',
@@ -310,13 +338,13 @@
                     stacked: false,
                     legend: {
                         labels: {
-                            fontColor: '#d1e8e2'
+                            fontColor: '#2c3531'
                         }
                     },
                     scales: {
                         xAxes: [{
                             ticks: {
-                                fontColor: '#d1e8e2',
+                                fontColor: '#2c3531',
                             }
                         }],
                         yAxes: [
@@ -448,7 +476,7 @@
                                     type: chartType,
                                     label: 'Confirmed (' + this.data[x].name.full + ')',
                                     backgroundColor: background[x][metric],
-                                    fill: false,
+                                    fill: true,
                                     data: _.cloneDeep(content[x].confirmed),
                                     yAxisID: 'y-confirmed'
                                 }
@@ -466,7 +494,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[x][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -487,7 +515,7 @@
                             );
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-deaths',
@@ -497,7 +525,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[x][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -518,7 +546,7 @@
                             );
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-recovered',
@@ -528,7 +556,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[x][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -549,7 +577,7 @@
                             );
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-deltaConfirmed',
@@ -559,7 +587,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[x][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -580,7 +608,7 @@
                             );
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-deltaDeaths',
@@ -590,7 +618,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[x][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -611,7 +639,7 @@
                             );
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-deltaRecovered',
@@ -621,7 +649,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[x][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -636,14 +664,14 @@
                                     type: chartType,
                                     label: 'Growth factor (' + this.data[x].name.full + ')',
                                     backgroundColor: background[x][metric],
-                                    fill: false,
+                                    fill: true,
                                     data: _.cloneDeep(content[x].average),
                                     yAxisID: 'y-average'
                                 }
                             );
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-average',
@@ -653,7 +681,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[x][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -668,14 +696,14 @@
                                     type: chartType,
                                     label: 'Growth factor (' + this.data[x].name.full + ')',
                                     backgroundColor: background[x][metric],
-                                    fill: false,
+                                    fill: true,
                                     data: _.cloneDeep(content[x].growthFactor),
                                     yAxisID: 'y-growthFactor'
                                 }
                             );
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-growthFactor',
@@ -685,7 +713,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[x][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
