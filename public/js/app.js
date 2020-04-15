@@ -83056,21 +83056,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "text-xs mb-4" }, [
           _vm._v("As of " + _vm._s(_vm.data.total.date))
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass:
-              "absolute top-0 right-0 text-xs px-4 py-2 mt-28 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab",
-            on: {
-              click: function($event) {
-                return _vm.toggleExpand()
-              }
-            }
-          },
-          [_vm._v("View full stats")]
-        )
+        ])
       ]),
       _vm._v(" "),
       _vm._m(0),
@@ -83079,7 +83065,7 @@ var render = function() {
         "simplebar",
         {
           staticClass:
-            "top-0 right-0 left-0 bottom-0 mt-60 mx-4 mb-4 mr-4 bg-slab rounded-b",
+            "top-0 right-0 left-0 bottom-0 mt-60 mx-4 mb-16 mr-4 bg-slab rounded-b",
           staticStyle: { position: "absolute" },
           attrs: { "data-simplebar-auto-hide": "false" }
         },
@@ -83214,6 +83200,20 @@ var render = function() {
           ])
         }),
         0
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "absolute right-0 bottom-0 mr-4 mb-4 text-xs px-4 py-2 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab",
+          on: {
+            click: function($event) {
+              return _vm.toggleExpand()
+            }
+          }
+        },
+        [_vm._v("View full stats")]
       ),
       _vm._v(" "),
       _vm.expanded
