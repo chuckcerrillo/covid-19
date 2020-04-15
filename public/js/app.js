@@ -3280,6 +3280,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3306,7 +3318,8 @@ __webpack_require__.r(__webpack_exports__);
       },
       'graphControls': {
         'x': [['chronological', 'Chronological'], ['ordinal', 'From first case (todo)'], ['from100', 'From 100 cases (todo)']],
-        'y': [['confirmed', 'Confirmed cases'], ['deltaConfirmed', 'New confirmed cases per day'], ['deaths', 'Deaths'], ['deltaDeaths', 'New deaths per day'], ['recovered', 'Recoveries'], ['deltaRecovered', 'New recoveries per day'], ['average', 'Average new cases (5 day spread)'], ['growthFactor', 'Growth factor']]
+        'y': [['confirmed', 'Confirmed cases'], ['deltaConfirmed', 'New confirmed cases per day'], ['deaths', 'Deaths'], ['deltaDeaths', 'New deaths per day'], ['recovered', 'Recoveries'], ['deltaRecovered', 'New recoveries per day'], ['average', 'Average new cases (5 day spread)'], ['growthFactor', 'Growth factor']],
+        'scaleType': [['logarithmic', 'Logarithmic'], ['linear', 'Linear']]
       },
       stats: {}
     };
@@ -3330,6 +3343,16 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return false;
+    },
+    selectedScaleType: function selectedScaleType(key) {
+      if (key == this.options.controls.scaleType) {
+        return true;
+      }
+
+      return false;
+    },
+    selectScaleType: function selectScaleType(key) {
+      this.options.controls.scaleType = key;
     },
     selectField: function selectField(key, level) {
       if (level) {
@@ -3438,8 +3461,8 @@ __webpack_require__.r(__webpack_exports__);
           key,
           content = [],
           background = [{
-        primary: '#19aade',
-        secondary: '#eabd3b',
+        primary: '#3984b6',
+        secondary: '#a73b8f',
         confirmed: '#19aade',
         deaths: '#c7f9ee',
         recovered: '#1de4bd',
@@ -3449,8 +3472,8 @@ __webpack_require__.r(__webpack_exports__);
         deltaRecovered: '#1de4bd',
         average: '#1de4bd'
       }, {
-        confirmed: '#af4bce',
-        deaths: '#f0a58f',
+        confirmed: '#3984b6',
+        deaths: '#a73b8f',
         recovered: '#ea7369',
         growthFactor: '#ea7369',
         deltaConfirmed: '#1de4bd',
@@ -3458,8 +3481,8 @@ __webpack_require__.r(__webpack_exports__);
         deltaRecovered: '#1de4bd',
         average: '#1de4bd'
       }, {
-        confirmed: '#de542c',
-        deaths: '#e7e34e',
+        confirmed: '#3984b6',
+        deaths: '#a73b8f',
         recovered: '#eabd3b',
         growthFactor: '#eabd3b',
         deltaConfirmed: '#1de4bd',
@@ -3475,13 +3498,13 @@ __webpack_require__.r(__webpack_exports__);
         stacked: false,
         legend: {
           labels: {
-            fontColor: '#d1e8e2'
+            fontColor: '#2c3531'
           }
         },
         scales: {
           xAxes: [{
             ticks: {
-              fontColor: '#d1e8e2'
+              fontColor: '#2c3531'
             }
           }],
           yAxes: []
@@ -3590,7 +3613,7 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'Confirmed (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
-              fill: false,
+              fill: true,
               data: _.cloneDeep(content[x].confirmed),
               yAxisID: 'y-confirmed'
             });
@@ -3605,7 +3628,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: '#d1e8e2',
+                fontColor: background[x][metric],
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3620,7 +3643,7 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-deaths'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-deaths',
@@ -3630,7 +3653,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: '#d1e8e2',
+                fontColor: background[x][metric],
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3645,7 +3668,7 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-recovered'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-recovered',
@@ -3655,7 +3678,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: '#d1e8e2',
+                fontColor: background[x][metric],
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3670,7 +3693,7 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-deltaConfirmed'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-deltaConfirmed',
@@ -3680,7 +3703,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: '#d1e8e2',
+                fontColor: background[x][metric],
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3695,7 +3718,7 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-deltaDeaths'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-deltaDeaths',
@@ -3705,7 +3728,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: '#d1e8e2',
+                fontColor: background[x][metric],
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3720,7 +3743,7 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-deltaRecovered'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-deltaRecovered',
@@ -3730,7 +3753,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: '#d1e8e2',
+                fontColor: background[x][metric],
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3741,12 +3764,12 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'Growth factor (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
-              fill: false,
+              fill: true,
               data: _.cloneDeep(content[x].average),
               yAxisID: 'y-average'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-average',
@@ -3756,7 +3779,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: '#d1e8e2',
+                fontColor: background[x][metric],
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3767,12 +3790,12 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'Growth factor (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
-              fill: false,
+              fill: true,
               data: _.cloneDeep(content[x].growthFactor),
               yAxisID: 'y-growthFactor'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-growthFactor',
@@ -3782,7 +3805,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: '#d1e8e2',
+                fontColor: background[x][metric],
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -84142,13 +84165,45 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "flex items-center" }, [
+            _c("div", { staticClass: "mr-2" }, [_vm._v("Scale")]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "flex" },
+              _vm._l(_vm.graphControls.scaleType, function(row) {
+                return _c(
+                  "div",
+                  {
+                    staticClass:
+                      "p-2 border border-hoverslab m-1 cursor-pointer",
+                    class: _vm.selectedScaleType(row[0]) ? "bg-hoverslab" : "",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectScaleType(row[0])
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                                " +
+                        _vm._s(row[1]) +
+                        "\n                            "
+                    )
+                  ]
+                )
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex items-center" }, [
             _c("div", { staticClass: "mr-2" }, [_vm._v("Metrics")]),
             _vm._v(" "),
             _c(
               "div",
               {
                 staticClass:
-                  "flex border border-hoverslab m-1 cursor-pointer p-2 relative"
+                  "flex border border-hoverslab bg-hoverslab m-1 cursor-pointer p-2 relative"
               },
               [
                 _vm.options.controls.primary
@@ -84193,13 +84248,13 @@ var render = function() {
                       }
                     ],
                     staticClass:
-                      "absolute z-10 bg-hoverslab shadow w-52 right-0 top-0 p-2"
+                      "absolute z-10 bg-slab border-hoverslab shadow w-52 right-0 top-0 p-2"
                   },
                   _vm._l(_vm.graphControls.y, function(row) {
                     return _c(
                       "div",
                       {
-                        staticClass: "p-2 m-1",
+                        staticClass: "p-2 m-1 hover:bg-hoverslab",
                         on: {
                           click: function($event) {
                             return _vm.selectField(row[0], "primary")
@@ -84224,7 +84279,7 @@ var render = function() {
               "div",
               {
                 staticClass:
-                  "flex border border-hoverslab m-1 cursor-pointer p-2 relative"
+                  "flex border border-hoverslab bg-hoverslab m-1 cursor-pointer p-2 relative"
               },
               [
                 _vm.options.controls.secondary
@@ -84271,13 +84326,13 @@ var render = function() {
                       }
                     ],
                     staticClass:
-                      "absolute z-10 bg-hoverslab shadow w-52 right-0 top-0 p-2"
+                      "absolute z-10 bg-slab border-hoverslab shadow w-52 right-0 top-0 p-2"
                   },
                   [
                     _c(
                       "div",
                       {
-                        staticClass: "p-2 m-1",
+                        staticClass: "p-2 m-1 hover:bg-hoverslab",
                         on: {
                           click: function($event) {
                             return _vm.selectField("", "secondary")
@@ -84291,7 +84346,7 @@ var render = function() {
                       return _c(
                         "div",
                         {
-                          staticClass: "p-2 m-1",
+                          staticClass: "p-2 m-1 hover:bg-hoverslab",
                           on: {
                             click: function($event) {
                               return _vm.selectField(row[0], "secondary")
