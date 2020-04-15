@@ -1,12 +1,17 @@
 <template>
     <div>
         <div>
-            <div class="absolute left-0 right-0 bottom-0 top-0 p-4">
+            <div class="absolute left-0 right-0 bottom-0 top-0 py-4">
                 <div class="text-xs flex items-start justify-between">
                     <div class="flex items-center">
                         <div class="mr-2">Time mode</div>
                         <div class="flex">
-                            <div v-for="row in graphControls.x" class="p-2 border border-hoverslab m-1 cursor-pointer" :class="selectedMode(row[0]) ? 'bg-hoverslab':''">
+                            <div
+                                v-for="row in graphControls.x"
+                                class="p-2 border border-hoverslab m-1 cursor-pointer"
+                                :class="selectedMode(row[0]) ? 'bg-hoverslab':''"
+                                @click="selectMode(row[0])"
+                            >
                                 {{row[1]}}
                             </div>
                         </div>
@@ -26,18 +31,18 @@
                     <div class="flex items-center">
                         <div class="mr-2">Metrics</div>
                         <div class="flex border border-hoverslab bg-hoverslab m-1 cursor-pointer p-2 relative">
-                            <div @click="ui.primary = !ui.primary" class="w-48" v-if="options.controls.primary">{{getFieldName(options.controls.primary)}}</div>
-                            <div @click="ui.primary = !ui.primary" class="w-48" v-else>Select primary metric</div>
-                            <div v-show="ui.primary" class="absolute z-10 bg-slab border-hoverslab shadow w-52 right-0 top-0 p-2">
+                            <div @click="ui.primary = !ui.primary" class="w-32 truncate ..." v-if="options.controls.primary">{{getFieldName(options.controls.primary)}}</div>
+                            <div @click="ui.primary = !ui.primary" class="w-32" v-else>Select primary metric</div>
+                            <div v-show="ui.primary" class="absolute z-10 bg-slab border-hoverslab shadow w-44 right-0 top-0 p-2 border border-hoverslab">
                                 <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" @click="selectField(row[0],'primary')">
                                     {{row[1]}}
                                 </div>
                             </div>
                         </div>
-                        <div class="flex border border-hoverslab bg-hoverslab m-1 cursor-pointer p-2 relative">
-                            <div @click="ui.secondary = !ui.secondary"class="w-48" v-if="options.controls.secondary">{{getFieldName(options.controls.secondary)}}</div>
-                            <div @click="ui.secondary = !ui.secondary" class="w-48" v-else>Select secondary metric</div>
-                            <div v-show="ui.secondary" class="absolute z-10 bg-slab border-hoverslab shadow w-52 right-0 top-0 p-2">
+                        <div class="flex border border-hoverslab bg-hoverslab m-1 mr-0 cursor-pointer p-2 relative">
+                            <div @click="ui.secondary = !ui.secondary" class="w-32 truncate ..." v-if="options.controls.secondary">{{getFieldName(options.controls.secondary)}}</div>
+                            <div @click="ui.secondary = !ui.secondary" class="w-32" v-else>Select secondary metric</div>
+                            <div v-show="ui.secondary" class="absolute z-10 bg-slab border-hoverslab shadow w-44 right-0 top-0 p-2 border border-hoverslab">
                                 <div class="p-2 m-1 hover:bg-hoverslab"  @click="selectField('','secondary')">None</div>
                                 <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" @click="selectField(row[0],'secondary')">
                                     {{row[1]}}
@@ -53,6 +58,7 @@
                 <LineChart :data="dataset.data"
                            :options="dataset.options"
                            class="h-200 m-4 mb-0 bg-heading rounded"
+                           v-if="data.length > 0"
                 />
             </simplebar>
         </div>
@@ -80,7 +86,48 @@
                         'primary': 'confirmed',
                         'secondary' : '',
                         'scaleType' : 'logarithmic',
-                    }
+                    },
+
+                    'background' : [
+                        {
+                            primary: '#1d2e81',
+                            secondary: '#501b73',
+                            confirmed: '#19aade',
+                            deaths: '#c7f9ee',
+                            recovered: '#1de4bd',
+                            growthFactor: '#1de4bd',
+                            deltaConfirmed: '#1de4bd',
+                            deltaDeaths: '#1de4bd',
+                            deltaRecovered: '#1de4bd',
+                            average: '#1de4bd',
+
+                        },
+                        {
+                            primary: '#3984b6',
+                            seconday: '#a73b8f',
+                            confirmed: '#3984b6',
+                            deaths: '#a73b8f',
+                            recovered: '#ea7369',
+                            growthFactor: '#ea7369',
+                            deltaConfirmed: '#1de4bd',
+                            deltaDeaths: '#1de4bd',
+                            deltaRecovered: '#1de4bd',
+                            average: '#1de4bd',
+                        },
+                        {
+                            primary: '#85cbcf',
+                            secondary: '#ee8695',
+                            confirmed: '#3984b6',
+                            deaths: '#a73b8f',
+                            recovered: '#eabd3b',
+                            growthFactor: '#eabd3b',
+                            deltaConfirmed: '#1de4bd',
+                            deltaDeaths: '#1de4bd',
+                            deltaRecovered: '#1de4bd',
+                            average: '#1de4bd',
+
+                        },
+                    ]
 
                 },
                 ui : {
@@ -90,8 +137,8 @@
                 'graphControls' : {
                     'x' : [
                         ['chronological','Chronological'],
-                        ['ordinal','From first case (todo)'],
-                        ['from100','From 100 cases (todo)'],
+                        ['from1','From first case'],
+                        ['from100','From 100 cases'],
                     ],
                     'y' : [
                         ['confirmed','Confirmed cases'],
@@ -131,11 +178,16 @@
             },
             selectedMode(key)
             {
+                console.log('Key: ' + key + ' vs ' + this.options.mode);
                 if (key == this.options.mode)
                 {
                     return true;
                 }
                 return false;
+            },
+            selectMode(key)
+            {
+                this.options.mode = key;
             },
             selectedScaleType(key)
             {
@@ -225,22 +277,15 @@
                     yAxis = this.yAxis;
 
 
-                if (this.xAxis == 'chronological')
+                if (this.options.mode == 'chronological')
                 {
                     return this.datasetChronological;
                 }
-                else if (this.xAxis == '100')
+                else if (this.options.mode == 'from1' || this.options.mode == 'from100')
                 {
-                    return this.dataset100;
+                    return this.datasetCaseCount;
                 }
-                else if (this.xAxis == 'delta')
-                {
-                    return this.datasetDelta;
-                }
-                else if (this.xAxis == 'growth')
-                {
-                    return this.datasetGrowth;
-                }
+
                 else
                 {
                     return {
@@ -290,42 +335,7 @@
                     options,
                     key,
                     content = [],
-                    background = [
-                        {
-                            primary: '#3984b6',
-                            secondary: '#a73b8f',
-                            confirmed: '#19aade',
-                            deaths: '#c7f9ee',
-                            recovered: '#1de4bd',
-                            growthFactor: '#1de4bd',
-                            deltaConfirmed: '#1de4bd',
-                            deltaDeaths: '#1de4bd',
-                            deltaRecovered: '#1de4bd',
-                            average: '#1de4bd',
-
-                        },
-                        {
-                            confirmed: '#3984b6',
-                            deaths: '#a73b8f',
-                            recovered: '#ea7369',
-                            growthFactor: '#ea7369',
-                            deltaConfirmed: '#1de4bd',
-                            deltaDeaths: '#1de4bd',
-                            deltaRecovered: '#1de4bd',
-                            average: '#1de4bd',
-                        },
-                        {
-                            confirmed: '#3984b6',
-                            deaths: '#a73b8f',
-                            recovered: '#eabd3b',
-                            growthFactor: '#eabd3b',
-                            deltaConfirmed: '#1de4bd',
-                            deltaDeaths: '#1de4bd',
-                            deltaRecovered: '#1de4bd',
-                            average: '#1de4bd',
-
-                        },
-                    ];
+                    background = this.options.background;
 
 
                 // OPTIONS
@@ -494,7 +504,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: background[x][metric],
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -525,7 +535,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: background[x][metric],
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -556,7 +566,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: background[x][metric],
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -587,7 +597,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: background[x][metric],
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -618,7 +628,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: background[x][metric],
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -649,7 +659,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: background[x][metric],
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -681,7 +691,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: background[x][metric],
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -713,7 +723,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: background[x][metric],
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -731,50 +741,15 @@
             },
             datasetCaseCount()
             {
-
                 var data = {
                         labels: [],
                         datasets: [],
                     },
                     options,
                     key,
+                    totalDays = 0,
                     content = [],
-                    background = [
-                        {
-                            primary: '#19aade',
-                            secondary: '#eabd3b',
-                            confirmed: '#19aade',
-                            deaths: '#c7f9ee',
-                            recovered: '#1de4bd',
-                            growthFactor: '#1de4bd',
-                            deltaConfirmed: '#1de4bd',
-                            deltaDeaths: '#1de4bd',
-                            deltaRecovered: '#1de4bd',
-                            average: '#1de4bd',
-
-                        },
-                        {
-                            confirmed: '#af4bce',
-                            deaths: '#f0a58f',
-                            recovered: '#ea7369',
-                            growthFactor: '#ea7369',
-                            deltaConfirmed: '#1de4bd',
-                            deltaDeaths: '#1de4bd',
-                            deltaRecovered: '#1de4bd',
-                            average: '#1de4bd',
-                        },
-                        {
-                            confirmed: '#de542c',
-                            deaths: '#e7e34e',
-                            recovered: '#eabd3b',
-                            growthFactor: '#eabd3b',
-                            deltaConfirmed: '#1de4bd',
-                            deltaDeaths: '#1de4bd',
-                            deltaRecovered: '#1de4bd',
-                            average: '#1de4bd',
-
-                        },
-                    ];
+                    background = this.options.background;
 
 
                 // OPTIONS
@@ -787,13 +762,13 @@
                     stacked: false,
                     legend: {
                         labels: {
-                            fontColor: '#d1e8e2'
+                            fontColor: '#2c3531'
                         }
                     },
                     scales: {
                         xAxes: [{
                             ticks: {
-                                fontColor: '#d1e8e2',
+                                fontColor: '#2c3531',
                             }
                         }],
                         yAxes: [
@@ -806,95 +781,77 @@
                 for(var x in this.data){
                     count++;
                 }
+
+                // Exit if there are no countries to compare
                 if(count == 0)
                     return data;
 
-                var start = '', end = '';
-                // Get start and end dates
-                for(var x in this.data)
-                {
-                    var stats = this.data[x].daily;
-                    for(var y in stats)
-                    {
-                        var date = stats[y].date;
-                        if(start.length === 0 || moment(date).format('YYYY-MM-DD') < start)
-                        {
-                            start = moment(date).format('YYYY-MM-DD');
-                        }
-
-                        if(end.length === 0 || moment(date).format('YYYY-MM-DD') > end)
-                        {
-                            end = moment(date).format('YYYY-MM-DD');
-                        }
-                    }
-                }
-
                 // Assemble content
-                for(var x = 0; x <= moment(end).diff(moment(start),'days'); x++)
+                for(var country_index = 0; country_index < this.data.length; country_index++)
                 {
-
-                    var current_date = _.clone(moment(start).add(x,'days').format('YYYY-MM-DD'))
-                    data.labels.push(current_date);
-                    for(var y = 0; y < this.data.length; y++)
+                    var start = false;
+                    for(var x in this.data[country_index].daily)
                     {
-                        if(!content[y])
+                        var row = this.data[country_index].daily[x];
+                        // We haven't started logging yet
+                        if(!start)
                         {
-                            content.push(
-                                {
-                                    confirmed: [],
-                                    deaths: [],
-                                    recovered: [],
-                                    deltaConfirmed: [],
-                                    deltaDeaths: [],
-                                    deltaRecovered: [],
-                                    average: [],
-                                    growthFactor: [],
-                                }
-                            );
+                            if(this.options.mode == 'from1' && parseInt(row.confirmed) >= 1)
+                            {
+                                start = true;
+                            }
+                            else if(this.options.mode == 'from100' && parseInt(row.confirmed) >= 100)
+                            {
+                                start = true;
+                            }
                         }
 
-                        if(this.data[y].daily)
+
+
+                        // Now let's get ready to log
+                        if(start)
                         {
-
-                            var found = false;
-                            var stats = this.data[y].daily;
-
-                            for(var z in stats)
+                            // Initialise this new row
+                            if(!content[x])
                             {
-                                var row = stats[z];
-                                if(moment(row.date).format('YYYY-MM-DD') === current_date)
-                                {
-                                    content[y].confirmed.push(row.confirmed);
-                                    content[y].deaths.push(row.deaths);
-                                    content[y].recovered.push(row.recovered);
-                                    content[y].deltaConfirmed.push(this.data[y].delta[z].confirmed);
-                                    content[y].deltaDeaths.push(this.data[y].delta[z].deaths);
-                                    content[y].deltaRecovered.push(this.data[y].delta[z].recovered);
-                                    content[y].average.push(this.data[y].average[z]);
-                                    content[y].growthFactor.push(this.data[y].growthFactor[z]);
-                                    found = true;
-                                }
+                                content.push(
+                                    {
+                                        confirmed: [],
+                                        deaths: [],
+                                        recovered: [],
+                                        deltaConfirmed: [],
+                                        deltaDeaths: [],
+                                        deltaRecovered: [],
+                                        average: [],
+                                        growthFactor: [],
+                                    }
+                                );
                             }
 
-                            // If today's data is missing, use previous day's
-                            if (!found)
-                            {
-                                if (content[y].confirmed.length > 0)
-                                {
-                                    content[y].confirmed.push(content[y].confirmed.slice(-1));
-                                    content[y].deaths.push(content[y].deaths.slice(-1));
-                                    content[y].recovered.push(content[y].recovered.slice(-1));
-                                }
-                                else
-                                {
-                                    content[y].confirmed.push(0);
-                                    content[y].deaths.push(0);
-                                    content[y].recovered.push(0);
-                                }
-                            }
+                            content[country_index].confirmed.push(row.confirmed);
+                            content[country_index].deaths.push(row.deaths);
+                            content[country_index].recovered.push(row.recovered);
+                            content[country_index].deltaConfirmed.push(this.data[country_index].delta[x].confirmed);
+                            content[country_index].deltaDeaths.push(this.data[country_index].delta[x].deaths);
+                            content[country_index].deltaRecovered.push(this.data[country_index].delta[x].recovered);
+                            content[country_index].average.push(this.data[country_index].average[x]);
+                            content[country_index].growthFactor.push(this.data[country_index].growthFactor[x]);
                         }
                     }
+                    if(totalDays < content[country_index].confirmed.length)
+                    {
+                        totalDays = content[country_index].confirmed.length;
+                    }
                 }
+
+                for(var x = 1; x <= totalDays; x++)
+                {
+                    data.labels.push('Day ' + x);
+                }
+
+
+                console.log('Data!');
+                console.log(data);
 
                 var position = '',
                     chartType = '',
@@ -925,7 +882,6 @@
                                     type: chartType,
                                     label: 'Confirmed (' + this.data[x].name.full + ')',
                                     backgroundColor: background[x][metric],
-                                    fill: false,
                                     data: _.cloneDeep(content[x].confirmed),
                                     yAxisID: 'y-confirmed'
                                 }
@@ -943,7 +899,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -974,7 +930,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -1005,7 +961,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -1036,7 +992,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -1067,7 +1023,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[x][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -1098,7 +1054,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -1113,7 +1069,6 @@
                                     type: chartType,
                                     label: 'Growth factor (' + this.data[x].name.full + ')',
                                     backgroundColor: background[x][metric],
-                                    fill: false,
                                     data: _.cloneDeep(content[x].average),
                                     yAxisID: 'y-average'
                                 }
@@ -1130,7 +1085,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -1145,7 +1100,6 @@
                                     type: chartType,
                                     label: 'Growth factor (' + this.data[x].name.full + ')',
                                     backgroundColor: background[x][metric],
-                                    fill: false,
                                     data: _.cloneDeep(content[x].growthFactor),
                                     yAxisID: 'y-growthFactor'
                                 }
@@ -1162,7 +1116,7 @@
                                         drawOnChartArea: false, // only want the grid lines for one axis to show up
                                     },
                                     ticks: {
-                                        fontColor: '#d1e8e2',
+                                        fontColor: background[0][metric],
                                         callback: function(tick, index, ticks) {
                                             return tick.toLocaleString()
                                         }
@@ -1178,553 +1132,6 @@
                     options: options
                 };
             },
-
-
-
-            dataset100()
-            {
-                var data = {
-                        labels: [],
-                        datasets: [],
-                    },
-                    options,
-                    key,
-                    bgConfirmed = [
-                        '#19aade',
-                        '#af4bce',
-                        '#de542c'
-                    ],
-                    bgRecovered = [
-                        '#1de4bd',
-                        '#ea7369',
-                        '#eabd3b'
-                    ],
-                    bgDeaths = [
-                        '#c7f9ee',
-                        '#f0a58f',
-                        '#e7e34e'
-                    ]
-
-                var count = 0;
-                for(var x in this.data){
-                    count++;
-                }
-                if(count == 0)
-                    return data;
-
-
-                var labels = [];
-                var confirmed = {
-                        '0' : [],
-                        '1' : [],
-                        '2' : [],
-                    }
-                    ,
-                    deaths = {
-                        '0' : [],
-                        '1' : [],
-                        '2' : [],
-                    },
-                    recovered = {
-                        '0' : [],
-                        '1' : [],
-                        '2' : [],
-                    };
-
-
-
-
-                for(var x in this.data)
-                {
-                    var found = false;
-                    var stats = this.data[x].daily;
-
-                    for(var y in stats)
-                    {
-                        var row = stats[y];
-                        if (found || row.confirmed >= 100)
-                        {
-                            found = true;
-                            confirmed[x].push(row.confirmed);
-                            deaths[x].push(row.deaths);
-                            recovered[x].push(row.recovered);
-                        }
-                    }
-                }
-
-                // Assemble labels
-                var max = 1;
-                for(var x in this.data)
-                {
-                    if(confirmed[x].length > max)
-                    {
-                        max = confirmed[x].length;
-                    }
-                }
-
-                for(var x = 1; x <= max; x++)
-                {
-                    data.labels.push('Day ' + x);
-                }
-
-                // Assemble labels
-                for(var x in this.data)
-                {
-                    data.datasets.push(
-                        {
-                            type: 'line',
-                            label: 'Confirmed (' + this.data[x].name.full + ')',
-                            backgroundColor: bgConfirmed[x],
-                            data: _.cloneDeep(confirmed[x]),
-                            yAxisID: 'y-1'
-                        },
-                        {
-                            type: 'bar',
-                            label: 'Deaths (' + this.data[x].name.full + ')',
-                            backgroundColor: bgDeaths[x],
-                            data: _.cloneDeep(deaths[x]),
-                            yAxisID: 'y-2'
-                        },
-                        {
-                            type: 'bar',
-                            label: 'Recovered (' + this.data[x].name.full + ')',
-                            backgroundColor: bgRecovered[x],
-                            data: _.cloneDeep(recovered[x]),
-                            yAxisID: 'y-3'
-                        }
-                    );
-                }
-
-                // OPTIONS
-
-                options = {
-
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    hoverMode: 'index',
-                    stacked: false,
-                    legend: {
-                        labels: {
-                            fontColor: '#d1e8e2'
-                        }
-                    },
-                    scales: {
-                        xAxes: [{
-                            ticks: {
-                                fontColor: '#d1e8e2',
-                            }
-                        }],
-                        yAxes: [{
-                            type: 'logarithmic',
-                            display: true,
-                            position: 'left',
-                            id: 'y-1',
-                            ticks: {
-                                fontColor: '#d1e8e2',
-                                callback: function(tick, index, ticks) {
-                                    return tick.toLocaleString()
-                                }
-                            }
-                        }, {
-                            type: 'logarithmic',
-                            display: true,
-                            position: 'right',
-                            id: 'y-2',
-
-                            // grid line settings
-                            gridLines: {
-                                drawOnChartArea: false, // only want the grid lines for one axis to show up
-                            },
-                            ticks: {
-                                fontColor: '#d1e8e2',
-                                callback: function(tick, index, ticks) {
-                                    return tick.toLocaleString()
-                                }
-                            }
-                        }, {
-                            type: 'logarithmic',
-                            display: true,
-                            position: 'right',
-                            id: 'y-3',
-
-                            // grid line settings
-                            gridLines: {
-                                drawOnChartArea: false, // only want the grid lines for one axis to show up
-                            },
-                            ticks: {
-                                fontColor: '#d1e8e2',
-                                callback: function(tick, index, ticks) {
-                                    return tick.toLocaleString()
-                                }
-                            }
-                        }
-                        ],
-                    }
-                };
-
-                return {
-                    data: data,
-                    options: options
-                };
-            },
-            datasetDelta()
-            {
-                var data = {
-                        labels: [],
-                        datasets: [],
-                    },
-                    options,
-                    key,
-                    bgConfirmed = [
-                        '#19aade',
-                        '#af4bce',
-                        '#de542c'
-                    ],
-                    bgRecovered = [
-                        '#1de4bd',
-                        '#ea7369',
-                        '#eabd3b'
-                    ],
-                    bgDeaths = [
-                        '#c7f9ee',
-                        '#f0a58f',
-                        '#e7e34e'
-                    ]
-
-
-                var count = 0;
-                for(var x in this.data){
-                    count++;
-                }
-                if(count == 0)
-                    return data;
-
-                var start = '', end = '';
-                // Get start and end dates
-                for(var x in this.data)
-                {
-                    var stats = this.data[x].delta;
-                    for(var y in stats)
-                    {
-                        var date = stats[y].date;
-                        if(start.length === 0 || moment(date).format('YYYY-MM-DD') < start)
-                        {
-                            start = moment(date).format('YYYY-MM-DD');
-                        }
-
-                        if(end.length === 0 || moment(date).format('YYYY-MM-DD') > end)
-                        {
-                            end = moment(date).format('YYYY-MM-DD');
-                        }
-                    }
-                }
-
-                var labels = [];
-                var confirmed = {
-                        '0' : [],
-                        '1' : [],
-                        '2' : [],
-                    }
-                    ,
-                    deaths = {
-                        '0' : [],
-                        '1' : [],
-                        '2' : [],
-                    },
-                    recovered = {
-                        '0' : [],
-                        '1' : [],
-                        '2' : [],
-                    };
-
-                for(var x = 0; x <= moment(end).diff(moment(start),'days'); x++)
-                {
-
-                    var current_date = _.clone(moment(start).add(x,'days').format('YYYY-MM-DD'))
-                    data.labels.push(current_date);
-                    for(var y in this.data)
-                    {
-
-                        if(this.data[y].delta)
-                        {
-
-                            var found = false;
-                            var stats = this.data[y].delta;
-
-                            for(var z in stats)
-                            {
-                                var row = stats[z];
-                                if(moment(row.date).format('YYYY-MM-DD') === current_date)
-                                {
-                                    confirmed[y].push(row.confirmed);
-                                    deaths[y].push(row.deaths);
-                                    recovered[y].push(row.recovered);
-                                    found = true;
-                                }
-                            }
-
-                            // If today's data is missing, use previous day's
-                            if (!found)
-                            {
-                                if (confirmed[y].length > 0)
-                                {
-                                    confirmed[y].push(confirmed[confirmed[y].length]);
-                                    deaths[y].push(deaths[deaths[y].length]);
-                                    recovered[y].push(recovered[recovered[y].length]);
-                                }
-                                else
-                                {
-                                    confirmed[y].push(0);
-                                    deaths[y].push(0);
-                                    recovered[y].push(0);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // Assemble labels
-                for(var x in this.data)
-                {
-                    data.datasets.push(
-                        {
-                            type: 'line',
-                            label: 'Confirmed (' + this.data[x].name.full + ')',
-                            backgroundColor: bgConfirmed[x],
-                            data: _.cloneDeep(confirmed[x]),
-                            yAxisID: 'y-1'
-                        },
-                        {
-                            type: 'bar',
-                            label: 'Deaths (' + this.data[x].name.full + ')',
-                            backgroundColor: bgDeaths[x],
-                            data: _.cloneDeep(deaths[x]),
-                            yAxisID: 'y-2'
-                        },
-                        {
-                            type: 'bar',
-                            label: 'Recovered (' + this.data[x].name.full + ')',
-                            backgroundColor: bgRecovered[x],
-                            data: _.cloneDeep(recovered[x]),
-                            yAxisID: 'y-3'
-                        }
-                    );
-                }
-
-
-                // OPTIONS
-
-                options = {
-
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        hoverMode: 'index',
-                        stacked: false,
-                        legend: {
-                        labels: {
-                            fontColor: '#d1e8e2'
-                        }
-                    },
-                    scales: {
-                        xAxes: [{
-                            ticks: {
-                                fontColor: '#d1e8e2',
-                            }
-                        }],
-                            yAxes: [{
-                            type: 'logarithmic',
-                            display: true,
-                            position: 'left',
-                            id: 'y-1',
-                            ticks: {
-                                fontColor: '#d1e8e2',
-                                callback: function(tick, index, ticks) {
-                                    return tick.toLocaleString()
-                                }
-                            }
-                        }, {
-                            type: 'logarithmic',
-                            display: true,
-                            position: 'right',
-                            id: 'y-2',
-
-                            // grid line settings
-                            gridLines: {
-                                drawOnChartArea: false, // only want the grid lines for one axis to show up
-                            },
-                            ticks: {
-                                fontColor: '#d1e8e2',
-                                callback: function(tick, index, ticks) {
-                                    return tick.toLocaleString()
-                                }
-                            }
-                        }, {
-                            type: 'logarithmic',
-                            display: true,
-                            position: 'right',
-                            id: 'y-3',
-
-                            // grid line settings
-                            gridLines: {
-                                drawOnChartArea: false, // only want the grid lines for one axis to show up
-                            },
-                            ticks: {
-                                fontColor: '#d1e8e2',
-                                callback: function(tick, index, ticks) {
-                                    return tick.toLocaleString()
-                                }
-                            }
-                        }
-                        ],
-                    }
-                };
-
-
-                return {
-                    data: data,
-                    options: options
-                };
-            },
-            datasetGrowth()
-            {
-                const arrAvg = arr => arr.reduce((a,b) => a + b, 0) / arr.length;
-
-                var data = {
-                        labels: [],
-                        datasets: [],
-                    },
-                    options,
-                    key,
-                    bgConfirmed = [
-                        '#19aade',
-                        '#af4bce',
-                        '#de542c'
-                    ],
-                    bgRecovered = [
-                        '#1de4bd',
-                        '#ea7369',
-                        '#eabd3b'
-                    ],
-                    bgDeaths = [
-                        '#c7f9ee',
-                        '#f0a58f',
-                        '#e7e34e'
-                    ]
-
-
-                var count = 0;
-                for(var x in this.data){
-                    count++;
-                }
-                if(count == 0)
-                    return data;
-
-                var start = '', end = '';
-                // Get start and end dates
-                for(var x in this.data)
-                {
-                    var stats = this.data[x].daily;
-                    for(var y in stats)
-                    {
-                        var date = stats[y].date;
-                        if(start.length === 0 || moment(date).format('YYYY-MM-DD') < start)
-                        {
-                            start = moment(date).format('YYYY-MM-DD');
-                        }
-
-                        if(end.length === 0 || moment(date).format('YYYY-MM-DD') > end)
-                        {
-                            end = moment(date).format('YYYY-MM-DD');
-                        }
-                    }
-                }
-
-                // Assemble labels
-                for(var country_index in this.data)
-                {
-                    data.datasets.push(
-                        {
-                            type: 'line',
-                            label: this.data[country_index].name.full,
-                            backgroundColor: bgConfirmed[country_index],
-                            data: [],
-                            yAxisID: 'y-1'
-                        }
-                    );
-                }
-
-                for(var x = 0; x <= moment(end).diff(moment(start),'days'); x++) {
-                    var current_date = _.clone(moment(start).add(x, 'days').format('YYYY-MM-DD'))
-                    data.labels.push(current_date);
-                }
-
-
-                for(var x in this.data)
-                {
-                    var diff = moment(this.data[x].daily[0].date).diff(moment(start),'days');
-                    if (moment(this.data[x].daily[0].date) > moment(start))
-                    {
-
-                        for(var y = 0; y < diff; y++)
-                        {
-                            data.datasets[x].data.push(0)
-                        }
-                    }
-
-                    for(var y in this.data[x].growthFactor)
-                    {
-
-                        var gf = 0;
-                        gf = parseFloat(this.data[x].growthFactor[y]).toFixed(2);
-                        if(isNaN(gf))
-                        {
-                            gf = 0;
-                        }
-                        data.datasets[x].data.push(gf);
-                    }
-                }
-
-
-                // OPTIONS
-
-                options = {
-
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    hoverMode: 'index',
-                    stacked: false,
-                    legend: {
-                        labels: {
-                            fontColor: '#d1e8e2'
-                        }
-                    },
-                    scales: {
-                        xAxes: [{
-                            ticks: {
-                                fontColor: '#d1e8e2',
-                            }
-                        }],
-                        yAxes: [{
-                            type: 'logarithmic',
-                            display: true,
-                            position: 'left',
-                            id: 'y-1',
-                            ticks: {
-                                fontColor: '#d1e8e2',
-                                callback: function(tick, index, ticks) {
-                                    return tick.toLocaleString()
-                                }
-                            }
-                        }
-                        ],
-                    }
-                };
-
-                return {
-                    data: data,
-                    options: options
-                };
-            }
         }
     }
 </script>

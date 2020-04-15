@@ -137,52 +137,12 @@
                                 </div>
                             </div>
 
-                            <div class="absolute top-0 bottom-0 right-0 left-0 ml-112">
-                                <ComparisonChart class="absolute left-0 right-0 bottom-0 top-0"
+                            <div class="absolute top-0 bottom-0 right-0 left-0 ml-112" style="top: -5rem">
+                                <StatsChart class="absolute left-0 right-0 bottom-0 top-0"
                                             :data="comparisonDataset" />
                             </div>
                         </div>
 
-
-
-<!--                        <div class="flex w-full absolute left-0 right-0 px-2" style="bottom: 40%; top: 70px;">-->
-<!--                            <div class="rounded bg-hoverslab m-2 w-1/3 relative">-->
-<!--                                <div v-if="compare.length > 0">-->
-<!--                                    <Daily-->
-<!--                                        v-on:remove="removeCompare"-->
-<!--                                        :data="compare1"-->
-<!--                                    />-->
-<!--                                </div>-->
-<!--                                <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">-->
-<!--                                    <div>Select a country/state to compare</div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="rounded bg-hoverslab m-2 w-1/3 relative">-->
-<!--                                <div v-if="compare.length > 1">-->
-<!--                                    <Daily-->
-<!--                                        v-on:remove="removeCompare"-->
-<!--                                        :data="compare2"-->
-<!--                                    />-->
-<!--                                </div>-->
-<!--                                <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">-->
-<!--                                    <div>Select a country/state to compare</div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="rounded bg-hoverslab m-2 w-1/3 relative">-->
-<!--                                <div v-if="compare.length > 2">-->
-<!--                                    <Daily-->
-<!--                                        v-on:remove="removeCompare"-->
-<!--                                        :data="compare3"-->
-<!--                                    />-->
-<!--                                </div>-->
-<!--                                <div v-else class="flex items-center justify-center h-full text-2xl text-gray-200">-->
-<!--                                    <div>Select a country/state to compare</div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <ComparisonChart class="absolute left-0 right-0 bottom-0 m-4 mt-0" style="top: 60%;"-->
-<!--                                    :data="comparisonDataset"-->
-<!--                        />-->
                     </div>
                 </div>
 
@@ -204,6 +164,7 @@
     import 'simplebar/dist/simplebar.min.css';
     import Daily from "../components/Daily";
     import ComparisonChart from "../components/ComparisonChart";
+    import StatsChart from "../components/StatsChart";
     import CountryStateItem from "../components/CountryStateItem";
     import moment from 'moment'
     import Single from "./Single";
@@ -219,7 +180,8 @@
             Daily,
             ComparisonChart,
             CountryStateItem,
-            Single
+            Single,
+            StatsChart
         },
         data()
         {
