@@ -3298,6 +3298,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -3318,8 +3319,8 @@ __webpack_require__.r(__webpack_exports__);
           'scaleType': 'logarithmic'
         },
         'background': [{
-          primary: '#1d2e81',
-          secondary: '#501b73',
+          primary: '#2e62a1',
+          secondary: '#7b2a95',
           confirmed: '#19aade',
           deaths: '#c7f9ee',
           recovered: '#1de4bd',
@@ -3329,8 +3330,8 @@ __webpack_require__.r(__webpack_exports__);
           deltaRecovered: '#1de4bd',
           average: '#1de4bd'
         }, {
-          primary: '#3984b6',
-          seconday: '#a73b8f',
+          primary: '#44a7cb',
+          secondary: '#d54d88',
           confirmed: '#3984b6',
           deaths: '#a73b8f',
           recovered: '#ea7369',
@@ -3340,8 +3341,8 @@ __webpack_require__.r(__webpack_exports__);
           deltaRecovered: '#1de4bd',
           average: '#1de4bd'
         }, {
-          primary: '#85cbcf',
-          secondary: '#ee8695',
+          primary: '#9ed5cd',
+          secondary: '#f19a9b',
           confirmed: '#3984b6',
           deaths: '#a73b8f',
           recovered: '#eabd3b',
@@ -3364,7 +3365,7 @@ __webpack_require__.r(__webpack_exports__);
       stats: {}
     };
   },
-  props: ['data'],
+  props: ['data', 'full'],
   methods: {
     getFieldName: function getFieldName(key) {
       if (key) {
@@ -3630,6 +3631,8 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-confirmed'
             });
             options.scales.yAxes.push({
+              responsive: true,
+              labelString: 'Confirmed',
               type: this.options.controls.scaleType,
               display: true,
               position: position,
@@ -3655,6 +3658,8 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-deaths'
             });
             options.scales.yAxes.push({
+              responsive: true,
+              labelString: 'Deaths',
               type: this.options.controls.scaleType,
               display: true,
               position: position,
@@ -3680,6 +3685,8 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-recovered'
             });
             options.scales.yAxes.push({
+              responsive: true,
+              labelString: 'Recovered',
               type: this.options.controls.scaleType,
               display: true,
               position: position,
@@ -3705,6 +3712,8 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-deltaConfirmed'
             });
             options.scales.yAxes.push({
+              responsive: true,
+              labelString: 'New cases per day',
               type: this.options.controls.scaleType,
               display: true,
               position: position,
@@ -3724,12 +3733,14 @@ __webpack_require__.r(__webpack_exports__);
           } else if (this.yAxis[y] == 'deltaDeaths') {
             data.datasets.push({
               type: chartType,
-              label: 'New cases per day (' + this.data[x].name.full + ')',
+              label: 'New deaths per day (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
               data: _.cloneDeep(content[x].deltaDeaths),
               yAxisID: 'y-deltaDeaths'
             });
             options.scales.yAxes.push({
+              responsive: true,
+              labelString: 'New deaths per day',
               type: this.options.controls.scaleType,
               display: true,
               position: position,
@@ -3749,12 +3760,14 @@ __webpack_require__.r(__webpack_exports__);
           } else if (this.yAxis[y] == 'deltaRecovered') {
             data.datasets.push({
               type: chartType,
-              label: 'New cases per day (' + this.data[x].name.full + ')',
+              label: 'New recoveries per day (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
               data: _.cloneDeep(content[x].deltaRecovered),
               yAxisID: 'y-deltaRecovered'
             });
             options.scales.yAxes.push({
+              responsive: true,
+              labelString: 'New recoveries per day',
               type: this.options.controls.scaleType,
               display: true,
               position: position,
@@ -3774,13 +3787,15 @@ __webpack_require__.r(__webpack_exports__);
           } else if (this.yAxis[y] == 'average') {
             data.datasets.push({
               type: chartType,
-              label: 'Growth factor (' + this.data[x].name.full + ')',
+              label: 'Average growth (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
               fill: true,
               data: _.cloneDeep(content[x].average),
               yAxisID: 'y-average'
             });
             options.scales.yAxes.push({
+              responsive: true,
+              labelString: 'Average growth',
               type: this.options.controls.scaleType,
               display: true,
               position: position,
@@ -3807,6 +3822,8 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-growthFactor'
             });
             options.scales.yAxes.push({
+              responsive: true,
+              labelString: 'Growth Factor',
               type: this.options.controls.scaleType,
               display: true,
               position: position,
@@ -3948,6 +3965,8 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-confirmed'
             });
             options.scales.yAxes.push({
+              responsive: true,
+              labelString: 'Confirmed',
               type: this.options.controls.scaleType,
               display: true,
               position: position,
@@ -3973,7 +3992,9 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-deaths'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              responsive: true,
+              labelString: 'Deaths',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-deaths',
@@ -3992,13 +4013,15 @@ __webpack_require__.r(__webpack_exports__);
           } else if (this.yAxis[y] == 'recovered') {
             data.datasets.push({
               type: chartType,
-              label: 'Recovered (' + this.data[x].name.full + ')',
+              label: 'Deaths (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
               data: _.cloneDeep(content[x].recovered),
               yAxisID: 'y-recovered'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              responsive: true,
+              labelString: 'Recovered',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-recovered',
@@ -4023,7 +4046,9 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-deltaConfirmed'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              responsive: true,
+              labelString: 'New cases per day',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-deltaConfirmed',
@@ -4042,13 +4067,15 @@ __webpack_require__.r(__webpack_exports__);
           } else if (this.yAxis[y] == 'deltaDeaths') {
             data.datasets.push({
               type: chartType,
-              label: 'New cases per day (' + this.data[x].name.full + ')',
+              label: 'New deaths per day (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
               data: _.cloneDeep(content[x].deltaDeaths),
               yAxisID: 'y-deltaDeaths'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              responsive: true,
+              labelString: 'New deaths per day',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-deltaDeaths',
@@ -4067,13 +4094,15 @@ __webpack_require__.r(__webpack_exports__);
           } else if (this.yAxis[y] == 'deltaRecovered') {
             data.datasets.push({
               type: chartType,
-              label: 'New cases per day (' + this.data[x].name.full + ')',
+              label: 'New recoveries per day (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
               data: _.cloneDeep(content[x].deltaRecovered),
               yAxisID: 'y-deltaRecovered'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              responsive: true,
+              labelString: 'New recoveries per day',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-deltaRecovered',
@@ -4092,13 +4121,15 @@ __webpack_require__.r(__webpack_exports__);
           } else if (this.yAxis[y] == 'average') {
             data.datasets.push({
               type: chartType,
-              label: 'Growth factor (' + this.data[x].name.full + ')',
+              label: 'Average growth (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
               data: _.cloneDeep(content[x].average),
               yAxisID: 'y-average'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              responsive: true,
+              labelString: 'Average growth',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-average',
@@ -4123,7 +4154,9 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-growthFactor'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              responsive: true,
+              labelString: 'Growth factor',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-growthFactor',
@@ -83877,7 +83910,10 @@ var render = function() {
           [
             _vm.data.length > 0
               ? _c("LineChart", {
-                  staticClass: "h-200 m-4 mb-0 bg-heading rounded",
+                  staticClass: "bg-heading rounded",
+                  class: _vm.full
+                    ? "absolute top-0 bottom-0 right-0 left-0 m-2"
+                    : "h-200 m-4 mb-0",
                   attrs: {
                     data: _vm.dataset.data,
                     options: _vm.dataset.options
@@ -84716,7 +84752,10 @@ var render = function() {
                                     _c("StatsChart", {
                                       staticClass:
                                         "absolute left-0 right-0 bottom-0 top-0",
-                                      attrs: { data: _vm.comparisonDataset }
+                                      attrs: {
+                                        data: _vm.comparisonDataset,
+                                        full: "true"
+                                      }
                                     })
                                   ],
                                   1

@@ -139,7 +139,7 @@
 
                             <div class="absolute top-0 bottom-0 right-0 left-0 ml-112" style="top: -5rem">
                                 <StatsChart class="absolute left-0 right-0 bottom-0 top-0"
-                                            :data="comparisonDataset" />
+                                            :data="comparisonDataset" full="true" />
                             </div>
                         </div>
 

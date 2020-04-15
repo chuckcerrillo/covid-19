@@ -57,7 +57,8 @@
             <simplebar data-simplebar-auto-hide="false" class="h-full">
                 <LineChart :data="dataset.data"
                            :options="dataset.options"
-                           class="h-200 m-4 mb-0 bg-heading rounded"
+                           class="bg-heading rounded"
+                           :class="full ? 'absolute top-0 bottom-0 right-0 left-0 m-2' : 'h-200 m-4 mb-0'"
                            v-if="data.length > 0"
                 />
             </simplebar>
@@ -90,8 +91,8 @@
 
                     'background' : [
                         {
-                            primary: '#1d2e81',
-                            secondary: '#501b73',
+                            primary: '#2e62a1',
+                            secondary: '#7b2a95',
                             confirmed: '#19aade',
                             deaths: '#c7f9ee',
                             recovered: '#1de4bd',
@@ -103,8 +104,8 @@
 
                         },
                         {
-                            primary: '#3984b6',
-                            seconday: '#a73b8f',
+                            primary: '#44a7cb',
+                            secondary: '#d54d88',
                             confirmed: '#3984b6',
                             deaths: '#a73b8f',
                             recovered: '#ea7369',
@@ -115,8 +116,8 @@
                             average: '#1de4bd',
                         },
                         {
-                            primary: '#85cbcf',
-                            secondary: '#ee8695',
+                            primary: '#9ed5cd',
+                            secondary: '#f19a9b',
                             confirmed: '#3984b6',
                             deaths: '#a73b8f',
                             recovered: '#eabd3b',
@@ -160,6 +161,7 @@
         },
         props: [
             'data',
+            'full',
         ],
         methods: {
             getFieldName(key)
@@ -494,6 +496,8 @@
 
                             options.scales.yAxes.push(
                                 {
+                                    responsive: true,
+                                    labelString: 'Confirmed',
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -525,6 +529,8 @@
                             );
                             options.scales.yAxes.push(
                                 {
+                                    responsive: true,
+                                    labelString: 'Deaths',
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -556,6 +562,8 @@
                             );
                             options.scales.yAxes.push(
                                 {
+                                    responsive: true,
+                                    labelString: 'Recovered',
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -587,6 +595,8 @@
                             );
                             options.scales.yAxes.push(
                                 {
+                                    responsive: true,
+                                    labelString: 'New cases per day',
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -610,7 +620,7 @@
                             data.datasets.push(
                                 {
                                     type: chartType,
-                                    label: 'New cases per day (' + this.data[x].name.full + ')',
+                                    label: 'New deaths per day (' + this.data[x].name.full + ')',
                                     backgroundColor: background[x][metric],
                                     data: _.cloneDeep(content[x].deltaDeaths),
                                     yAxisID: 'y-deltaDeaths'
@@ -618,6 +628,8 @@
                             );
                             options.scales.yAxes.push(
                                 {
+                                    responsive: true,
+                                    labelString: 'New deaths per day',
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -641,7 +653,7 @@
                             data.datasets.push(
                                 {
                                     type: chartType,
-                                    label: 'New cases per day (' + this.data[x].name.full + ')',
+                                    label: 'New recoveries per day (' + this.data[x].name.full + ')',
                                     backgroundColor: background[x][metric],
                                     data: _.cloneDeep(content[x].deltaRecovered),
                                     yAxisID: 'y-deltaRecovered'
@@ -649,6 +661,8 @@
                             );
                             options.scales.yAxes.push(
                                 {
+                                    responsive: true,
+                                    labelString: 'New recoveries per day',
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -672,7 +686,7 @@
                             data.datasets.push(
                                 {
                                     type: chartType,
-                                    label: 'Growth factor (' + this.data[x].name.full + ')',
+                                    label: 'Average growth (' + this.data[x].name.full + ')',
                                     backgroundColor: background[x][metric],
                                     fill: true,
                                     data: _.cloneDeep(content[x].average),
@@ -681,6 +695,8 @@
                             );
                             options.scales.yAxes.push(
                                 {
+                                    responsive: true,
+                                    labelString: 'Average growth',
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -713,6 +729,8 @@
                             );
                             options.scales.yAxes.push(
                                 {
+                                    responsive: true,
+                                    labelString: 'Growth Factor',
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -889,6 +907,8 @@
 
                             options.scales.yAxes.push(
                                 {
+                                    responsive: true,
+                                    labelString: 'Confirmed',
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -920,7 +940,9 @@
                             );
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    responsive: true,
+                                    labelString: 'Deaths',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-deaths',
@@ -943,7 +965,7 @@
                             data.datasets.push(
                                 {
                                     type: chartType,
-                                    label: 'Recovered (' + this.data[x].name.full + ')',
+                                    label: 'Deaths (' + this.data[x].name.full + ')',
                                     backgroundColor: background[x][metric],
                                     data: _.cloneDeep(content[x].recovered),
                                     yAxisID: 'y-recovered'
@@ -951,7 +973,9 @@
                             );
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    responsive: true,
+                                    labelString: 'Recovered',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-recovered',
@@ -982,7 +1006,9 @@
                             );
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    responsive: true,
+                                    labelString: 'New cases per day',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-deltaConfirmed',
@@ -1005,7 +1031,7 @@
                             data.datasets.push(
                                 {
                                     type: chartType,
-                                    label: 'New cases per day (' + this.data[x].name.full + ')',
+                                    label: 'New deaths per day (' + this.data[x].name.full + ')',
                                     backgroundColor: background[x][metric],
                                     data: _.cloneDeep(content[x].deltaDeaths),
                                     yAxisID: 'y-deltaDeaths'
@@ -1013,7 +1039,9 @@
                             );
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    responsive: true,
+                                    labelString: 'New deaths per day',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-deltaDeaths',
@@ -1036,7 +1064,7 @@
                             data.datasets.push(
                                 {
                                     type: chartType,
-                                    label: 'New cases per day (' + this.data[x].name.full + ')',
+                                    label: 'New recoveries per day (' + this.data[x].name.full + ')',
                                     backgroundColor: background[x][metric],
                                     data: _.cloneDeep(content[x].deltaRecovered),
                                     yAxisID: 'y-deltaRecovered'
@@ -1044,7 +1072,9 @@
                             );
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    responsive: true,
+                                    labelString: 'New recoveries per day',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-deltaRecovered',
@@ -1067,7 +1097,7 @@
                             data.datasets.push(
                                 {
                                     type: chartType,
-                                    label: 'Growth factor (' + this.data[x].name.full + ')',
+                                    label: 'Average growth (' + this.data[x].name.full + ')',
                                     backgroundColor: background[x][metric],
                                     data: _.cloneDeep(content[x].average),
                                     yAxisID: 'y-average'
@@ -1075,7 +1105,9 @@
                             );
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    responsive: true,
+                                    labelString: 'Average growth',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-average',
@@ -1106,7 +1138,9 @@
                             );
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    responsive: true,
+                                    labelString: 'Growth factor',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-growthFactor',
