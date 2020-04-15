@@ -82909,7 +82909,7 @@ var render = function() {
         "div",
         {
           staticClass:
-            "absolute top-0 right-0 text-xs px-4 py-2 hover:text-white cursor-pointer hover:bg-lightslab rounded",
+            "absolute top-0 right-0 text-xs px-4 py-2 hover:text-white cursor-pointer hover:bg-lightslab rounded z-10",
           on: {
             click: function($event) {
               return _vm.remove([_vm.data.name.country, _vm.data.name.state])

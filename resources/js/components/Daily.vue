@@ -1,7 +1,7 @@
 <template>
     <div>
         <div
-            class="absolute top-0 right-0 text-xs px-4 py-2 hover:text-white cursor-pointer hover:bg-lightslab rounded"
+            class="absolute top-0 right-0 text-xs px-4 py-2 hover:text-white cursor-pointer hover:bg-lightslab rounded z-10"
             @click="remove([data.name.country,data.name.state])"
         >Remove</div>
         <div class="mx-6 pt-4 relative">
