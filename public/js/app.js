@@ -3797,6 +3797,374 @@ __webpack_require__.r(__webpack_exports__);
         options: options
       };
     },
+    datasetCaseCount: function datasetCaseCount() {
+      var data = {
+        labels: [],
+        datasets: []
+      },
+          options,
+          key,
+          content = [],
+          background = [{
+        primary: '#19aade',
+        secondary: '#eabd3b',
+        confirmed: '#19aade',
+        deaths: '#c7f9ee',
+        recovered: '#1de4bd',
+        growthFactor: '#1de4bd',
+        deltaConfirmed: '#1de4bd',
+        deltaDeaths: '#1de4bd',
+        deltaRecovered: '#1de4bd',
+        average: '#1de4bd'
+      }, {
+        confirmed: '#af4bce',
+        deaths: '#f0a58f',
+        recovered: '#ea7369',
+        growthFactor: '#ea7369',
+        deltaConfirmed: '#1de4bd',
+        deltaDeaths: '#1de4bd',
+        deltaRecovered: '#1de4bd',
+        average: '#1de4bd'
+      }, {
+        confirmed: '#de542c',
+        deaths: '#e7e34e',
+        recovered: '#eabd3b',
+        growthFactor: '#eabd3b',
+        deltaConfirmed: '#1de4bd',
+        deltaDeaths: '#1de4bd',
+        deltaRecovered: '#1de4bd',
+        average: '#1de4bd'
+      }]; // OPTIONS
+
+      options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        hoverMode: 'index',
+        stacked: false,
+        legend: {
+          labels: {
+            fontColor: '#d1e8e2'
+          }
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              fontColor: '#d1e8e2'
+            }
+          }],
+          yAxes: []
+        }
+      };
+      var count = 0;
+
+      for (var x in this.data) {
+        count++;
+      }
+
+      if (count == 0) return data;
+      var start = '',
+          end = ''; // Get start and end dates
+
+      for (var x in this.data) {
+        var stats = this.data[x].daily;
+
+        for (var y in stats) {
+          var date = stats[y].date;
+
+          if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD') < start) {
+            start = moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD');
+          }
+
+          if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD') > end) {
+            end = moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD');
+          }
+        }
+      } // Assemble content
+
+
+      for (var x = 0; x <= moment__WEBPACK_IMPORTED_MODULE_3___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_3___default()(start), 'days'); x++) {
+        var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_3___default()(start).add(x, 'days').format('YYYY-MM-DD'));
+
+        data.labels.push(current_date);
+
+        for (var y = 0; y < this.data.length; y++) {
+          if (!content[y]) {
+            content.push({
+              confirmed: [],
+              deaths: [],
+              recovered: [],
+              deltaConfirmed: [],
+              deltaDeaths: [],
+              deltaRecovered: [],
+              average: [],
+              growthFactor: []
+            });
+          }
+
+          if (this.data[y].daily) {
+            var found = false;
+            var stats = this.data[y].daily;
+
+            for (var z in stats) {
+              var row = stats[z];
+
+              if (moment__WEBPACK_IMPORTED_MODULE_3___default()(row.date).format('YYYY-MM-DD') === current_date) {
+                content[y].confirmed.push(row.confirmed);
+                content[y].deaths.push(row.deaths);
+                content[y].recovered.push(row.recovered);
+                content[y].deltaConfirmed.push(this.data[y].delta[z].confirmed);
+                content[y].deltaDeaths.push(this.data[y].delta[z].deaths);
+                content[y].deltaRecovered.push(this.data[y].delta[z].recovered);
+                content[y].average.push(this.data[y].average[z]);
+                content[y].growthFactor.push(this.data[y].growthFactor[z]);
+                found = true;
+              }
+            } // If today's data is missing, use previous day's
+
+
+            if (!found) {
+              if (content[y].confirmed.length > 0) {
+                content[y].confirmed.push(content[y].confirmed.slice(-1));
+                content[y].deaths.push(content[y].deaths.slice(-1));
+                content[y].recovered.push(content[y].recovered.slice(-1));
+              } else {
+                content[y].confirmed.push(0);
+                content[y].deaths.push(0);
+                content[y].recovered.push(0);
+              }
+            }
+          }
+        }
+      }
+
+      var position = '',
+          chartType = '',
+          metric = ''; // Assemble labels
+
+      for (var x = 0; x < this.data.length; x++) {
+        for (var y in this.yAxis) {
+          if (y == 0) {
+            position = 'left';
+            chartType = 'line';
+            metric = 'primary';
+          } else {
+            position = 'right';
+            chartType = 'bar';
+            metric = 'secondary';
+          }
+
+          if (this.yAxis[y] == 'confirmed') {
+            data.datasets.push({
+              type: chartType,
+              label: 'Confirmed (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              fill: false,
+              data: _.cloneDeep(content[x].confirmed),
+              yAxisID: 'y-confirmed'
+            });
+            options.scales.yAxes.push({
+              type: this.options.controls.scaleType,
+              display: true,
+              position: position,
+              id: 'y-confirmed',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deaths') {
+            data.datasets.push({
+              type: chartType,
+              label: 'Deaths (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              data: _.cloneDeep(content[x].deaths),
+              yAxisID: 'y-deaths'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-deaths',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'recovered') {
+            data.datasets.push({
+              type: chartType,
+              label: 'Recovered (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              data: _.cloneDeep(content[x].recovered),
+              yAxisID: 'y-recovered'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-recovered',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deltaConfirmed') {
+            data.datasets.push({
+              type: chartType,
+              label: 'New cases per day (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              data: _.cloneDeep(content[x].deltaConfirmed),
+              yAxisID: 'y-deltaConfirmed'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-deltaConfirmed',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deltaDeaths') {
+            data.datasets.push({
+              type: chartType,
+              label: 'New cases per day (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              data: _.cloneDeep(content[x].deltaDeaths),
+              yAxisID: 'y-deltaDeaths'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-deltaDeaths',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deltaRecovered') {
+            data.datasets.push({
+              type: chartType,
+              label: 'New cases per day (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              data: _.cloneDeep(content[x].deltaRecovered),
+              yAxisID: 'y-deltaRecovered'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-deltaRecovered',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'average') {
+            data.datasets.push({
+              type: chartType,
+              label: 'Growth factor (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              fill: false,
+              data: _.cloneDeep(content[x].average),
+              yAxisID: 'y-average'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-average',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'growthFactor') {
+            data.datasets.push({
+              type: chartType,
+              label: 'Growth factor (' + this.data[x].name.full + ')',
+              backgroundColor: background[x][metric],
+              fill: false,
+              data: _.cloneDeep(content[x].growthFactor),
+              yAxisID: 'y-growthFactor'
+            });
+            options.scales.yAxes.push({
+              type: 'logarithmic',
+              display: true,
+              position: position,
+              id: 'y-growthFactor',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#d1e8e2',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          }
+        }
+      }
+
+      return {
+        data: data,
+        options: options
+      };
+    },
     dataset100: function dataset100() {
       var data = {
         labels: [],
@@ -4678,20 +5046,14 @@ __webpack_require__.r(__webpack_exports__);
             row.growthFactor.push(gf);
           }
 
+          if (this.raw_annotations['All'].length > 0) {
+            row.annotations = row.annotations.concat(this.raw_annotations['All']);
+          }
+
           if (this.raw_annotations[row.name.country]) {
-            row.annotations = this.raw_annotations[row.name.country];
-          } else {
-            row.annotations = [];
+            row.annotations = row.annotations.concat(this.raw_annotations[row.name.country]);
           }
 
-          if (this.raw_annotations['All']) {
-            for (var note in this.raw_annotations['All']) {
-              row.annotations.push(this.raw_annotations['All'][note]);
-            }
-          }
-
-          console.log('ANNOTATIONS');
-          console.log(row.annotations);
           data.push(row);
         }
       }
@@ -83970,7 +84332,7 @@ var render = function() {
           },
           [
             _c("LineChart", {
-              staticClass: "h-200 m-4 mb-0",
+              staticClass: "h-200 m-4 mb-0 bg-heading rounded",
               attrs: { data: _vm.dataset.data, options: _vm.dataset.options }
             })
           ],

@@ -356,27 +356,15 @@
                             row.growthFactor.push(gf);
                         }
 
+                        if (this.raw_annotations['All'].length > 0)
+                        {
+                            row.annotations = row.annotations.concat(this.raw_annotations['All']);
+                        }
+
                         if (this.raw_annotations[row.name.country])
                         {
-                            row.annotations = this.raw_annotations[row.name.country];
+                            row.annotations = row.annotations.concat(this.raw_annotations[row.name.country]);
                         }
-                        else
-                        {
-                            row.annotations = [];
-                        }
-
-
-
-                        if(this.raw_annotations['All'])
-                        {
-                            for(var note in this.raw_annotations['All'])
-                            {
-                                row.annotations.push(this.raw_annotations['All'][note]);
-                            }
-                        }
-
-                        console.log('ANNOTATIONS');
-                        console.log(row.annotations);
 
                         data.push(row);
                     }
