@@ -3296,7 +3296,8 @@ __webpack_require__.r(__webpack_exports__);
         'mode': 'chronological',
         'controls': {
           'primary': 'confirmed',
-          'secondary': ''
+          'secondary': '',
+          'scaleType': 'logarithmic'
         }
       },
       ui: {
@@ -3594,7 +3595,7 @@ __webpack_require__.r(__webpack_exports__);
               yAxisID: 'y-confirmed'
             });
             options.scales.yAxes.push({
-              type: 'logarithmic',
+              type: this.options.controls.scaleType,
               display: true,
               position: position,
               id: 'y-confirmed',
@@ -4677,7 +4678,20 @@ __webpack_require__.r(__webpack_exports__);
             row.growthFactor.push(gf);
           }
 
-          row.annotations = this.raw_annotations[row.name.country];
+          if (this.raw_annotations[row.name.country]) {
+            row.annotations = this.raw_annotations[row.name.country];
+          } else {
+            row.annotations = [];
+          }
+
+          if (this.raw_annotations['All']) {
+            for (var note in this.raw_annotations['All']) {
+              row.annotations.push(this.raw_annotations['All'][note]);
+            }
+          }
+
+          console.log('ANNOTATIONS');
+          console.log(row.annotations);
           data.push(row);
         }
       }

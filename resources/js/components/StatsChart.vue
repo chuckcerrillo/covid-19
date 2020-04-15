@@ -67,6 +67,7 @@
                     'controls' : {
                         'primary': 'confirmed',
                         'secondary' : '',
+                        'scaleType' : 'logarithmic',
                     }
 
                 },
@@ -455,7 +456,7 @@
 
                             options.scales.yAxes.push(
                                 {
-                                    type: 'logarithmic',
+                                    type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
                                     id: 'y-confirmed',
