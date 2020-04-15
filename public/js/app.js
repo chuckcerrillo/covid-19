@@ -3319,38 +3319,20 @@ __webpack_require__.r(__webpack_exports__);
           'scaleType': 'logarithmic'
         },
         'background': [{
-          primary: '#2e62a1',
-          secondary: '#7b2a95',
-          confirmed: '#19aade',
-          deaths: '#c7f9ee',
-          recovered: '#1de4bd',
-          growthFactor: '#1de4bd',
-          deltaConfirmed: '#1de4bd',
-          deltaDeaths: '#1de4bd',
-          deltaRecovered: '#1de4bd',
-          average: '#1de4bd'
+          primary: '#264992',
+          secondary: 'rgba(207,79,41,0.5)',
+          borderPrimary: 'rgba(38,73,146,0.5)',
+          borderSecondary: 'rgba(207,79,41,1)'
         }, {
-          primary: '#44a7cb',
-          secondary: '#d54d88',
-          confirmed: '#3984b6',
-          deaths: '#a73b8f',
-          recovered: '#ea7369',
-          growthFactor: '#ea7369',
-          deltaConfirmed: '#1de4bd',
-          deltaDeaths: '#1de4bd',
-          deltaRecovered: '#1de4bd',
-          average: '#1de4bd'
+          primary: '#3984b6',
+          secondary: 'rgba(233,126,59,0.5)',
+          borderPrimary: 'rgba(57,132,182,0.5)',
+          borderSecondary: 'rgba(233,126,59,1)'
         }, {
-          primary: '#9ed5cd',
-          secondary: '#f19a9b',
-          confirmed: '#3984b6',
-          deaths: '#a73b8f',
-          recovered: '#eabd3b',
-          growthFactor: '#eabd3b',
-          deltaConfirmed: '#1de4bd',
-          deltaDeaths: '#1de4bd',
-          deltaRecovered: '#1de4bd',
-          average: '#1de4bd'
+          primary: '#5abad1',
+          secondary: 'rgba(243,179,85,0.5)',
+          borderPrimary: 'rgba(90,186,209,0.5)',
+          borderSecondary: 'rgba(243,179,85,1)'
         }]
       },
       ui: {
@@ -3517,7 +3499,10 @@ __webpack_require__.r(__webpack_exports__);
         scales: {
           xAxes: [{
             ticks: {
-              fontColor: '#2c3531'
+              fontColor: '#2c3531',
+              callback: function callback(dataLabel, index) {
+                return index % 2 === 0 ? dataLabel : '';
+              }
             }
           }],
           yAxes: []
@@ -3595,10 +3580,20 @@ __webpack_require__.r(__webpack_exports__);
                 content[y].confirmed.push(content[y].confirmed.slice(-1));
                 content[y].deaths.push(content[y].deaths.slice(-1));
                 content[y].recovered.push(content[y].recovered.slice(-1));
+                content[y].deltaConfirmed.push(content[y].deltaConfirmed.slice(-1));
+                content[y].deltaDeaths.push(content[y].deltaDeaths.slice(-1));
+                content[y].deltaRecovered.push(content[y].deltaRecovered.slice(-1));
+                content[y].average.push(content[y].average.slice(-1));
+                content[y].growthFactor.push(content[y].growthFactor.slice(-1));
               } else {
                 content[y].confirmed.push(0);
                 content[y].deaths.push(0);
                 content[y].recovered.push(0);
+                content[y].deltaConfirmed.push(0);
+                content[y].deltaDeaths.push(0);
+                content[y].deltaRecovered.push(0);
+                content[y].average.push(0);
+                content[y].growthFactor.push(0);
               }
             }
           }
@@ -3607,7 +3602,8 @@ __webpack_require__.r(__webpack_exports__);
 
       var position = '',
           chartType = '',
-          metric = ''; // Assemble labels
+          metric = '',
+          border = ''; // Assemble labels
 
       for (var x = 0; x < this.data.length; x++) {
         for (var y in this.yAxis) {
@@ -3615,10 +3611,12 @@ __webpack_require__.r(__webpack_exports__);
             position = 'left';
             chartType = 'line';
             metric = 'primary';
+            border = 'borderPrimary';
           } else {
             position = 'right';
             chartType = 'bar';
             metric = 'secondary';
+            border = 'borderSecondary';
           }
 
           if (this.yAxis[y] == 'confirmed') {
@@ -3626,7 +3624,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'Confirmed (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
-              fill: true,
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].confirmed),
               yAxisID: 'y-confirmed'
             });
@@ -3646,7 +3648,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3657,6 +3659,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'Deaths (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].deaths),
               yAxisID: 'y-deaths'
             });
@@ -3676,7 +3683,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3687,6 +3694,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'Recovered (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].recovered),
               yAxisID: 'y-recovered'
             });
@@ -3706,7 +3718,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3717,6 +3729,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'New cases per day (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].deltaConfirmed),
               yAxisID: 'y-deltaConfirmed'
             });
@@ -3736,7 +3753,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3747,6 +3764,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'New deaths per day (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].deltaDeaths),
               yAxisID: 'y-deltaDeaths'
             });
@@ -3766,7 +3788,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3777,6 +3799,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'New recoveries per day (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].deltaRecovered),
               yAxisID: 'y-deltaRecovered'
             });
@@ -3796,7 +3823,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3807,7 +3834,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'Average growth (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
-              fill: true,
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].average),
               yAxisID: 'y-average'
             });
@@ -3827,7 +3858,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3838,7 +3869,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'Growth factor (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
-              fill: true,
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].growthFactor),
               yAxisID: 'y-growthFactor'
             });
@@ -3858,7 +3893,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -3897,7 +3932,10 @@ __webpack_require__.r(__webpack_exports__);
         scales: {
           xAxes: [{
             ticks: {
-              fontColor: '#2c3531'
+              fontColor: '#2c3531',
+              callback: function callback(dataLabel, index) {
+                return index % 4 === 0 ? dataLabel : '';
+              }
             }
           }],
           yAxes: []
@@ -3966,7 +4004,8 @@ __webpack_require__.r(__webpack_exports__);
       console.log(data);
       var position = '',
           chartType = '',
-          metric = ''; // Assemble labels
+          metric = '',
+          border = ''; // Assemble labels
 
       for (var x = 0; x < this.data.length; x++) {
         for (var y in this.yAxis) {
@@ -3974,10 +4013,12 @@ __webpack_require__.r(__webpack_exports__);
             position = 'left';
             chartType = 'line';
             metric = 'primary';
+            border = 'borderPrimary';
           } else {
             position = 'right';
             chartType = 'bar';
             metric = 'secondary';
+            border = 'borderSecondary';
           }
 
           if (this.yAxis[y] == 'confirmed') {
@@ -3985,6 +4026,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'Confirmed (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].confirmed),
               yAxisID: 'y-confirmed'
             });
@@ -4004,7 +4050,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -4015,6 +4061,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'Deaths (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].deaths),
               yAxisID: 'y-deaths'
             });
@@ -4034,7 +4085,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -4045,6 +4096,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'Recovered (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].recovered),
               yAxisID: 'y-recovered'
             });
@@ -4064,7 +4120,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -4075,6 +4131,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'New cases per day (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].deltaConfirmed),
               yAxisID: 'y-deltaConfirmed'
             });
@@ -4094,7 +4155,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -4105,6 +4166,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'New deaths per day (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].deltaDeaths),
               yAxisID: 'y-deltaDeaths'
             });
@@ -4124,7 +4190,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[x][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -4135,6 +4201,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'New recoveries per day (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].deltaRecovered),
               yAxisID: 'y-deltaRecovered'
             });
@@ -4154,7 +4225,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -4165,6 +4236,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'Average growth (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].average),
               yAxisID: 'y-average'
             });
@@ -4184,7 +4260,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
@@ -4195,6 +4271,11 @@ __webpack_require__.r(__webpack_exports__);
               type: chartType,
               label: 'Growth factor (' + this.data[x].name.full + ')',
               backgroundColor: background[x][metric],
+              borderColor: background[x][metric],
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
               data: _.cloneDeep(content[x].growthFactor),
               yAxisID: 'y-growthFactor'
             });
@@ -4214,7 +4295,7 @@ __webpack_require__.r(__webpack_exports__);
 
               },
               ticks: {
-                fontColor: background[0][metric],
+                fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   return tick.toLocaleString();
                 }
