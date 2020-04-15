@@ -355,7 +355,28 @@
                             }
                             row.growthFactor.push(gf);
                         }
-                        row.annotations = this.raw_annotations[row.name.country];
+
+                        if (this.raw_annotations[row.name.country])
+                        {
+                            row.annotations = this.raw_annotations[row.name.country];
+                        }
+                        else
+                        {
+                            row.annotations = [];
+                        }
+
+
+
+                        if(this.raw_annotations['All'])
+                        {
+                            for(var note in this.raw_annotations['All'])
+                            {
+                                row.annotations.push(this.raw_annotations['All'][note]);
+                            }
+                        }
+
+                        console.log('ANNOTATIONS');
+                        console.log(row.annotations);
 
                         data.push(row);
                     }
