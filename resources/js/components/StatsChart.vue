@@ -497,7 +497,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'Confirmed',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Confirmed',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -530,7 +533,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'Deaths',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Deaths',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -563,7 +569,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'Recovered',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Recovered',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -596,7 +605,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'New cases per day',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'New cases per day',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -629,7 +641,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'New deaths per day',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'New deaths per day',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -662,7 +677,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'New recoveries per day',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'New recoveries per day',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -696,7 +714,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'Average growth',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Average growth',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -730,7 +751,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'Growth Factor',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Growth Factor',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -908,7 +932,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'Confirmed',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Confirmed',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -941,7 +968,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'Deaths',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Deaths',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -965,7 +995,7 @@
                             data.datasets.push(
                                 {
                                     type: chartType,
-                                    label: 'Deaths (' + this.data[x].name.full + ')',
+                                    label: 'Recovered (' + this.data[x].name.full + ')',
                                     backgroundColor: background[x][metric],
                                     data: _.cloneDeep(content[x].recovered),
                                     yAxisID: 'y-recovered'
@@ -974,7 +1004,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'Recovered',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Recovered',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -1007,7 +1040,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'New cases per day',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'New cases per day',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -1040,7 +1076,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'New deaths per day',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'New deaths per day',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -1073,7 +1112,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'New recoveries per day',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'New recoveries per day',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -1106,7 +1148,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'Average growth',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Average growth',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
@@ -1139,7 +1184,10 @@
                             options.scales.yAxes.push(
                                 {
                                     responsive: true,
-                                    labelString: 'Growth factor',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Growth factor',
+                                    },
                                     type: this.options.controls.scaleType,
                                     display: true,
                                     position: position,
