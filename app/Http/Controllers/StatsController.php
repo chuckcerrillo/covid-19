@@ -22,7 +22,7 @@ class StatsController extends Controller
         'Korea, South' => ['Korea, South','Republic of Korea','South Korea'],
         'Moldova' => ['Moldova','Republic of Moldova'],
         'Russia' => ['Russia','Russian Federation'],
-        'United Kingom' => ['UK','United Kingdom'],
+        'United Kingdom' => ['UK','United Kingdom'],
         'Holy See' => ['Holy See','Vatican City'],
         'Azerbaijan' => ['Azerbaijan',' Azerbaijan'],
     ];
@@ -184,7 +184,18 @@ class StatsController extends Controller
                     //  5 => "Recovered"
                     //]
 
-                    if(isset($data[$row[1]]))
+
+                    $country = $row[1];
+                    foreach($this->combine AS $key => $combine)
+                    {
+                        if (in_array($row[1],$combine))
+                        {
+                            $country = $key;
+                            break;
+                        }
+                    }
+
+                    if(isset($data[$country]))
                     {
                         if(strlen($row[0]) == 0)
                         {
@@ -194,9 +205,9 @@ class StatsController extends Controller
                         {
                             $state = $row[0];
                         }
-                        if(!isset($data[$row[1]]['daily'][$date]))
+                        if(!isset($data[$country]['daily'][$date]))
                         {
-                            $data[$row[1]]['daily'][$date] = [
+                            $data[$country]['daily'][$date] = [
                                 'states' => [],
                                 'total' => [
                                     'c' => 0,
@@ -205,9 +216,9 @@ class StatsController extends Controller
                                 ]
                             ];
                         }
-                        if(!isset($data[$row[1]]['daily'][$date]['states'][$state]))
+                        if(!isset($data[$country]['daily'][$date]['states'][$state]))
                         {
-                            $data[$row[1]]['daily'][$date]['states'][$state] = [
+                            $data[$country]['daily'][$date]['states'][$state] = [
                                 'name' => $row[0],
                                 'lat' => '',
                                 'lng' => '',
@@ -217,13 +228,13 @@ class StatsController extends Controller
                                 'r' => 0
                             ];
                         }
-                        $data[$row[1]]['daily'][$date]['states'][$state]['c'] += (int)$row[3];
-                        $data[$row[1]]['daily'][$date]['states'][$state]['d'] += (int)$row[4];
-                        $data[$row[1]]['daily'][$date]['states'][$state]['r'] += (int)$row[5];
+                        $data[$country]['daily'][$date]['states'][$state]['c'] += (int)$row[3];
+                        $data[$country]['daily'][$date]['states'][$state]['d'] += (int)$row[4];
+                        $data[$country]['daily'][$date]['states'][$state]['r'] += (int)$row[5];
 
-                        $data[$row[1]]['daily'][$date]['total']['c'] += (int)$row[3];
-                        $data[$row[1]]['daily'][$date]['total']['d'] += (int)$row[4];
-                        $data[$row[1]]['daily'][$date]['total']['r'] += (int)$row[5];
+                        $data[$country]['daily'][$date]['total']['c'] += (int)$row[3];
+                        $data[$country]['daily'][$date]['total']['d'] += (int)$row[4];
+                        $data[$country]['daily'][$date]['total']['r'] += (int)$row[5];
                     }
                 }
                 else if(count($row) == 8)
@@ -238,7 +249,18 @@ class StatsController extends Controller
                     //  6 => "Latitude"
                     //  7 => "Longitude"
                     //]
-                    if(isset($data[$row[1]]))
+
+                    $country = $row[1];
+                    foreach($this->combine AS $key => $combine)
+                    {
+                        if (in_array($row[1],$combine))
+                        {
+                            $country = $key;
+                            break;
+                        }
+                    }
+
+                    if(isset($data[$country]))
                     {
                         if(strlen($row[0]) == 0)
                         {
@@ -248,9 +270,9 @@ class StatsController extends Controller
                         {
                             $state = $row[0];
                         }
-                        if(!isset($data[$row[1]]['daily'][$date]))
+                        if(!isset($data[$country]['daily'][$date]))
                         {
-                            $data[$row[1]]['daily'][$date] = [
+                            $data[$country]['daily'][$date] = [
                                 'states' => [],
                                 'total' => [
                                     'c' => 0,
@@ -259,9 +281,9 @@ class StatsController extends Controller
                                 ]
                             ];
                         }
-                        if(!isset($data[$row[1]]['daily'][$date]['states'][$state]))
+                        if(!isset($data[$country]['daily'][$date]['states'][$state]))
                         {
-                            $data[$row[1]]['daily'][$date]['states'][$state] = [
+                            $data[$country]['daily'][$date]['states'][$state] = [
                                 'name' => $row[0],
                                 'lat' => $row[6],
                                 'lng' => $row[7],
@@ -271,13 +293,13 @@ class StatsController extends Controller
                                 'r' => 0
                             ];
                         }
-                        $data[$row[1]]['daily'][$date]['states'][$state]['c'] += (int)$row[3];
-                        $data[$row[1]]['daily'][$date]['states'][$state]['d'] += (int)$row[4];
-                        $data[$row[1]]['daily'][$date]['states'][$state]['r'] += (int)$row[5];
+                        $data[$country]['daily'][$date]['states'][$state]['c'] += (int)$row[3];
+                        $data[$country]['daily'][$date]['states'][$state]['d'] += (int)$row[4];
+                        $data[$country]['daily'][$date]['states'][$state]['r'] += (int)$row[5];
 
-                        $data[$row[1]]['daily'][$date]['total']['c'] += (int)$row[3];
-                        $data[$row[1]]['daily'][$date]['total']['d'] += (int)$row[4];
-                        $data[$row[1]]['daily'][$date]['total']['r'] += (int)$row[5];
+                        $data[$country]['daily'][$date]['total']['c'] += (int)$row[3];
+                        $data[$country]['daily'][$date]['total']['d'] += (int)$row[4];
+                        $data[$country]['daily'][$date]['total']['r'] += (int)$row[5];
                     }
                 }
                 else if(count($row) == 12) {
