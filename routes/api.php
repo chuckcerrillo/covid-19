@@ -25,3 +25,4 @@ Route::get('/stats/harvest', 'StatsController@master');
 Route::get('/stats/states', 'StatsController@states');
 Route::get('/stats/countries', 'StatsController@countries');
 Route::get('/stats/annotations', 'StatsController@annotations');
+Route::get('/stats/global', 'StatsController@global');

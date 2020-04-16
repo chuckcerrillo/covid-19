@@ -91,22 +91,22 @@
 
                     'background' : [
                         {
-                            primary: '#264992',
+                            primary: 'rgba(38,73,146,1)',
                             secondary: 'rgba(207,79,41,0.5)',
-                            borderPrimary: 'rgba(38,73,146,0.5)',
+                            borderPrimary: 'rgba(38,73,146,0.1)',
                             borderSecondary: 'rgba(207,79,41,1)',
 
                         },
                         {
-                            primary: '#3984b6',
+                            primary: 'rgba(57,132,182,1)',
                             secondary: 'rgba(233,126,59,0.5)',
-                            borderPrimary: 'rgba(57,132,182,0.5)',
+                            borderPrimary: 'rgba(57,132,182,1)',
                             borderSecondary: 'rgba(233,126,59,1)',
                         },
                         {
-                            primary: '#5abad1',
+                            primary: 'rgba(90,186,209,1)',
                             secondary: 'rgba(243,179,85,0.5)',
-                            borderPrimary: 'rgba(90,186,209,0.5)',
+                            borderPrimary: 'rgba(90,186,209,1)',
                             borderSecondary: 'rgba(243,179,85,1)',
                         },
                     ]
