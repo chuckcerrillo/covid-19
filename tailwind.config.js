@@ -14,6 +14,7 @@ module.exports = {
               'slab-primary' : '#0c5658',
               'slab-secondary' : '#116466',
               'date-slab': '#80cbcd',
+              'lightlabel' : '#60acae',
           },
           margin: {
               '14' : '3.5rem',
