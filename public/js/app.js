@@ -84883,18 +84883,6 @@ var render = function() {
                                     )
                                   )
                                 ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "p-2 w-36",
-                                  class:
-                                    index % 2 == 0
-                                      ? "bg-slab-primary"
-                                      : "bg-slab-secondary"
-                                },
-                                [_vm._v("Growth Factor")]
                               )
                             ]
                           )
@@ -85748,7 +85736,9 @@ var staticRenderFns = [
       },
       [
         _c("div", { staticClass: "w-256 font-bold text-2xl tracking-tight" }, [
-          _vm._v("\n                    Global cases graph\n                ")
+          _vm._v(
+            "\n                        Global cases graph\n                    "
+          )
         ])
       ]
     )
@@ -85769,11 +85759,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("div", { staticClass: "font-bold p-2 w-36" }, [_vm._v("Recovered")]),
         _vm._v(" "),
-        _c("div", { staticClass: "font-bold p-2 w-36" }, [_vm._v("Active")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "font-bold p-2 w-36" }, [
-          _vm._v("Growth Factor")
-        ])
+        _c("div", { staticClass: "font-bold p-2 w-36" }, [_vm._v("Active")])
       ]
     )
   },

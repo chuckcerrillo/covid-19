@@ -68,7 +68,7 @@
                                 <div class="font-bold p-2 w-36">Deaths</div>
                                 <div class="font-bold p-2 w-36">Recovered</div>
                                 <div class="font-bold p-2 w-36">Active</div>
-                                <div class="font-bold p-2 w-36">Growth Factor</div>
+<!--                                <div class="font-bold p-2 w-36">Growth Factor</div>-->
                             </div>
                             <div
                                 v-for="(row,key,index) in global.daily"
@@ -79,7 +79,7 @@
                                 <div :class="index % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.deaths|numeralFormat}}</div>
                                 <div :class="index % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.recovered|numeralFormat}}</div>
                                 <div :class="index % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{(row.confirmed - row.deaths - row.recovered) | numeralFormat}}</div>
-                                <div :class="index % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">Growth Factor</div>
+<!--                                <div :class="index % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">Growth Factor</div>-->
                             </div>
                         </div>
 
