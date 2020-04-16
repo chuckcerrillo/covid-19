@@ -85076,7 +85076,9 @@ var render = function() {
                           _c("div", { staticClass: "text-3xl text-white" }, [
                             _vm._v(
                               _vm._s(
-                                _vm._f("numeralFormat")(_vm.global.confirmed)
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.confirmed
+                                )
                               )
                             )
                           ])
@@ -85089,7 +85091,9 @@ var render = function() {
                           _vm._v(" "),
                           _c("div", { staticClass: "text-3xl text-white" }, [
                             _vm._v(
-                              _vm._s(_vm._f("numeralFormat")(_vm.global.deaths))
+                              _vm._s(
+                                _vm._f("numeralFormat")(_vm.global.total.deaths)
+                              )
                             )
                           ])
                         ]),
@@ -85102,7 +85106,9 @@ var render = function() {
                           _c("div", { staticClass: "text-3xl text-white" }, [
                             _vm._v(
                               _vm._s(
-                                _vm._f("numeralFormat")(_vm.global.recovered)
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.recovered
+                                )
                               )
                             )
                           ])

@@ -121,15 +121,15 @@
                         <div class="flex font-bold justify-between items-center">
                             <div class="m-2">
                                 <div class="text-sm">Confirmed</div>
-                                <div class="text-3xl text-white">{{global.confirmed| numeralFormat}}</div>
+                                <div class="text-3xl text-white">{{global.total.confirmed| numeralFormat}}</div>
                             </div>
                             <div class="m-2">
                                 <div class="text-sm">Deaths</div>
-                                <div class="text-3xl text-white">{{global.deaths| numeralFormat}}</div>
+                                <div class="text-3xl text-white">{{global.total.deaths| numeralFormat}}</div>
                             </div>
                             <div class="m-2">
                                 <div class="text-sm">Recovered</div>
-                                <div class="text-3xl text-white">{{global.recovered| numeralFormat}}</div>
+                                <div class="text-3xl text-white">{{global.total.recovered| numeralFormat}}</div>
                             </div>
                         </div>
 
