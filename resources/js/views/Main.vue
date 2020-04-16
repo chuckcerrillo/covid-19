@@ -3,6 +3,7 @@
         <div v-if="!loaded">Loading data</div>
         <div v-else class="h-full overflow-hidden relative">
             <div v-show="mode == 'global'" class="relative h-full w-full flex flex-col justify-start items-center overflow-y-scroll">
+                <a name="top"></a>
                 <div class="w-256">
                     <div>
                         <div class="flex items-center justify-center">
@@ -40,6 +41,56 @@
                 </div>
 
                 <div class="bg-slab flex flex-1 mt-8 pt-8 w-full items-center justify-center">
+                    <div class="w-256">
+                        <h2 class="font-bold text-3xl tracking-tight mb-8">At a glance...</h2>
+
+                        <div class="flex flex-1">
+                            <div class="w-1/3">
+                                <div class="font-bold tracking-tight mb-4">Countries with most cumulative cases</div>
+                                <div class="bg-lightslab rounded">
+                                    <div v-for="(row,key,index) in getSortedCountries('confirmed','desc',5)"
+                                    class="p-4 flex items-end">
+                                        <div class="w-8 text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
+                                        <div>
+                                            <div class="text-primary text-sm px-2 w-64">{{row.name}}</div>
+                                            <div class="font-bold text-white text-3xl px-2">{{row.total.c | numeralFormat}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="w-1/3 ml-2">
+                                <div class="font-bold tracking-tight mb-4">Countries with most deaths</div>
+                                <div class="bg-lightslab rounded">
+                                    <div v-for="(row,key,index) in getSortedCountries('deaths','desc',5)"
+                                         class="p-4 flex items-end">
+                                        <div class="w-8 text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
+                                        <div>
+                                            <div class="text-primary text-sm px-2 w-64">{{row.name}}</div>
+                                            <div class="font-bold text-white text-3xl px-2">{{row.total.d | numeralFormat}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/3 ml-2">
+                                <div class="font-bold tracking-tight mb-4">Countries with most recoveries</div>
+                                <div class="bg-lightslab rounded">
+                                    <div v-for="(row,key,index) in getSortedCountries('recovered','desc',5)"
+                                         class="p-4 flex items-end">
+                                        <div class="w-8 text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
+                                        <div>
+                                            <div class="text-primary text-sm px-2 w-64">{{row.name}}</div>
+                                            <div class="font-bold text-white text-3xl px-2">{{row.total.r | numeralFormat}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slab flex flex-1 pt-8 w-full items-center justify-center">
                     <div class="w-256 font-bold text-2xl tracking-tight">
                         Global cases graph
                     </div>
@@ -56,58 +107,90 @@
 
                 <div class="bg-slab flex flex-1 w-full items-center justify-center pt-8">
                     <div class="w-256">
+                        <h2 class="mb-4 text-2xl font-bold tracking-tight">Full global statistics</h2>
                         <div class="flex items-center justify-start mb-4">
                             <div @click="global_options.table = 'daily'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="global_options.table == 'daily' ? 'border border-heading bg-lightslab':''">Daily stats</div>
                             <div @click="global_options.table = 'countries'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="global_options.table == 'countries' ? 'border border-heading  bg-lightslab':''">Countries</div>
                         </div>
 
-                        <div v-show="global_options.table == 'daily'" class="bg-lightslab rounded overflow-hidden">
-                            <div class="flex flex-1 items-center justify-start w-full text-xs">
+                        <div v-show="global_options.table == 'daily'" class="rounded overflow-hidden">
+                            <div class="flex flex-1 items-center justify-start w-full text-xs bg-lightslab">
                                 <div class="font-bold p-2 w-76">Date</div>
-                                <div class="font-bold p-2 w-36">Confirmed</div>
-                                <div class="font-bold p-2 w-36">Deaths</div>
-                                <div class="font-bold p-2 w-36">Recovered</div>
-                                <div class="font-bold p-2 w-72">Active</div>
-<!--                                <div class="font-bold p-2 w-36">Growth Factor</div>-->
-                            </div>
-                            <div
-                                v-for="(row,key,index) in global.daily"
-                                class="flex flex-1 items-center justify-start w-full text-xs"
-                            >
-                                <div :class="index % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-76">{{moment(key).format('YYYY-MM-DD')}}</div>
-                                <div :class="index % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.confirmed|numeralFormat}}</div>
-                                <div :class="index % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.deaths|numeralFormat}}</div>
-                                <div :class="index % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.recovered|numeralFormat}}</div>
-                                <div :class="index % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-72">{{(row.confirmed - row.deaths - row.recovered) | numeralFormat}}</div>
-<!--                                <div :class="index % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">Growth Factor</div>-->
-                            </div>
-                        </div>
-
-                        <div v-show="global_options.table == 'countries'" class="bg-lightslab rounded overflow-hidden">
-                            <div class="flex flex-1 items-center justify-start w-full text-xs">
-                                <div class="font-bold p-2 w-76">Name</div>
                                 <div class="font-bold p-2 w-36">Confirmed</div>
                                 <div class="font-bold p-2 w-36">Deaths</div>
                                 <div class="font-bold p-2 w-36">Recovered</div>
                                 <div class="font-bold p-2 w-36">Active</div>
                                 <div class="font-bold p-2 w-36">Growth Factor</div>
                             </div>
+                            <div v-for="(row,key,index) in globalDataset[0].daily">
+                                <div
+                                    class="flex flex-1 items-center justify-start w-full text-xs"
+                                >
+                                    <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-76">{{moment(row.date).format('YYYY-MM-DD')}}</div>
+                                    <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.confirmed|numeralFormat}}
+                                        <span class="text-red-400" v-if="globalDataset[0].delta[key].confirmed >= 0">(+{{globalDataset[0].delta[key].confirmed| numeralFormat}})</span>
+                                        <span class="text-green-400" v-else>({{globalDataset[0].delta[key].confirmed| numeralFormat}})</span>
+                                    </div>
+                                    <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.deaths|numeralFormat}}
+                                        <span class="text-red-400" v-if="globalDataset[0].delta[key].deaths >= 0">(+{{globalDataset[0].delta[key].deaths| numeralFormat}})</span>
+                                        <span class="text-green-400" v-else>({{globalDataset[0].delta[key].deaths| numeralFormat}})</span>
+                                    </div>
+                                    <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.recovered|numeralFormat}}
+                                        <span class="text-green-400" v-if="globalDataset[0].delta[key].recovered >= 0">(+{{globalDataset[0].delta[key].recovered| numeralFormat}})</span>
+                                        <span class="text-red-400" v-else>({{globalDataset[0].delta[key].recovered| numeralFormat}})</span>
+                                    </div>
+                                    <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{(row.confirmed - row.deaths - row.recovered) | numeralFormat}}
+                                        <span class="text-red-400" v-if="globalDataset[0].delta[key].active >= 0">(+{{globalDataset[0].delta[key].active| numeralFormat}})</span>
+                                        <span class="text-green-400" v-else>({{globalDataset[0].delta[key].active| numeralFormat}})</span>
+                                    </div>
+                                    <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{globalDataset[0].growthFactor[key]}}</div>
+                                </div>
+                                <div v-if="getGlobalDayNotes(moment(row.date).format('YYYY-MM-DD')).length > 0">
+                                    <div v-for="annotation in getGlobalDayNotes(moment(row.date).format('YYYY-MM-DD'))"
+                                         class="p-1 mb-4 mx-8 text-xs rounded bg-lightslab flex"
+                                    >
+                                        <div v-if="annotation.state.length > 0" class="font-bold mr-2">{{annotation.state}}</div>
+                                        <div>
+                                            <div>{{annotation.notes}}</div>
+                                            <div v-if="annotation.url" class="flex items-center text-lightslab">
+                                                <div class="mr-1">Source:</div>
+                                                <a class="underline hover:text-white truncate ... inline-block w-64" :href="annotation.url">{{annotation.url}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                            <div
-                                v-for="(row,key,index) in getSortedCountries('confirmed','desc')"
-                                class="flex flex-1 items-center justify-start w-full text-xs"
-                            >
-                                <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-76">{{row.name}}</div>
-                                <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.total.c|numeralFormat}}</div>
-                                <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.total.d|numeralFormat}}</div>
-                                <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.total.r|numeralFormat}}</div>
-                                <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{(row.total.c - row.total.d - row.total.r) | numeralFormat}}</div>
-                                <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">Growth Factor</div>
+                        <div v-show="global_options.table == 'countries'" class="bg-lightslab rounded overflow-hidden">
+                            <div class="flex flex-1 items-center justify-start w-full text-xs">
+                                <div class="font-bold p-2 w-112">Name</div>
+                                <div class="font-bold p-2 w-36">Confirmed</div>
+                                <div class="font-bold p-2 w-36">Deaths</div>
+                                <div class="font-bold p-2 w-36">Recovered</div>
+                                <div class="font-bold p-2 w-36">Active</div>
+                            </div>
+                            <div v-for="(row,key,index) in getSortedCountries('confirmed','desc')">
+                                <div
+                                    class="flex flex-1 items-center justify-start w-full text-xs"
+                                >
+                                    <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-112">{{row.name}}</div>
+                                    <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.total.c|numeralFormat}}</div>
+                                    <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.total.d|numeralFormat}}</div>
+                                    <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.total.r|numeralFormat}}</div>
+                                    <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{(row.total.c - row.total.d - row.total.r) | numeralFormat}}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- footer -->
+                <div class="bg-slab flex flex-1 py-8 w-full items-center justify-center">
+                    <div class="w-256">
+                        <a href="#top">^ Back to top</a>
+                    </div>
+                </div>
             </div>
 
 
@@ -351,11 +434,24 @@
                 });
         },
         methods:{
-            getSortedCountries(field,order)
+
+            getGlobalDayNotes(date)
+            {
+                var data = [];
+                for(var x in this.globalDataset[0].annotations)
+                {
+                    if (this.globalDataset[0].annotations[x].date == date)
+                    {
+                        data.push(this.globalDataset[0].annotations[x]);
+                    }
+                }
+                return data;
+            },
+            getSortedCountries(field,order,limit)
             {
                 var sort = {key: field, order: order};
                 var data = _.cloneDeep(this.countries);
-                return data.sort(function (a, b) {
+                data = data.sort(function (a, b) {
                     if (sort.key == 'country')
                     {
                         if (sort.order == 'asc')
@@ -385,7 +481,11 @@
                             return a.total.r > b.total.r ? 1 : -1;
                     }
                 });
-
+                if(limit && limit > 0)
+                {
+                    data = data.slice(0,limit);
+                }
+                return data;
             },
             assembleDataset(source,daily,name)
             {
@@ -418,6 +518,7 @@
                         confirmed: parseInt(row.daily[y].confirmed) - parseInt(previous.confirmed),
                         deaths: parseInt(row.daily[y].deaths) - parseInt(previous.deaths),
                         recovered: parseInt(row.daily[y].recovered) - parseInt(previous.recovered),
+                        active: parseInt(row.daily[y].confirmed) - parseInt(previous.confirmed) - parseInt(row.daily[y].deaths) - parseInt(previous.deaths) - parseInt(row.daily[y].recovered) - parseInt(previous.recovered),
                     }
                     previous = row.daily[y];
                     count++;
