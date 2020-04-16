@@ -84866,7 +84866,7 @@ var render = function() {
                               _c(
                                 "div",
                                 {
-                                  staticClass: "p-2 w-36",
+                                  staticClass: "p-2 w-72",
                                   class:
                                     index % 2 == 0
                                       ? "bg-slab-primary"
@@ -85759,7 +85759,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("div", { staticClass: "font-bold p-2 w-36" }, [_vm._v("Recovered")]),
         _vm._v(" "),
-        _c("div", { staticClass: "font-bold p-2 w-36" }, [_vm._v("Active")])
+        _c("div", { staticClass: "font-bold p-2 w-72" }, [_vm._v("Active")])
       ]
     )
   },
