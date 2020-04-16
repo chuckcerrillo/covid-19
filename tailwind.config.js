@@ -1,6 +1,9 @@
 module.exports = {
   theme: {
       extend: {
+          fontSize: {
+              '7xl' : '5rem',
+          },
           colors: {
               slab : '#116466',
               lightslab : '#4e8f93',
@@ -13,6 +16,7 @@ module.exports = {
               'date-slab': '#80cbcd',
           },
           margin: {
+              '14' : '3.5rem',
               '18' : '4.5rem',
               '20' : '5rem',
               '24' : '6rem',
@@ -101,6 +105,7 @@ module.exports = {
               '248' : '62rem',
               '252' : '63rem',
               '256' : '64rem',
+              '360' : '90rem',
               '512' : '128rem',
           },
           height: {

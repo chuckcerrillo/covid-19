@@ -1,0 +1,63 @@
+<template>
+    <div :id="id" class="relative">
+        <div v-if="!enable" class="bg-white w-full h-full text-gray-800 flex items-center justify-center"><div>Map is disabled</div></div>
+        <div v-else id="global_map" class="h-full w-full"></div>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "Map",
+        props: [
+            'id',
+            'data',
+            'enable',
+        ],
+        data(){
+            return {
+                zoom: 1,
+                map: {},
+            }
+        },
+        mounted(){
+            var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
+
+            mapboxgl.accessToken = 'pk.eyJ1IjoiY2h1Y2tjZXJyaWxsbyIsImEiOiJjazkxN2U2bWEwOW04M2Z1Z2R2eTkwazJhIn0.rNQOyiivZyGkeAkCKMJD6Q';
+            var map = new mapboxgl.Map({
+                container: 'global_map',
+                style: 'mapbox://styles/mapbox/light-v10',
+                center: [6.679687499992383, 34.597041516152586]
+            });
+            this.map = map;
+            map.setZoom(this.zoom);
+            map.setCenter([6.679687499992383, 34.597041516152586]);
+            for(var x in this.data)
+            {
+                var country = this.data[x];
+                new mapboxgl.Marker()
+                    .setLngLat([country.long, country.lat])
+                    .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+                        .setHTML('<h3 class="text-slab font-bold">' + country.name + '</h3><p class="text-xs text-base">Confirmed: ' + country.total.c + '</p>'))
+                    .addTo(map);
+            }
+        },
+        methods:
+        {
+            getCenter()
+            {
+                console.log(this.map.getCenter());
+            }
+        },
+        computed: {
+        },
+        watch: {
+            zoom(){
+                this.map.setZoom(this.zoom)
+            }
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>

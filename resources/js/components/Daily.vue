@@ -10,15 +10,15 @@
             <div class="flex text-sm mt-4 w-full items-center">
                 <div class="text-center pr-4">
                     <div class="text-xs font-bold">Confirmed</div>
-                    <div class="text-3xl font-bold">{{parseInt(data.total.confirmed)}}</div>
+                    <div class="text-3xl font-bold">{{data.total.confirmed| numeralFormat}}</div>
                 </div>
                 <div class="text-center pr-4">
                     <div class="text-xs font-bold">Deaths</div>
-                    <div class="text-3xl font-bold">{{parseInt(data.total.deaths)}}</div>
+                    <div class="text-3xl font-bold">{{data.total.deaths| numeralFormat}}</div>
                 </div>
                 <div class="text-center">
                     <div class="text-xs font-bold">Recovered</div>
-                    <div class="text-3xl font-bold">{{parseInt(data.total.recovered)}}</div>
+                    <div class="text-3xl font-bold">{{data.total.recovered| numeralFormat}}</div>
                 </div>
             </div>
             <div class="text-xs mb-4">As of {{data.total.date}}</div>
@@ -45,19 +45,19 @@
                     <div class="w-full flex justify-end">
                         <div class="w-20">{{moment(row['date']).format('YYYY-MM-DD')}}</div>
                         <div class="w-20">
-                            {{ isNaN(row.confirmed) ? 0 : row.confirmed }}
-                            <span class="text-green-400" v-if="data.delta[key].confirmed >= 0">(+{{data.delta[key].confirmed}})</span>
-                            <span class="text-red-400" v-else>({{data.delta[key].confirmed}})</span>
+                            {{ isNaN(row.confirmed) ? 0 : row.confirmed | numeralFormat}}
+                            <span class="text-green-400" v-if="data.delta[key].confirmed >= 0">(+{{data.delta[key].confirmed| numeralFormat}})</span>
+                            <span class="text-red-400" v-else>({{data.delta[key].confirmed| numeralFormat}})</span>
                         </div>
                         <div class="w-20">
-                            {{ isNaN(row.deaths) ? 0 : row.deaths }}
-                            <span class="text-green-400" v-if="data.delta[key].deaths >= 0">(+{{data.delta[key].deaths}})</span>
-                            <span class="text-red-400" v-else>({{data.delta[key].deaths}})</span>
+                            {{ isNaN(row.deaths) ? 0 : row.deaths | numeralFormat}}
+                            <span class="text-green-400" v-if="data.delta[key].deaths >= 0">(+{{data.delta[key].deaths| numeralFormat}})</span>
+                            <span class="text-red-400" v-else>({{data.delta[key].deaths| numeralFormat}})</span>
                         </div>
                         <div class="w-20">
-                            {{ isNaN(row.recovered) ? 0 : row.recovered }}
-                            <span class="text-green-400" v-if="data.delta[key].recovered >= 0">(+{{data.delta[key].recovered}})</span>
-                            <span class="text-red-400" v-else>({{data.delta[key].recovered}})</span>
+                            {{ isNaN(row.recovered) ? 0 : row.recovered | numeralFormat}}
+                            <span class="text-green-400" v-if="data.delta[key].recovered >= 0">(+{{data.delta[key].recovered| numeralFormat}})</span>
+                            <span class="text-red-400" v-else>({{data.delta[key].recovered| numeralFormat}})</span>
                         </div>
     <!--                    <div class="w-20">-->
     <!--                        {{data.growth[key]}}-->

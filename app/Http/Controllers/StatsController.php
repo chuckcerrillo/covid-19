@@ -19,7 +19,7 @@ class StatsController extends Controller
         'Iran' => ['Iran','Iran (Islamic Republic of)'],
         'Diamond Princess' => ['Cruise Ship','Diamond Princess'],
         'Czechia' => ['Czechia','Czech Republic'],
-        'Korea, South' => ['Korea, South','Republic of Korea','South Korea'],
+        'South Korea' => ['Korea, South','Republic of Korea','South Korea'],
         'Moldova' => ['Moldova','Republic of Moldova'],
         'Russia' => ['Russia','Russian Federation'],
         'United Kingdom' => ['UK','United Kingdom'],
@@ -112,6 +112,10 @@ class StatsController extends Controller
 
         $data = [];
         $countries = [];
+        $global = [
+            'daily' => [],
+            'total' => [],
+        ];
 
         foreach($csv AS $row)
         {
@@ -235,7 +239,22 @@ class StatsController extends Controller
                         $data[$country]['daily'][$date]['total']['c'] += (int)$row[3];
                         $data[$country]['daily'][$date]['total']['d'] += (int)$row[4];
                         $data[$country]['daily'][$date]['total']['r'] += (int)$row[5];
+
+                        if(!isset($global['daily'][$date]))
+                        {
+                            $global['daily'][$date] = [
+                                'confirmed' => 0,
+                                'deaths' => 0,
+                                'recovered' => 0,
+                            ];
+                        }
+
+                        $global['daily'][$date]['confirmed'] += (int)$row[3];
+                        $global['daily'][$date]['deaths'] += (int)$row[4];
+                        $global['daily'][$date]['recovered'] += (int)$row[5];
                     }
+
+
                 }
                 else if(count($row) == 8)
                 {
@@ -300,6 +319,19 @@ class StatsController extends Controller
                         $data[$country]['daily'][$date]['total']['c'] += (int)$row[3];
                         $data[$country]['daily'][$date]['total']['d'] += (int)$row[4];
                         $data[$country]['daily'][$date]['total']['r'] += (int)$row[5];
+
+                        if(!isset($global['daily'][$date]))
+                        {
+                            $global['daily'][$date] = [
+                                'confirmed' => 0,
+                                'deaths' => 0,
+                                'recovered' => 0,
+                            ];
+                        }
+
+                        $global['daily'][$date]['confirmed'] += (int)$row[3];
+                        $global['daily'][$date]['deaths'] += (int)$row[4];
+                        $global['daily'][$date]['recovered'] += (int)$row[5];
                     }
                 }
                 else if(count($row) == 12) {
@@ -358,6 +390,19 @@ class StatsController extends Controller
                         $data[$row[3]]['daily'][$date]['total']['c'] += (int)$row[7];
                         $data[$row[3]]['daily'][$date]['total']['d'] += (int)$row[8];
                         $data[$row[3]]['daily'][$date]['total']['r'] += (int)$row[9];
+
+                        if(!isset($global['daily'][$date]))
+                        {
+                            $global['daily'][$date] = [
+                                'confirmed' => 0,
+                                'deaths' => 0,
+                                'recovered' => 0,
+                            ];
+                        }
+
+                        $global['daily'][$date]['confirmed'] += (int)$row[7];
+                        $global['daily'][$date]['deaths'] += (int)$row[8];
+                        $global['daily'][$date]['recovered'] += (int)$row[9];
                     }
                 }
             }
@@ -406,8 +451,7 @@ class StatsController extends Controller
                 }
             }
         }
-//        dump($data['United Kingdom']['daily']['04-08-2020']);
-//dd($data['Afghanistan']);
+
         // Cleanup
         foreach($data AS $index=>$row)
         {
@@ -423,7 +467,6 @@ class StatsController extends Controller
             }
         }
         unset($data['Cruise Ship']);
-//        dd($data['United Kingdom']);
 
         // Write the file
         file_put_contents(STATS . 'master.json',json_encode($data));
@@ -463,7 +506,6 @@ class StatsController extends Controller
         // Write the file
         file_put_contents(STATS . 'states.json',json_encode($states));
 
-
         // Annotations
 
         https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1Pov2AbAscAXUNphDrjd3ZmzlbuvMy_Pd195bXlylwgdDnu1OQ0CBKXfMeDAHBZWbtLL9t5McfIcD/pubhtml
@@ -489,208 +531,13 @@ class StatsController extends Controller
         file_put_contents(STATS . 'annotations.json',json_encode($data));
 
 
-        return response('Done harvesting data')->setStatusCode(Response::HTTP_OK);
-    }
-
-    public function harvest()
-    {
 
 
+        $sequence = array_reverse($global['daily']);
+        $last = reset($sequence);
+        $global['total'] = $last;
 
-        $result = array_diff(scandir(COVID_DATA), array('..', '.','README.md','.gitignore'));
-        $data = [];
-
-
-        foreach($result AS $row)
-        {
-            $date = str_replace('.csv','',$row);
-            $filename = COVID_DATA . $row;
-            $csv = array_map('str_getcsv', file($filename));
-            array_walk($csv, function(&$a) use ($csv) {
-                $a = array_combine($csv[0], $a);
-            });
-            array_shift($csv); # remove column header
-
-
-            $data['date'][$date] = $csv;
-            $new_day = true;
-
-            foreach($csv AS $stats)
-            {
-                $cs_combo = [];
-                foreach($stats AS $key => $value)
-                {
-                    $clean_key = trim($key);
-                    if($clean_key !== $key)
-                    {
-                        $stats[$clean_key] = $value;
-                        unset($stats[$key]);
-                    }
-                }
-
-
-
-
-                // Initialise
-                if(isset($stats['Country/Region']))
-                {
-                    $country = $stats['Country/Region'];
-                }
-                else if(isset($stats['Country_Region']))
-                {
-                    $country = $stats['Country_Region'];
-                }
-                else
-                {
-                    $country = '';
-                }
-
-
-                if (in_array($country,$this->skip))
-                {
-                    continue;
-                }
-
-                // Check country against combined array
-                foreach($this->combine AS $combined => $keys)
-                {
-                    if (in_array($country,$keys))
-                    {
-                        $country = $combined;
-                        break;
-                    }
-                }
-
-                // Now that we know what country, we can initialise this thing
-                if (!isset($data['country'][$country])) {
-                    $data['country'][$country]['daily'] = [];
-                    $data['country'][$country]['total'] = [
-                        'c' => 0,
-                        'd' => 0,
-                        'r' => 0,
-                    ];
-                }
-
-                $state = '';
-                foreach($stats AS $i => $v)
-                {
-                    if(strpos($i,'State')>0)
-                    {
-                        $state = $stats[$i];
-                        break;
-                    }
-                }
-
-
-                if(isset($stats['Last Update']))
-                {
-                    $last_update = $stats['Last Update'];
-                }
-                else if(isset($stats['Last_Update']))
-                {
-                    $last_update = $stats['Last_Update'];
-                }
-
-
-                if($country) {
-                    // Daily Breakdown
-
-                    // Initialise this day
-                    if(!isset($data['country'][$country]['daily'][$date]))
-                    {
-                        $data['country'][$country]['daily'][$date] = [
-                            'last_update' => $last_update,
-                            'c' => 0,
-                            'd' => 0,
-                            'r' => 0,
-                            'state' => []
-                        ];
-                    }
-                    if($stats['Confirmed'])
-                        $data['country'][$country]['daily'][$date]['c'] += $stats['Confirmed'];
-                    if($stats['Deaths'])
-                        $data['country'][$country]['daily'][$date]['d'] += $stats['Deaths'];
-                    if($stats['Recovered'])
-                        $data['country'][$country]['daily'][$date]['r'] += $stats['Recovered'];
-
-
-                    $data['country'][$country]['daily'][$date]['state'][] = [
-                        'state' => $state,
-                        'c' => $stats['Confirmed'],
-                        'd' => $stats['Deaths'],
-                        'r' => $stats['Recovered']
-                    ];
-                }
-            }
-        }
-
-        // To get the tally of each country, look at the last record of each one
-        $x=0;
-        foreach($data['country'] AS $country_index=>$country)
-        {
-            $sequence = array_reverse($country['daily']);
-            foreach($sequence AS $index=>$row)
-            {
-                if (isset($row['c']))
-                {
-                    $data['country'][$country_index]['total']['c'] = $row['c'];
-                    $data['country'][$country_index]['total']['d'] = $row['d'];
-                    $data['country'][$country_index]['total']['r'] = $row['r'];
-                    $data['country'][$country_index]['total']['last_update'] = $row['last_update'];
-                    break;
-                }
-            }
-            $x++;
-        }
-
-
-        // Write files
-
-        $countries = [];
-        $allcountries = [];
-        foreach($data['country'] AS $country=>$content)
-        {
-            if($country == 'United Kingom')
-            {
-                $country = 'United Kingdom';
-            }
-            $allcountries[] = [
-                'country' => $country,
-                'content' => $content
-            ];
-
-            $countries[] = [
-                'name' => $country,
-                'filename' => base64_encode($country)
-            ];
-        }
-
-        file_put_contents(STATS . 'cases.json',json_encode($allcountries));
-        file_put_contents(STATS . 'countries.json',json_encode($countries));
-
-        // Annotations
-
-        https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1Pov2AbAscAXUNphDrjd3ZmzlbuvMy_Pd195bXlylwgdDnu1OQ0CBKXfMeDAHBZWbtLL9t5McfIcD/pubhtml
-        $url = 'https://spreadsheets.google.com/feeds/list/1XfndFdJ0VSJnLqY83s8ITmuRVgsUSWPhCm-Fvd_rNb4/oejzle4/public/values?alt=json';
-        $file= file_get_contents($url);
-
-        $json = json_decode($file,true);
-        $rows = $json['feed']['entry'];
-        $data = [];
-        foreach($rows AS $row)
-        {
-            if($row['gsx$publish']['$t'] == 'Y')
-            {
-                $data[$row['gsx$country']['$t']][] = [
-                    'country' => $row['gsx$country']['$t'],
-                    'state' => $row['gsx$state']['$t'],
-                    'date' => $row['gsx$date']['$t'],
-                    'notes' => $row['gsx$notes']['$t'],
-                    'url' => $row['gsx$url']['$t'],
-                ];
-            }
-        }
-        file_put_contents(STATS . 'annotations.json',json_encode($data));
+        file_put_contents(STATS . 'global.json',json_encode($global));
 
         return response('Done harvesting data')->setStatusCode(Response::HTTP_OK);
     }
@@ -699,6 +546,15 @@ class StatsController extends Controller
     {
 
         $filename = STATS . 'annotations.json';
+        $file = fopen($filename,'r');
+        $countries = fread($file,filesize($filename));
+        return response($countries)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function global()
+    {
+
+        $filename = STATS . 'global.json';
         $file = fopen($filename,'r');
         $countries = fread($file,filesize($filename));
         return response($countries)->setStatusCode(Response::HTTP_OK);
