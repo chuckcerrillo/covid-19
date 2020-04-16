@@ -4813,6 +4813,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -5252,6 +5255,27 @@ __webpack_require__.r(__webpack_exports__);
     },
     selectedStats: function selectedStats() {
       return this.stats[this.selectedCountry];
+    },
+    globalDaily: function globalDaily() {
+      var data = [];
+
+      for (var x in this.globalDataset[0].daily) {
+        var row = this.globalDataset[0].daily[x];
+        data.push({
+          date: moment__WEBPACK_IMPORTED_MODULE_7___default()(row.date).format('YYYY-MM-DD'),
+          confirmed: row.confirmed,
+          confirmedDelta: this.globalDataset[0].delta[x].confirmed,
+          deaths: row.deaths,
+          deathsDelta: this.globalDataset[0].delta[x].deaths,
+          recovered: row.recovered,
+          recoveredDelta: this.globalDataset[0].delta[x].recovered,
+          active: parseInt(row.confirmed) - parseInt(row.deaths) - parseInt(row.recovered),
+          activeDelta: parseInt(this.globalDataset[0].delta[x].confirmed) - parseInt(this.globalDataset[0].delta[x].deaths) - parseInt(this.globalDataset[0].delta[x].recovered),
+          growthFactor: this.globalDataset[0].growthFactor[x]
+        });
+      }
+
+      return data;
     },
     daily: function daily() {
       if (this.compare.length > 1) return this.comparisonDataset;else return this.getDaily(this.selectedStats);
@@ -84823,7 +84847,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "bg-lightslab rounded" },
+                          { staticClass: "bg-lightslab rounded-lg" },
                           _vm._l(
                             _vm.getSortedCountries("confirmed", "desc", 5),
                             function(row, key, index) {
@@ -84882,7 +84906,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "bg-lightslab rounded" },
+                          { staticClass: "bg-lightslab rounded-lg" },
                           _vm._l(
                             _vm.getSortedCountries("deaths", "desc", 5),
                             function(row, key, index) {
@@ -84941,7 +84965,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "bg-lightslab rounded" },
+                          { staticClass: "bg-lightslab rounded-lg" },
                           _vm._l(
                             _vm.getSortedCountries("recovered", "desc", 5),
                             function(row, key, index) {
@@ -85092,281 +85116,12 @@ var render = function() {
                       [
                         _vm._m(1),
                         _vm._v(" "),
-                        _vm._l(_vm.globalDataset[0].daily, function(
+                        _vm._l(_vm.globalDaily.reverse(), function(
                           row,
                           key,
                           index
                         ) {
                           return _c("div", [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "flex flex-1 items-center justify-start w-full text-xs"
-                              },
-                              [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "p-2 w-76",
-                                    class:
-                                      key % 2 == 0
-                                        ? "bg-slab-primary"
-                                        : "bg-slab-secondary"
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm
-                                          .moment(row.date)
-                                          .format("YYYY-MM-DD")
-                                      )
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "p-2 w-36",
-                                    class:
-                                      key % 2 == 0
-                                        ? "bg-slab-primary"
-                                        : "bg-slab-secondary"
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm._f("numeralFormat")(row.confirmed)
-                                      ) +
-                                        "\n                                    "
-                                    ),
-                                    _vm.globalDataset[0].delta[key].confirmed >=
-                                    0
-                                      ? _c(
-                                          "span",
-                                          { staticClass: "text-red-400" },
-                                          [
-                                            _vm._v(
-                                              "(+" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    _vm.globalDataset[0].delta[
-                                                      key
-                                                    ].confirmed
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                      : _c(
-                                          "span",
-                                          { staticClass: "text-green-400" },
-                                          [
-                                            _vm._v(
-                                              "(" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    _vm.globalDataset[0].delta[
-                                                      key
-                                                    ].confirmed
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "p-2 w-36",
-                                    class:
-                                      key % 2 == 0
-                                        ? "bg-slab-primary"
-                                        : "bg-slab-secondary"
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm._f("numeralFormat")(row.deaths)
-                                      ) +
-                                        "\n                                    "
-                                    ),
-                                    _vm.globalDataset[0].delta[key].deaths >= 0
-                                      ? _c(
-                                          "span",
-                                          { staticClass: "text-red-400" },
-                                          [
-                                            _vm._v(
-                                              "(+" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    _vm.globalDataset[0].delta[
-                                                      key
-                                                    ].deaths
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                      : _c(
-                                          "span",
-                                          { staticClass: "text-green-400" },
-                                          [
-                                            _vm._v(
-                                              "(" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    _vm.globalDataset[0].delta[
-                                                      key
-                                                    ].deaths
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "p-2 w-36",
-                                    class:
-                                      key % 2 == 0
-                                        ? "bg-slab-primary"
-                                        : "bg-slab-secondary"
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm._f("numeralFormat")(row.recovered)
-                                      ) +
-                                        "\n                                    "
-                                    ),
-                                    _vm.globalDataset[0].delta[key].recovered >=
-                                    0
-                                      ? _c(
-                                          "span",
-                                          { staticClass: "text-green-400" },
-                                          [
-                                            _vm._v(
-                                              "(+" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    _vm.globalDataset[0].delta[
-                                                      key
-                                                    ].recovered
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                      : _c(
-                                          "span",
-                                          { staticClass: "text-red-400" },
-                                          [
-                                            _vm._v(
-                                              "(" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    _vm.globalDataset[0].delta[
-                                                      key
-                                                    ].recovered
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "p-2 w-36",
-                                    class:
-                                      key % 2 == 0
-                                        ? "bg-slab-primary"
-                                        : "bg-slab-secondary"
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm._f("numeralFormat")(
-                                          row.confirmed -
-                                            row.deaths -
-                                            row.recovered
-                                        )
-                                      ) +
-                                        "\n                                    "
-                                    ),
-                                    _vm.globalDataset[0].delta[key].active >= 0
-                                      ? _c(
-                                          "span",
-                                          { staticClass: "text-red-400" },
-                                          [
-                                            _vm._v(
-                                              "(+" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    _vm.globalDataset[0].delta[
-                                                      key
-                                                    ].active
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                      : _c(
-                                          "span",
-                                          { staticClass: "text-green-400" },
-                                          [
-                                            _vm._v(
-                                              "(" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    _vm.globalDataset[0].delta[
-                                                      key
-                                                    ].active
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "p-2 w-36",
-                                    class:
-                                      key % 2 == 0
-                                        ? "bg-slab-primary"
-                                        : "bg-slab-secondary"
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm.globalDataset[0].growthFactor[key]
-                                      )
-                                    )
-                                  ]
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
                             _vm.getGlobalDayNotes(
                               _vm.moment(row.date).format("YYYY-MM-DD")
                             ).length > 0
@@ -85381,7 +85136,7 @@ var render = function() {
                                         "div",
                                         {
                                           staticClass:
-                                            "p-1 mb-4 mx-8 text-xs rounded bg-lightslab flex"
+                                            "p-1 my-4 mx-8 text-xs rounded bg-lightslab flex"
                                         },
                                         [
                                           annotation.state.length > 0
@@ -85442,7 +85197,264 @@ var render = function() {
                                   ),
                                   0
                                 )
-                              : _vm._e()
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "flex flex-1 items-center justify-start w-full text-xs"
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "p-2 w-76",
+                                    class:
+                                      key % 2 == 0
+                                        ? "bg-slab-primary"
+                                        : "bg-slab-secondary"
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm
+                                          .moment(row.date)
+                                          .format("YYYY-MM-DD")
+                                      )
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "p-2 w-36",
+                                    class:
+                                      key % 2 == 0
+                                        ? "bg-slab-primary"
+                                        : "bg-slab-secondary"
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm._f("numeralFormat")(row.confirmed)
+                                      ) +
+                                        "\n                                    "
+                                    ),
+                                    row.confirmedDelta >= 0
+                                      ? _c(
+                                          "span",
+                                          { staticClass: "text-red-400" },
+                                          [
+                                            _vm._v(
+                                              "(+" +
+                                                _vm._s(
+                                                  _vm._f("numeralFormat")(
+                                                    row.confirmedDelta
+                                                  )
+                                                ) +
+                                                ")"
+                                            )
+                                          ]
+                                        )
+                                      : _c(
+                                          "span",
+                                          { staticClass: "text-green-400" },
+                                          [
+                                            _vm._v(
+                                              "(" +
+                                                _vm._s(
+                                                  _vm._f("numeralFormat")(
+                                                    row.confirmedDelta
+                                                  )
+                                                ) +
+                                                ")"
+                                            )
+                                          ]
+                                        )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "p-2 w-36",
+                                    class:
+                                      key % 2 == 0
+                                        ? "bg-slab-primary"
+                                        : "bg-slab-secondary"
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm._f("numeralFormat")(row.deaths)
+                                      ) +
+                                        "\n                                    "
+                                    ),
+                                    row.deathsDelta >= 0
+                                      ? _c(
+                                          "span",
+                                          { staticClass: "text-red-400" },
+                                          [
+                                            _vm._v(
+                                              "(+" +
+                                                _vm._s(
+                                                  _vm._f("numeralFormat")(
+                                                    row.deathsDelta
+                                                  )
+                                                ) +
+                                                ")"
+                                            )
+                                          ]
+                                        )
+                                      : _c(
+                                          "span",
+                                          { staticClass: "text-green-400" },
+                                          [
+                                            _vm._v(
+                                              "(" +
+                                                _vm._s(
+                                                  _vm._f("numeralFormat")(
+                                                    row.deathsDelta
+                                                  )
+                                                ) +
+                                                ")"
+                                            )
+                                          ]
+                                        )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "p-2 w-36",
+                                    class:
+                                      key % 2 == 0
+                                        ? "bg-slab-primary"
+                                        : "bg-slab-secondary"
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm._f("numeralFormat")(row.recovered)
+                                      ) +
+                                        "\n                                    "
+                                    ),
+                                    row.recoveredDelta.recovered >= 0
+                                      ? _c(
+                                          "span",
+                                          { staticClass: "text-green-400" },
+                                          [
+                                            _vm._v(
+                                              "(+" +
+                                                _vm._s(
+                                                  _vm._f("numeralFormat")(
+                                                    row.recoveredDelta
+                                                  )
+                                                ) +
+                                                ")"
+                                            )
+                                          ]
+                                        )
+                                      : _c(
+                                          "span",
+                                          { staticClass: "text-red-400" },
+                                          [
+                                            _vm._v(
+                                              "(" +
+                                                _vm._s(
+                                                  _vm._f("numeralFormat")(
+                                                    row.recoveredDelta
+                                                  )
+                                                ) +
+                                                ")"
+                                            )
+                                          ]
+                                        )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "p-2 w-36",
+                                    class:
+                                      key % 2 == 0
+                                        ? "bg-slab-primary"
+                                        : "bg-slab-secondary"
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm._f("numeralFormat")(
+                                          row.confirmed -
+                                            row.deaths -
+                                            row.recovered
+                                        )
+                                      ) +
+                                        "\n                                    "
+                                    ),
+                                    row.activeDelta >= 0
+                                      ? _c(
+                                          "span",
+                                          { staticClass: "text-red-400" },
+                                          [
+                                            _vm._v(
+                                              "(+" +
+                                                _vm._s(
+                                                  _vm._f("numeralFormat")(
+                                                    row.activeDelta
+                                                  )
+                                                ) +
+                                                ")"
+                                            )
+                                          ]
+                                        )
+                                      : _c(
+                                          "span",
+                                          { staticClass: "text-green-400" },
+                                          [
+                                            _vm._v(
+                                              "(" +
+                                                _vm._s(
+                                                  _vm._f("numeralFormat")(
+                                                    row.activeDelta
+                                                  )
+                                                ) +
+                                                ")"
+                                            )
+                                          ]
+                                        )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "p-2 w-36",
+                                    class:
+                                      key % 2 == 0
+                                        ? "bg-slab-primary"
+                                        : "bg-slab-secondary"
+                                  },
+                                  [
+                                    row.growthFactor > 1
+                                      ? _c(
+                                          "span",
+                                          { staticClass: "text-red-400" },
+                                          [_vm._v(_vm._s(row.growthFactor))]
+                                        )
+                                      : _c(
+                                          "span",
+                                          { staticClass: "text-green-400" },
+                                          [_vm._v(_vm._s(row.growthFactor))]
+                                        )
+                                  ]
+                                )
+                              ]
+                            )
                           ])
                         })
                       ],
