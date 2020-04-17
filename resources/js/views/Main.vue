@@ -100,7 +100,16 @@
                     <div class="w-360">
                         <div class="w-full h-220 relative rounded my-4">
                             <StatsChart class="absolute left-0 right-0 bottom-0 top-0"
-                                        :data="globalDataset" full="true" />
+                                        :data="globalDataset"
+                                        full="true"
+                                        :config="
+                                            {
+                                                controls:
+                                                {
+                                                    menu : false
+                                                }
+                                            }
+                            " />
                         </div>
                     </div>
                 </div>

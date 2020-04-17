@@ -3310,6 +3310,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3396,7 +3402,8 @@ __webpack_require__.r(__webpack_exports__);
         'controls': {
           'primary': 'confirmed',
           'secondary': '',
-          'scaleType': 'logarithmic'
+          'scaleType': 'logarithmic',
+          'menu': true
         },
         'background': [{
           primary: 'rgba(38,73,146,1)',
@@ -3427,7 +3434,7 @@ __webpack_require__.r(__webpack_exports__);
       stats: {}
     };
   },
-  props: ['data', 'full'],
+  props: ['data', 'full', 'config'],
   methods: {
     getFieldName: function getFieldName(key) {
       if (key) {
@@ -3441,8 +3448,6 @@ __webpack_require__.r(__webpack_exports__);
       return '';
     },
     selectedMode: function selectedMode(key) {
-      console.log('Key: ' + key + ' vs ' + this.options.mode);
-
       if (key == this.options.mode) {
         return true;
       }
@@ -3492,6 +3497,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
+    settings: function settings() {
+      return _objectSpread({}, this.options, {}, this.config);
+    },
     xAxis: function xAxis() {
       return [this.options.mode];
     },
@@ -3509,7 +3517,6 @@ __webpack_require__.r(__webpack_exports__);
 
       for (var x in data) {}
 
-      console.log(data);
       return data;
     },
     dataset: function dataset() {
@@ -3730,7 +3737,9 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  return tick.toLocaleString();
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
                 }
               }
             });
@@ -4080,8 +4089,6 @@ __webpack_require__.r(__webpack_exports__);
         data.labels.push('Day ' + x);
       }
 
-      console.log('Data!');
-      console.log(data);
       var position = '',
           chartType = '',
           metric = '',
@@ -4491,6 +4498,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _Single__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Single */ "./resources/js/views/Single.vue");
 /* harmony import */ var _components_Map__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/Map */ "./resources/js/components/Map.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -84269,258 +84285,269 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", [
-      _c(
-        "div",
-        { staticClass: "absolute left-0 right-0 bottom-0 top-0 py-4" },
-        [
-          _c(
+      _vm.settings.controls.menu
+        ? _c(
             "div",
-            { staticClass: "text-xs flex items-start justify-between" },
+            { staticClass: "absolute left-0 right-0 bottom-0 top-0 py-4" },
             [
-              _c("div", { staticClass: "flex items-center" }, [
-                _c("div", { staticClass: "mr-2" }, [_vm._v("Time mode")]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "flex" },
-                  _vm._l(_vm.graphControls.x, function(row) {
-                    return _c(
-                      "div",
-                      {
-                        staticClass:
-                          "p-2 border border-hoverslab m-1 cursor-pointer",
-                        class: _vm.selectedMode(row[0]) ? "bg-hoverslab" : "",
-                        on: {
-                          click: function($event) {
-                            return _vm.selectMode(row[0])
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                                " +
-                            _vm._s(row[1]) +
-                            "\n                            "
-                        )
-                      ]
-                    )
-                  }),
-                  0
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "flex items-center" }, [
-                _c("div", { staticClass: "mr-2" }, [_vm._v("Scale")]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "flex" },
-                  _vm._l(_vm.graphControls.scaleType, function(row) {
-                    return _c(
-                      "div",
-                      {
-                        staticClass:
-                          "p-2 border border-hoverslab m-1 cursor-pointer",
-                        class: _vm.selectedScaleType(row[0])
-                          ? "bg-hoverslab"
-                          : "",
-                        on: {
-                          click: function($event) {
-                            return _vm.selectScaleType(row[0])
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                                " +
-                            _vm._s(row[1]) +
-                            "\n                            "
-                        )
-                      ]
-                    )
-                  }),
-                  0
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "flex items-center" }, [
-                _c("div", { staticClass: "mr-2" }, [_vm._v("Metrics")]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "flex border border-hoverslab bg-hoverslab m-1 cursor-pointer p-2 relative"
-                  },
-                  [
-                    _vm.options.controls.primary
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "w-32 truncate ...",
-                            on: {
-                              click: function($event) {
-                                _vm.ui.primary = !_vm.ui.primary
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              _vm._s(
-                                _vm.getFieldName(_vm.options.controls.primary)
-                              )
-                            )
-                          ]
-                        )
-                      : _c(
-                          "div",
-                          {
-                            staticClass: "w-32",
-                            on: {
-                              click: function($event) {
-                                _vm.ui.primary = !_vm.ui.primary
-                              }
-                            }
-                          },
-                          [_vm._v("Select primary metric")]
-                        ),
+              _c(
+                "div",
+                { staticClass: "text-xs flex items-start justify-between" },
+                [
+                  _c("div", { staticClass: "flex items-center" }, [
+                    _c("div", { staticClass: "mr-2" }, [_vm._v("Time mode")]),
                     _vm._v(" "),
                     _c(
                       "div",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.ui.primary,
-                            expression: "ui.primary"
-                          }
-                        ],
-                        staticClass:
-                          "absolute z-10 bg-slab border-hoverslab shadow w-44 right-0 top-0 p-2 border border-hoverslab"
-                      },
-                      _vm._l(_vm.graphControls.y, function(row) {
+                      { staticClass: "flex" },
+                      _vm._l(_vm.graphControls.x, function(row) {
                         return _c(
                           "div",
                           {
-                            staticClass: "p-2 m-1 hover:bg-hoverslab",
+                            staticClass:
+                              "p-2 border border-hoverslab m-1 cursor-pointer",
+                            class: _vm.selectedMode(row[0])
+                              ? "bg-hoverslab"
+                              : "",
                             on: {
                               click: function($event) {
-                                return _vm.selectField(row[0], "primary")
+                                return _vm.selectMode(row[0])
                               }
                             }
                           },
                           [
                             _vm._v(
-                              "\n                                    " +
+                              "\n                                " +
                                 _vm._s(row[1]) +
-                                "\n                                "
+                                "\n                            "
                             )
                           ]
                         )
                       }),
                       0
                     )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "flex border border-hoverslab bg-hoverslab m-1 mr-0 cursor-pointer p-2 relative"
-                  },
-                  [
-                    _vm.options.controls.secondary
-                      ? _c(
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex items-center" }, [
+                    _c("div", { staticClass: "mr-2" }, [_vm._v("Scale")]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "flex" },
+                      _vm._l(_vm.graphControls.scaleType, function(row) {
+                        return _c(
                           "div",
                           {
-                            staticClass: "w-32 truncate ...",
+                            staticClass:
+                              "p-2 border border-hoverslab m-1 cursor-pointer",
+                            class: _vm.selectedScaleType(row[0])
+                              ? "bg-hoverslab"
+                              : "",
                             on: {
                               click: function($event) {
-                                _vm.ui.secondary = !_vm.ui.secondary
+                                return _vm.selectScaleType(row[0])
                               }
                             }
                           },
                           [
                             _vm._v(
-                              _vm._s(
-                                _vm.getFieldName(_vm.options.controls.secondary)
-                              )
+                              "\n                                " +
+                                _vm._s(row[1]) +
+                                "\n                            "
                             )
                           ]
                         )
-                      : _c(
-                          "div",
-                          {
-                            staticClass: "w-32",
-                            on: {
-                              click: function($event) {
-                                _vm.ui.secondary = !_vm.ui.secondary
-                              }
-                            }
-                          },
-                          [_vm._v("Select secondary metric")]
-                        ),
+                      }),
+                      0
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex items-center" }, [
+                    _c("div", { staticClass: "mr-2" }, [_vm._v("Metrics")]),
                     _vm._v(" "),
                     _c(
                       "div",
                       {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.ui.secondary,
-                            expression: "ui.secondary"
-                          }
-                        ],
                         staticClass:
-                          "absolute z-10 bg-slab border-hoverslab shadow w-44 right-0 top-0 p-2 border border-hoverslab"
+                          "flex border border-hoverslab bg-hoverslab m-1 cursor-pointer p-2 relative"
                       },
                       [
+                        _vm.options.controls.primary
+                          ? _c(
+                              "div",
+                              {
+                                staticClass: "w-32 truncate ...",
+                                on: {
+                                  click: function($event) {
+                                    _vm.ui.primary = !_vm.ui.primary
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.getFieldName(
+                                      _vm.options.controls.primary
+                                    )
+                                  )
+                                )
+                              ]
+                            )
+                          : _c(
+                              "div",
+                              {
+                                staticClass: "w-32",
+                                on: {
+                                  click: function($event) {
+                                    _vm.ui.primary = !_vm.ui.primary
+                                  }
+                                }
+                              },
+                              [_vm._v("Select primary metric")]
+                            ),
+                        _vm._v(" "),
                         _c(
                           "div",
                           {
-                            staticClass: "p-2 m-1 hover:bg-hoverslab",
-                            on: {
-                              click: function($event) {
-                                return _vm.selectField("", "secondary")
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.ui.primary,
+                                expression: "ui.primary"
                               }
-                            }
+                            ],
+                            staticClass:
+                              "absolute z-10 bg-slab border-hoverslab shadow w-44 right-0 top-0 p-2 border border-hoverslab"
                           },
-                          [_vm._v("None")]
-                        ),
-                        _vm._v(" "),
-                        _vm._l(_vm.graphControls.y, function(row) {
-                          return _c(
-                            "div",
-                            {
-                              staticClass: "p-2 m-1 hover:bg-hoverslab",
-                              on: {
-                                click: function($event) {
-                                  return _vm.selectField(row[0], "secondary")
+                          _vm._l(_vm.graphControls.y, function(row) {
+                            return _c(
+                              "div",
+                              {
+                                staticClass: "p-2 m-1 hover:bg-hoverslab",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.selectField(row[0], "primary")
+                                  }
                                 }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(row[1]) +
+                                    "\n                                "
+                                )
+                              ]
+                            )
+                          }),
+                          0
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "flex border border-hoverslab bg-hoverslab m-1 mr-0 cursor-pointer p-2 relative"
+                      },
+                      [
+                        _vm.options.controls.secondary
+                          ? _c(
+                              "div",
+                              {
+                                staticClass: "w-32 truncate ...",
+                                on: {
+                                  click: function($event) {
+                                    _vm.ui.secondary = !_vm.ui.secondary
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.getFieldName(
+                                      _vm.options.controls.secondary
+                                    )
+                                  )
+                                )
+                              ]
+                            )
+                          : _c(
+                              "div",
+                              {
+                                staticClass: "w-32",
+                                on: {
+                                  click: function($event) {
+                                    _vm.ui.secondary = !_vm.ui.secondary
+                                  }
+                                }
+                              },
+                              [_vm._v("Select secondary metric")]
+                            ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.ui.secondary,
+                                expression: "ui.secondary"
                               }
-                            },
-                            [
-                              _vm._v(
-                                "\n                                    " +
-                                  _vm._s(row[1]) +
-                                  "\n                                "
+                            ],
+                            staticClass:
+                              "absolute z-10 bg-slab border-hoverslab shadow w-44 right-0 top-0 p-2 border border-hoverslab"
+                          },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "p-2 m-1 hover:bg-hoverslab",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.selectField("", "secondary")
+                                  }
+                                }
+                              },
+                              [_vm._v("None")]
+                            ),
+                            _vm._v(" "),
+                            _vm._l(_vm.graphControls.y, function(row) {
+                              return _c(
+                                "div",
+                                {
+                                  staticClass: "p-2 m-1 hover:bg-hoverslab",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.selectField(
+                                        row[0],
+                                        "secondary"
+                                      )
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(row[1]) +
+                                      "\n                                "
+                                  )
+                                ]
                               )
-                            ]
-                          )
-                        })
-                      ],
-                      2
+                            })
+                          ],
+                          2
+                        )
+                      ]
                     )
-                  ]
-                )
-              ])
+                  ])
+                ]
+              )
             ]
           )
-        ]
-      )
+        : _vm._e()
     ]),
     _vm._v(" "),
     _c(
@@ -85065,7 +85092,15 @@ var render = function() {
                       [
                         _c("StatsChart", {
                           staticClass: "absolute left-0 right-0 bottom-0 top-0",
-                          attrs: { data: _vm.globalDataset, full: "true" }
+                          attrs: {
+                            data: _vm.globalDataset,
+                            full: "true",
+                            config: {
+                              controls: {
+                                menu: false
+                              }
+                            }
+                          }
                         })
                       ],
                       1

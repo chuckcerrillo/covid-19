@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <div class="absolute left-0 right-0 bottom-0 top-0 py-4">
+            <div class="absolute left-0 right-0 bottom-0 top-0 py-4" v-if="settings.controls.menu">
                 <div class="text-xs flex items-start justify-between">
                     <div class="flex items-center">
                         <div class="mr-2">Time mode</div>
@@ -87,6 +87,7 @@
                         'primary': 'confirmed',
                         'secondary' : '',
                         'scaleType' : 'logarithmic',
+                        'menu' : true,
                     },
 
                     'background' : [
@@ -143,6 +144,7 @@
         props: [
             'data',
             'full',
+            'config',
         ],
         methods: {
             getFieldName(key)
@@ -161,7 +163,6 @@
             },
             selectedMode(key)
             {
-                console.log('Key: ' + key + ' vs ' + this.options.mode);
                 if (key == this.options.mode)
                 {
                     return true;
@@ -222,6 +223,10 @@
             }
         },
         computed: {
+            settings()
+            {
+                return {...this.options, ...this.config};
+            },
             xAxis()
             {
                 return [
@@ -251,7 +256,6 @@
                 {
 
                 }
-                console.log(data);
                 return data;
             },
             dataset()
@@ -514,7 +518,13 @@
                                     ticks: {
                                         fontColor: '#2c3531',
                                         callback: function(tick, index, ticks) {
-                                            return tick.toLocaleString()
+                                            if(
+                                                tick.toString().substr(0,1) == 1
+                                                || tick.toString().substr(0,1) == 5
+                                            )
+                                            {
+                                                return tick.toLocaleString();
+                                            }
                                         }
                                     }
                                 },
@@ -927,10 +937,6 @@
                 {
                     data.labels.push('Day ' + x);
                 }
-
-
-                console.log('Data!');
-                console.log(data);
 
                 var position = '',
                     chartType = '',
