@@ -4918,7 +4918,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -85723,16 +85722,6 @@ var render = function() {
                                     [
                                       _c("span", { staticClass: "font-bold" }, [
                                         _vm._v("Growth factor")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("span", {}, [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm._f("numeralFormat")(
-                                              row.growthFactor
-                                            )
-                                          )
-                                        )
                                       ]),
                                       _vm._v(" "),
                                       row.growthFactor > 1
