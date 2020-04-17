@@ -609,7 +609,12 @@ class StatsController extends Controller
                     {
                         if(strlen($manual_override[$country][$standard_date][$state]['confirmed'])>0)
                         {
-                            $data[$country]['daily'][$date]['total']['c'] += intval($manual_override[$country][$standard_date][$state]['confirmed']) - isset($data[$country]['daily'][$date]['states'][$state]['c'])?$data[$country]['daily'][$date]['states'][$state]['c']:0;
+//                            $data[$country]['daily'][$date]['total']['c'] += intval($manual_override[$country][$standard_date][$state]['confirmed']) - isset($data[$country]['daily'][$date]['states'][$state]['c'])?$data[$country]['daily'][$date]['states'][$state]['c']:0;
+                            $data[$country]['daily'][$date]['total']['c'] = 0;
+                            foreach($data[$country]['daily'][$date]['states'] AS $s)
+                            {
+                                $data[$country]['daily'][$date]['total']['c'] += $s['c'];
+                            }
                             $global['daily'][$date]['confirmed'] += intval($manual_override[$country][$standard_date][$state]['confirmed']) - isset($data[$country]['daily'][$date]['states'][$state]['c'])?$data[$country]['daily'][$date]['states'][$state]['c']:0;
 
                             $data[$country]['daily'][$date]['states'][$state]['c'] = intval($manual_override[$country][$standard_date][$state]['confirmed']);
@@ -617,13 +622,23 @@ class StatsController extends Controller
                         }
                         if(strlen($manual_override[$country][$standard_date][$state]['deaths'])>0)
                         {
-                            $data[$country]['daily'][$date]['total']['d'] += intval($manual_override[$country][$standard_date][$state]['deaths']) - isset($data[$country]['daily'][$date]['states'][$state]['r']) ? $data[$country]['daily'][$date]['states'][$state]['r'] : 0;
+//                            $data[$country]['daily'][$date]['total']['d'] += intval($manual_override[$country][$standard_date][$state]['deaths']) - isset($data[$country]['daily'][$date]['states'][$state]['r']) ? $data[$country]['daily'][$date]['states'][$state]['r'] : 0;
+                            $data[$country]['daily'][$date]['total']['d'] = 0;
+                            foreach($data[$country]['daily'][$date]['states'] AS $s)
+                            {
+                                $data[$country]['daily'][$date]['total']['d'] += $s['d'];
+                            }
                             $global['daily'][$date]['deaths'] += intval($manual_override[$country][$standard_date][$state]['deaths']) - isset($data[$country]['daily'][$date]['states'][$state]['d']) ? $data[$country]['daily'][$date]['states'][$state]['d'] : 0;
                             $data[$country]['daily'][$date]['states'][$state]['d'] = intval($manual_override[$country][$standard_date][$state]['deaths']);
                         }
                         if(strlen($manual_override[$country][$standard_date][$state]['recovered'])>0)
                         {
-                            $data[$country]['daily'][$date]['total']['r'] += intval($manual_override[$country][$standard_date][$state]['recovered']) - isset($data[$country]['daily'][$date]['states'][$state]['r']) ? $data[$country]['daily'][$date]['states'][$state]['r'] : 0;
+//                            $data[$country]['daily'][$date]['total']['r'] += intval($manual_override[$country][$standard_date][$state]['recovered']) - isset($data[$country]['daily'][$date]['states'][$state]['r']) ? $data[$country]['daily'][$date]['states'][$state]['r'] : 0;
+                            $data[$country]['daily'][$date]['total']['r'] = 0;
+                            foreach($data[$country]['daily'][$date]['states'] AS $s)
+                            {
+                                $data[$country]['daily'][$date]['total']['r'] += $s['r'];
+                            }
                             $global['daily'][$date]['recovered'] += intval($manual_override[$country][$standard_date][$state]['recovered']) - isset($data[$country]['daily'][$date]['states'][$state]['r']) ? $data[$country]['daily'][$date]['states'][$state]['r'] : 0;
                             $data[$country]['daily'][$date]['states'][$state]['r'] = intval($manual_override[$country][$standard_date][$state]['recovered']);
                         }
@@ -631,8 +646,6 @@ class StatsController extends Controller
                 }
             }
         }
-
-
         if(array_key_last ($result) != $current_date)
         {
             foreach($worldometer_override AS $override)
