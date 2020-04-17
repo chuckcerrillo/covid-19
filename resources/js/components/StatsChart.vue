@@ -45,17 +45,17 @@
                 <LineChart :data="dataset.data"
                            :options="dataset.options"
                            class="bg-heading rounded"
-                           :class="full ? (settings.controls.menu ? 'absolute top-0 bottom-0 right-0 left-0 m-2 mb-8': 'absolute top-0 bottom-0 right-0 left-0 m-2') : 'h-200 m-4 mb-0'"
+                           :class="full ? (settings.controls.menu ? 'absolute top-0 bottom-0 right-0 left-0 m-2 mb-16': 'absolute top-0 bottom-0 right-0 left-0 m-2') : 'h-200 m-4 mb-0'"
                            v-if="data.length > 0"
                 />
-                <div class="text-xs flex items-start justify-between" v-if="settings.controls.menu">
+                <div class="text-xs absolute left-0 right-0 bottom-0 h-12 flex items-start justify-between" v-if="settings.controls.menu">
                     <div class="flex items-center justify-start">
                         <div class="mr-2">Time mode</div>
                         <div class="flex">
                             <div
                                 v-for="row in graphControls.x"
-                                class="p-2 border border-hoverslab m-1 cursor-pointer"
-                                :class="selectedMode(row[0]) ? 'bg-hoverslab':''"
+                                class="p-2 border border-lightslab m-1 cursor-pointer"
+                                :class="selectedMode(row[0]) ? 'bg-lightslab':''"
                                 @click="selectMode(row[0])"
                             >
                                 {{row[1]}}

@@ -84606,7 +84606,7 @@ var render = function() {
                   staticClass: "bg-heading rounded",
                   class: _vm.full
                     ? _vm.settings.controls.menu
-                      ? "absolute top-0 bottom-0 right-0 left-0 m-2 mb-8"
+                      ? "absolute top-0 bottom-0 right-0 left-0 m-2 mb-16"
                       : "absolute top-0 bottom-0 right-0 left-0 m-2"
                     : "h-200 m-4 mb-0",
                   attrs: {
@@ -84619,7 +84619,10 @@ var render = function() {
             _vm.settings.controls.menu
               ? _c(
                   "div",
-                  { staticClass: "text-xs flex items-start justify-between" },
+                  {
+                    staticClass:
+                      "text-xs absolute left-0 right-0 bottom-0 h-12 flex items-start justify-between"
+                  },
                   [
                     _c(
                       "div",
@@ -84637,9 +84640,9 @@ var render = function() {
                               "div",
                               {
                                 staticClass:
-                                  "p-2 border border-hoverslab m-1 cursor-pointer",
+                                  "p-2 border border-lightslab m-1 cursor-pointer",
                                 class: _vm.selectedMode(row[0])
-                                  ? "bg-hoverslab"
+                                  ? "bg-lightslab"
                                   : "",
                                 on: {
                                   click: function($event) {
