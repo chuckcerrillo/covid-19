@@ -3385,6 +3385,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -84363,40 +84365,6 @@ var render = function() {
                 { staticClass: "text-xs flex items-start justify-between" },
                 [
                   _c("div", { staticClass: "flex items-center" }, [
-                    _c("div", { staticClass: "mr-2" }, [_vm._v("Time mode")]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "flex" },
-                      _vm._l(_vm.graphControls.x, function(row) {
-                        return _c(
-                          "div",
-                          {
-                            staticClass:
-                              "p-2 border border-hoverslab m-1 cursor-pointer",
-                            class: _vm.selectedMode(row[0])
-                              ? "bg-hoverslab"
-                              : "",
-                            on: {
-                              click: function($event) {
-                                return _vm.selectMode(row[0])
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(row[1]) +
-                                "\n                            "
-                            )
-                          ]
-                        )
-                      }),
-                      0
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "flex items-center" }, [
                     _c("div", { staticClass: "mr-2" }, [_vm._v("Scale")]),
                     _vm._v(" "),
                     _c(
@@ -84622,7 +84590,8 @@ var render = function() {
       "div",
       {
         staticClass:
-          "bg-hoverslab p-2 absolute rounded left-0 top-0 right-0 bottom-0 mt-16"
+          "bg-hoverslab p-2 absolute rounded left-0 top-0 right-0 bottom-0",
+        class: _vm.settings.controls.menu ? "mt-16" : ""
       },
       [
         _c(
@@ -84636,13 +84605,63 @@ var render = function() {
               ? _c("LineChart", {
                   staticClass: "bg-heading rounded",
                   class: _vm.full
-                    ? "absolute top-0 bottom-0 right-0 left-0 m-2"
+                    ? _vm.settings.controls.menu
+                      ? "absolute top-0 bottom-0 right-0 left-0 m-2 mb-8"
+                      : "absolute top-0 bottom-0 right-0 left-0 m-2"
                     : "h-200 m-4 mb-0",
                   attrs: {
                     data: _vm.dataset.data,
                     options: _vm.dataset.options
                   }
                 })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.settings.controls.menu
+              ? _c(
+                  "div",
+                  { staticClass: "text-xs flex items-start justify-between" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "flex items-center justify-start" },
+                      [
+                        _c("div", { staticClass: "mr-2" }, [
+                          _vm._v("Time mode")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "flex" },
+                          _vm._l(_vm.graphControls.x, function(row) {
+                            return _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "p-2 border border-hoverslab m-1 cursor-pointer",
+                                class: _vm.selectedMode(row[0])
+                                  ? "bg-hoverslab"
+                                  : "",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.selectMode(row[0])
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(row[1]) +
+                                    "\n                            "
+                                )
+                              ]
+                            )
+                          }),
+                          0
+                        )
+                      ]
+                    )
+                  ]
+                )
               : _vm._e()
           ],
           1
@@ -84994,7 +85013,7 @@ var render = function() {
                       staticClass: "w-full rounded-lg overflow-hidden h-full",
                       attrs: {
                         id: "world_map",
-                        enable: true,
+                        enable: false,
                         data: _vm.countries_sorted
                       }
                     })
@@ -85007,7 +85026,7 @@ var render = function() {
                 "div",
                 {
                   staticClass:
-                    "bg-slab flex flex-1 mt-8 pt-8 w-full items-center justify-center"
+                    "bg-slab flex flex-1 mt-8 py-8 w-full items-center justify-center"
                 },
                 [
                   _c("div", { staticClass: "w-full xl:w-256" }, [
@@ -85252,7 +85271,7 @@ var render = function() {
                 "div",
                 {
                   staticClass:
-                    "hidden bg-slab xl:flex flex-1 w-full items-center justify-center"
+                    "hidden bg-slab-primary xl:flex flex-1 w-full items-center justify-center pb-8"
                 },
                 [
                   _c("div", { staticClass: "w-full xl:w-360" }, [
@@ -86926,7 +86945,7 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "hidden bg-slab xl:flex flex-1 pt-8 w-full items-center justify-center"
+          "hidden bg-slab-primary xl:flex flex-1 pt-8 w-full items-center justify-center"
       },
       [
         _c(
