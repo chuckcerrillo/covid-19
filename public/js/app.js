@@ -84844,7 +84844,7 @@ var render = function() {
                       staticClass: "w-full rounded-lg overflow-hidden h-full",
                       attrs: {
                         id: "world_map",
-                        enable: true,
+                        enable: false,
                         data: _vm.countries_sorted
                       }
                     })
