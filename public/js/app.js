@@ -4457,6 +4457,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "About",
   methods: {
@@ -84616,9 +84618,17 @@ var render = function() {
             _vm._v("About")
           ]),
           _vm._v(" "),
+          _c("p", { staticClass: "my-2" }, [
+            _vm._v(
+              "This COVID-19 tracker uses data from the following sources:"
+            )
+          ]),
+          _vm._v(" "),
           _vm._m(0),
           _vm._v(" "),
           _vm._m(1),
+          _vm._v(" "),
+          _vm._m(2),
           _vm._v(" "),
           _c("p", { staticClass: "mt-4" }, [_vm._v("© Simpler Solutions")])
         ]
@@ -84631,9 +84641,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "my-2" }, [
+    return _c("p", [
       _vm._v(
-        "This COVID-19 tracker uses data from the COVID-19 data repository by Johns Hopkins CSSE. ("
+        "· COVID-19 data repository by Johns Hopkins Centre for Systems Science and Engineering. ("
       ),
       _c(
         "a",
@@ -84642,6 +84652,23 @@ var staticRenderFns = [
           attrs: { href: "https://github.com/CSSEGISandData/COVID-19" }
         },
         [_vm._v("https://github.com/CSSEGISandData/COVID-19")]
+      ),
+      _vm._v(")")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _vm._v("· Worldometers ("),
+      _c(
+        "a",
+        {
+          staticClass: "underline hover:text-lightslab",
+          attrs: { href: "https://www.worldometers.info/coronavirus/" }
+        },
+        [_vm._v("https://www.worldometers.info/coronavirus/")]
       ),
       _vm._v(")")
     ])
@@ -85058,7 +85085,7 @@ var render = function() {
                     _c(
                       "h2",
                       { staticClass: "mb-4 text-2xl font-bold tracking-tight" },
-                      [_vm._v("Full global statistics")]
+                      [_vm._v("Global timeline")]
                     ),
                     _vm._v(" "),
                     _c(

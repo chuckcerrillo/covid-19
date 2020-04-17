@@ -107,7 +107,7 @@
 
                 <div class="bg-slab flex flex-1 w-full items-center justify-center pt-8">
                     <div class="w-256">
-                        <h2 class="mb-4 text-2xl font-bold tracking-tight">Full global statistics</h2>
+                        <h2 class="mb-4 text-2xl font-bold tracking-tight">Global timeline</h2>
                         <div class="flex items-center justify-start mb-4">
                             <div @click="global_options.table = 'daily'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="global_options.table == 'daily' ? 'border border-heading bg-lightslab':''">Daily stats</div>
                             <div @click="global_options.table = 'countries'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="global_options.table == 'countries' ? 'border border-heading  bg-lightslab':''">Countries</div>
