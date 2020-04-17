@@ -181,7 +181,6 @@
                                         </div>
                                         <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2">
                                             <span class="font-bold">Growth factor</span>
-                                            <span class="">{{row.growthFactor|numeralFormat}}</span>
                                             <span class="text-red-400" v-if="row.growthFactor > 1">{{row.growthFactor}}</span>
                                             <span class="text-green-400" v-else>{{row.growthFactor}}</span>
                                         </div>
