@@ -293,7 +293,7 @@ class StatsController extends Controller
     {
         $worldometer_override = $this->harvest_worldometer();
         $current_timestamp = time();
-        $current_date = gmdate('Y-m-d',$current_timestamp);
+        $current_date = gmdate('m-d-Y',$current_timestamp);
         $current_datetime = gmdate('Y-m-d H:i:s',$current_timestamp);
 
         // Generate master country list
@@ -628,34 +628,61 @@ class StatsController extends Controller
 
                             // Copy last record
                             $last_daily_record = $data[$country]['daily'][array_key_last($data[$country]['daily'])];
-                            $found = false;
+                            $new_daily_record = $data[$country]['daily'][array_key_last($data[$country]['daily'])];
+
+
+                            $temp_state_data = [
+                                'c' => 0,
+                                'd' => 0,
+                                'r' => 0
+                            ];
                             foreach($last_daily_record['states'] AS $index=>$state)
                             {
-                                if($state['name'] == '(Unspecified)')
+                                if($state['name'] != '(Unspecified)')
                                 {
-                                    $found = $index;
-                                    break;
+                                    $temp_state_data['c'] += $state['c'];
+                                    $temp_state_data['d'] += $state['d'];
+                                    $temp_state_data['r'] += $state['r'];
                                 }
                             }
 
-                            $last_daily_record['states'][$statename] = [
-                                'name' => $statename,
-                                'lat' => '',
-                                'lng' => '',
-                                'l' => $current_datetime,
-                                'c' => $confirmed - $last_daily_record['total']['c'],
-                                'd' => $deaths - $last_daily_record['total']['d'],
-                                'r' => $recovered - $last_daily_record['total']['r']
-                            ];
+                            if (in_array($country,['Australia']))
+                            {
+                                dump($country);
+                                dump($temp_state_data);
+                                dump('confirmed: ' . $confirmed . ' last daily: ' . $last_daily_record['total']['c']);
+                                dump('deaths: ' . $deaths . ' last daily: ' . $last_daily_record['total']['d']);
+                                dump('recovered: ' . $recovered . ' last daily: ' . $last_daily_record['total']['r']);
+                            }
 
-                            $last_daily_record['total'] = [
+                            if(!isset($new_daily_record['states'][$statename]))
+                            {
+                                $new_daily_record['states'][$statename] = [
+                                    'name' => $statename,
+                                    'lat' => '',
+                                    'lng' => '',
+                                    'l' => $current_datetime,
+                                    'c' => $confirmed - $temp_state_data['c'],
+                                    'd' => $deaths - $temp_state_data['d'],
+                                    'r' => $recovered - $temp_state_data['r'],
+                                ];
+                            }
+                            else
+                            {
+                                $new_daily_record['states'][$statename]['c'] = $confirmed - $temp_state_data['c'];
+                                $new_daily_record['states'][$statename]['d'] = $deaths - $temp_state_data['d'];
+                                $new_daily_record['states'][$statename]['r'] = $recovered - $temp_state_data['r'];
+                            }
+
+
+                            $new_daily_record['total'] = [
                                 'c' => $confirmed,
                                 'd' => $deaths,
                                 'r' => $recovered
                             ];
 
 
-                            $data[$country]['daily'][$current_date] = $last_daily_record;
+                            $data[$country]['daily'][$current_date] = $new_daily_record;
 
                             if(!isset($global['daily'][$current_date]))
                             {
@@ -665,10 +692,6 @@ class StatsController extends Controller
                                     'recovered' => 0,
                                 ];
                             }
-
-                            $data[$country]['total']['c'] = $confirmed - $last_daily_record['total']['c'];
-                            $data[$country]['total']['d'] = $deaths - $last_daily_record['total']['d'];
-                            $data[$country]['total']['r'] = $recovered - $last_daily_record['total']['r'];
 
                             $global['daily'][$current_date]['confirmed'] += $confirmed;
                             $global['daily'][$current_date]['deaths'] += $deaths;

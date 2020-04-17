@@ -2992,6 +2992,25 @@ __webpack_require__.r(__webpack_exports__);
     recomputed: function recomputed() {
       this.recomputeGrowth();
       return this.recomputed_data;
+    },
+    daily: function daily() {
+      var data = [];
+
+      for (var x in this.recomputed.daily) {
+        var row = this.recomputed.daily[x];
+        data.push({
+          date: moment__WEBPACK_IMPORTED_MODULE_0___default()(row['date']).format('YYYY-MM-DD'),
+          confirmed: row.confirmed,
+          deltaConfirmed: this.recomputed.delta[x].confirmed,
+          deaths: row.deaths,
+          deltaDeaths: this.recomputed.delta[x].deaths,
+          recovered: row.recovered,
+          deltaRecovered: this.recomputed.delta[x].recovered,
+          growthFactor: this.recomputed.growthFactor[x]
+        });
+      }
+
+      return data;
     }
   },
   watch: {
@@ -83496,129 +83515,8 @@ var render = function() {
           staticStyle: { position: "absolute" },
           attrs: { "data-simplebar-auto-hide": "false" }
         },
-        _vm._l(_vm.recomputed.daily, function(row, key, index) {
+        _vm._l(_vm.daily.reverse(), function(row, key, index) {
           return _c("div", [
-            _c("div", { staticClass: "p-2 text-xs" }, [
-              _c("div", { staticClass: "w-full flex justify-end" }, [
-                _c("div", { staticClass: "w-20" }, [
-                  _vm._v(_vm._s(_vm.moment(row["date"]).format("YYYY-MM-DD")))
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "w-20" }, [
-                  _vm._v(
-                    "\n                            " +
-                      _vm._s(
-                        _vm._f("numeralFormat")(
-                          isNaN(row.confirmed) ? 0 : row.confirmed
-                        )
-                      ) +
-                      "\n                            "
-                  ),
-                  _vm.data.delta[key].confirmed >= 0
-                    ? _c("span", { staticClass: "text-green-400" }, [
-                        _vm._v(
-                          "(+" +
-                            _vm._s(
-                              _vm._f("numeralFormat")(
-                                _vm.data.delta[key].confirmed
-                              )
-                            ) +
-                            ")"
-                        )
-                      ])
-                    : _c("span", { staticClass: "text-red-400" }, [
-                        _vm._v(
-                          "(" +
-                            _vm._s(
-                              _vm._f("numeralFormat")(
-                                _vm.data.delta[key].confirmed
-                              )
-                            ) +
-                            ")"
-                        )
-                      ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "w-20" }, [
-                  _vm._v(
-                    "\n                            " +
-                      _vm._s(
-                        _vm._f("numeralFormat")(
-                          isNaN(row.deaths) ? 0 : row.deaths
-                        )
-                      ) +
-                      "\n                            "
-                  ),
-                  _vm.data.delta[key].deaths >= 0
-                    ? _c("span", { staticClass: "text-green-400" }, [
-                        _vm._v(
-                          "(+" +
-                            _vm._s(
-                              _vm._f("numeralFormat")(
-                                _vm.data.delta[key].deaths
-                              )
-                            ) +
-                            ")"
-                        )
-                      ])
-                    : _c("span", { staticClass: "text-red-400" }, [
-                        _vm._v(
-                          "(" +
-                            _vm._s(
-                              _vm._f("numeralFormat")(
-                                _vm.data.delta[key].deaths
-                              )
-                            ) +
-                            ")"
-                        )
-                      ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "w-20" }, [
-                  _vm._v(
-                    "\n                            " +
-                      _vm._s(
-                        _vm._f("numeralFormat")(
-                          isNaN(row.recovered) ? 0 : row.recovered
-                        )
-                      ) +
-                      "\n                            "
-                  ),
-                  _vm.data.delta[key].recovered >= 0
-                    ? _c("span", { staticClass: "text-green-400" }, [
-                        _vm._v(
-                          "(+" +
-                            _vm._s(
-                              _vm._f("numeralFormat")(
-                                _vm.data.delta[key].recovered
-                              )
-                            ) +
-                            ")"
-                        )
-                      ])
-                    : _c("span", { staticClass: "text-red-400" }, [
-                        _vm._v(
-                          "(" +
-                            _vm._s(
-                              _vm._f("numeralFormat")(
-                                _vm.data.delta[key].recovered
-                              )
-                            ) +
-                            ")"
-                        )
-                      ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "w-20" }, [
-                  _vm._v(
-                    "\n                            " +
-                      _vm._s(_vm.data.growthFactor[key]) +
-                      "\n                        "
-                  )
-                ])
-              ])
-            ]),
-            _vm._v(" "),
             _vm.getDayNotes(_vm.moment(row["date"]).format("YYYY-MM-DD"))
               .length > 0
               ? _c(
@@ -83675,7 +83573,112 @@ var render = function() {
                   ),
                   0
                 )
-              : _vm._e()
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "p-2 text-xs" }, [
+              _c("div", { staticClass: "w-full flex justify-end" }, [
+                _c("div", { staticClass: "w-20" }, [
+                  _vm._v(_vm._s(_vm.moment(row["date"]).format("YYYY-MM-DD")))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "w-20" }, [
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(
+                        _vm._f("numeralFormat")(
+                          isNaN(row.confirmed) ? 0 : row.confirmed
+                        )
+                      ) +
+                      "\n                            "
+                  ),
+                  row.deltaConfirmed >= 0
+                    ? _c("span", { staticClass: "text-red-400" }, [
+                        _vm._v(
+                          "(+" +
+                            _vm._s(
+                              _vm._f("numeralFormat")(row.deltaConfirmed)
+                            ) +
+                            ")"
+                        )
+                      ])
+                    : _c("span", { staticClass: "text-green-400" }, [
+                        _vm._v(
+                          "(" +
+                            _vm._s(
+                              _vm._f("numeralFormat")(row.deltaConfirmed)
+                            ) +
+                            ")"
+                        )
+                      ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "w-20" }, [
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(
+                        _vm._f("numeralFormat")(
+                          isNaN(row.deaths) ? 0 : row.deaths
+                        )
+                      ) +
+                      "\n                            "
+                  ),
+                  row.deltaDeaths >= 0
+                    ? _c("span", { staticClass: "text-red-400" }, [
+                        _vm._v(
+                          "(+" +
+                            _vm._s(_vm._f("numeralFormat")(row.deltaDeaths)) +
+                            ")"
+                        )
+                      ])
+                    : _c("span", { staticClass: "text-green-400" }, [
+                        _vm._v(
+                          "(" +
+                            _vm._s(_vm._f("numeralFormat")(row.deltaDeaths)) +
+                            ")"
+                        )
+                      ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "w-20" }, [
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(
+                        _vm._f("numeralFormat")(
+                          isNaN(row.recovered) ? 0 : row.recovered
+                        )
+                      ) +
+                      "\n                            "
+                  ),
+                  row.deltaRecovered >= 0
+                    ? _c("span", { staticClass: "text-green-400" }, [
+                        _vm._v(
+                          "(+" +
+                            _vm._s(
+                              _vm._f("numeralFormat")(row.deltaRecovered)
+                            ) +
+                            ")"
+                        )
+                      ])
+                    : _c("span", { staticClass: "text-red-400" }, [
+                        _vm._v(
+                          "(" +
+                            _vm._s(
+                              _vm._f("numeralFormat")(row.deltaRecovered)
+                            ) +
+                            ")"
+                        )
+                      ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "w-20" }, [
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(row.growthFactor) +
+                      "\n                        "
+                  )
+                ])
+              ])
+            ])
           ])
         }),
         0
