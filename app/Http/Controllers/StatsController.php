@@ -569,8 +569,8 @@ class StatsController extends Controller
                         {
                             $data[$row[3]]['daily'][$date]['states'][$state] = [
                                 'name' => $state,
-                                'lat' => $row[6],
-                                'lng' => $row[7],
+                                'lat' => $row[5],
+                                'lng' => $row[6],
                                 'l' => $row[4],
                                 'c' => 0,
                                 'd' => 0,
@@ -609,28 +609,28 @@ class StatsController extends Controller
                     {
                         if(strlen($manual_override[$country][$standard_date][$state]['confirmed'])>0)
                         {
-                            $data[$country]['daily'][$date]['total']['c'] += (int) $manual_override[$country][$standard_date][$state]['confirmed'] - $data[$country]['daily'][$date]['states'][$state]['c'];
-                            $global['daily'][$date]['confirmed'] += (int) $manual_override[$country][$standard_date][$state]['confirmed'] - $data[$country]['daily'][$date]['states'][$state]['c'];
-                            $data[$country]['daily'][$date]['states'][$state]['c'] = (int) $manual_override[$country][$standard_date][$state]['confirmed'];
+                            $data[$country]['daily'][$date]['total']['c'] += intval($manual_override[$country][$standard_date][$state]['confirmed']) - isset($data[$country]['daily'][$date]['states'][$state]['c'])?$data[$country]['daily'][$date]['states'][$state]['c']:0;
+                            $global['daily'][$date]['confirmed'] += intval($manual_override[$country][$standard_date][$state]['confirmed']) - isset($data[$country]['daily'][$date]['states'][$state]['c'])?$data[$country]['daily'][$date]['states'][$state]['c']:0;
+
+                            $data[$country]['daily'][$date]['states'][$state]['c'] = intval($manual_override[$country][$standard_date][$state]['confirmed']);
 
                         }
                         if(strlen($manual_override[$country][$standard_date][$state]['deaths'])>0)
                         {
-                            $data[$country]['daily'][$date]['total']['d'] += (int) $manual_override[$country][$standard_date][$state]['deaths'] - $data[$country]['daily'][$date]['states'][$state]['r'];
-                            $global['daily'][$date]['deaths'] += (int) $manual_override[$country][$standard_date][$state]['deaths'] - $data[$country]['daily'][$date]['states'][$state]['d'];
-                            $data[$country]['daily'][$date]['states'][$state]['d'] = (int) $manual_override[$country][$standard_date][$state]['deaths'];
+                            $data[$country]['daily'][$date]['total']['d'] += intval($manual_override[$country][$standard_date][$state]['deaths']) - isset($data[$country]['daily'][$date]['states'][$state]['r']) ? $data[$country]['daily'][$date]['states'][$state]['r'] : 0;
+                            $global['daily'][$date]['deaths'] += intval($manual_override[$country][$standard_date][$state]['deaths']) - isset($data[$country]['daily'][$date]['states'][$state]['d']) ? $data[$country]['daily'][$date]['states'][$state]['d'] : 0;
+                            $data[$country]['daily'][$date]['states'][$state]['d'] = intval($manual_override[$country][$standard_date][$state]['deaths']);
                         }
                         if(strlen($manual_override[$country][$standard_date][$state]['recovered'])>0)
                         {
-                            $data[$country]['daily'][$date]['total']['r'] += (int) $manual_override[$country][$standard_date][$state]['recovered'] - $data[$country]['daily'][$date]['states'][$state]['r'];
-                            $global['daily'][$date]['recovered'] += (int) $manual_override[$country][$standard_date][$state]['recovered'] - $data[$country]['daily'][$date]['states'][$state]['r'];
-                            $data[$country]['daily'][$date]['states'][$state]['r'] = (int) $manual_override[$country][$standard_date][$state]['recovered'];
+                            $data[$country]['daily'][$date]['total']['r'] += intval($manual_override[$country][$standard_date][$state]['recovered']) - isset($data[$country]['daily'][$date]['states'][$state]['r']) ? $data[$country]['daily'][$date]['states'][$state]['r'] : 0;
+                            $global['daily'][$date]['recovered'] += intval($manual_override[$country][$standard_date][$state]['recovered']) - isset($data[$country]['daily'][$date]['states'][$state]['r']) ? $data[$country]['daily'][$date]['states'][$state]['r'] : 0;
+                            $data[$country]['daily'][$date]['states'][$state]['r'] = intval($manual_override[$country][$standard_date][$state]['recovered']);
                         }
                     }
                 }
             }
         }
-
 
 
         if(array_key_last ($result) != $current_date)
@@ -671,9 +671,9 @@ class StatsController extends Controller
                             {
                                 if($state['name'] != '(Unspecified)')
                                 {
-                                    $temp_state_data['c'] += $state['c'];
-                                    $temp_state_data['d'] += $state['d'];
-                                    $temp_state_data['r'] += $state['r'];
+                                    $temp_state_data['c'] += intval($state['c']);
+                                    $temp_state_data['d'] += intval($state['d']);
+                                    $temp_state_data['r'] += intval($state['r']);
                                 }
                             }
 
@@ -1026,9 +1026,9 @@ class StatsController extends Controller
                         $data[$country][$date][$state] = [
                             'state' => $state,
                             'date' => $date,
-                            'confirmed' => isset($row[$columns[$state]['confirmed']]['$t']) ? $row[$columns[$state]['confirmed']]['$t'] : '',
-                            'deaths' => isset($row[$columns[$state]['deaths']]['$t']) ? $row[$columns[$state]['deaths']]['$t'] : '',
-                            'recovered' => isset($row[$columns[$state]['recovered']]['$t']) ? $row[$columns[$state]['recovered']]['$t'] : '',
+                            'confirmed' => isset($row[$columns[$state]['confirmed']]['$t']) ? str_replace(',','',$row[$columns[$state]['confirmed']]['$t']) : '',
+                            'deaths' => isset($row[$columns[$state]['deaths']]['$t']) ? str_replace(',','',$row[$columns[$state]['deaths']]['$t']) : '',
+                            'recovered' => isset($row[$columns[$state]['recovered']]['$t']) ? str_replace(',','',$row[$columns[$state]['recovered']]['$t']) : '',
                         ];
                     }
                 }
