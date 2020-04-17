@@ -292,6 +292,7 @@ class StatsController extends Controller
     public function master()
     {
         $worldometer_override = $this->harvest_worldometer();
+        $manual_override = $this->manual_override();
         $current_timestamp = time();
         $current_date = gmdate('m-d-Y',$current_timestamp);
         $current_datetime = gmdate('Y-m-d H:i:s',$current_timestamp);
@@ -541,6 +542,7 @@ class StatsController extends Controller
                     //  10 => "Active"
                     //  11 => "Combined_Key"
                     //]
+                    $country = $row[3];
                     if (isset($data[$row[3]]))
                     {
                         if(strlen($row[2]) == 0)
@@ -597,6 +599,35 @@ class StatsController extends Controller
                         $global['daily'][$date]['recovered'] += (int)$row[9];
                     }
                 }
+
+                // Manual override here
+                if(isset($manual_override[$country]))
+                {
+                    $standard_date = explode('-',$date);
+                    $standard_date = $standard_date[2] .'-' . $standard_date[0] . '-' . $standard_date[1];
+                    if(isset($data[$country]['daily'][$date]['states'][$state]) && isset($manual_override[$country][$standard_date][$state]))
+                    {
+                        if(strlen($manual_override[$country][$standard_date][$state]['confirmed'])>0)
+                        {
+                            $data[$country]['daily'][$date]['total']['c'] += (int) $manual_override[$country][$standard_date][$state]['confirmed'] - $data[$country]['daily'][$date]['states'][$state]['c'];
+                            $global['daily'][$date]['confirmed'] += (int) $manual_override[$country][$standard_date][$state]['confirmed'] - $data[$country]['daily'][$date]['states'][$state]['c'];
+                            $data[$country]['daily'][$date]['states'][$state]['c'] = (int) $manual_override[$country][$standard_date][$state]['confirmed'];
+
+                        }
+                        if(strlen($manual_override[$country][$standard_date][$state]['deaths'])>0)
+                        {
+                            $data[$country]['daily'][$date]['total']['d'] += (int) $manual_override[$country][$standard_date][$state]['deaths'] - $data[$country]['daily'][$date]['states'][$state]['r'];
+                            $global['daily'][$date]['deaths'] += (int) $manual_override[$country][$standard_date][$state]['deaths'] - $data[$country]['daily'][$date]['states'][$state]['d'];
+                            $data[$country]['daily'][$date]['states'][$state]['d'] = (int) $manual_override[$country][$standard_date][$state]['deaths'];
+                        }
+                        if(strlen($manual_override[$country][$standard_date][$state]['recovered'])>0)
+                        {
+                            $data[$country]['daily'][$date]['total']['r'] += (int) $manual_override[$country][$standard_date][$state]['recovered'] - $data[$country]['daily'][$date]['states'][$state]['r'];
+                            $global['daily'][$date]['recovered'] += (int) $manual_override[$country][$standard_date][$state]['recovered'] - $data[$country]['daily'][$date]['states'][$state]['r'];
+                            $data[$country]['daily'][$date]['states'][$state]['r'] = (int) $manual_override[$country][$standard_date][$state]['recovered'];
+                        }
+                    }
+                }
             }
         }
 
@@ -644,15 +675,6 @@ class StatsController extends Controller
                                     $temp_state_data['d'] += $state['d'];
                                     $temp_state_data['r'] += $state['r'];
                                 }
-                            }
-
-                            if (in_array($country,['Australia']))
-                            {
-                                dump($country);
-                                dump($temp_state_data);
-                                dump('confirmed: ' . $confirmed . ' last daily: ' . $last_daily_record['total']['c']);
-                                dump('deaths: ' . $deaths . ' last daily: ' . $last_daily_record['total']['d']);
-                                dump('recovered: ' . $recovered . ' last daily: ' . $last_daily_record['total']['r']);
                             }
 
                             if(!isset($new_daily_record['states'][$statename]))
@@ -800,8 +822,7 @@ class StatsController extends Controller
         file_put_contents(STATS . 'states.json',json_encode($states));
 
         // Annotations
-
-        https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1Pov2AbAscAXUNphDrjd3ZmzlbuvMy_Pd195bXlylwgdDnu1OQ0CBKXfMeDAHBZWbtLL9t5McfIcD/pubhtml
+        // https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1Pov2AbAscAXUNphDrjd3ZmzlbuvMy_Pd195bXlylwgdDnu1OQ0CBKXfMeDAHBZWbtLL9t5McfIcD/pubhtml
         $url = 'https://spreadsheets.google.com/feeds/list/1XfndFdJ0VSJnLqY83s8ITmuRVgsUSWPhCm-Fvd_rNb4/oejzle4/public/values?alt=json';
         $file= file_get_contents($url);
 
@@ -869,6 +890,151 @@ class StatsController extends Controller
                 'recovered' => $columns[5],
             ];
         });
+        return $data;
+    }
+
+    protected function manual_override()
+    {
+//        https://docs.google.com/spreadsheets/d/e/2PACX-1vThKLEaifDmgMxx4C1IgjXyRkJFIdr8rM5skPGo3frgrr775w1KWMlmor2a-0yIhuTfdqzwdMm50WX4/pubhtml
+        $url = 'https://spreadsheets.google.com/feeds/list/14fyCtf-iXm6uSupPCiRvzIF--2KA6W7k8Mr9G0SiKb0/1/public/values?alt=json';
+        $file= file_get_contents($url);
+
+        $json = json_decode($file,true);
+        $rows = $json['feed']['entry'];
+        $sheets = [];
+        foreach($rows AS $row)
+        {
+            $sheets[$row['gsx$country']['$t']] = [
+                'id' => $row['gsx$sheetid']['$t'],
+                'country' => $row['gsx$country']['$t'],
+            ];
+        }
+
+        $data = [];
+
+//        foreach($sheets AS $country=>$sheet)
+//        {
+//            $url = 'https://spreadsheets.google.com/feeds/list/14fyCtf-iXm6uSupPCiRvzIF--2KA6W7k8Mr9G0SiKb0/' . $sheet['id'] .'/public/values?alt=json';
+//            $file= file_get_contents($url);
+//
+//            $json = json_decode($file,true);
+//            $rows = $json['feed']['entry'];
+//            $data[$country] = [];
+//            foreach($rows AS $row)
+//            {
+//                if (strlen($row['gsx$state']['$t']) == 0){
+//                    $row['gsx$state']['$t'] = '(Unspecified)';
+//                }
+//                $data[$country][$row['gsx$date']['$t']][$row['gsx$state']['$t']] = [
+//                    'state' => $row['gsx$state']['$t'],
+//                    'date' => $row['gsx$date']['$t'],
+//                    'confirmed' => $row['gsx$confirmed']['$t'],
+//                    'deaths' => $row['gsx$deaths']['$t'],
+//                    'recovered' => $row['gsx$recovered']['$t'],
+//                ];
+//            }
+//        }
+
+//        dd($sheets);
+
+
+        foreach($sheets AS $country=>$sheet)
+        {
+            // Grab the list of state columns
+            $url = 'https://spreadsheets.google.com/feeds/cells/14fyCtf-iXm6uSupPCiRvzIF--2KA6W7k8Mr9G0SiKb0/' . $sheet['id'] . '/public/full?alt=json';
+            $file= file_get_contents($url);
+
+            $json = json_decode($file,true);
+            $rows = $json['feed']['entry'];
+            $data[$country] = [];
+
+            $states = [];
+            foreach($rows AS $row)
+            {
+                if ($row['gs$cell']['row'] == 1)
+                {
+                    $states[] = $row['gs$cell']['inputValue'];
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            // Grab contents
+            $url = 'https://spreadsheets.google.com/feeds/list/14fyCtf-iXm6uSupPCiRvzIF--2KA6W7k8Mr9G0SiKb0/' . $sheet['id'] . '/public/full?alt=json';
+            $file= file_get_contents($url);
+
+            $json = json_decode($file,true);
+            $result = $json['feed']['entry'];
+            $data[$country] = [];
+
+            $rows = [];
+            foreach($result AS $row)
+            {
+                if(strlen($row['content']['$t'])>0)
+                {
+                    $rows[] = $row;
+                }
+            }
+
+            // Create a map of the content columns
+            $columns = [];
+            $header = array_shift($rows);
+            $x = 0;
+            foreach($header AS $key => $value)
+            {
+                if(substr($key,0,3) == 'gsx')
+                {
+                    if($x>0)
+                    {
+                        $state = $states[floor(($x-1) / 3)];
+                    }
+
+                    if($x == 0)
+                    {
+                        $columns['date'] = $key;
+                    }
+                    else if($x % 3 == 1)
+                    {
+                        $columns[$state]['confirmed'] = $key;
+                    }
+                    else if($x % 3 == 2)
+                    {
+                        $columns[$state]['deaths'] = $key;
+                    }
+                    else if($x % 3 == 0)
+                    {
+                        $columns[$state]['recovered'] = $key;
+                    }
+                    $x++;
+                }
+            }
+
+            foreach($rows AS $row)
+            {
+                $date = $row[$columns['date']]['$t'];
+
+                foreach($states AS $state)
+                {
+                    if(
+                        isset($row[$columns[$state]['confirmed']]['$t']) && strlen($row[$columns[$state]['confirmed']]['$t']) > 0
+                        || isset($row[$columns[$state]['deaths']]['$t']) && strlen($row[$columns[$state]['deaths']]['$t']) > 0
+                        || isset($row[$columns[$state]['recovered']]['$t']) && strlen($row[$columns[$state]['recovered']]['$t']) > 0
+                    )
+                    {
+                        $data[$country][$date][$state] = [
+                            'state' => $state,
+                            'date' => $date,
+                            'confirmed' => isset($row[$columns[$state]['confirmed']]['$t']) ? $row[$columns[$state]['confirmed']]['$t'] : '',
+                            'deaths' => isset($row[$columns[$state]['deaths']]['$t']) ? $row[$columns[$state]['deaths']]['$t'] : '',
+                            'recovered' => isset($row[$columns[$state]['recovered']]['$t']) ? $row[$columns[$state]['recovered']]['$t'] : '',
+                        ];
+                    }
+                }
+
+            }
+        }
         return $data;
     }
 }
