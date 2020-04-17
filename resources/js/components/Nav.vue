@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-slab text-white text-left">
+    <div class="hidden xl:block bg-slab text-white text-left">
         <div class="py-2 px-2 flex text-heading items-center justify-center">
             <div class="w-128 py-2 px-2 font-bold mx-2">COVID-19 Tracker <sup class="font-normal">beta</sup></div>
             <div @click="setMode('global')" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive(mode,'global','bg-hoverslab')">Global</div>

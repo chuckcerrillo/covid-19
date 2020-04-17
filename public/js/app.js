@@ -4853,6 +4853,70 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -83139,7 +83203,7 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("router-view", {
-        staticClass: "fixed top-0 left-0 right-0 bottom-0 mt-14",
+        staticClass: "fixed top-0 left-0 right-0 bottom-0 xl:mt-14",
         attrs: { mode: _vm.mode }
       })
     ],
@@ -84188,68 +84252,72 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "bg-slab text-white text-left" }, [
-    _c(
-      "div",
-      {
-        staticClass: "py-2 px-2 flex text-heading items-center justify-center"
-      },
-      [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "p-2 px-4 cursor-pointer hover:text-white",
-            class: _vm.isActive(_vm.mode, "global", "bg-hoverslab"),
-            on: {
-              click: function($event) {
-                return _vm.setMode("global")
+  return _c(
+    "div",
+    { staticClass: "hidden xl:block bg-slab text-white text-left" },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "py-2 px-2 flex text-heading items-center justify-center"
+        },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "p-2 px-4 cursor-pointer hover:text-white",
+              class: _vm.isActive(_vm.mode, "global", "bg-hoverslab"),
+              on: {
+                click: function($event) {
+                  return _vm.setMode("global")
+                }
               }
-            }
-          },
-          [_vm._v("Global")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "p-2 px-4 cursor-pointer hover:text-white",
-            class: _vm.isActive(_vm.mode, "comparison", "bg-hoverslab"),
-            on: {
-              click: function($event) {
-                return _vm.setMode("comparison")
+            },
+            [_vm._v("Global")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "p-2 px-4 cursor-pointer hover:text-white",
+              class: _vm.isActive(_vm.mode, "comparison", "bg-hoverslab"),
+              on: {
+                click: function($event) {
+                  return _vm.setMode("comparison")
+                }
               }
-            }
-          },
-          [_vm._v("Compare")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "p-2 px-4 cursor-pointer text-lightslab",
-            class: _vm.isActive(_vm.mode, "trends", "bg-hoverslab")
-          },
-          [_vm._v("Trends (coming soon...)")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "p-2 px-4 cursor-pointer hover:text-white",
-            class: _vm.isActive(_vm.mode, "about", "bg-hoverslab"),
-            on: {
-              click: function($event) {
-                return _vm.showAbout()
+            },
+            [_vm._v("Compare")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "p-2 px-4 cursor-pointer text-lightslab",
+              class: _vm.isActive(_vm.mode, "trends", "bg-hoverslab")
+            },
+            [_vm._v("Trends (coming soon...)")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "p-2 px-4 cursor-pointer hover:text-white",
+              class: _vm.isActive(_vm.mode, "about", "bg-hoverslab"),
+              on: {
+                click: function($event) {
+                  return _vm.showAbout()
+                }
               }
-            }
-          },
-          [_vm._v("About")]
-        )
-      ]
-    )
-  ])
+            },
+            [_vm._v("About")]
+          )
+        ]
+      )
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
@@ -84766,106 +84834,161 @@ var render = function() {
             [
               _c("a", { attrs: { name: "top" } }),
               _vm._v(" "),
-              _c("div", { staticClass: "w-256" }, [
-                _c("div", [
-                  _c(
-                    "div",
-                    { staticClass: "flex items-center justify-center" },
-                    [
-                      _c(
-                        "div",
-                        { staticClass: "mr-4 text-7xl font-bold text-white" },
-                        [
-                          _vm._v(
-                            _vm._s(
-                              _vm._f("numeralFormat")(_vm.global.total.active)
-                            )
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", [
-                        _c(
-                          "div",
-                          { staticClass: "text-3xl font-bold tracking-tight" },
-                          [_vm._v("active cases")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "text-xs text-heading" }, [
-                          _vm._v("as of " + _vm._s(_vm.global.last_update))
-                        ])
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "flex items-center flex-1 justify-center" },
-                    [
-                      _c("div", { staticClass: "mr-8 text-center" }, [
-                        _c(
-                          "div",
-                          { staticClass: "text-3xl font-bold text-white" },
-                          [
-                            _vm._v(
-                              _vm._s(
-                                _vm._f("numeralFormat")(
-                                  _vm.global.total.confirmed
-                                )
-                              )
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "font-bold" }, [
-                          _vm._v("confirmed cases")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "mr-8 text-center" }, [
-                        _c(
-                          "div",
-                          { staticClass: "text-3xl font-bold text-red-400" },
-                          [
-                            _vm._v(
-                              _vm._s(
-                                _vm._f("numeralFormat")(_vm.global.total.deaths)
-                              )
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "font-bold" }, [
-                          _vm._v("deaths")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "text-center" }, [
-                        _c(
-                          "div",
-                          { staticClass: "text-3xl font-bold text-green-400" },
-                          [
-                            _vm._v(
-                              _vm._s(
-                                _vm._f("numeralFormat")(
-                                  _vm.global.total.recovered
-                                )
-                              )
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "font-bold" }, [
-                          _vm._v("recoveries")
-                        ])
-                      ])
-                    ]
-                  )
-                ]),
+              _c("div", { staticClass: "w-full xl:w-256" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "xl:hidden text-3xl font-bold tracking-tight text-center mb-4"
+                  },
+                  [_vm._v("COVID-19 Tracker")]
+                ),
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "mt-12 h-148" },
+                  {
+                    staticClass: "flex-col xl:block justify-center items-center"
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "p-4 xl:p-0 xl:flex items-center justify-center text-center"
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "text-5xl xl:mr-4 xl:text-7xl font-bold text-white"
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(_vm.global.total.active)
+                              )
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "text-2xl xl:text-3xl font-bold tracking-tight"
+                            },
+                            [_vm._v("active cases")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "text-xs text-heading" }, [
+                            _vm._v("as of " + _vm._s(_vm.global.last_update))
+                          ])
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "flex items-start mt-4 xl:mt-0 flex-1 justify-center px-4 xl:px-0"
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "w-1/3 xl:w-auto xl:mr-8 text-center"
+                          },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "xl:text-3xl font-bold text-white"
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(
+                                      _vm.global.total.confirmed
+                                    )
+                                  )
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "font-bold" }, [
+                              _vm._v("confirmed cases")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "w-1/3 xl:w-auto xl:mr-8 text-center"
+                          },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "xl:text-3xl font-bold text-red-400"
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(
+                                      _vm.global.total.deaths
+                                    )
+                                  )
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "font-bold" }, [
+                              _vm._v("deaths")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "w-1/3 xl:w-auto text-center" },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "xl:text-3xl font-bold text-green-400"
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(
+                                      _vm.global.total.recovered
+                                    )
+                                  )
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "font-bold" }, [
+                              _vm._v("recoveries")
+                            ])
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "hidden xl:block mt-12 h-148" },
                   [
                     _c("Map", {
                       staticClass: "w-full rounded-lg overflow-hidden h-full",
@@ -84887,15 +85010,18 @@ var render = function() {
                     "bg-slab flex flex-1 mt-8 pt-8 w-full items-center justify-center"
                 },
                 [
-                  _c("div", { staticClass: "w-256" }, [
+                  _c("div", { staticClass: "w-full xl:w-256" }, [
                     _c(
                       "h2",
-                      { staticClass: "font-bold text-3xl tracking-tight mb-8" },
+                      {
+                        staticClass:
+                          "m-2 xl:m-0 font-bold text-3xl tracking-tight mb-8"
+                      },
                       [_vm._v("At a glance...")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "flex flex-1" }, [
-                      _c("div", { staticClass: "w-1/3" }, [
+                    _c("div", { staticClass: "xl:flex xl:flex-1" }, [
+                      _c("div", { staticClass: "m-2 xl:m-0 xl:w-1/3" }, [
                         _c(
                           "div",
                           { staticClass: "font-bold tracking-tight mb-4" },
@@ -84910,42 +85036,54 @@ var render = function() {
                             function(row, key, index) {
                               return _c(
                                 "div",
-                                { staticClass: "p-4 flex items-end" },
+                                {
+                                  staticClass:
+                                    "p-2 xl:p-4 flex items-end justify-center"
+                                },
                                 [
                                   _c(
                                     "div",
                                     {
                                       staticClass:
-                                        "w-8 text-3xl font-bold text-lightlabel"
+                                        "mr-4 xl:mr-0 xl:w-8 xl:text-3xl font-bold text-lightlabel"
                                     },
                                     [_vm._v(_vm._s(key + 1))]
                                   ),
                                   _vm._v(" "),
-                                  _c("div", [
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "text-primary text-sm px-2 w-64"
-                                      },
-                                      [_vm._v(_vm._s(row.name))]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "font-bold text-white text-3xl px-2"
-                                      },
-                                      [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm._f("numeralFormat")(row.total.c)
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "flex xl:block flex-1 xl:flex-none justify-between items-center "
+                                    },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "text-primary text-sm xl:px-2 xl:w-64"
+                                        },
+                                        [_vm._v(_vm._s(row.name))]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "font-bold text-white xl:text-3xl xl:px-2"
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm._f("numeralFormat")(
+                                                row.total.c
+                                              )
+                                            )
                                           )
-                                        )
-                                      ]
-                                    )
-                                  ])
+                                        ]
+                                      )
+                                    ]
+                                  )
                                 ]
                               )
                             }
@@ -84954,141 +85092,176 @@ var render = function() {
                         )
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "w-1/3 ml-2" }, [
-                        _c(
-                          "div",
-                          { staticClass: "font-bold tracking-tight mb-4" },
-                          [_vm._v("Countries with most deaths")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "bg-lightslab rounded-lg" },
-                          _vm._l(
-                            _vm.getSortedCountries("deaths", "desc", 5),
-                            function(row, key, index) {
-                              return _c(
-                                "div",
-                                { staticClass: "p-4 flex items-end" },
-                                [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "w-8 text-3xl font-bold text-lightlabel"
-                                    },
-                                    [_vm._v(_vm._s(key + 1))]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("div", [
+                      _c(
+                        "div",
+                        { staticClass: "m-2 xl:m-0 xl:w-1/3 xl:ml-2" },
+                        [
+                          _c(
+                            "div",
+                            { staticClass: "font-bold tracking-tight mb-4" },
+                            [_vm._v("Countries with most deaths")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "bg-lightslab rounded-lg" },
+                            _vm._l(
+                              _vm.getSortedCountries("deaths", "desc", 5),
+                              function(row, key, index) {
+                                return _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "p-2 xl:p-4 flex items-end justify-center"
+                                  },
+                                  [
                                     _c(
                                       "div",
                                       {
                                         staticClass:
-                                          "text-primary text-sm px-2 w-64"
+                                          "mr-4 xl:mr-0 xl:w-8 xl:text-3xl font-bold text-lightlabel"
                                       },
-                                      [_vm._v(_vm._s(row.name))]
+                                      [_vm._v(_vm._s(key + 1))]
                                     ),
                                     _vm._v(" "),
                                     _c(
                                       "div",
                                       {
                                         staticClass:
-                                          "font-bold text-white text-3xl px-2"
+                                          "flex xl:block flex-1 xl:flex-none justify-between items-center "
                                       },
                                       [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm._f("numeralFormat")(row.total.d)
-                                          )
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "text-primary text-sm xl:px-2 xl:w-64"
+                                          },
+                                          [_vm._v(_vm._s(row.name))]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "font-bold text-white xl:text-3xl xl:px-2"
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.total.d
+                                                )
+                                              )
+                                            )
+                                          ]
                                         )
                                       ]
                                     )
-                                  ])
-                                ]
-                              )
-                            }
-                          ),
-                          0
-                        )
-                      ]),
+                                  ]
+                                )
+                              }
+                            ),
+                            0
+                          )
+                        ]
+                      ),
                       _vm._v(" "),
-                      _c("div", { staticClass: "w-1/3 ml-2" }, [
-                        _c(
-                          "div",
-                          { staticClass: "font-bold tracking-tight mb-4" },
-                          [_vm._v("Countries with most recoveries")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "bg-lightslab rounded-lg" },
-                          _vm._l(
-                            _vm.getSortedCountries("recovered", "desc", 5),
-                            function(row, key, index) {
-                              return _c(
-                                "div",
-                                { staticClass: "p-4 flex items-end" },
-                                [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "w-8 text-3xl font-bold text-lightlabel"
-                                    },
-                                    [_vm._v(_vm._s(key + 1))]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("div", [
+                      _c(
+                        "div",
+                        { staticClass: "m-2 xl:m-0 xl:w-1/3 xl:ml-2" },
+                        [
+                          _c(
+                            "div",
+                            { staticClass: "font-bold tracking-tight mb-4" },
+                            [_vm._v("Countries with most recoveries")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "bg-lightslab rounded-lg" },
+                            _vm._l(
+                              _vm.getSortedCountries("recovered", "desc", 5),
+                              function(row, key, index) {
+                                return _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "p-2 xl:p-4 flex items-end justify-center"
+                                  },
+                                  [
                                     _c(
                                       "div",
                                       {
                                         staticClass:
-                                          "text-primary text-sm px-2 w-64"
+                                          "mr-4 xl:mr-0 xl:w-8 xl:text-3xl font-bold text-lightlabel"
                                       },
-                                      [_vm._v(_vm._s(row.name))]
+                                      [_vm._v(_vm._s(key + 1))]
                                     ),
                                     _vm._v(" "),
                                     _c(
                                       "div",
                                       {
                                         staticClass:
-                                          "font-bold text-white text-3xl px-2"
+                                          "flex xl:block flex-1 xl:flex-none justify-between items-center "
                                       },
                                       [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm._f("numeralFormat")(row.total.r)
-                                          )
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "text-primary text-sm xl:px-2 xl:w-64"
+                                          },
+                                          [_vm._v(_vm._s(row.name))]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "font-bold text-white xl:text-3xl xl:px-2"
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.total.r
+                                                )
+                                              )
+                                            )
+                                          ]
                                         )
                                       ]
                                     )
-                                  ])
-                                ]
-                              )
-                            }
-                          ),
-                          0
-                        )
-                      ])
+                                  ]
+                                )
+                              }
+                            ),
+                            0
+                          )
+                        ]
+                      )
                     ])
                   ])
                 ]
               ),
               _vm._v(" "),
-              _vm._m(0),
+              _vm._m(1),
               _vm._v(" "),
               _c(
                 "div",
                 {
                   staticClass:
-                    "bg-slab flex flex-1 w-full items-center justify-center"
+                    "hidden bg-slab xl:flex flex-1 w-full items-center justify-center"
                 },
                 [
-                  _c("div", { staticClass: "w-360" }, [
+                  _c("div", { staticClass: "w-full xl:w-360" }, [
                     _c(
                       "div",
-                      { staticClass: "w-full h-220 relative rounded my-4" },
+                      {
+                        staticClass:
+                          "w-full h-128 xl:h-220 relative rounded my-4"
+                      },
                       [
                         _c("StatsChart", {
                           staticClass: "absolute left-0 right-0 bottom-0 top-0",
@@ -85179,7 +85352,7 @@ var render = function() {
                         staticClass: "rounded overflow-hidden"
                       },
                       [
-                        _vm._m(1),
+                        _vm._m(2),
                         _vm._v(" "),
                         _vm._l(_vm.globalDaily.reverse(), function(
                           row,
@@ -85268,7 +85441,300 @@ var render = function() {
                               "div",
                               {
                                 staticClass:
-                                  "flex flex-1 items-center justify-start w-full text-xs"
+                                  "xl:hidden flex flex-1 items-start text-xs",
+                                class:
+                                  key % 2 == 0
+                                    ? "bg-slab-primary"
+                                    : "bg-slab-secondary"
+                              },
+                              [
+                                _c("div", { staticClass: "p-2" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.moment(row.date).format("YYYY-MM-DD")
+                                    )
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("div", [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "p-2",
+                                      class:
+                                        key % 2 == 0
+                                          ? "bg-slab-primary"
+                                          : "bg-slab-secondary"
+                                    },
+                                    [
+                                      _c("span", { staticClass: "font-bold" }, [
+                                        _vm._v("Confirmed")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("span", {}, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm._f("numeralFormat")(
+                                              row.confirmed
+                                            )
+                                          )
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      row.confirmedDelta >= 0
+                                        ? _c(
+                                            "span",
+                                            { staticClass: "text-red-400" },
+                                            [
+                                              _vm._v(
+                                                "(+" +
+                                                  _vm._s(
+                                                    _vm._f("numeralFormat")(
+                                                      row.confirmedDelta
+                                                    )
+                                                  ) +
+                                                  ")"
+                                              )
+                                            ]
+                                          )
+                                        : _c(
+                                            "span",
+                                            { staticClass: "text-green-400" },
+                                            [
+                                              _vm._v(
+                                                "(" +
+                                                  _vm._s(
+                                                    _vm._f("numeralFormat")(
+                                                      row.confirmedDelta
+                                                    )
+                                                  ) +
+                                                  ")"
+                                              )
+                                            ]
+                                          )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "p-2",
+                                      class:
+                                        key % 2 == 0
+                                          ? "bg-slab-primary"
+                                          : "bg-slab-secondary"
+                                    },
+                                    [
+                                      _c("span", { staticClass: "font-bold" }, [
+                                        _vm._v("Deaths")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("span", {}, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm._f("numeralFormat")(row.deaths)
+                                          )
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      row.deathsDelta >= 0
+                                        ? _c(
+                                            "span",
+                                            { staticClass: "text-red-400" },
+                                            [
+                                              _vm._v(
+                                                "(+" +
+                                                  _vm._s(
+                                                    _vm._f("numeralFormat")(
+                                                      row.deathsDelta
+                                                    )
+                                                  ) +
+                                                  ")"
+                                              )
+                                            ]
+                                          )
+                                        : _c(
+                                            "span",
+                                            { staticClass: "text-green-400" },
+                                            [
+                                              _vm._v(
+                                                "(" +
+                                                  _vm._s(
+                                                    _vm._f("numeralFormat")(
+                                                      row.deathsDelta
+                                                    )
+                                                  ) +
+                                                  ")"
+                                              )
+                                            ]
+                                          )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "p-2",
+                                      class:
+                                        key % 2 == 0
+                                          ? "bg-slab-primary"
+                                          : "bg-slab-secondary"
+                                    },
+                                    [
+                                      _c("span", { staticClass: "font-bold" }, [
+                                        _vm._v("Recovered")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("span", {}, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm._f("numeralFormat")(
+                                              row.recovered
+                                            )
+                                          )
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      row.recoveredDelta.recovered >= 0
+                                        ? _c(
+                                            "span",
+                                            { staticClass: "text-green-400" },
+                                            [
+                                              _vm._v(
+                                                "(+" +
+                                                  _vm._s(
+                                                    _vm._f("numeralFormat")(
+                                                      row.recoveredDelta
+                                                    )
+                                                  ) +
+                                                  ")"
+                                              )
+                                            ]
+                                          )
+                                        : _c(
+                                            "span",
+                                            { staticClass: "text-red-400" },
+                                            [
+                                              _vm._v(
+                                                "(" +
+                                                  _vm._s(
+                                                    _vm._f("numeralFormat")(
+                                                      row.recoveredDelta
+                                                    )
+                                                  ) +
+                                                  ")"
+                                              )
+                                            ]
+                                          )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "p-2",
+                                      class:
+                                        key % 2 == 0
+                                          ? "bg-slab-primary"
+                                          : "bg-slab-secondary"
+                                    },
+                                    [
+                                      _c("span", { staticClass: "font-bold" }, [
+                                        _vm._v("Active")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("span", {}, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm._f("numeralFormat")(
+                                              row.confirmed -
+                                                row.deaths -
+                                                row.recovered
+                                            )
+                                          )
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      row.activeDelta >= 0
+                                        ? _c(
+                                            "span",
+                                            { staticClass: "text-red-400" },
+                                            [
+                                              _vm._v(
+                                                "(+" +
+                                                  _vm._s(
+                                                    _vm._f("numeralFormat")(
+                                                      row.activeDelta
+                                                    )
+                                                  ) +
+                                                  ")"
+                                              )
+                                            ]
+                                          )
+                                        : _c(
+                                            "span",
+                                            { staticClass: "text-green-400" },
+                                            [
+                                              _vm._v(
+                                                "(" +
+                                                  _vm._s(
+                                                    _vm._f("numeralFormat")(
+                                                      row.activeDelta
+                                                    )
+                                                  ) +
+                                                  ")"
+                                              )
+                                            ]
+                                          )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "p-2",
+                                      class:
+                                        key % 2 == 0
+                                          ? "bg-slab-primary"
+                                          : "bg-slab-secondary"
+                                    },
+                                    [
+                                      _c("span", { staticClass: "font-bold" }, [
+                                        _vm._v("Growth factor")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("span", {}, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm._f("numeralFormat")(
+                                              row.growthFactor
+                                            )
+                                          )
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      row.growthFactor > 1
+                                        ? _c(
+                                            "span",
+                                            { staticClass: "text-red-400" },
+                                            [_vm._v(_vm._s(row.growthFactor))]
+                                          )
+                                        : _c(
+                                            "span",
+                                            { staticClass: "text-green-400" },
+                                            [_vm._v(_vm._s(row.growthFactor))]
+                                          )
+                                    ]
+                                  )
+                                ])
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "xl:flex flex-1 items-center justify-start w-full text-xs hidden"
                               },
                               [
                                 _c(
@@ -85540,7 +86006,7 @@ var render = function() {
                         staticClass: "bg-lightslab rounded overflow-hidden"
                       },
                       [
-                        _vm._m(2),
+                        _vm._m(3),
                         _vm._v(" "),
                         _vm._l(
                           _vm.getSortedCountries("confirmed", "desc"),
@@ -85550,7 +86016,90 @@ var render = function() {
                                 "div",
                                 {
                                   staticClass:
-                                    "flex flex-1 items-center justify-start w-full text-xs"
+                                    "xl:hidden flex flex-1 items-start text-xs",
+                                  class:
+                                    key % 2 == 0
+                                      ? "bg-slab-primary"
+                                      : "bg-slab-secondary"
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "p-2 w-32",
+                                      class:
+                                        key % 2 == 0
+                                          ? "bg-slab-primary"
+                                          : "bg-slab-secondary"
+                                    },
+                                    [_vm._v(_vm._s(row.name))]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("div", [
+                                    _c("div", { staticClass: "p-2" }, [
+                                      _c("span", { staticClass: "font-bold" }, [
+                                        _vm._v("Confirmed")
+                                      ]),
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(
+                                            _vm._f("numeralFormat")(row.total.c)
+                                          ) +
+                                          "\n                                    "
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "p-2" }, [
+                                      _c("span", { staticClass: "font-bold" }, [
+                                        _vm._v("Deaths")
+                                      ]),
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(
+                                            _vm._f("numeralFormat")(row.total.d)
+                                          ) +
+                                          "\n                                    "
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "p-2" }, [
+                                      _c("span", { staticClass: "font-bold" }, [
+                                        _vm._v("Recovered")
+                                      ]),
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(
+                                            _vm._f("numeralFormat")(row.total.r)
+                                          ) +
+                                          "\n                                    "
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "p-2" }, [
+                                      _c("span", { staticClass: "font-bold" }, [
+                                        _vm._v("Active")
+                                      ]),
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(
+                                            _vm._f("numeralFormat")(
+                                              row.total.c -
+                                                row.total.d -
+                                                row.total.r
+                                            )
+                                          ) +
+                                          "\n                                    "
+                                      )
+                                    ])
+                                  ])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "hidden xl:flex flex-1 items-center justify-start w-full text-xs"
                                 },
                                 [
                                   _c(
@@ -85652,7 +86201,7 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(3)
+              _vm._m(4)
             ]
           ),
           _vm._v(" "),
@@ -86350,7 +86899,7 @@ var render = function() {
                     "flex items-center justify-center m-4 bg-slab rounded absolute top-0 right-0 bottom-0 left-0 text-center",
                   staticStyle: { bottom: "56px" }
                 },
-                [_vm._m(4)]
+                [_vm._m(5)]
               )
             : _vm._e()
         ])
@@ -86361,16 +86910,32 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "xl:hidden" }, [
+      _c("p", { staticClass: "text-sm text-yellow-400 m-4" }, [
+        _vm._v(
+          "For the full experience, including comparison views and charts, please view this website on a larger screen."
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c(
       "div",
       {
         staticClass:
-          "bg-slab flex flex-1 pt-8 w-full items-center justify-center"
+          "hidden bg-slab xl:flex flex-1 pt-8 w-full items-center justify-center"
       },
       [
-        _c("div", { staticClass: "w-256 font-bold text-2xl tracking-tight" }, [
-          _vm._v("\n                    Global cases graph\n                ")
-        ])
+        _c(
+          "div",
+          {
+            staticClass: "m-2 xl:m-0 xl:w-256 font-bold text-2xl tracking-tight"
+          },
+          [_vm._v("\n                    Global cases graph\n                ")]
+        )
       ]
     )
   },
@@ -86385,17 +86950,31 @@ var staticRenderFns = [
           "flex flex-1 items-center justify-start w-full text-xs bg-lightslab"
       },
       [
-        _c("div", { staticClass: "font-bold p-2 w-76" }, [_vm._v("Date")]),
+        _c("div", { staticClass: "w-24 font-bold p-2 xl:w-76" }, [
+          _vm._v("Date")
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "font-bold p-2 w-36" }, [_vm._v("Confirmed")]),
+        _c("div", { staticClass: "xl:hidden font-bold p-2 w-full" }, [
+          _vm._v("Stats")
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "font-bold p-2 w-36" }, [_vm._v("Deaths")]),
+        _c("div", { staticClass: "hidden font-bold p-2 w-36" }, [
+          _vm._v("Confirmed")
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "font-bold p-2 w-36" }, [_vm._v("Recovered")]),
+        _c("div", { staticClass: "hidden font-bold p-2 w-36" }, [
+          _vm._v("Deaths")
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "font-bold p-2 w-36" }, [_vm._v("Active")]),
+        _c("div", { staticClass: "hidden font-bold p-2 w-36" }, [
+          _vm._v("Recovered")
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "font-bold p-2 w-36" }, [
+        _c("div", { staticClass: "hidden font-bold p-2 w-36" }, [
+          _vm._v("Active")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "hidden font-bold p-2 w-36" }, [
           _vm._v("Growth Factor")
         ])
       ]
@@ -86409,15 +86988,29 @@ var staticRenderFns = [
       "div",
       { staticClass: "flex flex-1 items-center justify-start w-full text-xs" },
       [
-        _c("div", { staticClass: "font-bold p-2 w-112" }, [_vm._v("Name")]),
+        _c("div", { staticClass: "w-32 font-bold p-2 xl:w-112" }, [
+          _vm._v("Name")
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "font-bold p-2 w-36" }, [_vm._v("Confirmed")]),
+        _c("div", { staticClass: "xl:hidden font-bold p-2 w-full" }, [
+          _vm._v("Stats")
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "font-bold p-2 w-36" }, [_vm._v("Deaths")]),
+        _c("div", { staticClass: "hidden xl:block font-bold p-2 w-36" }, [
+          _vm._v("Confirmed")
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "font-bold p-2 w-36" }, [_vm._v("Recovered")]),
+        _c("div", { staticClass: "hidden xl:block font-bold p-2 w-36" }, [
+          _vm._v("Deaths")
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "font-bold p-2 w-36" }, [_vm._v("Active")])
+        _c("div", { staticClass: "hidden xl:block font-bold p-2 w-36" }, [
+          _vm._v("Recovered")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "hidden xl:block font-bold p-2 w-36" }, [
+          _vm._v("Active")
+        ])
       ]
     )
   },
