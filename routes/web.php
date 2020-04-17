@@ -10,6 +10,7 @@ Route::get('/statistics/states', 'StatsController@states');
 Route::get('/statistics/master', 'StatsController@master');
 Route::get('/statistics/annotations', 'StatsController@annotations');
 Route::get('/statistics/global', 'StatsController@global');
+Route::get('/statistics/worldometer', 'StatsController@harvest_worldometer');
 Route::get('{any}', 'AppController@index')
     ->where('any','.*')
     ->name('home');

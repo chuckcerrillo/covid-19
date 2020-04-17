@@ -37,39 +37,8 @@
         <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 left-0 bottom-0 mt-60 mx-4 mb-16 mr-4 bg-slab rounded-b" style="position:absolute;" >
             <div
 
-                v-for="(row, key, index) in recomputed.daily"
+                v-for="(row, key, index) in daily.reverse()"
             >
-                <div class="p-2 text-xs">
-<!--                     :class="key % 2 == 1 ? 'bg-slab-secondary' : ''"-->
-
-                    <div class="w-full flex justify-end">
-                        <div class="w-20">{{moment(row['date']).format('YYYY-MM-DD')}}</div>
-                        <div class="w-20">
-                            {{ isNaN(row.confirmed) ? 0 : row.confirmed | numeralFormat}}
-                            <span class="text-green-400" v-if="data.delta[key].confirmed >= 0">(+{{data.delta[key].confirmed| numeralFormat}})</span>
-                            <span class="text-red-400" v-else>({{data.delta[key].confirmed| numeralFormat}})</span>
-                        </div>
-                        <div class="w-20">
-                            {{ isNaN(row.deaths) ? 0 : row.deaths | numeralFormat}}
-                            <span class="text-green-400" v-if="data.delta[key].deaths >= 0">(+{{data.delta[key].deaths| numeralFormat}})</span>
-                            <span class="text-red-400" v-else>({{data.delta[key].deaths| numeralFormat}})</span>
-                        </div>
-                        <div class="w-20">
-                            {{ isNaN(row.recovered) ? 0 : row.recovered | numeralFormat}}
-                            <span class="text-green-400" v-if="data.delta[key].recovered >= 0">(+{{data.delta[key].recovered| numeralFormat}})</span>
-                            <span class="text-red-400" v-else>({{data.delta[key].recovered| numeralFormat}})</span>
-                        </div>
-    <!--                    <div class="w-20">-->
-    <!--                        {{data.growth[key]}}-->
-    <!--                    </div>-->
-    <!--                    <div class="w-20">-->
-    <!--                        {{data.average[key]}}-->
-    <!--                    </div>-->
-                        <div class="w-20">
-                            {{data.growthFactor[key]}}
-                        </div>
-                    </div>
-                </div>
                 <div v-if="getDayNotes(moment(row['date']).format('YYYY-MM-DD')).length > 0">
                     <div v-for="annotation in getDayNotes(moment(row['date']).format('YYYY-MM-DD'))"
                          class="p-1 m-1 text-xs rounded bg-slab-primary flex"
@@ -81,6 +50,37 @@
                                 <div class="mr-1">Source:</div>
                                 <a class="underline hover:text-white truncate ... inline-block w-64" :href="annotation.url">{{annotation.url}}</a>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-2 text-xs">
+<!--                     :class="key % 2 == 1 ? 'bg-slab-secondary' : ''"-->
+
+                    <div class="w-full flex justify-end">
+                        <div class="w-20">{{moment(row['date']).format('YYYY-MM-DD')}}</div>
+                        <div class="w-20">
+                            {{ isNaN(row.confirmed) ? 0 : row.confirmed | numeralFormat}}
+                            <span class="text-red-400" v-if="row.deltaConfirmed >= 0">(+{{row.deltaConfirmed| numeralFormat}})</span>
+                            <span class="text-green-400" v-else>({{row.deltaConfirmed| numeralFormat}})</span>
+                        </div>
+                        <div class="w-20">
+                            {{ isNaN(row.deaths) ? 0 : row.deaths | numeralFormat}}
+                            <span class="text-red-400" v-if="row.deltaDeaths >= 0">(+{{row.deltaDeaths| numeralFormat}})</span>
+                            <span class="text-green-400" v-else>({{row.deltaDeaths| numeralFormat}})</span>
+                        </div>
+                        <div class="w-20">
+                            {{ isNaN(row.recovered) ? 0 : row.recovered | numeralFormat}}
+                            <span class="text-green-400" v-if="row.deltaRecovered >= 0">(+{{row.deltaRecovered| numeralFormat}})</span>
+                            <span class="text-red-400" v-else>({{row.deltaRecovered| numeralFormat}})</span>
+                        </div>
+    <!--                    <div class="w-20">-->
+    <!--                        {{data.growth[key]}}-->
+    <!--                    </div>-->
+    <!--                    <div class="w-20">-->
+    <!--                        {{data.average[key]}}-->
+    <!--                    </div>-->
+                        <div class="w-20">
+                            {{row.growthFactor}}
                         </div>
                     </div>
                 </div>
@@ -211,6 +211,26 @@
             {
                 this.recomputeGrowth();
                 return this.recomputed_data;
+            },
+            daily()
+            {
+                var data = [];
+                for(var x in this.recomputed.daily)
+                {
+                    var row = this.recomputed.daily[x];
+
+                    data.push({
+                        date: moment(row['date']).format('YYYY-MM-DD'),
+                        confirmed: row.confirmed,
+                        deltaConfirmed: this.recomputed.delta[x].confirmed,
+                        deaths: row.deaths,
+                        deltaDeaths: this.recomputed.delta[x].deaths,
+                        recovered: row.recovered,
+                        deltaRecovered: this.recomputed.delta[x].recovered,
+                        growthFactor: this.recomputed.growthFactor[x],
+                    });
+                }
+                return data;
             }
         },
         watch: {
