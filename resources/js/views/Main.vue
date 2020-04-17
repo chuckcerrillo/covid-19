@@ -39,13 +39,13 @@
                         <Map
                             class="w-full rounded-lg overflow-hidden h-full"
                             id="world_map"
-                            :enable="true"
+                            :enable="false"
                             :data="countries_sorted"
                         />
                     </div>
                 </div>
 
-                <div class="bg-slab flex flex-1 mt-8 pt-8 w-full items-center justify-center">
+                <div class="bg-slab flex flex-1 mt-8 py-8 w-full items-center justify-center">
                     <div class="w-full xl:w-256">
                         <h2 class="m-2 xl:m-0 font-bold text-3xl tracking-tight mb-8">At a glance...</h2>
 
@@ -95,13 +95,13 @@
                     </div>
                 </div>
 
-                <div class="hidden bg-slab xl:flex flex-1 pt-8 w-full items-center justify-center">
+                <div class="hidden bg-slab-primary xl:flex flex-1 pt-8 w-full items-center justify-center">
                     <div class="m-2 xl:m-0 xl:w-256 font-bold text-2xl tracking-tight">
                         Global cases graph
                     </div>
                 </div>
 
-                <div class="hidden bg-slab xl:flex flex-1 w-full items-center justify-center">
+                <div class="hidden bg-slab-primary xl:flex flex-1 w-full items-center justify-center pb-8">
                     <div class="w-full xl:w-360">
                         <div class="w-full h-128 xl:h-220 relative rounded my-4">
                             <StatsChart class="absolute left-0 right-0 bottom-0 top-0"

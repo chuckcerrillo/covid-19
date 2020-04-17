@@ -4,19 +4,6 @@
             <div class="absolute left-0 right-0 bottom-0 top-0 py-4" v-if="settings.controls.menu">
                 <div class="text-xs flex items-start justify-between">
                     <div class="flex items-center">
-                        <div class="mr-2">Time mode</div>
-                        <div class="flex">
-                            <div
-                                v-for="row in graphControls.x"
-                                class="p-2 border border-hoverslab m-1 cursor-pointer"
-                                :class="selectedMode(row[0]) ? 'bg-hoverslab':''"
-                                @click="selectMode(row[0])"
-                            >
-                                {{row[1]}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center">
                         <div class="mr-2">Scale</div>
                         <div class="flex">
                             <div v-for="row in graphControls.scaleType"
@@ -53,14 +40,29 @@
                 </div>
             </div>
         </div>
-        <div class="bg-hoverslab p-2 absolute rounded left-0 top-0 right-0 bottom-0 mt-16">
+        <div class="bg-hoverslab p-2 absolute rounded left-0 top-0 right-0 bottom-0" :class="settings.controls.menu ? 'mt-16' : ''">
             <simplebar data-simplebar-auto-hide="false" class="h-full">
                 <LineChart :data="dataset.data"
                            :options="dataset.options"
                            class="bg-heading rounded"
-                           :class="full ? 'absolute top-0 bottom-0 right-0 left-0 m-2' : 'h-200 m-4 mb-0'"
+                           :class="full ? (settings.controls.menu ? 'absolute top-0 bottom-0 right-0 left-0 m-2 mb-8': 'absolute top-0 bottom-0 right-0 left-0 m-2') : 'h-200 m-4 mb-0'"
                            v-if="data.length > 0"
                 />
+                <div class="text-xs flex items-start justify-between" v-if="settings.controls.menu">
+                    <div class="flex items-center justify-start">
+                        <div class="mr-2">Time mode</div>
+                        <div class="flex">
+                            <div
+                                v-for="row in graphControls.x"
+                                class="p-2 border border-hoverslab m-1 cursor-pointer"
+                                :class="selectedMode(row[0]) ? 'bg-hoverslab':''"
+                                @click="selectMode(row[0])"
+                            >
+                                {{row[1]}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </simplebar>
         </div>
 <!--        <div class="mt-64">{{full_stats}}</div>-->
