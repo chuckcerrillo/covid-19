@@ -3429,7 +3429,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         'secondary': false
       },
       'graphControls': {
-        'x': [['chronological', 'Chronological'], ['from1', 'From first case'], ['from100', 'From 100 cases']],
+        'x': [['chronological', 'Chronological'], ['from1', 'From first case'], ['from100', 'From 100 cases'], ['from1death', 'From first death']],
         'y': [['confirmed', 'Confirmed cases'], ['deltaConfirmed', 'New confirmed cases per day'], ['deaths', 'Deaths'], ['deltaDeaths', 'New deaths per day'], ['recovered', 'Recoveries'], ['deltaRecovered', 'New recoveries per day'], ['average', 'Average new cases (5 day spread)'], ['growthFactor', 'Growth factor']],
         'scaleType': [['logarithmic', 'Logarithmic'], ['linear', 'Linear']]
       },
@@ -3527,7 +3527,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       if (this.options.mode == 'chronological') {
         return this.datasetChronological;
-      } else if (this.options.mode == 'from1' || this.options.mode == 'from100') {
+      } else if (this.options.mode == 'from1' || this.options.mode == 'from100' || this.options.mode == 'from1death') {
         return this.datasetCaseCount;
       } else {
         return {
@@ -4051,6 +4051,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             if (this.options.mode == 'from1' && parseInt(row.confirmed) >= 1) {
               start = true;
             } else if (this.options.mode == 'from100' && parseInt(row.confirmed) >= 100) {
+              start = true;
+            } else if (this.options.mode == 'from1death' && parseInt(row.deaths) >= 1) {
               start = true;
             }
           } // Now let's get ready to log

@@ -124,6 +124,7 @@
                         ['chronological','Chronological'],
                         ['from1','From first case'],
                         ['from100','From 100 cases'],
+                        ['from1death','From first death'],
                     ],
                     'y' : [
                         ['confirmed','Confirmed cases'],
@@ -270,7 +271,7 @@
                 {
                     return this.datasetChronological;
                 }
-                else if (this.options.mode == 'from1' || this.options.mode == 'from100')
+                else if (this.options.mode == 'from1' || this.options.mode == 'from100' || this.options.mode == 'from1death')
                 {
                     return this.datasetCaseCount;
                 }
@@ -892,6 +893,10 @@
                                 start = true;
                             }
                             else if(this.options.mode == 'from100' && parseInt(row.confirmed) >= 100)
+                            {
+                                start = true;
+                            }
+                            else if(this.options.mode == 'from1death' && parseInt(row.deaths) >= 1)
                             {
                                 start = true;
                             }
