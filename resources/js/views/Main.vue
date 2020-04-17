@@ -4,83 +4,88 @@
         <div v-else class="h-full overflow-hidden relative">
             <div v-show="mode == 'global'" class="relative h-full w-full flex flex-col justify-start items-center overflow-y-scroll">
                 <a name="top"></a>
-                <div class="w-256">
-                    <div>
-                        <div class="flex items-center justify-center">
-                            <div class="mr-4 text-7xl font-bold text-white">{{global.total.active | numeralFormat}}</div>
+                <div class="w-full xl:w-256">
+                    <div class="xl:hidden text-3xl font-bold tracking-tight text-center mb-4">COVID-19 Tracker</div>
+                    <div class="flex-col xl:block justify-center items-center">
+                        <div class="p-4 xl:p-0 xl:flex items-center justify-center text-center">
+                            <div class="text-5xl xl:mr-4 xl:text-7xl font-bold text-white">{{global.total.active | numeralFormat}}</div>
                             <div>
-                                <div class="text-3xl font-bold tracking-tight">active cases</div>
+                                <div class="text-2xl xl:text-3xl font-bold tracking-tight">active cases</div>
                                 <div class="text-xs text-heading">as of {{global.last_update}}</div>
                             </div>
                         </div>
-                        <div class="flex items-center flex-1 justify-center">
-                            <div class="mr-8 text-center">
-                                <div class="text-3xl font-bold text-white">{{global.total.confirmed| numeralFormat}}</div>
+                        <div class="flex items-start mt-4 xl:mt-0 flex-1 justify-center px-4 xl:px-0">
+                            <div class="w-1/3 xl:w-auto xl:mr-8 text-center">
+                                <div class="xl:text-3xl font-bold text-white">{{global.total.confirmed| numeralFormat}}</div>
                                 <div class="font-bold">confirmed cases</div>
                             </div>
-                            <div class="mr-8 text-center">
-                                <div class="text-3xl font-bold text-red-400">{{global.total.deaths| numeralFormat}}</div>
+                            <div class="w-1/3 xl:w-auto xl:mr-8 text-center">
+                                <div class="xl:text-3xl font-bold text-red-400">{{global.total.deaths| numeralFormat}}</div>
                                 <div class="font-bold">deaths</div>
                             </div>
-                            <div class="text-center">
-                                <div class="text-3xl font-bold text-green-400">{{global.total.recovered| numeralFormat}}</div>
+                            <div class="w-1/3 xl:w-auto text-center">
+                                <div class="xl:text-3xl font-bold text-green-400">{{global.total.recovered| numeralFormat}}</div>
                                 <div class="font-bold">recoveries</div>
                             </div>
                         </div>
 
                     </div>
 
-                    <div class="mt-12 h-148">
+                    <div class="xl:hidden">
+                        <p class="text-sm text-yellow-400 m-4">For the full experience, including comparison views and charts, please view this website on a larger screen.</p>
+                    </div>
+
+                    <div class="hidden xl:block mt-12 h-148">
                         <Map
                             class="w-full rounded-lg overflow-hidden h-full"
                             id="world_map"
-                            :enable="true"
+                            :enable="false"
                             :data="countries_sorted"
                         />
                     </div>
                 </div>
 
                 <div class="bg-slab flex flex-1 mt-8 pt-8 w-full items-center justify-center">
-                    <div class="w-256">
-                        <h2 class="font-bold text-3xl tracking-tight mb-8">At a glance...</h2>
+                    <div class="w-full xl:w-256">
+                        <h2 class="m-2 xl:m-0 font-bold text-3xl tracking-tight mb-8">At a glance...</h2>
 
-                        <div class="flex flex-1">
-                            <div class="w-1/3">
+                        <div class="xl:flex xl:flex-1">
+                            <div class="m-2 xl:m-0 xl:w-1/3">
                                 <div class="font-bold tracking-tight mb-4">Countries with most cumulative cases</div>
                                 <div class="bg-lightslab rounded-lg">
                                     <div v-for="(row,key,index) in getSortedCountries('confirmed','desc',5)"
-                                    class="p-4 flex items-end">
-                                        <div class="w-8 text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
-                                        <div>
-                                            <div class="text-primary text-sm px-2 w-64">{{row.name}}</div>
-                                            <div class="font-bold text-white text-3xl px-2">{{row.total.c | numeralFormat}}</div>
+                                        class="p-2 xl:p-4 flex items-end justify-center">
+                                        <div class="mr-4 xl:mr-0 xl:w-8 xl:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
+                                        <div class="flex xl:block flex-1 xl:flex-none justify-between items-center ">
+                                            <div class="text-primary text-sm xl:px-2 xl:w-64">{{row.name}}</div>
+                                            <div class="font-bold text-white xl:text-3xl xl:px-2">{{row.total.c | numeralFormat}}</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="w-1/3 ml-2">
+                            <div class="m-2 xl:m-0 xl:w-1/3 xl:ml-2">
                                 <div class="font-bold tracking-tight mb-4">Countries with most deaths</div>
                                 <div class="bg-lightslab rounded-lg">
                                     <div v-for="(row,key,index) in getSortedCountries('deaths','desc',5)"
-                                         class="p-4 flex items-end">
-                                        <div class="w-8 text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
-                                        <div>
-                                            <div class="text-primary text-sm px-2 w-64">{{row.name}}</div>
-                                            <div class="font-bold text-white text-3xl px-2">{{row.total.d | numeralFormat}}</div>
+                                         class="p-2 xl:p-4 flex items-end justify-center">
+                                        <div class="mr-4 xl:mr-0 xl:w-8 xl:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
+                                        <div class="flex xl:block flex-1 xl:flex-none justify-between items-center ">
+                                            <div class="text-primary text-sm xl:px-2 xl:w-64">{{row.name}}</div>
+                                            <div class="font-bold text-white xl:text-3xl xl:px-2">{{row.total.d | numeralFormat}}</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="w-1/3 ml-2">
+                            <div class="m-2 xl:m-0 xl:w-1/3 xl:ml-2">
                                 <div class="font-bold tracking-tight mb-4">Countries with most recoveries</div>
                                 <div class="bg-lightslab rounded-lg">
                                     <div v-for="(row,key,index) in getSortedCountries('recovered','desc',5)"
-                                         class="p-4 flex items-end">
-                                        <div class="w-8 text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
-                                        <div>
-                                            <div class="text-primary text-sm px-2 w-64">{{row.name}}</div>
-                                            <div class="font-bold text-white text-3xl px-2">{{row.total.r | numeralFormat}}</div>
+                                         class="p-2 xl:p-4 flex items-end justify-center">
+                                        <div class="mr-4 xl:mr-0 xl:w-8 xl:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
+                                        <div class="flex xl:block flex-1 xl:flex-none justify-between items-center ">
+                                            <div class="text-primary text-sm xl:px-2 xl:w-64">{{row.name}}</div>
+                                            <div class="font-bold text-white xl:text-3xl xl:px-2">{{row.total.r | numeralFormat}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -90,15 +95,15 @@
                     </div>
                 </div>
 
-                <div class="bg-slab flex flex-1 pt-8 w-full items-center justify-center">
-                    <div class="w-256 font-bold text-2xl tracking-tight">
+                <div class="hidden bg-slab xl:flex flex-1 pt-8 w-full items-center justify-center">
+                    <div class="m-2 xl:m-0 xl:w-256 font-bold text-2xl tracking-tight">
                         Global cases graph
                     </div>
                 </div>
 
-                <div class="bg-slab flex flex-1 w-full items-center justify-center">
-                    <div class="w-360">
-                        <div class="w-full h-220 relative rounded my-4">
+                <div class="hidden bg-slab xl:flex flex-1 w-full items-center justify-center">
+                    <div class="w-full xl:w-360">
+                        <div class="w-full h-128 xl:h-220 relative rounded my-4">
                             <StatsChart class="absolute left-0 right-0 bottom-0 top-0"
                                         :data="globalDataset"
                                         full="true"
@@ -124,12 +129,13 @@
 
                         <div v-show="global_options.table == 'daily'" class="rounded overflow-hidden">
                             <div class="flex flex-1 items-center justify-start w-full text-xs bg-lightslab">
-                                <div class="font-bold p-2 w-76">Date</div>
-                                <div class="font-bold p-2 w-36">Confirmed</div>
-                                <div class="font-bold p-2 w-36">Deaths</div>
-                                <div class="font-bold p-2 w-36">Recovered</div>
-                                <div class="font-bold p-2 w-36">Active</div>
-                                <div class="font-bold p-2 w-36">Growth Factor</div>
+                                <div class="w-24 font-bold p-2 xl:w-76">Date</div>
+                                <div class="xl:hidden font-bold p-2 w-full">Stats</div>
+                                <div class="hidden font-bold p-2 w-36">Confirmed</div>
+                                <div class="hidden font-bold p-2 w-36">Deaths</div>
+                                <div class="hidden font-bold p-2 w-36">Recovered</div>
+                                <div class="hidden font-bold p-2 w-36">Active</div>
+                                <div class="hidden font-bold p-2 w-36">Growth Factor</div>
                             </div>
                             <div v-for="(row,key,index) in globalDaily.reverse()">
                                 <div v-if="getGlobalDayNotes(moment(row.date).format('YYYY-MM-DD')).length > 0">
@@ -146,8 +152,44 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="xl:hidden flex flex-1 items-start text-xs" :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'">
+                                    <div class="p-2">{{moment(row.date).format('YYYY-MM-DD')}}</div>
+                                    <div>
+                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2">
+                                            <span class="font-bold">Confirmed</span>
+                                            <span class="">{{row.confirmed|numeralFormat}}</span>
+                                            <span class="text-red-400" v-if="row.confirmedDelta >= 0">(+{{row.confirmedDelta | numeralFormat}})</span>
+                                            <span class="text-green-400" v-else>({{row.confirmedDelta | numeralFormat}})</span>
+                                        </div>
+                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2">
+                                            <span class="font-bold">Deaths</span>
+                                            <span class="">{{row.deaths|numeralFormat}}</span>
+                                            <span class="text-red-400" v-if="row.deathsDelta >= 0">(+{{row.deathsDelta | numeralFormat}})</span>
+                                            <span class="text-green-400" v-else>({{row.deathsDelta| numeralFormat}})</span>
+                                        </div>
+                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2">
+                                            <span class="font-bold">Recovered</span>
+                                            <span class="">{{row.recovered|numeralFormat}}</span>
+                                            <span class="text-green-400" v-if="row.recoveredDelta.recovered >= 0">(+{{row.recoveredDelta| numeralFormat}})</span>
+                                            <span class="text-red-400" v-else>({{row.recoveredDelta| numeralFormat}})</span>
+                                        </div>
+                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2">
+                                            <span class="font-bold">Active</span>
+                                            <span class="">{{(row.confirmed - row.deaths - row.recovered) | numeralFormat}}</span>
+                                            <span class="text-red-400" v-if="row.activeDelta  >= 0">(+{{row.activeDelta | numeralFormat}})</span>
+                                            <span class="text-green-400" v-else>({{row.activeDelta | numeralFormat}})</span>
+                                        </div>
+                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2">
+                                            <span class="font-bold">Growth factor</span>
+                                            <span class="">{{row.growthFactor|numeralFormat}}</span>
+                                            <span class="text-red-400" v-if="row.growthFactor > 1">{{row.growthFactor}}</span>
+                                            <span class="text-green-400" v-else>{{row.growthFactor}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div
-                                    class="flex flex-1 items-center justify-start w-full text-xs"
+                                    class="xl:flex flex-1 items-center justify-start w-full text-xs hidden"
                                 >
                                     <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-76">{{moment(row.date).format('YYYY-MM-DD')}}</div>
                                     <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.confirmed|numeralFormat}}
@@ -176,15 +218,37 @@
 
                         <div v-show="global_options.table == 'countries'" class="bg-lightslab rounded overflow-hidden">
                             <div class="flex flex-1 items-center justify-start w-full text-xs">
-                                <div class="font-bold p-2 w-112">Name</div>
-                                <div class="font-bold p-2 w-36">Confirmed</div>
-                                <div class="font-bold p-2 w-36">Deaths</div>
-                                <div class="font-bold p-2 w-36">Recovered</div>
-                                <div class="font-bold p-2 w-36">Active</div>
+                                <div class="w-32 font-bold p-2 xl:w-112">Name</div>
+                                <div class="xl:hidden font-bold p-2 w-full">Stats</div>
+                                <div class="hidden xl:block font-bold p-2 w-36">Confirmed</div>
+                                <div class="hidden xl:block font-bold p-2 w-36">Deaths</div>
+                                <div class="hidden xl:block font-bold p-2 w-36">Recovered</div>
+                                <div class="hidden xl:block font-bold p-2 w-36">Active</div>
                             </div>
                             <div v-for="(row,key,index) in getSortedCountries('confirmed','desc')">
+                                <div class="xl:hidden flex flex-1 items-start text-xs" :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'">
+                                    <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-32">{{row.name}}</div>
+                                    <div>
+                                        <div class="p-2">
+                                            <span class="font-bold">Confirmed</span>
+                                            {{row.total.c|numeralFormat}}
+                                        </div>
+                                        <div class="p-2">
+                                            <span class="font-bold">Deaths</span>
+                                            {{row.total.d|numeralFormat}}
+                                        </div>
+                                        <div class="p-2">
+                                            <span class="font-bold">Recovered</span>
+                                            {{row.total.r|numeralFormat}}
+                                        </div>
+                                        <div class="p-2">
+                                            <span class="font-bold">Active</span>
+                                            {{(row.total.c - row.total.d - row.total.r) | numeralFormat}}
+                                        </div>
+                                    </div>
+                                </div>
                                 <div
-                                    class="flex flex-1 items-center justify-start w-full text-xs"
+                                    class="hidden xl:flex flex-1 items-center justify-start w-full text-xs"
                                 >
                                     <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-112">{{row.name}}</div>
                                     <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.total.c|numeralFormat}}</div>

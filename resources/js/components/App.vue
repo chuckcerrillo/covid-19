@@ -10,7 +10,7 @@
             v-on:showAbout="showAbout"
             class="fixed top-0 right-0 bottom-0 left-0 z-20"
         />
-        <router-view :mode="mode" class="fixed top-0 left-0 right-0 bottom-0 mt-14"></router-view>
+        <router-view :mode="mode" class="fixed top-0 left-0 right-0 bottom-0 xl:mt-14"></router-view>
     </div>
 </template>
 
