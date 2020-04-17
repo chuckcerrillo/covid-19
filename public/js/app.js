@@ -4143,7 +4143,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  return tick.toLocaleString();
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
                 }
               }
             });
@@ -4178,7 +4180,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  return tick.toLocaleString();
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
                 }
               }
             });
@@ -4213,7 +4217,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  return tick.toLocaleString();
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
                 }
               }
             });
@@ -4248,7 +4254,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  return tick.toLocaleString();
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
                 }
               }
             });
@@ -4283,7 +4291,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  return tick.toLocaleString();
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
                 }
               }
             });
@@ -4318,7 +4328,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  return tick.toLocaleString();
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
                 }
               }
             });
@@ -4353,7 +4365,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  return tick.toLocaleString();
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
                 }
               }
             });
@@ -4388,7 +4402,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  return tick.toLocaleString();
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
                 }
               }
             });
