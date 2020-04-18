@@ -786,13 +786,6 @@
                 }
                 return '';
             },
-
-            selectCompare(item){
-                if(this.comparison.length < 3)
-                {
-
-                }
-            },
             selectCountry(country,state,key){
 
                 if (!key)
@@ -839,27 +832,7 @@
             }
         },
         computed: {
-            compare1(){
-                if(this.compare.length > 0)
-                {
-                    return this.getComparisonData()[0];
-                }
-                return [];
-            },
-            compare2(){
-                if(this.compare.length > 1)
-                {
-                    return this.getComparisonData()[1];
-                }
-                return [];
-            },
-            compare3(){
-                if(this.compare.length > 2)
-                {
-                    return this.getComparisonData()[2];
-                }
-                return [];
-            },
+
             countries(){
                 var data = [];
 

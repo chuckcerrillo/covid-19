@@ -1069,4 +1069,9 @@ class StatsController extends Controller
         }
         return $data;
     }
+
+    protected function oxford()
+    {
+
+    }
 }

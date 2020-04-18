@@ -2902,6 +2902,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -3492,6 +3493,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           secondary: 'rgba(243,179,85,0.5)',
           borderPrimary: 'rgba(90,186,209,1)',
           borderSecondary: 'rgba(243,179,85,1)'
+        }, {
+          primary: 'rgba(56,182,36,1)',
+          secondary: 'rgba(106,205,90,0.5)',
+          borderPrimary: 'rgba(56,182,36,1)',
+          borderSecondary: 'rgba(106,205,90,1)'
+        }, {
+          primary: 'rgba(192,36,36,1)',
+          secondary: 'rgba(205,90,90,0.5)',
+          borderPrimary: 'rgba(192,36,36,1)',
+          borderSecondary: 'rgba(205,90,90,1)'
         }]
       },
       ui: {
@@ -3582,6 +3593,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return data;
     },
     comparison: function comparison() {
+      console.log('Comparison data');
+      console.log(this.data);
       return this.data;
     },
     full_stats: function full_stats() {
@@ -5302,9 +5315,6 @@ __webpack_require__.r(__webpack_exports__);
 
       return '';
     },
-    selectCompare: function selectCompare(item) {
-      if (this.comparison.length < 3) {}
-    },
     selectCountry: function selectCountry(country, state, key) {
       if (!key) {
         var key = this.getCountryId(country);
@@ -5341,27 +5351,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
-    compare1: function compare1() {
-      if (this.compare.length > 0) {
-        return this.getComparisonData()[0];
-      }
-
-      return [];
-    },
-    compare2: function compare2() {
-      if (this.compare.length > 1) {
-        return this.getComparisonData()[1];
-      }
-
-      return [];
-    },
-    compare3: function compare3() {
-      if (this.compare.length > 2) {
-        return this.getComparisonData()[2];
-      }
-
-      return [];
-    },
     countries: function countries() {
       var data = [];
 
@@ -83877,11 +83866,13 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "w-32" }, [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(row.growthFactor) +
-                        "\n                    "
-                    )
+                    row.growthFactor > 1
+                      ? _c("span", { staticClass: "text-red-400" }, [
+                          _vm._v(_vm._s(row.growthFactor))
+                        ])
+                      : _c("span", { staticClass: "text-green-400" }, [
+                          _vm._v(_vm._s(row.growthFactor))
+                        ])
                   ])
                 ])
               ]
