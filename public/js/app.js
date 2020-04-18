@@ -1928,6 +1928,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1941,12 +1943,14 @@ __webpack_require__.r(__webpack_exports__);
           'raw_global': [],
           'raw_countries': [],
           'raw_state_data': [],
-          'raw_stats': []
+          'raw_stats': [],
+          'raw_annotations': []
         },
         processed: {
           'global': {},
           'countries': {},
-          'compare': []
+          'compare': [],
+          'dataset': {}
         },
         loading: {
           'countries': false,
@@ -1954,7 +1958,8 @@ __webpack_require__.r(__webpack_exports__);
           'annotations': false,
           'global': false
         }
-      }
+      },
+      title: ''
     };
   },
   components: {
@@ -1966,8 +1971,6 @@ __webpack_require__.r(__webpack_exports__);
 
     axios.get('/api/stats/global').then(function (res) {
       _this.database.raw.raw_global = res.data;
-      console.log('---global---');
-      console.log(_this.database.raw.raw_global);
       _this.database.loading.global = true;
     })["catch"](function (error) {});
     axios.get('/api/stats/countries').then(function (res) {
@@ -1992,7 +1995,19 @@ __webpack_require__.r(__webpack_exports__);
     },
     updateCompare: function updateCompare(compare) {
       this.database.processed.compare = compare;
-      console.log('Updating compare array');
+    },
+    saveProcessedData: function saveProcessedData(row, name) {
+      this.database.processed.dataset[name] = row;
+    }
+  },
+  computed: {
+    global: function global() {
+      return this.database.processed.global;
+    },
+    countries: function countries() {
+      console.log('App.vue - countries');
+      console.log(this.database.processed.countries);
+      return this.database.processed.countries;
     }
   },
   watch: {
@@ -4611,10 +4626,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var chartjs_plugin_zoom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_zoom__WEBPACK_IMPORTED_MODULE_1__);
 
 
-var reactiveProp = vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["mixins"].reactiveProp;
 /* harmony default export */ __webpack_exports__["default"] = ({
   "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Line"],
-  mixins: [reactiveProp],
   name: "LineChart",
   props: ['data', 'options'],
   mounted: function mounted() {
@@ -4893,14 +4906,32 @@ __webpack_require__.r(__webpack_exports__);
 
       return data;
     },
+    getProcessedData: function getProcessedData(source) {
+      var compareName = this.getCompareName(source).full;
+
+      if (this.database.processed.dataset[compareName]) {
+        return this.database.processed.dataset[compareName];
+      }
+
+      return false;
+    },
     assembleDataset: function assembleDataset(source, daily, name) {
+      // Check if this source has already been processed
+      var row = this.getProcessedData(source);
+
+      if (row) {
+        // If it is already processed, let's use it
+        console.log('skipped the assembly, good job!');
+        return row;
+      }
+
       var arrAvg = function arrAvg(arr) {
         return arr.reduce(function (a, b) {
           return a + b;
         }, 0) / arr.length;
       };
 
-      var row = {
+      row = {
         name: name ? name : this.getCompareName(source),
         daily: daily ? daily : this.getDaily(source),
         delta: [],
@@ -4975,6 +5006,8 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
+      var compareName = this.getCompareName(source).full;
+      this.$emit('saveProcessedData', row, compareName);
       return row;
     },
     getComparisonData: function getComparisonData() {
@@ -5237,7 +5270,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     daily: function daily() {
-      if (this.database.processed.compare.length > 1) return this.comparisonDataset;else return this.getDaily(this.selectedStats);
+      if (this.database.processed.compare.length > 1) return this.comparisonDataset;else return [];
     },
     comparisonDataset: function comparisonDataset() {
       return this.getComparisonData();
@@ -87052,6 +87085,8 @@ var render = function() {
         on: { showAbout: _vm.showAbout, setMode: _vm.setMode }
       }),
       _vm._v(" "),
+      _c("div", { staticClass: "hidden" }, [_vm._v(_vm._s(_vm.countries))]),
+      _vm._v(" "),
       _c("About", {
         directives: [
           {
@@ -87073,7 +87108,10 @@ var render = function() {
           loading: _vm.database.loading,
           database: _vm.database
         },
-        on: { updateCompare: _vm.updateCompare }
+        on: {
+          updateCompare: _vm.updateCompare,
+          saveProcessedData: _vm.saveProcessedData
+        }
       })
     ],
     1
@@ -89633,7 +89671,7 @@ var render = function() {
                       staticClass: "w-full rounded-lg overflow-hidden h-full",
                       attrs: {
                         id: "world_map",
-                        enable: true,
+                        enable: false,
                         data: _vm.countries_sorted
                       }
                     })

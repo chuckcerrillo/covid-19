@@ -1,4 +1,4 @@
-<template>
+thi<template>
     <div>
         <div v-if="!loaded">Loading data</div>
         <div v-else class="h-full overflow-hidden relative">
@@ -213,10 +213,28 @@
                 }
                 return data;
             },
+            getProcessedData(source)
+            {
+                var compareName = this.getCompareName(source).full;
+                if(this.database.processed.dataset[compareName])
+                {
+                    return this.database.processed.dataset[compareName];
+                }
+                return false;
+            },
             assembleDataset(source,daily,name)
             {
+                // Check if this source has already been processed
+                var row = this.getProcessedData(source);
+                if (row)
+                {
+                    // If it is already processed, let's use it
+                    console.log('skipped the assembly, good job!');
+                    return row;
+                }
+
                 const arrAvg = arr => arr.reduce((a,b) => a + b, 0) / arr.length;
-                var row = {
+                row = {
                     name: name ? name : this.getCompareName(source),
                     daily: (daily ? daily : this.getDaily(source)),
                     delta: [],
@@ -302,7 +320,8 @@
                         row.annotations = row.annotations.concat(this.raw_annotations[row.name.country]);
                     }
                 }
-
+                var compareName = this.getCompareName(source).full;
+                this.$emit('saveProcessedData',row,compareName);
                 return row;
             },
             getComparisonData()
@@ -657,7 +676,7 @@
                 if(this.database.processed.compare.length > 1)
                     return this.comparisonDataset;
                 else
-                    return this.getDaily(this.selectedStats);
+                    return [];
             },
             comparisonDataset()
             {

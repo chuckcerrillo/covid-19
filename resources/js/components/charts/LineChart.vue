@@ -1,11 +1,9 @@
 <script>
-    import { Line, mixins } from 'vue-chartjs'
+    import { Line } from 'vue-chartjs'
     import zoom from 'chartjs-plugin-zoom';
-    const { reactiveProp } = mixins;
 
     export default {
         extends: Line,
-        mixins: [reactiveProp],
         name: "LineChart",
         props: ['data', 'options'],
         mounted () {

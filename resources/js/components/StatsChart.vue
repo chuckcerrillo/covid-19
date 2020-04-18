@@ -972,7 +972,7 @@
                             pan: {
                                 enabled: true,
                                 mode: 'xy',
-                                
+
 
                             },
                             zoom: {
