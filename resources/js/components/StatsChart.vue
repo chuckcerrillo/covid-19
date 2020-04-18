@@ -358,35 +358,48 @@
                         data: [],
                         options: {
 
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                hoverMode: 'index',
-                                stacked: false,
-                                legend: {
-                                    labels: {
-                                        fontColor: '#d1e8e2'
-                                    }
-                                },
-                                scales: {
-                                    xAxes: [{
-                                        ticks: {
-                                            fontColor: '#d1e8e2',
-                                        }
-                                    }],
-                                    yAxes: [{
-                                        type: 'logarithmic',
-                                        display: true,
-                                        position: 'left',
-                                        id: 'y-1',
-                                        ticks: {
-                                            fontColor: '#d1e8e2',
-                                            callback: function(tick, index, ticks) {
-                                                return tick.toLocaleString()
-                                            }
-                                        }
-                                    }],
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            hoverMode: 'index',
+                            stacked: false,
+                            legend: {
+                                labels: {
+                                    fontColor: '#d1e8e2'
                                 }
-                        }
+                            },
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        fontColor: '#d1e8e2',
+                                    }
+                                }],
+                                yAxes: [{
+                                    type: 'logarithmic',
+                                    display: true,
+                                    position: 'left',
+                                    id: 'y-1',
+                                    ticks: {
+                                        fontColor: '#d1e8e2',
+                                        callback: function(tick, index, ticks) {
+                                            return tick.toLocaleString()
+                                        }
+                                    }
+                                }],
+                            },
+                            plugins: {
+                                zoom: {
+                                    pan: {
+                                        enabled: true,
+                                        mode: 'xy'
+                                    },
+                                    zoom: {
+                                        enabled: true,
+                                        mode: 'xy',
+                                    }
+                                }
+                            }
+                        },
+
                     }
                 }
 
@@ -428,6 +441,18 @@
                         }],
                         yAxes: [
                         ],
+                    },
+                    plugins: {
+                        zoom: {
+                            pan: {
+                                enabled: true,
+                                mode: 'xy'
+                            },
+                            zoom: {
+                                enabled: true,
+                                mode: 'xy',
+                            }
+                        }
                     }
                 };
 
@@ -941,6 +966,20 @@
                         }],
                         yAxes: [
                         ],
+                    },
+                    plugins: {
+                        zoom: {
+                            pan: {
+                                enabled: true,
+                                mode: 'xy',
+                                
+
+                            },
+                            zoom: {
+                                enabled: true,
+                                mode: 'xy',
+                            }
+                        }
                     }
                 };
 
