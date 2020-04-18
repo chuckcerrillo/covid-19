@@ -10,7 +10,9 @@
             v-on:showAbout="showAbout"
             class="fixed top-0 right-0 bottom-0 left-0 z-20"
         />
-        <router-view :mode="mode" class="fixed top-0 left-0 right-0 bottom-0 xl:mt-14"></router-view>
+        <router-view
+            v-on:updateCompare="updateCompare"
+            :mode="mode" :key="$route.fullPath" class="fixed top-0 left-0 right-0 bottom-0 xl:mt-14" :loading="database.loading" :database="database"></router-view>
     </div>
 </template>
 
@@ -23,12 +25,72 @@
         {
             return {
                 about: false,
-                mode: 'global'
+                mode: '',
+                database: {
+                    raw: {
+                        'raw_global': [],
+                        'raw_countries': [],
+                        'raw_state_data': [],
+                        'raw_stats': [],
+                    },
+                    processed: {
+                        'global' : {},
+                        'countries': {},
+                        'compare' : [],
+                    },
+                    loading: {
+                        'countries' : false,
+                        'states' : false,
+                        'annotations' : false,
+                        'global' : false,
+                    },
+                },
+
             }
         },
         components: {
             Nav,
             About
+        },
+        mounted()
+        {
+            axios.get('/api/stats/global')
+                .then(res => {
+                    this.database.raw.raw_global = res.data;
+                    console.log('---global---');
+                    console.log(this.database.raw.raw_global);
+                    this.database.loading.global = true;
+                })
+                .catch(error => {
+
+                });
+
+            axios.get('/api/stats/countries')
+                .then(res => {
+                    this.database.raw.raw_countries = res.data;
+                    this.database.loading.countries = true;
+                })
+                .catch(error => {
+
+                });
+
+            axios.get('/api/stats/states')
+                .then(res => {
+                    this.database.raw.raw_state_data = res.data;
+                    this.database.loading.states = true;
+                })
+                .catch(error => {
+
+                });
+
+            axios.get('/api/stats/annotations')
+                .then(res => {
+                    this.database.raw.raw_annotations = res.data;
+                    this.database.loading.annotations = true;
+                })
+                .catch(error => {
+
+                });
         },
         methods: {
             showAbout()
@@ -38,6 +100,19 @@
             setMode(mode)
             {
                 this.mode = mode;
+            },
+            updateCompare(compare)
+            {
+                this.database.processed.compare = compare;
+                console.log('Updating compare array');
+            }
+        },
+        watch: {
+            $route(to,from) {
+                this.title = to.meta.title;
+            },
+            title() {
+                document.title = this.title + ' | COVID19 Tracker';
             }
         }
     }

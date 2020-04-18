@@ -252,6 +252,8 @@ class StatsController extends Controller
     {
         define('MASTER_LIST','../covid-data/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv');
         define('COVID_DATA','../covid-data/csse_covid_19_data/csse_covid_19_daily_reports/');
+        define('OXFORD_DATA','../oxford/data/timeseries/');
+        define('OXFORD_LATEST','../oxford/data/OxCGRT_latest.csv');
         define('STATS','./stats/');
 
 
@@ -1072,6 +1074,21 @@ class StatsController extends Controller
 
     protected function oxford()
     {
+        $result = array_diff(scandir(OXFORD_DATA), array('..', '.','README.md','.gitignore'));
 
+        dump($result);
+
+        foreach($result AS $file) {
+            if(substr($file,0,1) == 's')
+            {
+                $filename = OXFORD_DATA . $file;
+                $csv = array_map('str_getcsv', file($filename));
+                array_shift($csv); # remove column header
+
+                foreach ($csv AS $row) {
+                    dump($row);
+                }
+            }
+        }
     }
 }

@@ -1926,6 +1926,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1933,12 +1935,53 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       about: false,
-      mode: 'global'
+      mode: '',
+      database: {
+        raw: {
+          'raw_global': [],
+          'raw_countries': [],
+          'raw_state_data': [],
+          'raw_stats': []
+        },
+        processed: {
+          'global': {},
+          'countries': {},
+          'compare': []
+        },
+        loading: {
+          'countries': false,
+          'states': false,
+          'annotations': false,
+          'global': false
+        }
+      }
     };
   },
   components: {
     Nav: _Nav__WEBPACK_IMPORTED_MODULE_0__["default"],
     About: _views_About__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/api/stats/global').then(function (res) {
+      _this.database.raw.raw_global = res.data;
+      console.log('---global---');
+      console.log(_this.database.raw.raw_global);
+      _this.database.loading.global = true;
+    })["catch"](function (error) {});
+    axios.get('/api/stats/countries').then(function (res) {
+      _this.database.raw.raw_countries = res.data;
+      _this.database.loading.countries = true;
+    })["catch"](function (error) {});
+    axios.get('/api/stats/states').then(function (res) {
+      _this.database.raw.raw_state_data = res.data;
+      _this.database.loading.states = true;
+    })["catch"](function (error) {});
+    axios.get('/api/stats/annotations').then(function (res) {
+      _this.database.raw.raw_annotations = res.data;
+      _this.database.loading.annotations = true;
+    })["catch"](function (error) {});
   },
   methods: {
     showAbout: function showAbout() {
@@ -1946,6 +1989,18 @@ __webpack_require__.r(__webpack_exports__);
     },
     setMode: function setMode(mode) {
       this.mode = mode;
+    },
+    updateCompare: function updateCompare(compare) {
+      this.database.processed.compare = compare;
+      console.log('Updating compare array');
+    }
+  },
+  watch: {
+    $route: function $route(to, from) {
+      this.title = to.meta.title;
+    },
+    title: function title() {
+      document.title = this.title + ' | COVID19 Tracker';
     }
   }
 });
@@ -3285,12 +3340,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Nav",
   props: ['active', 'mode'],
   methods: {
-    isActive: function isActive(selected, current, classes) {
-      if (selected === current) return classes;
+    isActive: function isActive(current, classes) {
+      if (this.$route.name == current) return classes;
       return '';
     },
     showAbout: function showAbout() {
@@ -4580,10 +4636,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Main.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Main.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Comparison.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Comparison.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4707,281 +4763,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -4993,8 +4774,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "Start",
-  props: ['mode'],
+  name: "Comparison",
   components: {
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     LineChart: _components_charts_LineChart__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -5005,14 +4785,12 @@ __webpack_require__.r(__webpack_exports__);
     StatsChart: _components_StatsChart__WEBPACK_IMPORTED_MODULE_5__["default"],
     Map: _components_Map__WEBPACK_IMPORTED_MODULE_9__["default"]
   },
+  props: ['database'],
+  created: function created() {
+    this.compare = this.database.processed.compare;
+  },
   data: function data() {
     return {
-      'loading': {
-        'countries': false,
-        'states': false,
-        'annotations': false,
-        'global': false
-      },
       'sort_stats': {
         'key': 'confirmed',
         'order': 'desc'
@@ -5025,11 +4803,6 @@ __webpack_require__.r(__webpack_exports__);
       },
       'compare': [],
       'comparison': [],
-      'raw_global': [],
-      'raw_countries': [],
-      'raw_state_data': [],
-      'raw_stats': [],
-      'selectedCountry': 2,
       'selectedCompareTab': 1,
       'show_countries': true,
       'ui': {
@@ -5038,26 +4811,6 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     };
-  },
-  mounted: function mounted() {
-    var _this = this;
-
-    axios.get('/api/stats/global').then(function (res) {
-      _this.raw_global = res.data;
-      _this.loading.global = true;
-    })["catch"](function (error) {});
-    axios.get('/api/stats/countries').then(function (res) {
-      _this.raw_countries = res.data;
-      _this.loading.countries = true;
-    })["catch"](function (error) {});
-    axios.get('/api/stats/states').then(function (res) {
-      _this.raw_state_data = res.data;
-      _this.loading.states = true;
-    })["catch"](function (error) {});
-    axios.get('/api/stats/annotations').then(function (res) {
-      _this.raw_annotations = res.data;
-      _this.loading.annotations = true;
-    })["catch"](function (error) {});
   },
   methods: {
     getGlobalDayNotes: function getGlobalDayNotes(date) {
@@ -5169,12 +4922,14 @@ __webpack_require__.r(__webpack_exports__);
         row.growthFactor.push(gf);
       }
 
-      if (this.raw_annotations['All'].length > 0) {
-        row.annotations = row.annotations.concat(this.raw_annotations['All']);
-      }
+      if (this.raw_annotations) {
+        if (this.raw_annotations['All'] && this.raw_annotations['All'].length > 0) {
+          row.annotations = row.annotations.concat(this.raw_annotations['All']);
+        }
 
-      if (this.raw_annotations[row.name.country]) {
-        row.annotations = row.annotations.concat(this.raw_annotations[row.name.country]);
+        if (this.raw_annotations[row.name.country]) {
+          row.annotations = row.annotations.concat(this.raw_annotations[row.name.country]);
+        }
       }
 
       return row;
@@ -5183,9 +4938,9 @@ __webpack_require__.r(__webpack_exports__);
       var data = [],
           row = [];
 
-      if (this.compare.length > 0) {
-        for (var x in this.compare) {
-          row = this.assembleDataset(this.compare[x]);
+      if (this.database.processed.compare.length > 0) {
+        for (var x in this.database.processed.compare) {
+          row = this.assembleDataset(this.database.processed.compare[x]);
           data.push(row);
         }
       }
@@ -5223,6 +4978,8 @@ __webpack_require__.r(__webpack_exports__);
       if (found) {
         this.compare.splice(found, 1);
       }
+
+      this.$emit('updateCompare', this.compare);
     },
     getDaily: function getDaily(compare) {
       if (compare && compare[0]) {
@@ -5320,37 +5077,65 @@ __webpack_require__.r(__webpack_exports__);
         var key = this.getCountryId(country);
       }
 
-      if (this.mode == 'single') {
-        this.compare = [];
-        this.compare.push([key, country, state]);
-      } else if (this.mode == 'comparison') {
-        var key = this.getCountryId(country);
-        var find = this.findCompare([country, state]);
+      var key = this.getCountryId(country);
+      var find = this.findCompare([country, state]);
 
-        if (find !== false) {
-          this.compare.splice(find, 1);
-        } else {
-          if (this.compare.length >= this.options.compare_limit) {
-            this.compare.shift();
-          }
-
-          if (this.compare.length < this.options.compare_limit) {
-            this.compare.push([key, country, state]);
-          }
+      if (find !== false) {
+        this.compare.splice(find, 1);
+      } else {
+        if (this.compare.length >= this.options.compare_limit) {
+          this.compare.shift();
         }
 
-        if (this.compare.length > 0) {
-          this.selectedCompareTab = this.compare.length - 1;
-        } else {
-          this.selectedCompareTab = 0;
+        if (this.compare.length < this.options.compare_limit) {
+          this.compare.push([key, country, state]);
         }
       }
+
+      if (this.compare.length > 0) {
+        this.selectedCompareTab = this.compare.length - 1;
+      } else {
+        this.selectedCompareTab = 0;
+      }
+
+      this.$emit('updateCompare', this.compare);
     },
     isSelected: function isSelected(key) {
       return false;
     }
   },
   computed: {
+    view: function view() {
+      if (this.$route.name == 'comparisonDaily') {
+        this.ui.content.selectedTab = 'daily';
+      } else if (this.$route.name == 'comparisonCharts') {
+        this.ui.content.selectedTab = 'charts';
+      } else {
+        this.ui.content.selectedTab = 'daily';
+      }
+
+      return this.ui.content.selectedTab;
+    },
+    loading: function loading() {
+      if (this.database && this.database.loading) return this.database.loading;else return {
+        'countries': false,
+        'states': false,
+        'annotations': false,
+        'global': false
+      };
+    },
+    raw_global: function raw_global() {
+      return this.database.raw.raw_global;
+    },
+    raw_countries: function raw_countries() {
+      return this.database.raw.raw_countries;
+    },
+    raw_state_data: function raw_state_data() {
+      return this.database.raw.raw_state_data;
+    },
+    raw_stats: function raw_stats() {
+      return this.database.raw.raw_stats;
+    },
     countries: function countries() {
       var data = [];
 
@@ -5379,7 +5164,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     loaded: function loaded() {
-      if (this.loading.countries && this.loading.states && this.loading.annotations && this.loading.global) {
+      if (this.database && this.database.loading && this.database.loading.countries && this.database.loading.states && this.database.loading.annotations && this.database.loading.global) {
         return true;
       }
 
@@ -5408,8 +5193,585 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    selectedStats: function selectedStats() {
-      return this.stats[this.selectedCountry];
+    daily: function daily() {
+      if (this.database.processed.compare.length > 1) return this.comparisonDataset;else return this.getDaily(this.selectedStats);
+    },
+    comparisonDataset: function comparisonDataset() {
+      return this.getComparisonData();
+    },
+    global: function global() {
+      var data = {},
+          last_update = '';
+      data = _.cloneDeep(this.raw_global);
+
+      for (var x in this.countries) {
+        if (last_update.length === 0 || moment__WEBPACK_IMPORTED_MODULE_7___default()(this.countries[x].total.l).format('YYYY-MM-DD') > last_update) {
+          data.last_update = moment__WEBPACK_IMPORTED_MODULE_7___default()(this.countries[x].total.l).format('YYYY-MM-DD HH:mm:ss');
+          last_update = moment__WEBPACK_IMPORTED_MODULE_7___default()(this.countries[x].total.l).format('YYYY-MM-DD');
+        }
+      }
+
+      data.name = {
+        full: 'Global',
+        country: 'Global',
+        state: false
+      };
+
+      if (data.total) {
+        data.total.active = data.total.confirmed - data.total.deaths - data.total.recovered;
+      }
+
+      return data;
+    },
+    globalDataset: function globalDataset() {
+      var data = [],
+          daily = [];
+
+      for (var x in this.global.daily) {
+        var row = this.global.daily[x];
+        daily.push({
+          'date': x,
+          'confirmed': row.confirmed,
+          'deaths': row.deaths,
+          'recovered': row.recovered
+        });
+      }
+
+      data.push(this.assembleDataset(this.global, daily, this.global.name));
+      return data;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Global.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Global.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var simplebar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! simplebar-vue */ "./node_modules/simplebar-vue/dist/simplebar-vue.esm.js");
+/* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! simplebar/dist/simplebar.min.css */ "./node_modules/simplebar/dist/simplebar.min.css");
+/* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _components_charts_LineChart__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/charts/LineChart */ "./resources/js/components/charts/LineChart.vue");
+/* harmony import */ var _components_ComparisonChart__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/ComparisonChart */ "./resources/js/components/ComparisonChart.vue");
+/* harmony import */ var _components_StatsChart__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/StatsChart */ "./resources/js/components/StatsChart.vue");
+/* harmony import */ var _components_Map__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/Map */ "./resources/js/components/Map.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Global",
+  props: ['mode', 'database'],
+  components: {
+    simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    LineChart: _components_charts_LineChart__WEBPACK_IMPORTED_MODULE_3__["default"],
+    ComparisonChart: _components_ComparisonChart__WEBPACK_IMPORTED_MODULE_4__["default"],
+    StatsChart: _components_StatsChart__WEBPACK_IMPORTED_MODULE_5__["default"],
+    Map: _components_Map__WEBPACK_IMPORTED_MODULE_6__["default"]
+  },
+  data: function data() {
+    return {
+      'sort_stats': {
+        'key': 'confirmed',
+        'order': 'desc'
+      },
+      'global_options': {
+        'table': 'daily'
+      }
+    };
+  },
+  mounted: function mounted() {},
+  methods: {
+    getGlobalDayNotes: function getGlobalDayNotes(date) {
+      var data = [];
+
+      for (var x in this.globalDataset[0].annotations) {
+        if (this.globalDataset[0].annotations[x].date == date) {
+          data.push(this.globalDataset[0].annotations[x]);
+        }
+      }
+
+      return data;
+    },
+    getSortedCountries: function getSortedCountries(field, order, limit) {
+      var sort = {
+        key: field,
+        order: order
+      };
+
+      var data = _.cloneDeep(this.countries);
+
+      data = data.sort(function (a, b) {
+        if (sort.key == 'country') {
+          if (sort.order == 'asc') return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;else return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
+        } else if (sort.key == 'confirmed') {
+          if (sort.order == 'desc') return a.total.c < b.total.c ? 1 : -1;else return a.total.c > b.total.c ? 1 : -1;
+        } else if (sort.key == 'deaths') {
+          if (sort.order == 'desc') return a.total.d < b.total.d ? 1 : -1;else return a.total.d > b.total.d ? 1 : -1;
+        } else if (sort.key == 'recovered') {
+          if (sort.order == 'desc') return a.total.r < b.total.r ? 1 : -1;else return a.total.r > b.total.r ? 1 : -1;
+        }
+      });
+
+      if (limit && limit > 0) {
+        data = data.slice(0, limit);
+      }
+
+      return data;
+    },
+    assembleDataset: function assembleDataset(source, daily, name) {
+      var arrAvg = function arrAvg(arr) {
+        return arr.reduce(function (a, b) {
+          return a + b;
+        }, 0) / arr.length;
+      };
+
+      var row = {
+        name: name ? name : this.getCompareName(source),
+        daily: daily ? daily : this.getDaily(source),
+        delta: [],
+        growth: [],
+        average: [],
+        growthFactor: [],
+        annotations: []
+      };
+      var count = 0;
+      var previous = {};
+
+      for (var y in row.daily) {
+        if (count == 0) {
+          row.delta[y] = row.daily[y];
+          previous = row.daily[y];
+          count++;
+          continue;
+        }
+
+        row.delta[y] = {
+          date: row.daily[y].date,
+          confirmed: parseInt(row.daily[y].confirmed) - parseInt(previous.confirmed),
+          deaths: parseInt(row.daily[y].deaths) - parseInt(previous.deaths),
+          recovered: parseInt(row.daily[y].recovered) - parseInt(previous.recovered),
+          active: parseInt(row.daily[y].confirmed) - parseInt(previous.confirmed) - parseInt(row.daily[y].deaths) - parseInt(previous.deaths) - parseInt(row.daily[y].recovered) - parseInt(previous.recovered)
+        };
+        previous = row.daily[y];
+        count++;
+      }
+
+      row.total = previous;
+
+      for (var y in row.delta) {
+        row.growth.push(row.delta[y].confirmed);
+      }
+
+      for (var y = 0; y < row.growth.length; y++) {
+        var avg = 0;
+
+        if (y < 5) {
+          avg = arrAvg(row.growth.slice(0, y + 1));
+        } else {
+          avg = arrAvg(row.growth.slice(y - 5, y + 1));
+        }
+
+        row.average.push(avg.toFixed(1));
+      }
+
+      for (var y = 0; y < row.average.length; y++) {
+        var gf = 0;
+
+        if (y == 1 || row.average[y - 1] == 0) {
+          gf = (row.average[y] / 1).toFixed(2);
+        } else {
+          gf = (row.average[y] / row.average[y - 1]).toFixed(2);
+        }
+
+        if (isNaN(gf)) {
+          gf = 0;
+        }
+
+        row.growthFactor.push(gf);
+      }
+
+      if (this.raw_annotations) {
+        if (this.raw_annotations['All'] && this.raw_annotations['All'].length > 0) {
+          row.annotations = row.annotations.concat(this.raw_annotations['All']);
+        }
+
+        if (this.raw_annotations[row.name.country]) {
+          row.annotations = row.annotations.concat(this.raw_annotations[row.name.country]);
+        }
+      }
+
+      return row;
+    },
+    getComparisonData: function getComparisonData() {
+      var data = [],
+          row = [];
+
+      if (this.compare.length > 0) {
+        for (var x in this.compare) {
+          row = this.assembleDataset(this.compare[x]);
+          data.push(row);
+        }
+      }
+
+      return data;
+    }
+  },
+  computed: {
+    loading: function loading() {
+      if (this.database && this.database.loading) return this.database.loading;else return {
+        'countries': false,
+        'states': false,
+        'annotations': false,
+        'global': false
+      };
+    },
+    raw_global: function raw_global() {
+      return this.database.raw.raw_global;
+    },
+    raw_countries: function raw_countries() {
+      return this.database.raw.raw_countries;
+    },
+    raw_state_data: function raw_state_data() {
+      return this.database.raw.raw_state_data;
+    },
+    raw_stats: function raw_stats() {
+      return this.database.raw.raw_stats;
+    },
+    countries: function countries() {
+      var data = [];
+
+      for (var x in this.raw_countries) {
+        var row = this.raw_countries[x];
+        data.push(row);
+      }
+
+      return data;
+    },
+    countries_sorted: function countries_sorted() {
+      var sort = this.sort_stats;
+
+      var data = _.cloneDeep(this.countries);
+
+      return data.sort(function (a, b) {
+        if (sort.key == 'country') {
+          if (sort.order == 'asc') return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;else return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
+        } else if (sort.key == 'confirmed') {
+          if (sort.order == 'desc') return a.total.c < b.total.c ? 1 : -1;else return a.total.c > b.total.c ? 1 : -1;
+        } else if (sort.key == 'deaths') {
+          if (sort.order == 'desc') return a.total.d < b.total.d ? 1 : -1;else return a.total.d > b.total.d ? 1 : -1;
+        } else if (sort.key == 'recovered') {
+          if (sort.order == 'desc') return a.total.r < b.total.r ? 1 : -1;else return a.total.r > b.total.r ? 1 : -1;
+        }
+      });
+    },
+    loaded: function loaded() {
+      if (this.database && this.database.loading && this.database.loading.countries && this.database.loading.states && this.database.loading.annotations && this.database.loading.global) {
+        return true;
+      }
+
+      return false;
     },
     globalDaily: function globalDaily() {
       var data = [];
@@ -5417,7 +5779,7 @@ __webpack_require__.r(__webpack_exports__);
       for (var x in this.globalDataset[0].daily) {
         var row = this.globalDataset[0].daily[x];
         data.push({
-          date: moment__WEBPACK_IMPORTED_MODULE_7___default()(row.date).format('YYYY-MM-DD'),
+          date: moment__WEBPACK_IMPORTED_MODULE_2___default()(row.date).format('YYYY-MM-DD'),
           confirmed: row.confirmed,
           confirmedDelta: this.globalDataset[0].delta[x].confirmed,
           deaths: row.deaths,
@@ -5432,21 +5794,15 @@ __webpack_require__.r(__webpack_exports__);
 
       return data;
     },
-    daily: function daily() {
-      if (this.compare.length > 1) return this.comparisonDataset;else return this.getDaily(this.selectedStats);
-    },
-    comparisonDataset: function comparisonDataset() {
-      return this.getComparisonData();
-    },
     global: function global() {
       var data = {},
           last_update = '';
-      data = this.raw_global;
+      data = _.cloneDeep(this.raw_global);
 
       for (var x in this.countries) {
-        if (last_update.length === 0 || moment__WEBPACK_IMPORTED_MODULE_7___default()(this.countries[x].total.l).format('YYYY-MM-DD') > last_update) {
-          data.last_update = moment__WEBPACK_IMPORTED_MODULE_7___default()(this.countries[x].total.l).format('YYYY-MM-DD HH:mm:ss');
-          last_update = moment__WEBPACK_IMPORTED_MODULE_7___default()(this.countries[x].total.l).format('YYYY-MM-DD');
+        if (last_update.length === 0 || moment__WEBPACK_IMPORTED_MODULE_2___default()(this.countries[x].total.l).format('YYYY-MM-DD') > last_update) {
+          data.last_update = moment__WEBPACK_IMPORTED_MODULE_2___default()(this.countries[x].total.l).format('YYYY-MM-DD HH:mm:ss');
+          last_update = moment__WEBPACK_IMPORTED_MODULE_2___default()(this.countries[x].total.l).format('YYYY-MM-DD');
         }
       }
 
@@ -5455,14 +5811,16 @@ __webpack_require__.r(__webpack_exports__);
         country: 'Global',
         state: false
       };
-      data.total.active = data.total.confirmed - data.total.deaths - data.total.recovered;
+
+      if (data.total) {
+        data.total.active = data.total.confirmed - data.total.deaths - data.total.recovered;
+      }
+
       return data;
     },
     globalDataset: function globalDataset() {
       var data = [],
           daily = [];
-      console.log('global data');
-      console.log(this.global);
 
       for (var x in this.global.daily) {
         var row = this.global.daily[x];
@@ -5475,11 +5833,28 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       data.push(this.assembleDataset(this.global, daily, this.global.name));
-      console.log('global dataset');
-      console.log(data);
       return data;
     }
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Glossary.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Glossary.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Glossary"
 });
 
 /***/ }),
@@ -83257,8 +83632,14 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("router-view", {
+        key: _vm.$route.fullPath,
         staticClass: "fixed top-0 left-0 right-0 bottom-0 xl:mt-14",
-        attrs: { mode: _vm.mode }
+        attrs: {
+          mode: _vm.mode,
+          loading: _vm.database.loading,
+          database: _vm.database
+        },
+        on: { updateCompare: _vm.updateCompare }
       })
     ],
     1
@@ -84372,10 +84753,11 @@ var render = function() {
           _vm._m(0),
           _vm._v(" "),
           _c(
-            "div",
+            "router-link",
             {
               staticClass: "p-2 px-4 cursor-pointer hover:text-white",
-              class: _vm.isActive(_vm.mode, "global", "bg-hoverslab"),
+              class: _vm.isActive("global", "bg-hoverslab"),
+              attrs: { to: "/" },
               on: {
                 click: function($event) {
                   return _vm.setMode("global")
@@ -84386,13 +84768,14 @@ var render = function() {
           ),
           _vm._v(" "),
           _c(
-            "div",
+            "router-link",
             {
               staticClass: "p-2 px-4 cursor-pointer hover:text-white",
-              class: _vm.isActive(_vm.mode, "comparison", "bg-hoverslab"),
+              class: _vm.isActive("compare", "bg-hoverslab"),
+              attrs: { to: "/comparison" },
               on: {
                 click: function($event) {
-                  return _vm.setMode("comparison")
+                  return _vm.setMode("trends")
                 }
               }
             },
@@ -84403,7 +84786,7 @@ var render = function() {
             "div",
             {
               staticClass: "p-2 px-4 cursor-pointer text-lightslab",
-              class: _vm.isActive(_vm.mode, "trends", "bg-hoverslab")
+              class: _vm.isActive("Trends", "bg-hoverslab")
             },
             [_vm._v("Trends (coming soon...)")]
           ),
@@ -84421,7 +84804,8 @@ var render = function() {
             },
             [_vm._v("About")]
           )
-        ]
+        ],
+        1
       )
     ]
   )
@@ -85242,10 +85626,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Main.vue?vue&type=template&id=2ad93e50&scoped=true&":
-/*!**************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Main.vue?vue&type=template&id=2ad93e50&scoped=true& ***!
-  \**************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Comparison.vue?vue&type=template&id=0d057de8&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Comparison.vue?vue&type=template&id=0d057de8&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -85261,47 +85645,415 @@ var render = function() {
     !_vm.loaded
       ? _c("div", [_vm._v("Loading data")])
       : _c("div", { staticClass: "h-full overflow-hidden relative" }, [
-          _c(
-            "div",
-            {
-              directives: [
+          _c("div", { staticClass: "relative h-full flex flex-1" }, [
+            _c("div", { staticClass: "flex flex-col" }, [
+              _c(
+                "div",
                 {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.mode == "global",
-                  expression: "mode == 'global'"
-                }
-              ],
-              staticClass:
-                "relative h-full w-full flex flex-col justify-start items-center overflow-y-scroll"
-            },
-            [
-              _c("a", { attrs: { name: "top" } }),
-              _vm._v(" "),
-              _c("div", { staticClass: "w-full xl:w-256" }, [
+                  staticClass:
+                    "overflow-hidden bg-slab rounded m-4 flex flex-col items-start h-full p-4 relative"
+                },
+                [
+                  _c("div", {}, [
+                    _c("div", { staticClass: "tracking-tight font-bold" }, [
+                      _vm._v("Countries and states "),
+                      _c("br"),
+                      _vm._v("(" + _vm._s(_vm.countries.length) + " total)")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "text-xs text-right" }, [
+                      _vm._v(
+                        "Sorting by " +
+                          _vm._s(_vm.sort_stats.key) +
+                          " " +
+                          _vm._s(_vm.sort_stats.order)
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "flex font-bold py-2 text-xs items-center"
+                      },
+                      [
+                        _c("div", { staticClass: "w-4 p-2 m-1 ml-0" }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "w-32 cursor-pointer p-2 overflow-hidden",
+                            class:
+                              _vm.sort_stats.key == "country"
+                                ? "bg-hoverslab"
+                                : "",
+                            on: {
+                              click: function($event) {
+                                return _vm.toggleSort("country")
+                              }
+                            }
+                          },
+                          [_vm._v("Country / Region")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "w-20 cursor-pointer p-2 overflow-hidden",
+                            class:
+                              _vm.sort_stats.key == "confirmed"
+                                ? "bg-hoverslab"
+                                : "",
+                            on: {
+                              click: function($event) {
+                                return _vm.toggleSort("confirmed")
+                              }
+                            }
+                          },
+                          [_vm._v("Confirmed")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "w-20 cursor-pointer p-2 overflow-hidden",
+                            class:
+                              _vm.sort_stats.key == "deaths"
+                                ? "bg-hoverslab"
+                                : "",
+                            on: {
+                              click: function($event) {
+                                return _vm.toggleSort("deaths")
+                              }
+                            }
+                          },
+                          [_vm._v("Deaths")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "w-20 cursor-pointer p-2 overflow-hidden",
+                            class:
+                              _vm.sort_stats.key == "recovered"
+                                ? "bg-hoverslab"
+                                : "",
+                            on: {
+                              click: function($event) {
+                                return _vm.toggleSort("recovered")
+                              }
+                            }
+                          },
+                          [_vm._v("Recovered")]
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "w-full h-full relative" },
+                    [
+                      _c(
+                        "simplebar",
+                        {
+                          staticClass: "top-0 right-0 bottom-0 left-0",
+                          staticStyle: { position: "absolute" },
+                          attrs: { "data-simplebar-auto-hide": "false" }
+                        },
+                        _vm._l(_vm.countries_sorted, function(
+                          data,
+                          key,
+                          index
+                        ) {
+                          return _c("CountryStateItem", {
+                            attrs: {
+                              data: data,
+                              country_key: key,
+                              compare: _vm.compare
+                            },
+                            on: { selectCountry: _vm.selectCountry }
+                          })
+                        }),
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("div")
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "m-4 ml-0 w-full overflow-hidden relative" },
+              [
                 _c(
                   "div",
                   {
                     staticClass:
-                      "xl:hidden text-3xl font-bold tracking-tight text-center mb-4"
-                  },
-                  [_vm._v("COVID-19 Tracker")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "flex-col xl:block justify-center items-center"
+                      "bg-slab rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col p-4"
                   },
                   [
                     _c(
                       "div",
+                      { staticClass: "absolute top-0 right-0 left-0 h-28 p-4" },
+                      [
+                        _c("div", { staticClass: "text-2xl font-bold mb-2" }, [
+                          _vm._v("Compare statistics")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "text-sm font-bold flex items-center"
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass:
+                                  "cursor-pointer text-lightslab mr-2 py-2 px-4 pl-0 border-b-4 hover:text-heading",
+                                class:
+                                  _vm.view == "daily"
+                                    ? "border-hoverslab text-heading"
+                                    : "border-slab",
+                                attrs: { to: "/comparison/daily/" }
+                              },
+                              [_vm._v("Daily breakdown")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "router-link",
+                              {
+                                staticClass:
+                                  "cursor-pointer text-lightslab mr-2 py-2 px-4 pl-0 border-b-4 hover:text-heading",
+                                class:
+                                  _vm.view == "charts"
+                                    ? "border-hoverslab text-heading"
+                                    : "border-slab",
+                                attrs: { to: "/comparison/charts/" }
+                              },
+                              [_vm._v("Charts")]
+                            )
+                          ],
+                          1
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
                       {
                         staticClass:
-                          "p-4 xl:p-0 xl:flex items-center justify-center text-center"
+                          "absolute top-0 right-0 bottom-0 left-0 mt-28 p-4"
                       },
                       [
                         _c(
+                          "div",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.view == "daily",
+                                expression: "view == 'daily'"
+                              }
+                            ],
+                            staticClass: "h-full relative"
+                          },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "text-xs flex items-center justify-start"
+                              },
+                              _vm._l(_vm.compare, function(
+                                country,
+                                key,
+                                index
+                              ) {
+                                return _c("div", [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "w-48 cursor-pointer rounded rounded-b-none py-2 px-4 mx-1 whitespace-no-wrap overflow-hidden truncate ...",
+                                      class:
+                                        _vm.selectedCompareTab == key
+                                          ? "bg-hoverslab"
+                                          : "bg-slab-primary",
+                                      on: {
+                                        click: function($event) {
+                                          _vm.selectedCompareTab = key
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                            " +
+                                          _vm._s(
+                                            _vm.compare.length > 0 && country[2]
+                                              ? country[2] + " - "
+                                              : ""
+                                          ) +
+                                          "\n                                            " +
+                                          _vm._s(
+                                            _vm.compare.length > 0
+                                              ? country[1]
+                                              : "(none)"
+                                          ) +
+                                          "\n                                        "
+                                      )
+                                    ]
+                                  )
+                                ])
+                              }),
+                              0
+                            ),
+                            _vm._v(" "),
+                            _vm.compare.length == 0
+                              ? _c("div", [
+                                  _vm._v(
+                                    "\n                                    Select a country or state to begin comparing.\n                                "
+                                  )
+                                ])
+                              : _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "absolute top-0 right-0 bottom-0 left-0 mt-8 bg-hoverslab rounded"
+                                  },
+                                  _vm._l(_vm.compare, function(
+                                    row,
+                                    key,
+                                    index
+                                  ) {
+                                    return _vm.compare.length > 0
+                                      ? _c("div", {}, [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "h-full",
+                                              class:
+                                                _vm.selectedCompareTab != key
+                                                  ? "hidden"
+                                                  : ""
+                                            },
+                                            [
+                                              _c("Daily", {
+                                                attrs: {
+                                                  data: _vm.getComparisonData()[
+                                                    key
+                                                  ]
+                                                },
+                                                on: {
+                                                  remove: _vm.removeCompare
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        ])
+                                      : _vm._e()
+                                  }),
+                                  0
+                                )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.view == "charts",
+                                expression: "view == 'charts'"
+                              }
+                            ],
+                            staticClass: "h-full relative"
+                          },
+                          [
+                            _c("StatsChart", {
+                              attrs: { data: _vm.comparisonDataset, full: true }
+                            })
+                          ],
+                          1
+                        )
+                      ]
+                    )
+                  ]
+                )
+              ]
+            )
+          ])
+        ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Global.vue?vue&type=template&id=f96597fc&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Global.vue?vue&type=template&id=f96597fc&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "h-full overflow-hidden relative" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "relative h-full w-full flex flex-col justify-start items-center overflow-y-scroll"
+        },
+        [
+          _c("a", { attrs: { name: "top" } }),
+          _vm._v(" "),
+          _c("div", { staticClass: "w-full xl:w-256" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "xl:hidden text-3xl font-bold tracking-tight text-center mb-4"
+              },
+              [_vm._v("COVID-19 Tracker")]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "flex-col xl:block justify-center items-center" },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "p-4 xl:p-0 xl:flex items-center justify-center text-center"
+                  },
+                  [
+                    _vm.loading && _vm.loading.global
+                      ? _c(
                           "div",
                           {
                             staticClass:
@@ -85314,39 +86066,42 @@ var render = function() {
                               )
                             )
                           ]
-                        ),
-                        _vm._v(" "),
-                        _c("div", [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "text-2xl xl:text-3xl font-bold tracking-tight"
-                            },
-                            [_vm._v("active cases")]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "text-xs text-heading" }, [
-                            _vm._v("as of " + _vm._s(_vm.global.last_update))
-                          ])
-                        ])
-                      ]
-                    ),
+                        )
+                      : _c("div", {
+                          staticClass:
+                            "text-5xl xl:mr-4 xl:text-7xl font-bold text-white"
+                        }),
                     _vm._v(" "),
+                    _c("div", [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "text-2xl xl:text-3xl font-bold tracking-tight"
+                        },
+                        [_vm._v("active cases")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "text-xs text-heading" }, [
+                        _vm._v("as of " + _vm._s(_vm.global.last_update))
+                      ])
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "flex items-start mt-4 xl:mt-0 flex-1 justify-center px-4 xl:px-0"
+                  },
+                  [
                     _c(
                       "div",
-                      {
-                        staticClass:
-                          "flex items-start mt-4 xl:mt-0 flex-1 justify-center px-4 xl:px-0"
-                      },
+                      { staticClass: "w-1/3 xl:w-auto xl:mr-8 text-center" },
                       [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "w-1/3 xl:w-auto xl:mr-8 text-center"
-                          },
-                          [
-                            _c(
+                        _vm.loading && _vm.loading.global
+                          ? _c(
                               "div",
                               {
                                 staticClass: "xl:text-3xl font-bold text-white"
@@ -85360,21 +86115,23 @@ var render = function() {
                                   )
                                 )
                               ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "font-bold" }, [
-                              _vm._v("confirmed cases")
-                            ])
-                          ]
-                        ),
+                            )
+                          : _c("div", {
+                              staticClass: "xl:text-3xl font-bold text-white"
+                            }),
                         _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "w-1/3 xl:w-auto xl:mr-8 text-center"
-                          },
-                          [
-                            _c(
+                        _c("div", { staticClass: "font-bold" }, [
+                          _vm._v("confirmed cases")
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "w-1/3 xl:w-auto xl:mr-8 text-center" },
+                      [
+                        _vm.loading && _vm.loading.global
+                          ? _c(
                               "div",
                               {
                                 staticClass:
@@ -85389,48 +86146,52 @@ var render = function() {
                                   )
                                 )
                               ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "font-bold" }, [
-                              _vm._v("deaths")
-                            ])
-                          ]
-                        ),
+                            )
+                          : _c("div", {
+                              staticClass: "xl:text-3xl font-bold text-red-400"
+                            }),
                         _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "w-1/3 xl:w-auto text-center" },
-                          [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "xl:text-3xl font-bold text-green-400"
-                              },
-                              [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm._f("numeralFormat")(
-                                      _vm.global.total.recovered
-                                    )
+                        _c("div", { staticClass: "font-bold" }, [
+                          _vm._v("deaths")
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-1/3 xl:w-auto text-center" }, [
+                      _vm.loading && _vm.loading.global
+                        ? _c(
+                            "div",
+                            {
+                              staticClass:
+                                "xl:text-3xl font-bold text-green-400"
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm._f("numeralFormat")(
+                                    _vm.global.total.recovered
                                   )
                                 )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "font-bold" }, [
-                              _vm._v("recoveries")
-                            ])
-                          ]
-                        )
-                      ]
-                    )
+                              )
+                            ]
+                          )
+                        : _c("div", {
+                            staticClass: "xl:text-3xl font-bold text-green-400"
+                          }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "font-bold" }, [
+                        _vm._v("recoveries")
+                      ])
+                    ])
                   ]
-                ),
-                _vm._v(" "),
-                _vm._m(0),
-                _vm._v(" "),
-                _c(
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _vm.loaded
+              ? _c(
                   "div",
                   { staticClass: "hidden xl:block mt-12 h-148" },
                   [
@@ -85438,16 +86199,22 @@ var render = function() {
                       staticClass: "w-full rounded-lg overflow-hidden h-full",
                       attrs: {
                         id: "world_map",
-                        enable: true,
+                        enable: false,
                         data: _vm.countries_sorted
                       }
                     })
                   ],
                   1
                 )
-              ]),
-              _vm._v(" "),
-              _c(
+              : _c("div", { staticClass: "hidden xl:block mt-12 h-148" }, [
+                  _c("div", { staticClass: "bg-white rounded h-full" }, [
+                    _vm._v("Loading map")
+                  ])
+                ])
+          ]),
+          _vm._v(" "),
+          _vm.loaded
+            ? _c(
                 "div",
                 {
                   staticClass:
@@ -85688,19 +86455,21 @@ var render = function() {
                     ])
                   ])
                 ]
-              ),
-              _vm._v(" "),
-              _vm._m(1),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "hidden bg-slab-primary xl:flex flex-1 w-full items-center justify-center pb-8"
-                },
-                [
-                  _c("div", { staticClass: "w-full xl:w-360" }, [
-                    _c(
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "hidden bg-slab-primary xl:flex flex-1 w-full items-center justify-center pb-8"
+            },
+            [
+              _c("div", { staticClass: "w-full xl:w-360" }, [
+                _vm.loaded
+                  ? _c(
                       "div",
                       {
                         staticClass:
@@ -85722,11 +86491,13 @@ var render = function() {
                       ],
                       1
                     )
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c(
+                  : _vm._e()
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _vm.loaded
+            ? _c(
                 "div",
                 {
                   staticClass:
@@ -85798,133 +86569,440 @@ var render = function() {
                       [
                         _vm._m(2),
                         _vm._v(" "),
-                        _vm._l(_vm.globalDaily.reverse(), function(
-                          row,
-                          key,
-                          index
-                        ) {
-                          return _c("div", [
-                            _vm.getGlobalDayNotes(
-                              _vm.moment(row.date).format("YYYY-MM-DD")
-                            ).length > 0
-                              ? _c(
-                                  "div",
-                                  _vm._l(
-                                    _vm.getGlobalDayNotes(
-                                      _vm.moment(row.date).format("YYYY-MM-DD")
-                                    ),
-                                    function(annotation) {
-                                      return _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "p-1 my-4 mx-8 text-xs rounded bg-lightslab flex"
-                                        },
-                                        [
-                                          annotation.state.length > 0
-                                            ? _c(
-                                                "div",
-                                                {
-                                                  staticClass: "font-bold mr-2"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    _vm._s(annotation.state)
-                                                  )
-                                                ]
-                                              )
-                                            : _vm._e(),
-                                          _vm._v(" "),
-                                          _c("div", [
-                                            _c("div", [
-                                              _vm._v(_vm._s(annotation.notes))
-                                            ]),
-                                            _vm._v(" "),
-                                            annotation.url
+                        _c(
+                          "simplebar",
+                          {
+                            staticClass: "h-160",
+                            attrs: { "data-simplebar-auto-hide": "false" }
+                          },
+                          _vm._l(_vm.globalDaily.reverse(), function(
+                            row,
+                            key,
+                            index
+                          ) {
+                            return _c("div", [
+                              _vm.getGlobalDayNotes(
+                                _vm.moment(row.date).format("YYYY-MM-DD")
+                              ).length > 0
+                                ? _c(
+                                    "div",
+                                    _vm._l(
+                                      _vm.getGlobalDayNotes(
+                                        _vm
+                                          .moment(row.date)
+                                          .format("YYYY-MM-DD")
+                                      ),
+                                      function(annotation) {
+                                        return _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "p-1 my-4 mx-8 text-xs rounded bg-lightslab flex"
+                                          },
+                                          [
+                                            annotation.state.length > 0
                                               ? _c(
                                                   "div",
                                                   {
                                                     staticClass:
-                                                      "flex items-center text-lightslab"
+                                                      "font-bold mr-2"
                                                   },
                                                   [
-                                                    _c(
-                                                      "div",
-                                                      { staticClass: "mr-1" },
-                                                      [_vm._v("Source:")]
-                                                    ),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "a",
-                                                      {
-                                                        staticClass:
-                                                          "underline hover:text-white truncate ... inline-block w-64",
-                                                        attrs: {
-                                                          href: annotation.url
-                                                        }
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          _vm._s(annotation.url)
-                                                        )
-                                                      ]
+                                                    _vm._v(
+                                                      _vm._s(annotation.state)
                                                     )
                                                   ]
                                                 )
-                                              : _vm._e()
-                                          ])
-                                        ]
-                                      )
-                                    }
-                                  ),
-                                  0
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "xl:hidden flex flex-1 items-start text-xs",
-                                class:
-                                  key % 2 == 0
-                                    ? "bg-slab-primary"
-                                    : "bg-slab-secondary"
-                              },
-                              [
-                                _c("div", { staticClass: "p-2" }, [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.moment(row.date).format("YYYY-MM-DD")
-                                    )
+                                              : _vm._e(),
+                                            _vm._v(" "),
+                                            _c("div", [
+                                              _c("div", [
+                                                _vm._v(_vm._s(annotation.notes))
+                                              ]),
+                                              _vm._v(" "),
+                                              annotation.url
+                                                ? _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "flex items-center text-lightslab"
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "div",
+                                                        { staticClass: "mr-1" },
+                                                        [_vm._v("Source:")]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "a",
+                                                        {
+                                                          staticClass:
+                                                            "underline hover:text-white truncate ... inline-block w-64",
+                                                          attrs: {
+                                                            href: annotation.url
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              annotation.url
+                                                            )
+                                                          )
+                                                        ]
+                                                      )
+                                                    ]
+                                                  )
+                                                : _vm._e()
+                                            ])
+                                          ]
+                                        )
+                                      }
+                                    ),
+                                    0
                                   )
-                                ]),
-                                _vm._v(" "),
-                                _c("div", [
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "xl:hidden flex flex-1 items-start text-xs",
+                                  class:
+                                    key % 2 == 0
+                                      ? "bg-slab-primary"
+                                      : "bg-slab-secondary"
+                                },
+                                [
+                                  _c("div", { staticClass: "p-2" }, [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm
+                                          .moment(row.date)
+                                          .format("YYYY-MM-DD")
+                                      )
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass: "p-2",
+                                        class:
+                                          key % 2 == 0
+                                            ? "bg-slab-primary"
+                                            : "bg-slab-secondary"
+                                      },
+                                      [
+                                        _c(
+                                          "span",
+                                          { staticClass: "font-bold" },
+                                          [_vm._v("Confirmed")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("span", {}, [
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm._f("numeralFormat")(
+                                                row.confirmed
+                                              )
+                                            )
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        row.confirmedDelta >= 0
+                                          ? _c(
+                                              "span",
+                                              { staticClass: "text-red-400" },
+                                              [
+                                                _vm._v(
+                                                  "(+" +
+                                                    _vm._s(
+                                                      _vm._f("numeralFormat")(
+                                                        row.confirmedDelta
+                                                      )
+                                                    ) +
+                                                    ")"
+                                                )
+                                              ]
+                                            )
+                                          : _c(
+                                              "span",
+                                              { staticClass: "text-green-400" },
+                                              [
+                                                _vm._v(
+                                                  "(" +
+                                                    _vm._s(
+                                                      _vm._f("numeralFormat")(
+                                                        row.confirmedDelta
+                                                      )
+                                                    ) +
+                                                    ")"
+                                                )
+                                              ]
+                                            )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass: "p-2",
+                                        class:
+                                          key % 2 == 0
+                                            ? "bg-slab-primary"
+                                            : "bg-slab-secondary"
+                                      },
+                                      [
+                                        _c(
+                                          "span",
+                                          { staticClass: "font-bold" },
+                                          [_vm._v("Deaths")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("span", {}, [
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm._f("numeralFormat")(
+                                                row.deaths
+                                              )
+                                            )
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        row.deathsDelta >= 0
+                                          ? _c(
+                                              "span",
+                                              { staticClass: "text-red-400" },
+                                              [
+                                                _vm._v(
+                                                  "(+" +
+                                                    _vm._s(
+                                                      _vm._f("numeralFormat")(
+                                                        row.deathsDelta
+                                                      )
+                                                    ) +
+                                                    ")"
+                                                )
+                                              ]
+                                            )
+                                          : _c(
+                                              "span",
+                                              { staticClass: "text-green-400" },
+                                              [
+                                                _vm._v(
+                                                  "(" +
+                                                    _vm._s(
+                                                      _vm._f("numeralFormat")(
+                                                        row.deathsDelta
+                                                      )
+                                                    ) +
+                                                    ")"
+                                                )
+                                              ]
+                                            )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass: "p-2",
+                                        class:
+                                          key % 2 == 0
+                                            ? "bg-slab-primary"
+                                            : "bg-slab-secondary"
+                                      },
+                                      [
+                                        _c(
+                                          "span",
+                                          { staticClass: "font-bold" },
+                                          [_vm._v("Recovered")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("span", {}, [
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm._f("numeralFormat")(
+                                                row.recovered
+                                              )
+                                            )
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        row.recoveredDelta.recovered >= 0
+                                          ? _c(
+                                              "span",
+                                              { staticClass: "text-green-400" },
+                                              [
+                                                _vm._v(
+                                                  "(+" +
+                                                    _vm._s(
+                                                      _vm._f("numeralFormat")(
+                                                        row.recoveredDelta
+                                                      )
+                                                    ) +
+                                                    ")"
+                                                )
+                                              ]
+                                            )
+                                          : _c(
+                                              "span",
+                                              { staticClass: "text-red-400" },
+                                              [
+                                                _vm._v(
+                                                  "(" +
+                                                    _vm._s(
+                                                      _vm._f("numeralFormat")(
+                                                        row.recoveredDelta
+                                                      )
+                                                    ) +
+                                                    ")"
+                                                )
+                                              ]
+                                            )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass: "p-2",
+                                        class:
+                                          key % 2 == 0
+                                            ? "bg-slab-primary"
+                                            : "bg-slab-secondary"
+                                      },
+                                      [
+                                        _c(
+                                          "span",
+                                          { staticClass: "font-bold" },
+                                          [_vm._v("Active")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("span", {}, [
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm._f("numeralFormat")(
+                                                row.confirmed -
+                                                  row.deaths -
+                                                  row.recovered
+                                              )
+                                            )
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        row.activeDelta >= 0
+                                          ? _c(
+                                              "span",
+                                              { staticClass: "text-red-400" },
+                                              [
+                                                _vm._v(
+                                                  "(+" +
+                                                    _vm._s(
+                                                      _vm._f("numeralFormat")(
+                                                        row.activeDelta
+                                                      )
+                                                    ) +
+                                                    ")"
+                                                )
+                                              ]
+                                            )
+                                          : _c(
+                                              "span",
+                                              { staticClass: "text-green-400" },
+                                              [
+                                                _vm._v(
+                                                  "(" +
+                                                    _vm._s(
+                                                      _vm._f("numeralFormat")(
+                                                        row.activeDelta
+                                                      )
+                                                    ) +
+                                                    ")"
+                                                )
+                                              ]
+                                            )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass: "p-2",
+                                        class:
+                                          key % 2 == 0
+                                            ? "bg-slab-primary"
+                                            : "bg-slab-secondary"
+                                      },
+                                      [
+                                        _c(
+                                          "span",
+                                          { staticClass: "font-bold" },
+                                          [_vm._v("Growth factor")]
+                                        ),
+                                        _vm._v(" "),
+                                        row.growthFactor > 1
+                                          ? _c(
+                                              "span",
+                                              { staticClass: "text-red-400" },
+                                              [_vm._v(_vm._s(row.growthFactor))]
+                                            )
+                                          : _c(
+                                              "span",
+                                              { staticClass: "text-green-400" },
+                                              [_vm._v(_vm._s(row.growthFactor))]
+                                            )
+                                      ]
+                                    )
+                                  ])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "xl:flex flex-1 items-center justify-start w-full text-xs hidden"
+                                },
+                                [
                                   _c(
                                     "div",
                                     {
-                                      staticClass: "p-2",
+                                      staticClass: "p-2 w-76",
                                       class:
                                         key % 2 == 0
                                           ? "bg-slab-primary"
                                           : "bg-slab-secondary"
                                     },
                                     [
-                                      _c("span", { staticClass: "font-bold" }, [
-                                        _vm._v("Confirmed")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("span", {}, [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm._f("numeralFormat")(
-                                              row.confirmed
-                                            )
-                                          )
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm
+                                            .moment(row.date)
+                                            .format("YYYY-MM-DD")
                                         )
-                                      ]),
-                                      _vm._v(" "),
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "p-2 w-36",
+                                      class:
+                                        key % 2 == 0
+                                          ? "bg-slab-primary"
+                                          : "bg-slab-secondary"
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm._f("numeralFormat")(row.confirmed)
+                                        ) +
+                                          "\n                                        "
+                                      ),
                                       row.confirmedDelta >= 0
                                         ? _c(
                                             "span",
@@ -85962,25 +87040,19 @@ var render = function() {
                                   _c(
                                     "div",
                                     {
-                                      staticClass: "p-2",
+                                      staticClass: "p-2 w-36",
                                       class:
                                         key % 2 == 0
                                           ? "bg-slab-primary"
                                           : "bg-slab-secondary"
                                     },
                                     [
-                                      _c("span", { staticClass: "font-bold" }, [
-                                        _vm._v("Deaths")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("span", {}, [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm._f("numeralFormat")(row.deaths)
-                                          )
-                                        )
-                                      ]),
-                                      _vm._v(" "),
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm._f("numeralFormat")(row.deaths)
+                                        ) +
+                                          "\n                                        "
+                                      ),
                                       row.deathsDelta >= 0
                                         ? _c(
                                             "span",
@@ -86018,27 +87090,19 @@ var render = function() {
                                   _c(
                                     "div",
                                     {
-                                      staticClass: "p-2",
+                                      staticClass: "p-2 w-36",
                                       class:
                                         key % 2 == 0
                                           ? "bg-slab-primary"
                                           : "bg-slab-secondary"
                                     },
                                     [
-                                      _c("span", { staticClass: "font-bold" }, [
-                                        _vm._v("Recovered")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("span", {}, [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm._f("numeralFormat")(
-                                              row.recovered
-                                            )
-                                          )
-                                        )
-                                      ]),
-                                      _vm._v(" "),
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm._f("numeralFormat")(row.recovered)
+                                        ) +
+                                          "\n                                        "
+                                      ),
                                       row.recoveredDelta.recovered >= 0
                                         ? _c(
                                             "span",
@@ -86076,29 +87140,23 @@ var render = function() {
                                   _c(
                                     "div",
                                     {
-                                      staticClass: "p-2",
+                                      staticClass: "p-2 w-36",
                                       class:
                                         key % 2 == 0
                                           ? "bg-slab-primary"
                                           : "bg-slab-secondary"
                                     },
                                     [
-                                      _c("span", { staticClass: "font-bold" }, [
-                                        _vm._v("Active")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("span", {}, [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm._f("numeralFormat")(
-                                              row.confirmed -
-                                                row.deaths -
-                                                row.recovered
-                                            )
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm._f("numeralFormat")(
+                                            row.confirmed -
+                                              row.deaths -
+                                              row.recovered
                                           )
-                                        )
-                                      ]),
-                                      _vm._v(" "),
+                                        ) +
+                                          "\n                                        "
+                                      ),
                                       row.activeDelta >= 0
                                         ? _c(
                                             "span",
@@ -86136,17 +87194,13 @@ var render = function() {
                                   _c(
                                     "div",
                                     {
-                                      staticClass: "p-2",
+                                      staticClass: "p-2 w-36",
                                       class:
                                         key % 2 == 0
                                           ? "bg-slab-primary"
                                           : "bg-slab-secondary"
                                     },
                                     [
-                                      _c("span", { staticClass: "font-bold" }, [
-                                        _vm._v("Growth factor")
-                                      ]),
-                                      _vm._v(" "),
                                       row.growthFactor > 1
                                         ? _c(
                                             "span",
@@ -86160,954 +87214,273 @@ var render = function() {
                                           )
                                     ]
                                   )
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "xl:flex flex-1 items-center justify-start w-full text-xs hidden"
-                              },
-                              [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "p-2 w-76",
-                                    class:
-                                      key % 2 == 0
-                                        ? "bg-slab-primary"
-                                        : "bg-slab-secondary"
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm
-                                          .moment(row.date)
-                                          .format("YYYY-MM-DD")
-                                      )
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "p-2 w-36",
-                                    class:
-                                      key % 2 == 0
-                                        ? "bg-slab-primary"
-                                        : "bg-slab-secondary"
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm._f("numeralFormat")(row.confirmed)
-                                      ) +
-                                        "\n                                        "
-                                    ),
-                                    row.confirmedDelta >= 0
-                                      ? _c(
-                                          "span",
-                                          { staticClass: "text-red-400" },
-                                          [
-                                            _vm._v(
-                                              "(+" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    row.confirmedDelta
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                      : _c(
-                                          "span",
-                                          { staticClass: "text-green-400" },
-                                          [
-                                            _vm._v(
-                                              "(" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    row.confirmedDelta
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "p-2 w-36",
-                                    class:
-                                      key % 2 == 0
-                                        ? "bg-slab-primary"
-                                        : "bg-slab-secondary"
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm._f("numeralFormat")(row.deaths)
-                                      ) +
-                                        "\n                                        "
-                                    ),
-                                    row.deathsDelta >= 0
-                                      ? _c(
-                                          "span",
-                                          { staticClass: "text-red-400" },
-                                          [
-                                            _vm._v(
-                                              "(+" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    row.deathsDelta
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                      : _c(
-                                          "span",
-                                          { staticClass: "text-green-400" },
-                                          [
-                                            _vm._v(
-                                              "(" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    row.deathsDelta
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "p-2 w-36",
-                                    class:
-                                      key % 2 == 0
-                                        ? "bg-slab-primary"
-                                        : "bg-slab-secondary"
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm._f("numeralFormat")(row.recovered)
-                                      ) +
-                                        "\n                                        "
-                                    ),
-                                    row.recoveredDelta.recovered >= 0
-                                      ? _c(
-                                          "span",
-                                          { staticClass: "text-green-400" },
-                                          [
-                                            _vm._v(
-                                              "(+" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    row.recoveredDelta
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                      : _c(
-                                          "span",
-                                          { staticClass: "text-red-400" },
-                                          [
-                                            _vm._v(
-                                              "(" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    row.recoveredDelta
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "p-2 w-36",
-                                    class:
-                                      key % 2 == 0
-                                        ? "bg-slab-primary"
-                                        : "bg-slab-secondary"
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm._f("numeralFormat")(
-                                          row.confirmed -
-                                            row.deaths -
-                                            row.recovered
-                                        )
-                                      ) +
-                                        "\n                                        "
-                                    ),
-                                    row.activeDelta >= 0
-                                      ? _c(
-                                          "span",
-                                          { staticClass: "text-red-400" },
-                                          [
-                                            _vm._v(
-                                              "(+" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    row.activeDelta
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                      : _c(
-                                          "span",
-                                          { staticClass: "text-green-400" },
-                                          [
-                                            _vm._v(
-                                              "(" +
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    row.activeDelta
-                                                  )
-                                                ) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "p-2 w-36",
-                                    class:
-                                      key % 2 == 0
-                                        ? "bg-slab-primary"
-                                        : "bg-slab-secondary"
-                                  },
-                                  [
-                                    row.growthFactor > 1
-                                      ? _c(
-                                          "span",
-                                          { staticClass: "text-red-400" },
-                                          [_vm._v(_vm._s(row.growthFactor))]
-                                        )
-                                      : _c(
-                                          "span",
-                                          { staticClass: "text-green-400" },
-                                          [_vm._v(_vm._s(row.growthFactor))]
-                                        )
-                                  ]
-                                )
-                              ]
-                            )
-                          ])
-                        })
-                      ],
-                      2
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.global_options.table == "countries",
-                            expression: "global_options.table == 'countries'"
-                          }
-                        ],
-                        staticClass: "bg-lightslab rounded overflow-hidden"
-                      },
-                      [
-                        _vm._m(3),
-                        _vm._v(" "),
-                        _vm._l(
-                          _vm.getSortedCountries("confirmed", "desc"),
-                          function(row, key, index) {
-                            return _c("div", [
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "xl:hidden flex flex-1 items-start text-xs",
-                                  class:
-                                    key % 2 == 0
-                                      ? "bg-slab-primary"
-                                      : "bg-slab-secondary"
-                                },
-                                [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "p-2 w-32",
-                                      class:
-                                        key % 2 == 0
-                                          ? "bg-slab-primary"
-                                          : "bg-slab-secondary"
-                                    },
-                                    [_vm._v(_vm._s(row.name))]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("div", [
-                                    _c("div", { staticClass: "p-2" }, [
-                                      _c("span", { staticClass: "font-bold" }, [
-                                        _vm._v("Confirmed")
-                                      ]),
-                                      _vm._v(
-                                        "\n                                            " +
-                                          _vm._s(
-                                            _vm._f("numeralFormat")(row.total.c)
-                                          ) +
-                                          "\n                                        "
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("div", { staticClass: "p-2" }, [
-                                      _c("span", { staticClass: "font-bold" }, [
-                                        _vm._v("Deaths")
-                                      ]),
-                                      _vm._v(
-                                        "\n                                            " +
-                                          _vm._s(
-                                            _vm._f("numeralFormat")(row.total.d)
-                                          ) +
-                                          "\n                                        "
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("div", { staticClass: "p-2" }, [
-                                      _c("span", { staticClass: "font-bold" }, [
-                                        _vm._v("Recovered")
-                                      ]),
-                                      _vm._v(
-                                        "\n                                            " +
-                                          _vm._s(
-                                            _vm._f("numeralFormat")(row.total.r)
-                                          ) +
-                                          "\n                                        "
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("div", { staticClass: "p-2" }, [
-                                      _c("span", { staticClass: "font-bold" }, [
-                                        _vm._v("Active")
-                                      ]),
-                                      _vm._v(
-                                        "\n                                            " +
-                                          _vm._s(
-                                            _vm._f("numeralFormat")(
-                                              row.total.c -
-                                                row.total.d -
-                                                row.total.r
-                                            )
-                                          ) +
-                                          "\n                                        "
-                                      )
-                                    ])
-                                  ])
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "hidden xl:flex flex-1 items-center justify-start w-full text-xs"
-                                },
-                                [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "p-2 w-112",
-                                      class:
-                                        key % 2 == 0
-                                          ? "bg-slab-primary"
-                                          : "bg-slab-secondary"
-                                    },
-                                    [_vm._v(_vm._s(row.name))]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "p-2 w-36",
-                                      class:
-                                        key % 2 == 0
-                                          ? "bg-slab-primary"
-                                          : "bg-slab-secondary"
-                                    },
-                                    [
-                                      _vm._v(
-                                        _vm._s(
-                                          _vm._f("numeralFormat")(row.total.c)
-                                        )
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "p-2 w-36",
-                                      class:
-                                        key % 2 == 0
-                                          ? "bg-slab-primary"
-                                          : "bg-slab-secondary"
-                                    },
-                                    [
-                                      _vm._v(
-                                        _vm._s(
-                                          _vm._f("numeralFormat")(row.total.d)
-                                        )
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "p-2 w-36",
-                                      class:
-                                        key % 2 == 0
-                                          ? "bg-slab-primary"
-                                          : "bg-slab-secondary"
-                                    },
-                                    [
-                                      _vm._v(
-                                        _vm._s(
-                                          _vm._f("numeralFormat")(row.total.r)
-                                        )
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "p-2 w-36",
-                                      class:
-                                        key % 2 == 0
-                                          ? "bg-slab-primary"
-                                          : "bg-slab-secondary"
-                                    },
-                                    [
-                                      _vm._v(
-                                        _vm._s(
-                                          _vm._f("numeralFormat")(
-                                            row.total.c -
-                                              row.total.d -
-                                              row.total.r
-                                          )
-                                        )
-                                      )
-                                    ]
-                                  )
                                 ]
                               )
                             ])
-                          }
-                        )
-                      ],
-                      2
-                    )
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _vm._m(4)
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.mode == "comparison",
-                  expression: "mode == 'comparison'"
-                }
-              ],
-              staticClass: "relative h-full flex flex-1"
-            },
-            [
-              _c("div", { staticClass: "flex flex-col" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "hidden m-4 absolute left-0 top-0 w-full overflow-hidden bg-lightslab rounded h-48 z-10 p-4"
-                  },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "text-2xl tracking-tight font-bold" },
-                      [_vm._v("Global tally")]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "text-xs mb-4" }, [
-                      _vm._v("as of " + _vm._s(_vm.global.last_update))
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "flex font-bold justify-between items-center"
-                      },
-                      [
-                        _c("div", { staticClass: "m-2" }, [
-                          _c("div", { staticClass: "text-sm" }, [
-                            _vm._v("Confirmed")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "text-3xl text-white" }, [
-                            _vm._v(
-                              _vm._s(
-                                _vm._f("numeralFormat")(
-                                  _vm.global.total.confirmed
-                                )
-                              )
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "m-2" }, [
-                          _c("div", { staticClass: "text-sm" }, [
-                            _vm._v("Deaths")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "text-3xl text-white" }, [
-                            _vm._v(
-                              _vm._s(
-                                _vm._f("numeralFormat")(_vm.global.total.deaths)
-                              )
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "m-2" }, [
-                          _c("div", { staticClass: "text-sm" }, [
-                            _vm._v("Recovered")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "text-3xl text-white" }, [
-                            _vm._v(
-                              _vm._s(
-                                _vm._f("numeralFormat")(
-                                  _vm.global.total.recovered
-                                )
-                              )
-                            )
-                          ])
-                        ])
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "overflow-hidden bg-slab rounded m-4 flex flex-col items-start h-full p-4 relative"
-                  },
-                  [
-                    _c("div", {}, [
-                      _c("div", { staticClass: "tracking-tight font-bold" }, [
-                        _vm._v("Countries and states "),
-                        _c("br"),
-                        _vm._v("(" + _vm._s(_vm.countries.length) + " total)")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "text-xs text-right" }, [
-                        _vm._v(
-                          "Sorting by " +
-                            _vm._s(_vm.sort_stats.key) +
-                            " " +
-                            _vm._s(_vm.sort_stats.order)
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "flex font-bold py-2 text-xs items-center"
-                        },
-                        [
-                          _c("div", { staticClass: "w-4 p-2 m-1 ml-0" }),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "w-32 cursor-pointer p-2 overflow-hidden",
-                              class:
-                                _vm.sort_stats.key == "country"
-                                  ? "bg-hoverslab"
-                                  : "",
-                              on: {
-                                click: function($event) {
-                                  return _vm.toggleSort("country")
-                                }
-                              }
-                            },
-                            [_vm._v("Country / Region")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "w-20 cursor-pointer p-2 overflow-hidden",
-                              class:
-                                _vm.sort_stats.key == "confirmed"
-                                  ? "bg-hoverslab"
-                                  : "",
-                              on: {
-                                click: function($event) {
-                                  return _vm.toggleSort("confirmed")
-                                }
-                              }
-                            },
-                            [_vm._v("Confirmed")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "w-20 cursor-pointer p-2 overflow-hidden",
-                              class:
-                                _vm.sort_stats.key == "deaths"
-                                  ? "bg-hoverslab"
-                                  : "",
-                              on: {
-                                click: function($event) {
-                                  return _vm.toggleSort("deaths")
-                                }
-                              }
-                            },
-                            [_vm._v("Deaths")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "w-20 cursor-pointer p-2 overflow-hidden",
-                              class:
-                                _vm.sort_stats.key == "recovered"
-                                  ? "bg-hoverslab"
-                                  : "",
-                              on: {
-                                click: function($event) {
-                                  return _vm.toggleSort("recovered")
-                                }
-                              }
-                            },
-                            [_vm._v("Recovered")]
-                          )
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "w-full h-full relative" },
-                      [
-                        _c(
-                          "simplebar",
-                          {
-                            staticClass: "top-0 right-0 bottom-0 left-0",
-                            staticStyle: { position: "absolute" },
-                            attrs: { "data-simplebar-auto-hide": "false" }
-                          },
-                          _vm._l(_vm.countries_sorted, function(
-                            data,
-                            key,
-                            index
-                          ) {
-                            return _c("CountryStateItem", {
-                              attrs: {
-                                data: data,
-                                country_key: key,
-                                compare: _vm.compare
-                              },
-                              on: { selectCountry: _vm.selectCountry }
-                            })
                           }),
-                          1
+                          0
                         )
                       ],
                       1
                     ),
                     _vm._v(" "),
-                    _c("div")
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "m-4 ml-0 w-full overflow-hidden relative" },
-                [
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "bg-slab rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col p-4"
-                    },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "absolute top-0 right-0 left-0 h-28 p-4"
-                        },
-                        [
-                          _c(
-                            "div",
-                            { staticClass: "text-2xl font-bold mb-2" },
-                            [_vm._v("Compare statistics")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass: "text-sm font-bold flex items-center"
-                            },
-                            [
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "cursor-pointer text-lightslab mr-2 py-2 px-4 pl-0 border-b-4 hover:text-heading",
-                                  class:
-                                    _vm.ui.content.selectedTab == "daily"
-                                      ? "border-hoverslab text-heading"
-                                      : "border-slab",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.ui.content.selectedTab = "daily"
-                                    }
-                                  }
-                                },
-                                [_vm._v("Daily breakdown")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "cursor-pointer text-lightslab mr-2 py-2 px-4 pl-0 border-b-4 hover:text-heading",
-                                  class:
-                                    _vm.ui.content.selectedTab == "charts"
-                                      ? "border-hoverslab text-heading"
-                                      : "border-slab",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.ui.content.selectedTab = "charts"
-                                    }
-                                  }
-                                },
-                                [_vm._v("Charts")]
-                              )
-                            ]
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "absolute top-0 right-0 bottom-0 left-0 mt-28 p-4"
-                        },
-                        [
-                          _c(
-                            "div",
-                            {
-                              directives: [
-                                {
-                                  name: "show",
-                                  rawName: "v-show",
-                                  value: _vm.ui.content.selectedTab == "daily",
-                                  expression:
-                                    "ui.content.selectedTab == 'daily'"
-                                }
-                              ],
-                              staticClass: "h-full relative"
-                            },
-                            [
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "text-xs flex items-center justify-start"
-                                },
-                                _vm._l(_vm.compare, function(
-                                  country,
-                                  key,
-                                  index
-                                ) {
+                    _vm.loaded
+                      ? _c(
+                          "div",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.global_options.table == "countries",
+                                expression:
+                                  "global_options.table == 'countries'"
+                              }
+                            ],
+                            staticClass: "bg-lightslab rounded overflow-hidden"
+                          },
+                          [
+                            _vm._m(3),
+                            _vm._v(" "),
+                            _c(
+                              "simplebar",
+                              {
+                                staticClass: "h-160",
+                                attrs: { "data-simplebar-auto-hide": "false" }
+                              },
+                              _vm._l(
+                                _vm.getSortedCountries("confirmed", "desc"),
+                                function(row, key, index) {
                                   return _c("div", [
                                     _c(
                                       "div",
                                       {
                                         staticClass:
-                                          "w-48 cursor-pointer rounded rounded-b-none py-2 px-4 mx-1 whitespace-no-wrap overflow-hidden truncate ...",
+                                          "xl:hidden flex flex-1 items-start text-xs",
                                         class:
-                                          _vm.selectedCompareTab == key
-                                            ? "bg-hoverslab"
-                                            : "bg-slab-primary",
-                                        on: {
-                                          click: function($event) {
-                                            _vm.selectedCompareTab = key
-                                          }
-                                        }
+                                          key % 2 == 0
+                                            ? "bg-slab-primary"
+                                            : "bg-slab-secondary"
                                       },
                                       [
-                                        _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(
-                                              _vm.compare.length > 0 &&
-                                                country[2]
-                                                ? country[2] + " - "
-                                                : ""
-                                            ) +
-                                            "\n                                            " +
-                                            _vm._s(
-                                              _vm.compare.length > 0
-                                                ? country[1]
-                                                : "(none)"
-                                            ) +
-                                            "\n                                        "
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "p-2 w-32",
+                                            class:
+                                              key % 2 == 0
+                                                ? "bg-slab-primary"
+                                                : "bg-slab-secondary"
+                                          },
+                                          [_vm._v(_vm._s(row.name))]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("div", [
+                                          _c("div", { staticClass: "p-2" }, [
+                                            _c(
+                                              "span",
+                                              { staticClass: "font-bold" },
+                                              [_vm._v("Confirmed")]
+                                            ),
+                                            _vm._v(
+                                              "\n                                            " +
+                                                _vm._s(
+                                                  _vm._f("numeralFormat")(
+                                                    row.total.c
+                                                  )
+                                                ) +
+                                                "\n                                        "
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("div", { staticClass: "p-2" }, [
+                                            _c(
+                                              "span",
+                                              { staticClass: "font-bold" },
+                                              [_vm._v("Deaths")]
+                                            ),
+                                            _vm._v(
+                                              "\n                                            " +
+                                                _vm._s(
+                                                  _vm._f("numeralFormat")(
+                                                    row.total.d
+                                                  )
+                                                ) +
+                                                "\n                                        "
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("div", { staticClass: "p-2" }, [
+                                            _c(
+                                              "span",
+                                              { staticClass: "font-bold" },
+                                              [_vm._v("Recovered")]
+                                            ),
+                                            _vm._v(
+                                              "\n                                            " +
+                                                _vm._s(
+                                                  _vm._f("numeralFormat")(
+                                                    row.total.r
+                                                  )
+                                                ) +
+                                                "\n                                        "
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("div", { staticClass: "p-2" }, [
+                                            _c(
+                                              "span",
+                                              { staticClass: "font-bold" },
+                                              [_vm._v("Active")]
+                                            ),
+                                            _vm._v(
+                                              "\n                                            " +
+                                                _vm._s(
+                                                  _vm._f("numeralFormat")(
+                                                    row.total.c -
+                                                      row.total.d -
+                                                      row.total.r
+                                                  )
+                                                ) +
+                                                "\n                                        "
+                                            )
+                                          ])
+                                        ])
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "hidden xl:flex flex-1 items-center justify-start w-full text-xs"
+                                      },
+                                      [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "p-2 w-112",
+                                            class:
+                                              key % 2 == 0
+                                                ? "bg-slab-primary"
+                                                : "bg-slab-secondary"
+                                          },
+                                          [_vm._v(_vm._s(row.name))]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "p-2 w-36",
+                                            class:
+                                              key % 2 == 0
+                                                ? "bg-slab-primary"
+                                                : "bg-slab-secondary"
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.total.c
+                                                )
+                                              )
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "p-2 w-36",
+                                            class:
+                                              key % 2 == 0
+                                                ? "bg-slab-primary"
+                                                : "bg-slab-secondary"
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.total.d
+                                                )
+                                              )
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "p-2 w-36",
+                                            class:
+                                              key % 2 == 0
+                                                ? "bg-slab-primary"
+                                                : "bg-slab-secondary"
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.total.r
+                                                )
+                                              )
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass: "p-2 w-36",
+                                            class:
+                                              key % 2 == 0
+                                                ? "bg-slab-primary"
+                                                : "bg-slab-secondary"
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.total.c -
+                                                    row.total.d -
+                                                    row.total.r
+                                                )
+                                              )
+                                            )
+                                          ]
                                         )
                                       ]
                                     )
                                   ])
-                                }),
-                                0
+                                }
                               ),
-                              _vm._v(" "),
-                              _vm.compare.length == 0
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                                    Select a country or state to begin comparing.\n                                "
-                                    )
-                                  ])
-                                : _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "absolute top-0 right-0 bottom-0 left-0 mt-8 bg-hoverslab rounded"
-                                    },
-                                    _vm._l(_vm.compare, function(
-                                      row,
-                                      key,
-                                      index
-                                    ) {
-                                      return _vm.compare.length > 0
-                                        ? _c("div", {}, [
-                                            _c(
-                                              "div",
-                                              {
-                                                staticClass: "h-full",
-                                                class:
-                                                  _vm.selectedCompareTab != key
-                                                    ? "hidden"
-                                                    : ""
-                                              },
-                                              [
-                                                _c("Daily", {
-                                                  attrs: {
-                                                    data: _vm.getComparisonData()[
-                                                      key
-                                                    ]
-                                                  },
-                                                  on: {
-                                                    remove: _vm.removeCompare
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ])
-                                        : _vm._e()
-                                    }),
-                                    0
-                                  )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              directives: [
-                                {
-                                  name: "show",
-                                  rawName: "v-show",
-                                  value: _vm.ui.content.selectedTab == "charts",
-                                  expression:
-                                    "ui.content.selectedTab == 'charts'"
-                                }
-                              ],
-                              staticClass: "h-full relative"
-                            },
-                            [
-                              _c("StatsChart", {
-                                attrs: {
-                                  data: _vm.comparisonDataset,
-                                  full: true
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        ]
-                      )
-                    ]
-                  )
+                              0
+                            )
+                          ],
+                          1
+                        )
+                      : _vm._e()
+                  ])
                 ]
               )
-            ]
-          ),
+            : _vm._e(),
           _vm._v(" "),
-          _vm.mode == "trends"
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "flex items-center justify-center m-4 bg-slab rounded absolute top-0 right-0 bottom-0 left-0 text-center",
-                  staticStyle: { bottom: "56px" }
-                },
-                [_vm._m(5)]
-              )
-            : _vm._e()
-        ])
+          _vm._m(4)
+        ]
+      )
+    ]),
+    _vm._v(" "),
+    _vm.mode == "trends"
+      ? _c(
+          "div",
+          {
+            staticClass:
+              "flex items-center justify-center m-4 bg-slab rounded absolute top-0 right-0 bottom-0 left-0 text-center",
+            staticStyle: { bottom: "56px" }
+          },
+          [_vm._m(5)]
+        )
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -87139,11 +87512,7 @@ var staticRenderFns = [
           {
             staticClass: "m-2 xl:m-0 xl:w-256 font-bold text-2xl tracking-tight"
           },
-          [
-            _vm._v(
-              "\n                        Global cases graph\n                    "
-            )
-          ]
+          [_vm._v("\n                    Global cases graph\n                ")]
         )
       ]
     )
@@ -87167,23 +87536,23 @@ var staticRenderFns = [
           _vm._v("Stats")
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "hidden font-bold p-2 w-36" }, [
+        _c("div", { staticClass: "hidden xl:block font-bold p-2 w-36" }, [
           _vm._v("Confirmed")
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "hidden font-bold p-2 w-36" }, [
+        _c("div", { staticClass: "hidden xl:block font-bold p-2 w-36" }, [
           _vm._v("Deaths")
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "hidden font-bold p-2 w-36" }, [
+        _c("div", { staticClass: "hidden xl:block font-bold p-2 w-36" }, [
           _vm._v("Recovered")
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "hidden font-bold p-2 w-36" }, [
+        _c("div", { staticClass: "hidden xl:block font-bold p-2 w-36" }, [
           _vm._v("Active")
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "hidden font-bold p-2 w-36" }, [
+        _c("div", { staticClass: "hidden xl:block font-bold p-2 w-36" }, [
           _vm._v("Growth Factor")
         ])
       ]
@@ -87251,6 +87620,30 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Glossary.vue?vue&type=template&id=39600f3d&scoped=true&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Glossary.vue?vue&type=template&id=39600f3d&scoped=true& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [_vm._v("Glossary")])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -103090,8 +103483,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var _views_Main__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./views/Main */ "./resources/js/views/Main.vue");
+/* harmony import */ var _views_Global__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./views/Global */ "./resources/js/views/Global.vue");
 /* harmony import */ var _views_About__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./views/About */ "./resources/js/views/About.vue");
+/* harmony import */ var _views_Comparison__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./views/Comparison */ "./resources/js/views/Comparison.vue");
+/* harmony import */ var _views_Glossary__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./views/Glossary */ "./resources/js/views/Glossary.vue");
+
+
 
 
 
@@ -103100,13 +103497,45 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
   routes: [{
+    // Global page
     path: '/',
-    name: 'home',
-    component: _views_Main__WEBPACK_IMPORTED_MODULE_2__["default"]
-  } // {
-  //     path: '/about', name: 'about', component: About,
-  // }
-  ]
+    name: 'global',
+    component: _views_Global__WEBPACK_IMPORTED_MODULE_2__["default"],
+    meta: {
+      title: 'Global statistics'
+    }
+  }, {
+    // Comparison page
+    path: '/comparison',
+    name: 'compare',
+    component: _views_Comparison__WEBPACK_IMPORTED_MODULE_4__["default"],
+    meta: {
+      title: 'Compare statistics'
+    }
+  }, {
+    // Daily page
+    path: '/comparison/daily',
+    name: 'comparisonDaily',
+    component: _views_Comparison__WEBPACK_IMPORTED_MODULE_4__["default"],
+    meta: {
+      title: 'Compare daily statistics'
+    }
+  }, {
+    // Daily page
+    path: '/comparison/charts',
+    name: 'comparisonCharts',
+    component: _views_Comparison__WEBPACK_IMPORTED_MODULE_4__["default"],
+    meta: {
+      title: 'Compare charts'
+    }
+  }, {
+    path: '/glossary',
+    name: 'glossary',
+    component: _views_Glossary__WEBPACK_IMPORTED_MODULE_5__["default"],
+    meta: {
+      title: 'Glossary'
+    }
+  }]
 }));
 
 /***/ }),
@@ -103180,17 +103609,17 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/views/Main.vue":
-/*!*************************************!*\
-  !*** ./resources/js/views/Main.vue ***!
-  \*************************************/
+/***/ "./resources/js/views/Comparison.vue":
+/*!*******************************************!*\
+  !*** ./resources/js/views/Comparison.vue ***!
+  \*******************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Main_vue_vue_type_template_id_2ad93e50_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Main.vue?vue&type=template&id=2ad93e50&scoped=true& */ "./resources/js/views/Main.vue?vue&type=template&id=2ad93e50&scoped=true&");
-/* harmony import */ var _Main_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Main.vue?vue&type=script&lang=js& */ "./resources/js/views/Main.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Comparison_vue_vue_type_template_id_0d057de8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Comparison.vue?vue&type=template&id=0d057de8&scoped=true& */ "./resources/js/views/Comparison.vue?vue&type=template&id=0d057de8&scoped=true&");
+/* harmony import */ var _Comparison_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Comparison.vue?vue&type=script&lang=js& */ "./resources/js/views/Comparison.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -103200,50 +103629,188 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Main_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Main_vue_vue_type_template_id_2ad93e50_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Main_vue_vue_type_template_id_2ad93e50_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Comparison_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Comparison_vue_vue_type_template_id_0d057de8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Comparison_vue_vue_type_template_id_0d057de8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "2ad93e50",
+  "0d057de8",
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/views/Main.vue"
+component.options.__file = "resources/js/views/Comparison.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/views/Main.vue?vue&type=script&lang=js&":
-/*!**************************************************************!*\
-  !*** ./resources/js/views/Main.vue?vue&type=script&lang=js& ***!
-  \**************************************************************/
+/***/ "./resources/js/views/Comparison.vue?vue&type=script&lang=js&":
+/*!********************************************************************!*\
+  !*** ./resources/js/views/Comparison.vue?vue&type=script&lang=js& ***!
+  \********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Main_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Main.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Main.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Main_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Comparison_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Comparison.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Comparison.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Comparison_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/views/Main.vue?vue&type=template&id=2ad93e50&scoped=true&":
-/*!********************************************************************************!*\
-  !*** ./resources/js/views/Main.vue?vue&type=template&id=2ad93e50&scoped=true& ***!
-  \********************************************************************************/
+/***/ "./resources/js/views/Comparison.vue?vue&type=template&id=0d057de8&scoped=true&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/views/Comparison.vue?vue&type=template&id=0d057de8&scoped=true& ***!
+  \**************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Main_vue_vue_type_template_id_2ad93e50_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Main.vue?vue&type=template&id=2ad93e50&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Main.vue?vue&type=template&id=2ad93e50&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Main_vue_vue_type_template_id_2ad93e50_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Comparison_vue_vue_type_template_id_0d057de8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Comparison.vue?vue&type=template&id=0d057de8&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Comparison.vue?vue&type=template&id=0d057de8&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Comparison_vue_vue_type_template_id_0d057de8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Main_vue_vue_type_template_id_2ad93e50_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Comparison_vue_vue_type_template_id_0d057de8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/Global.vue":
+/*!***************************************!*\
+  !*** ./resources/js/views/Global.vue ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Global_vue_vue_type_template_id_f96597fc_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Global.vue?vue&type=template&id=f96597fc&scoped=true& */ "./resources/js/views/Global.vue?vue&type=template&id=f96597fc&scoped=true&");
+/* harmony import */ var _Global_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Global.vue?vue&type=script&lang=js& */ "./resources/js/views/Global.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Global_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Global_vue_vue_type_template_id_f96597fc_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Global_vue_vue_type_template_id_f96597fc_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "f96597fc",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/Global.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/Global.vue?vue&type=script&lang=js&":
+/*!****************************************************************!*\
+  !*** ./resources/js/views/Global.vue?vue&type=script&lang=js& ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Global_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Global.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Global.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Global_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/Global.vue?vue&type=template&id=f96597fc&scoped=true&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/views/Global.vue?vue&type=template&id=f96597fc&scoped=true& ***!
+  \**********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Global_vue_vue_type_template_id_f96597fc_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Global.vue?vue&type=template&id=f96597fc&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Global.vue?vue&type=template&id=f96597fc&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Global_vue_vue_type_template_id_f96597fc_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Global_vue_vue_type_template_id_f96597fc_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/Glossary.vue":
+/*!*****************************************!*\
+  !*** ./resources/js/views/Glossary.vue ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Glossary_vue_vue_type_template_id_39600f3d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Glossary.vue?vue&type=template&id=39600f3d&scoped=true& */ "./resources/js/views/Glossary.vue?vue&type=template&id=39600f3d&scoped=true&");
+/* harmony import */ var _Glossary_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Glossary.vue?vue&type=script&lang=js& */ "./resources/js/views/Glossary.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Glossary_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Glossary_vue_vue_type_template_id_39600f3d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Glossary_vue_vue_type_template_id_39600f3d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "39600f3d",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/Glossary.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/Glossary.vue?vue&type=script&lang=js&":
+/*!******************************************************************!*\
+  !*** ./resources/js/views/Glossary.vue?vue&type=script&lang=js& ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Glossary_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Glossary.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Glossary.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Glossary_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/Glossary.vue?vue&type=template&id=39600f3d&scoped=true&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/views/Glossary.vue?vue&type=template&id=39600f3d&scoped=true& ***!
+  \************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Glossary_vue_vue_type_template_id_39600f3d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Glossary.vue?vue&type=template&id=39600f3d&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Glossary.vue?vue&type=template&id=39600f3d&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Glossary_vue_vue_type_template_id_39600f3d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Glossary_vue_vue_type_template_id_39600f3d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
