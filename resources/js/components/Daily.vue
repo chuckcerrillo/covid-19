@@ -1,95 +1,104 @@
 <template>
-    <div>
-        <div
-            class="absolute top-0 right-0 text-xs px-4 py-2 hover:text-white cursor-pointer hover:bg-lightslab rounded z-10"
-            @click="remove([data.name.country,data.name.state])"
-        >Remove</div>
-        <div class="mx-6 pt-4 relative">
-            <h2 class="font-bold text-2xl">{{data.name.country}}</h2>
-            <h3 class="h-4 font-bold">{{data.name.state}}</h3>
-            <div class="flex text-sm mt-4 w-full items-center">
-                <div class="text-center pr-4">
-                    <div class="text-xs font-bold">Confirmed</div>
-                    <div class="text-3xl font-bold">{{data.total.confirmed| numeralFormat}}</div>
-                </div>
-                <div class="text-center pr-4">
-                    <div class="text-xs font-bold">Deaths</div>
-                    <div class="text-3xl font-bold">{{data.total.deaths| numeralFormat}}</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-xs font-bold">Recovered</div>
-                    <div class="text-3xl font-bold">{{data.total.recovered| numeralFormat}}</div>
+    <div class="h-full">
+        <div class="absolute top-0 left-0 right-0">
+            <div class="mx-4 pt-4 relative flex items-center justify-between">
+                <h2 class="font-bold text-3xl">{{data.name.full}}</h2>
+                <div class="flex">
+                    <div
+                        class="mr-4 mb-4 text-xs px-4 py-2 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab"
+                        @click="toggleExpand()"
+                    >View full stats</div>
+                    <div
+                        class="mr-4 mb-4 text-xs px-4 py-2 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab"
+                        @click="remove([data.name.country,data.name.state])"
+                    >Remove</div>
                 </div>
             </div>
-            <div class="text-xs mb-4">As of {{data.total.date}}</div>
-        </div>
-        <div class="px-2 mx-4 py-2 pb-4 flex text-xs font-bold justify-between bg-slab-primary rounded-t">
-            <div class="justify-end flex w-full items-end">
-                <div class="w-20">Date</div>
-                <div class="w-20">Confirmed</div>
-                <div class="w-20">Deaths</div>
-                <div class="w-20">Recovered</div>
-<!--                <div class="w-20">New Cases</div>-->
-<!--                <div class="w-20">5D Ave</div>-->
-                <div class="w-20">Growth Factor</div>
+            <div class="mx-4 mt-4">
+                <div class="flex text-sm w-full items-center">
+                    <div class="pr-4">
+                        <div class="text-xs font-bold">Confirmed</div>
+                        <div class="text-3xl font-bold">{{data.total.confirmed| numeralFormat}}</div>
+                    </div>
+                    <div class="pr-4">
+                        <div class="text-xs font-bold">Deaths</div>
+                        <div class="text-3xl font-bold">{{data.total.deaths| numeralFormat}}</div>
+                    </div>
+                    <div class="">
+                        <div class="text-xs font-bold">Recovered</div>
+                        <div class="text-3xl font-bold">{{data.total.recovered| numeralFormat}}</div>
+                    </div>
+                </div>
+                <div class="text-xs mb-4">As of {{moment(data.total.date).format('YYYY-MM-DD')}}</div>
+            </div>
+            <div class="px-2 mx-4 py-2 flex text-xs font-bold justify-between bg-slab-primary rounded-t h-8">
+                <div class="justify-center flex w-full items-end">
+                    <div class="w-24">Date</div>
+                    <div class="w-32">Confirmed</div>
+                    <div class="w-32">Deaths</div>
+                    <div class="w-32">Recovered</div>
+                    <div class="w-32">New Cases</div>
+                    <div class="w-32">5D Ave</div>
+                    <div class="w-32">Growth Factor</div>
+                </div>
             </div>
         </div>
-        <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 left-0 bottom-0 mt-60 mx-4 mb-16 mr-4 bg-slab rounded-b" style="position:absolute;" >
+        <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0 bg-slab absolute m-4 mt-52 rounded" style="position:absolute">
             <div
 
                 v-for="(row, key, index) in daily.reverse()"
             >
                 <div v-if="getDayNotes(moment(row['date']).format('YYYY-MM-DD')).length > 0">
                     <div v-for="annotation in getDayNotes(moment(row['date']).format('YYYY-MM-DD'))"
-                         class="p-1 m-1 text-xs rounded bg-slab-primary flex"
+                         class="p-1 m-1 text-xs rounded bg-slab-primary flex justify-center"
                     >
-                        <div v-if="annotation.state.length > 0" class="font-bold mr-2">{{annotation.state}}</div>
-                        <div>
-                            <div>{{annotation.notes}}</div>
-                            <div v-if="annotation.url" class="flex items-center text-lightslab">
-                                <div class="mr-1">Source:</div>
-                                <a class="underline hover:text-white truncate ... inline-block w-64" :href="annotation.url">{{annotation.url}}</a>
+                        <div class="w-216 flex">
+                            <div v-if="annotation.state.length > 0" class="font-bold mr-2">{{annotation.state}}</div>
+                            <div>
+                                <div>{{annotation.notes}}</div>
+                                <div v-if="annotation.url" class="flex items-center text-lightslab">
+                                    <div class="mr-1">Source:</div>
+                                    <a class="underline hover:text-white truncate ... inline-block w-64" :href="annotation.url">{{annotation.url}}</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="p-2 text-xs">
-<!--                     :class="key % 2 == 1 ? 'bg-slab-secondary' : ''"-->
+                <div class="p-2 text-xs"
+                                         :class="key % 2 == 1 ? 'bg-slab-secondary' : ''">
 
-                    <div class="w-full flex justify-end">
-                        <div class="w-20">{{moment(row['date']).format('YYYY-MM-DD')}}</div>
-                        <div class="w-20">
+                    <div class="w-full flex justify-center">
+                        <div class="w-24">{{moment(row['date']).format('YYYY-MM-DD')}}</div>
+                        <div class="w-32">
                             {{ isNaN(row.confirmed) ? 0 : row.confirmed | numeralFormat}}
                             <span class="text-red-400" v-if="row.deltaConfirmed >= 0">(+{{row.deltaConfirmed| numeralFormat}})</span>
                             <span class="text-green-400" v-else>({{row.deltaConfirmed| numeralFormat}})</span>
                         </div>
-                        <div class="w-20">
+                        <div class="w-32">
                             {{ isNaN(row.deaths) ? 0 : row.deaths | numeralFormat}}
                             <span class="text-red-400" v-if="row.deltaDeaths >= 0">(+{{row.deltaDeaths| numeralFormat}})</span>
                             <span class="text-green-400" v-else>({{row.deltaDeaths| numeralFormat}})</span>
                         </div>
-                        <div class="w-20">
+                        <div class="w-32">
                             {{ isNaN(row.recovered) ? 0 : row.recovered | numeralFormat}}
                             <span class="text-green-400" v-if="row.deltaRecovered >= 0">(+{{row.deltaRecovered| numeralFormat}})</span>
                             <span class="text-red-400" v-else>({{row.deltaRecovered| numeralFormat}})</span>
                         </div>
-    <!--                    <div class="w-20">-->
-    <!--                        {{data.growth[key]}}-->
-    <!--                    </div>-->
-    <!--                    <div class="w-20">-->
-    <!--                        {{data.average[key]}}-->
-    <!--                    </div>-->
-                        <div class="w-20">
+                        <div class="w-32">
+                            {{data.growth[key]}}
+                        </div>
+                        <div class="w-32">
+                            {{data.average[key]}}
+                        </div>
+                        <div class="w-32">
                             {{row.growthFactor}}
                         </div>
                     </div>
                 </div>
             </div>
         </simplebar>
-        <div
-            class="absolute right-0 bottom-0 mr-4 mb-4 text-xs px-4 py-2 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab"
-            @click="toggleExpand()"
-        >View full stats</div>
+
+
         <FullCountry v-if="expanded"
                      :data="recomputed"
                     v-on:close="toggleExpand"
@@ -124,9 +133,9 @@
                 var data = [];
                 for(var x in this.annotations)
                 {
-                    if (this.data.annotations[x].date == date)
+                    if (this.annotations[x].date == date)
                     {
-                        data.push(this.data.annotations[x]);
+                        data.push(this.annotations[x]);
                     }
                 }
                 return data;
@@ -193,15 +202,13 @@
                 var data = [];
                 for(var x in this.data.annotations)
                 {
-                    if(this.data.name.state)
+                    if(this.data.annotations[x].country == 'All')
                     {
-                        if(this.data.name.state.length == 0 || ( this.data.name.state.length > 0 && this.data.name.state == this.data.annotations[x].state))
-                        {
-                            data.push(this.data.annotations[x]);
-                        }
+                        data.push(this.data.annotations[x]);
                     }
-                    else
+                    else if(this.data.annotations[x].state && this.data.name.state == this.data.annotations[x].state)
                     {
+                        console.log('Comparing ' + this.data.name.state + ' vs ' + this.data.annotations[x].state);
                         data.push(this.data.annotations[x]);
                     }
                 }
