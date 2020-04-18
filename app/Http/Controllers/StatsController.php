@@ -663,12 +663,22 @@ class StatsController extends Controller
                             $statename = '(Unspecified)';
                             $confirmed = (int) str_replace(',','', $override['confirmed']);
                             $deaths = (int) str_replace(',','',$override['deaths']);
-                            $recovered = (int) str_replace(',','',$override['recovered']);
+
+
 
 
                             // Copy last record
                             $last_daily_record = $data[$country]['daily'][array_key_last($data[$country]['daily'])];
                             $new_daily_record = $data[$country]['daily'][array_key_last($data[$country]['daily'])];
+
+                            if($override['recovered'] == 'N/A')
+                            {
+                                $recovered = $last_daily_record['total']['r'];
+                            }
+                            else
+                            {
+                                $recovered = (int) str_replace(',','',$override['recovered']);
+                            }
 
 
                             $temp_state_data = [
