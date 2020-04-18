@@ -1,7 +1,8 @@
 <template>
-    <div>
-        <div>
-            <div class="absolute left-0 right-0 bottom-0 top-0 py-4" v-if="settings.controls.menu">
+    <div class="absolute top-0 left-0 right-0 bottom-0">
+<!--        <div class="absolute top-0 right-0 bottom-0 left-0 bg-red-400"></div>-->
+        <div v-if="full" class="absolute top-0 right-0 bottom-0 left-0">
+            <div class="py-4" v-if="settings.controls.menu">
                 <div class="text-xs flex items-start justify-between">
                     <div class="flex items-center">
                         <div class="mr-2">Scale</div>
@@ -39,9 +40,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="bg-hoverslab p-2 absolute rounded left-0 top-0 right-0 bottom-0" :class="settings.controls.menu ? 'mt-16' : ''">
-            <simplebar data-simplebar-auto-hide="false" class="h-full">
+            <div class="bg-hoverslab p-4 absolute rounded left-0 top-0 right-0 bottom-0" :class="settings.controls.menu ? 'mt-16' : ''">
                 <LineChart :data="dataset.data"
                            :options="dataset.options"
                            class="bg-heading rounded"
@@ -50,7 +49,7 @@
                 />
                 <div class="text-xs absolute left-0 right-0 bottom-0 h-12 flex items-start justify-between" v-if="settings.controls.menu">
                     <div class="flex items-center justify-start">
-                        <div class="mr-2">Time mode</div>
+                        <div class="mx-2">Time mode</div>
                         <div class="flex">
                             <div
                                 v-for="row in graphControls.x"
@@ -63,8 +62,71 @@
                         </div>
                     </div>
                 </div>
-            </simplebar>
+            </div>
         </div>
+        <simplebar v-else data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0 rounded" style="position:absolute">
+            <div class="py-4" v-if="settings.controls.menu">
+                <div class="text-xs flex items-start justify-between">
+                    <div class="flex items-center">
+                        <div class="mr-2">Scale</div>
+                        <div class="flex">
+                            <div v-for="row in graphControls.scaleType"
+                                 class="p-2 border border-hoverslab m-1 cursor-pointer"
+                                 :class="selectedScaleType(row[0]) ? 'bg-hoverslab':''"
+                                 @click="selectScaleType(row[0])"
+                            >
+                                {{row[1]}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="mr-2">Metrics</div>
+                        <div class="flex border border-hoverslab bg-hoverslab m-1 cursor-pointer p-2 relative">
+                            <div @click="ui.primary = !ui.primary" class="w-32 truncate ..." v-if="options.controls.primary">{{getFieldName(options.controls.primary)}}</div>
+                            <div @click="ui.primary = !ui.primary" class="w-32" v-else>Select primary metric</div>
+                            <div v-show="ui.primary" class="absolute z-10 bg-slab border-hoverslab shadow w-44 right-0 top-0 p-2 border border-hoverslab">
+                                <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" @click="selectField(row[0],'primary')">
+                                    {{row[1]}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex border border-hoverslab bg-hoverslab m-1 mr-0 cursor-pointer p-2 relative">
+                            <div @click="ui.secondary = !ui.secondary" class="w-32 truncate ..." v-if="options.controls.secondary">{{getFieldName(options.controls.secondary)}}</div>
+                            <div @click="ui.secondary = !ui.secondary" class="w-32" v-else>Select secondary metric</div>
+                            <div v-show="ui.secondary" class="absolute z-10 bg-slab border-hoverslab shadow w-44 right-0 top-0 p-2 border border-hoverslab">
+                                <div class="p-2 m-1 hover:bg-hoverslab"  @click="selectField('','secondary')">None</div>
+                                <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" @click="selectField(row[0],'secondary')">
+                                    {{row[1]}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-hoverslab p-4 relative" :class="settings.controls.menu ? 'mt-16' : ''">
+                <LineChart :data="dataset.data"
+                           :options="dataset.options"
+                           class="bg-heading rounded"
+                           :class="full ? (settings.controls.menu ? 'absolute top-0 bottom-0 right-0 left-0 m-2 mb-16': 'absolute top-0 bottom-0 right-0 left-0 m-2') : 'h-200 m-4 mb-0'"
+                           v-if="data.length > 0"
+                />
+                <div class="text-xs flex items-start justify-between" v-if="settings.controls.menu">
+                    <div class="flex items-center justify-start">
+                        <div class="mx-2">Time mode</div>
+                        <div class="flex">
+                            <div
+                                v-for="row in graphControls.x"
+                                class="p-2 border border-lightslab m-1 cursor-pointer"
+                                :class="selectedMode(row[0]) ? 'bg-lightslab':''"
+                                @click="selectMode(row[0])"
+                            >
+                                {{row[1]}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </simplebar>
 <!--        <div class="mt-64">{{full_stats}}</div>-->
     </div>
 </template>

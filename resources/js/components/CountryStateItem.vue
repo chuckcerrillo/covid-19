@@ -17,7 +17,7 @@
             <div @click="selectCountry(data['name'],false)" class="text-xs w-18 m-1">{{data['total']['d']| numeralFormat}}</div>
             <div @click="selectCountry(data['name'],false)" class="text-xs w-18 m-1">{{data['total']['r']| numeralFormat}}</div>
         </div>
-        <div v-for="row in data.states" class="pb-1 hover:bg-lightslab cursor-pointer flex items-center text-xs" v-show="expanded"
+        <div v-for="row in data.states" class="pb-1 pr-2 hover:bg-lightslab cursor-pointer flex items-center text-xs" v-show="expanded"
              :class="isSelected(data.name,row.name) ? 'bg-hoverslab' : (row.name % 2 == 0) ? 'bg-slab-primary':'bg-slab-secondary'"
         >
             <div class="w-4 p-2 m-1 ml-0"></div>
@@ -37,7 +37,8 @@
         props:[
             'data',
             'country_key',
-            'compare'
+            'compare',
+            'sidebarExpanded',
         ],
         data(){
             return {
@@ -75,7 +76,7 @@
             {
                 this.expanded = !this.expanded;
             }
-        }
+        },
     }
 </script>
 
