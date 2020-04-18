@@ -91,7 +91,8 @@
                             {{data.average[key]}}
                         </div>
                         <div class="w-32">
-                            {{row.growthFactor}}
+                            <span class="text-red-400" v-if="row.growthFactor > 1">{{row.growthFactor}}</span>
+                            <span class="text-green-400" v-else>{{row.growthFactor}}</span>
                         </div>
                     </div>
                 </div>

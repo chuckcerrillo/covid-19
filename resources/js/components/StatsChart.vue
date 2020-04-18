@@ -174,6 +174,18 @@
                             borderPrimary: 'rgba(90,186,209,1)',
                             borderSecondary: 'rgba(243,179,85,1)',
                         },
+                        {
+                            primary: 'rgba(56,182,36,1)',
+                            secondary: 'rgba(106,205,90,0.5)',
+                            borderPrimary: 'rgba(56,182,36,1)',
+                            borderSecondary: 'rgba(106,205,90,1)',
+                        },
+                        {
+                            primary: 'rgba(192,36,36,1)',
+                            secondary: 'rgba(205,90,90,0.5)',
+                            borderPrimary: 'rgba(192,36,36,1)',
+                            borderSecondary: 'rgba(205,90,90,1)',
+                        },
                     ]
 
                 },
@@ -311,6 +323,8 @@
             },
             comparison()
             {
+                console.log('Comparison data');
+                console.log(this.data);
                 return this.data;
             },
 
