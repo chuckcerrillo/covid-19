@@ -83492,7 +83492,7 @@ var render = function() {
               : "bg-slab-secondary"
           },
           [
-            _c("div", { staticClass: "w-4 p-2 m-1 ml-0" }),
+            _c("div", { staticClass: "w-5 p-2 m-1 ml-0" }),
             _vm._v(" "),
             _c(
               "div",

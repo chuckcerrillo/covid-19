@@ -20,7 +20,7 @@
         <div v-for="row in data.states" class="pb-1 pr-2 hover:bg-lightslab cursor-pointer flex items-center text-xs" v-show="expanded"
              :class="isSelected(data.name,row.name) ? 'bg-hoverslab' : (row.name % 2 == 0) ? 'bg-slab-primary':'bg-slab-secondary'"
         >
-            <div class="w-4 p-2 m-1 ml-0"></div>
+            <div class="w-5 p-2 m-1 ml-0"></div>
             <div @click="selectCountry(data['name'],row['name'])" class="w-36 px-2 m-1">
                 <div>{{row['name']}}</div>
             </div>
