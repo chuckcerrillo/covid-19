@@ -83389,7 +83389,8 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass: "flex hover:bg-lightslab cursor-pointer items-center",
+          staticClass:
+            "flex hover:bg-lightslab cursor-pointer items-center h-8",
           class: _vm.isSelected(_vm.data.name, false)
             ? "bg-hoverslab"
             : _vm.country_key % 2 == 0
@@ -83420,7 +83421,7 @@ var render = function() {
           _c(
             "div",
             {
-              staticClass: "text-xs w-36 px-2 m-1 font-bold",
+              staticClass: "text-xs py-1 w-32 px-2 font-bold",
               on: {
                 click: function($event) {
                   return _vm.selectCountry(_vm.data["name"], false)
@@ -83433,7 +83434,7 @@ var render = function() {
           _c(
             "div",
             {
-              staticClass: "text-xs w-18 m-1",
+              staticClass: "text-xs pl-2 py-1 w-20",
               on: {
                 click: function($event) {
                   return _vm.selectCountry(_vm.data["name"], false)
@@ -83446,7 +83447,7 @@ var render = function() {
           _c(
             "div",
             {
-              staticClass: "text-xs w-18 m-1",
+              staticClass: "text-xs pl-2 py-1 w-20",
               on: {
                 click: function($event) {
                   return _vm.selectCountry(_vm.data["name"], false)
@@ -83459,7 +83460,7 @@ var render = function() {
           _c(
             "div",
             {
-              staticClass: "text-xs w-18 m-1",
+              staticClass: "text-xs pl-2 py-1 w-20",
               on: {
                 click: function($event) {
                   return _vm.selectCountry(_vm.data["name"], false)
@@ -83484,7 +83485,7 @@ var render = function() {
               }
             ],
             staticClass:
-              "pb-1 pr-2 hover:bg-lightslab cursor-pointer flex items-center text-xs",
+              "pb-1 hover:bg-lightslab cursor-pointer flex items-center text-xs",
             class: _vm.isSelected(_vm.data.name, row.name)
               ? "bg-hoverslab"
               : row.name % 2 == 0
@@ -83492,12 +83493,12 @@ var render = function() {
               : "bg-slab-secondary"
           },
           [
-            _c("div", { staticClass: "w-5 p-2 m-1 ml-0" }),
+            _c("div", { staticClass: "w-4 p-2 m-1 ml-0" }),
             _vm._v(" "),
             _c(
               "div",
               {
-                staticClass: "w-36 px-2 m-1",
+                staticClass: "w-32 px-2",
                 on: {
                   click: function($event) {
                     return _vm.selectCountry(_vm.data["name"], row["name"])
@@ -83511,7 +83512,7 @@ var render = function() {
               ? _c(
                   "div",
                   {
-                    staticClass: "w-18 m-1",
+                    staticClass: "w-20 pl-2",
                     on: {
                       click: function($event) {
                         return _vm.selectCountry(_vm.data["name"], row["name"])
@@ -83526,7 +83527,7 @@ var render = function() {
               ? _c(
                   "div",
                   {
-                    staticClass: "w-18 m-1",
+                    staticClass: "w-20 pl-2",
                     on: {
                       click: function($event) {
                         return _vm.selectCountry(_vm.data["name"], row["name"])
@@ -83541,7 +83542,7 @@ var render = function() {
               ? _c(
                   "div",
                   {
-                    staticClass: "w-18 m-1",
+                    staticClass: "w-20 pl-2",
                     on: {
                       click: function($event) {
                         return _vm.selectCountry(_vm.data["name"], row["name"])
@@ -86652,7 +86653,7 @@ var render = function() {
               staticClass: "relative h-full flex flex-1"
             },
             [
-              _c("div", { staticClass: "flex flex-col w-116" }, [
+              _c("div", { staticClass: "flex flex-col" }, [
                 _c(
                   "div",
                   {
@@ -86763,7 +86764,7 @@ var render = function() {
                             "div",
                             {
                               staticClass:
-                                "w-32 cursor-pointer p-2 m-1 overflow-hidden",
+                                "w-32 cursor-pointer p-2 overflow-hidden",
                               class:
                                 _vm.sort_stats.key == "country"
                                   ? "bg-hoverslab"
@@ -86781,7 +86782,7 @@ var render = function() {
                             "div",
                             {
                               staticClass:
-                                "w-18 cursor-pointer p-2 m-1 overflow-hidden",
+                                "w-20 cursor-pointer p-2 overflow-hidden",
                               class:
                                 _vm.sort_stats.key == "confirmed"
                                   ? "bg-hoverslab"
@@ -86799,7 +86800,7 @@ var render = function() {
                             "div",
                             {
                               staticClass:
-                                "w-18 cursor-pointer p-2 m-1 overflow-hidden",
+                                "w-20 cursor-pointer p-2 overflow-hidden",
                               class:
                                 _vm.sort_stats.key == "deaths"
                                   ? "bg-hoverslab"
@@ -86817,7 +86818,7 @@ var render = function() {
                             "div",
                             {
                               staticClass:
-                                "w-18 cursor-pointer p-2 m-1 overflow-hidden",
+                                "w-20 cursor-pointer p-2 overflow-hidden",
                               class:
                                 _vm.sort_stats.key == "recovered"
                                   ? "bg-hoverslab"
@@ -86865,11 +86866,7 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c("div", [
-                      _vm._v(
-                        "\n                            [Selected countries]\n                        "
-                      )
-                    ])
+                    _c("div")
                   ]
                 )
               ]),

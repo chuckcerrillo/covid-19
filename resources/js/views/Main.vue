@@ -271,7 +271,7 @@
 
 
             <div v-show="mode == 'comparison'" class="relative h-full flex flex-1">
-                <div class="flex flex-col w-116">
+                <div class="flex flex-col">
                     <div class="hidden m-4 absolute left-0 top-0 w-full overflow-hidden bg-lightslab rounded h-48 z-10 p-4">
                         <div class="text-2xl tracking-tight font-bold">Global tally</div>
                         <div class="text-xs mb-4">as of {{global.last_update}}</div>
@@ -299,10 +299,10 @@
                             <div class="text-xs text-right">Sorting by {{sort_stats.key}} {{sort_stats.order}}</div>
                             <div class="flex font-bold py-2 text-xs items-center">
                                 <div class="w-4 p-2 m-1 ml-0"></div>
-                                <div class="w-32 cursor-pointer p-2 m-1 overflow-hidden" :class="sort_stats.key == 'country' ? 'bg-hoverslab' : '' " @click="toggleSort('country')">Country / Region</div>
-                                <div class="w-18 cursor-pointer p-2 m-1 overflow-hidden" :class="sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmed')">Confirmed</div>
-                                <div class="w-18 cursor-pointer p-2 m-1 overflow-hidden" :class="sort_stats.key == 'deaths' ? 'bg-hoverslab' : '' " @click="toggleSort('deaths')">Deaths</div>
-                                <div class="w-18 cursor-pointer p-2 m-1 overflow-hidden" :class="sort_stats.key == 'recovered' ? 'bg-hoverslab' : '' " @click="toggleSort('recovered')">Recovered</div>
+                                <div class="w-32 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key == 'country' ? 'bg-hoverslab' : '' " @click="toggleSort('country')">Country / Region</div>
+                                <div class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmed')">Confirmed</div>
+                                <div class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key == 'deaths' ? 'bg-hoverslab' : '' " @click="toggleSort('deaths')">Deaths</div>
+                                <div class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key == 'recovered' ? 'bg-hoverslab' : '' " @click="toggleSort('recovered')">Recovered</div>
                             </div>
                         </div>
                         <div class="w-full h-full relative">
@@ -318,7 +318,7 @@
                             </simplebar>
                         </div>
                         <div>
-                            [Selected countries]
+
                         </div>
                     </div>
                 </div>
