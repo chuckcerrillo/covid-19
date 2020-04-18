@@ -86199,7 +86199,7 @@ var render = function() {
                       staticClass: "w-full rounded-lg overflow-hidden h-full",
                       attrs: {
                         id: "world_map",
-                        enable: false,
+                        enable: true,
                         data: _vm.countries_sorted
                       }
                     })

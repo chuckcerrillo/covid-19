@@ -42,7 +42,7 @@
                         <Map
                             class="w-full rounded-lg overflow-hidden h-full"
                             id="world_map"
-                            :enable="false"
+                            :enable="true"
                             :data="countries_sorted"
                         />
                     </div>
