@@ -32,6 +32,11 @@ export default new VueRouter({
             meta: {title: 'Compare charts'}
         },
         {
+            // Govt response
+            path: '/comparison/response', name: 'comparisonResponse', component: Comparison,
+            meta: {title: 'Government Response'}
+        },
+        {
             path: '/glossary', name: 'glossary', component: Glossary,
             meta: {title: 'Glossary'}
         }

@@ -35,18 +35,22 @@
                         'raw_state_data': [],
                         'raw_stats': [],
                         'raw_annotations' : [],
+                        'raw_oxford' : [],
                     },
                     processed: {
                         'global' : {},
                         'countries': {},
                         'compare' : [],
                         'dataset' : {},
+                        'oxford' : {},
+                        'annotations' : {},
                     },
                     loading: {
                         'countries' : false,
                         'states' : false,
                         'annotations' : false,
                         'global' : false,
+                        'oxford' : false,
                     },
                 },
                 title: '',
@@ -89,6 +93,15 @@
                 .then(res => {
                     this.database.raw.raw_annotations = res.data;
                     this.database.loading.annotations = true;
+                })
+                .catch(error => {
+
+                });
+
+            axios.get('/api/stats/oxford')
+                .then(res => {
+                    this.database.raw.raw_oxford = res.data;
+                    this.database.loading.oxford = true;
                 })
                 .catch(error => {
 
