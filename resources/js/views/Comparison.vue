@@ -92,12 +92,12 @@ thi<template>
                                 <div v-else class="absolute top-0 left-0 right-0 bottom-0 rounded bg-hoverslab" style="bottom: 32px;">
                                     <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0 m-4" style="position:absolute">
                                         <div v-for="(row,key,index) in getUniqueCountriesCompare()" class="bg-hoverslab rounded p-4" v-show="selectedCompareTab == key">
-                                            <div class="my-4 flex">
-                                                <div class="w-128 text-2xl font-bold">{{row[1]}}</div>
-                                                <div>
-                                                    <div class="text-2xl font-bold">{{getGovtResponse(row[1]).latest.stringencyindex}}</div>
-                                                    <div class="text-xs text-lightlabel">stringency index</div>
-                                                </div>
+                                            <div class="my-4">
+                                                <div class="w-128 text-4xl font-bold">{{row[1]}}</div>
+                                                <div class="text-6xl font-bold">{{getGovtResponse(row[1]).latest.stringencyindex}}</div>
+                                                <div class="text-lightlabel font-bold tracking-tight">stringency index</div>
+                                                <div class="py-2 text-sm">The stringency index is based on publicly available information on 13 indicators of government response. Nine of the indicators (S1–S7, S12 and S13) take policies such as school closures, travel bans, etc, and are recorded on an ordinal scale; the others (S8–S11) are financial indicators such as fiscal or monetary measures.</div>
+                                                <div class="py-2 text-sm">For a full description of the data and how it is collected, check out the <a class="text-orangeslab hover:text-blue-400 hover:underline" href="https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker">University of Oxford's coronavirus government response tracker (OxCGRT)</a></div>
                                             </div>
                                             <div class="flex flex-wrap">
                                                 <div v-if="getGovtResponse(row[1])" v-for="(policy,key,index) in getLatestGovtResponse(row[1])"
