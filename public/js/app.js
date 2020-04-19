@@ -89633,49 +89633,85 @@ var render = function() {
                                             [
                                               _c(
                                                 "div",
-                                                { staticClass: "my-4 flex" },
+                                                { staticClass: "my-4" },
                                                 [
                                                   _c(
                                                     "div",
                                                     {
                                                       staticClass:
-                                                        "w-128 text-2xl font-bold"
+                                                        "w-128 text-4xl font-bold"
                                                     },
                                                     [_vm._v(_vm._s(row[1]))]
                                                   ),
                                                   _vm._v(" "),
-                                                  _c("div", [
-                                                    _c(
-                                                      "div",
-                                                      {
-                                                        staticClass:
-                                                          "text-2xl font-bold"
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          _vm._s(
-                                                            _vm.getGovtResponse(
-                                                              row[1]
-                                                            ).latest
-                                                              .stringencyindex
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "text-6xl font-bold"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.getGovtResponse(
+                                                            row[1]
+                                                          ).latest
+                                                            .stringencyindex
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "text-lightlabel font-bold tracking-tight"
+                                                    },
+                                                    [_vm._v("stringency index")]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "py-2 text-sm"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "The stringency index is based on publicly available information on 13 indicators of government response. Nine of the indicators (S1–S7, S12 and S13) take policies such as school closures, travel bans, etc, and are recorded on an ordinal scale; the others (S8–S11) are financial indicators such as fiscal or monetary measures."
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "py-2 text-sm"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "For a full description of the data and how it is collected, check out the "
+                                                      ),
+                                                      _c(
+                                                        "a",
+                                                        {
+                                                          staticClass:
+                                                            "text-orangeslab hover:text-blue-400 hover:underline",
+                                                          attrs: {
+                                                            href:
+                                                              "https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker"
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "University of Oxford's coronavirus government response tracker (OxCGRT)"
                                                           )
-                                                        )
-                                                      ]
-                                                    ),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "div",
-                                                      {
-                                                        staticClass:
-                                                          "text-xs text-lightlabel"
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          "stringency index"
-                                                        )
-                                                      ]
-                                                    )
-                                                  ])
+                                                        ]
+                                                      )
+                                                    ]
+                                                  )
                                                 ]
                                               ),
                                               _vm._v(" "),
