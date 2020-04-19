@@ -89756,10 +89756,25 @@ var render = function() {
                                                                           "font-bold"
                                                                       },
                                                                       [
+                                                                        _c(
+                                                                          "span",
+                                                                          {
+                                                                            staticClass:
+                                                                              "uppercase"
+                                                                          },
+                                                                          [
+                                                                            _vm._v(
+                                                                              _vm._s(
+                                                                                policy.id
+                                                                              )
+                                                                            )
+                                                                          ]
+                                                                        ),
                                                                         _vm._v(
-                                                                          _vm._s(
-                                                                            policy.name
-                                                                          )
+                                                                          " - " +
+                                                                            _vm._s(
+                                                                              policy.name
+                                                                            )
                                                                         )
                                                                       ]
                                                                     ),
