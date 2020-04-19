@@ -1962,8 +1962,7 @@ __webpack_require__.r(__webpack_exports__);
           'global': false,
           'oxford': false
         }
-      },
-      title: ''
+      }
     };
   },
   components: {
@@ -1993,6 +1992,7 @@ __webpack_require__.r(__webpack_exports__);
       _this.database.raw.raw_oxford = res.data;
       _this.database.loading.oxford = true;
     })["catch"](function (error) {});
+    this.setPageTitle(this.$route.meta.title);
   },
   methods: {
     showAbout: function showAbout() {
@@ -2006,6 +2006,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     saveProcessedData: function saveProcessedData(row, name) {
       this.database.processed.dataset[name] = row;
+    },
+    setPageTitle: function setPageTitle(title) {
+      document.title = title + ' | COVID19 Tracker';
     }
   },
   computed: {
@@ -2013,17 +2016,12 @@ __webpack_require__.r(__webpack_exports__);
       return this.database.processed.global;
     },
     countries: function countries() {
-      console.log('App.vue - countries');
-      console.log(this.database.processed.countries);
       return this.database.processed.countries;
     }
   },
   watch: {
     $route: function $route(to, from) {
-      this.title = to.meta.title;
-    },
-    title: function title() {
-      document.title = this.title + ' | COVID19 Tracker';
+      this.setPageTitle(to.meta.title);
     }
   }
 });
@@ -2981,6 +2979,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -3094,6 +3095,8 @@ __webpack_require__.r(__webpack_exports__);
           deltaDeaths: this.recomputed.delta[x].deaths,
           recovered: row.recovered,
           deltaRecovered: this.recomputed.delta[x].recovered,
+          growth: this.recomputed.growth[x],
+          average: this.recomputed.average[x],
           growthFactor: this.recomputed.growthFactor[x]
         });
       }
@@ -4857,6 +4860,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4907,39 +4928,30 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    getUniqueCountriesCompare: function getUniqueCountriesCompare() {
+      var countries = [],
+          data = [];
+
+      for (var x in this.compare) {
+        if (countries.indexOf(this.compare[x][1]) === -1) {
+          countries.push(this.compare[x][1]);
+          data.push(this.compare[x]);
+        }
+      }
+
+      return data;
+    },
     getLatestGovtResponse: function getLatestGovtResponse(country) {
       var response = this.getGovtResponse(country);
       var data = [];
-      console.log('Response');
-      console.log(response);
 
       if (response && response.latest && response.latest.policies) {
         for (var x in response.latest.policies) {
-          // <div class="w-80 border-r h-full p-2 pb-4">
-          //     <div class="font-bold">{{getGovtResponse(row[1]).key[key].name}}</div>
-          // <div class="text-xs">{{getGovtResponse(row[1]).key[key].description}}</div>
-          // </div>
-          // <div class="h-full p-2">
-          //     {{policy.value}}
-          // <div class="h-full">{{policy.target}}</div>
-          // </div>
-          //     'name' => 'Testing policy',
-          //     'description' => 'Who can get tested?',
-          //     'type' => 'lookup',
-          //     'values' => [
-          //     'No testing policy',
-          //     'Only testing those who both (a) have symptoms, and (b) meet specific criteria (e.g. key workers, admitted to hospital, came into contact with a known case, returned from overseas)',
-          //     'Testing of anyone showing, COVID-19 symptoms',
-          //     'Open public testing (e.g. "drive through" testing available to asymptomatic people)',
-          // ],
-          //     'hasTarget' => false
           var row = response.latest.policies[x];
           var key = response.key[x];
           var target = '';
           var value = row.value;
           var help = key.values;
-          console.log('row - ' + x);
-          console.log(row);
 
           if (key.hasTarget) {
             if (row.target == 1) {
@@ -4973,168 +4985,13 @@ __webpack_require__.r(__webpack_exports__);
       return data;
     },
     getGovtResponse: function getGovtResponse(country) {
-      // {
-      //     "policy": {
-      //         "s12": {
-      //             "testingframework": "1"
-      //         },
-      //         "s13": {
-      //             "contacttracing": "1"
-      //         },
-      //         "s1": {
-      //             "isgeneral": "1",
-      //             "schoolclosing": "2"
-      //         },
-      //         "s2": {
-      //             "isgeneral": "1",
-      //             "workplaceclosing": "2"
-      //         },
-      //         "s3": {
-      //             "cancelpublicevents": "2",
-      //             "isgeneral": "1"
-      //         },
-      //         "s4": {
-      //             "closepublictransport": "1",
-      //             "isgeneral": "1"
-      //         },
-      //         "s5": {
-      //             "isgeneral": "1",
-      //             "publicinfocampaign": "1"
-      //         },
-      //         "s6": {
-      //             "domestictravel": "2",
-      //             "isgeneral": "1"
-      //         },
-      //         "s7": {
-      //             "internationaltravel": "3"
-      //         }
-      //     },
-      //     "stringencyindex": "95.23999786"
-      // }
       if (country) {
         if (this.database.raw.raw_oxford && this.database.raw.raw_oxford.latest && this.database.raw.raw_oxford.latest[country]) {
           return {
             key: this.database.raw.raw_oxford.key,
             latest: this.database.raw.raw_oxford.latest[country],
             daily: this.database.raw.raw_oxford.daily[country]
-          }; // return latest;
-          // data.push({
-          //     policy: 's1',
-          //     name: 'School closing',
-          //     description: 'Record closings of schools and universities',
-          //     value: this.translateGovtResponse('s1',(latest['s1'] ? latest['s1'].schoolclosing : 0)),
-          //     raw_value: this.translateGovtResponse('s1',(latest['s1'] ? latest['s1'].schoolclosing : 0)),
-          //     target: (latest['s1'] && latest['s1'].isgeneral == 1 ? 'General' : 'Targeted'),
-          // });
-          //
-          // data.push({
-          //     policy: 's2',
-          //     name: 'Workplace closing',
-          //     description: 'Record closings of workplaces',
-          //     value: this.translateGovtResponse('s2',(latest['s2'] ? latest['s2'].workplaceclosing : 0)),
-          //     raw_value: latest['s2'] ? latest['s2'].workplaceclosing : 0,
-          //     target: (latest['s2'] && latest['s2'].isgeneral == 1 ? 'General' : 'Targeted'),
-          // });
-          //
-          // data.push({
-          //     policy: 's3',
-          //     name: 'Cancel public events',
-          //     description: 'Record cancelling public events',
-          //     value: this.translateGovtResponse('s3',(latest['s3'] ? latest['s3'].cancelpublicevents : 0)),
-          //     raw_value: latest['s3'] ? latest['s3'].cancelpublicevents : 0,
-          //     target: (latest['s3'] && latest['s3'].isgeneral == 1 ? 'General' : 'Targeted'),
-          // });
-          //
-          // data.push({
-          //     policy: 's4',
-          //     name: 'Close public transport',
-          //     description: 'Record closing of public transport',
-          //     value: this.translateGovtResponse('s4',(latest['s4'] ? latest['s4'].closepublictransport : 0)),
-          //     raw_value: latest['s4'] ? latest['s4'].closepublictransport : 0,
-          //     target: (latest['s4'] && latest['s4'].isgeneral == 1 ? 'General' : 'Targeted'),
-          // });
-          //
-          // data.push({
-          //     policy: 's5',
-          //     name: 'Public info campaigns',
-          //     description: 'Record presence of public info campaigns',
-          //     value: this.translateGovtResponse('s5',(latest['s5'] ? latest['s5'].publicinfocampaign : 0)),
-          //     raw_value: latest['s5'] ? latest['s5'].publicinfocampaign : 0,
-          //     target: (latest['s5'] && latest['s5'].isgeneral == 1 ? 'General' : 'Targeted'),
-          // });
-          //
-          // data.push({
-          //     policy: 's6',
-          //     name: 'Restrictions on internal movement',
-          //     description: 'Record restrictions on internal movement',
-          //     value: this.translateGovtResponse('s6',(latest['s6'] ? latest['s6'].domestictravel : 0)),
-          //     raw_value: latest['s6'] ? latest['s6'].domestictravel : 0,
-          //     target: (latest['s6'] && latest['s6'].isgeneral == 1 ? 'General' : 'Targeted'),
-          // });
-          //
-          // data.push({
-          //     policy: 's7',
-          //     name: 'International travel controls',
-          //     description: 'Record restrictions on international travel',
-          //     value: this.translateGovtResponse('s7',(latest['s7'] ? latest['s7'].internationaltravel : 0)),
-          //     raw_value: latest['s7'] ? latest['s7'].internationaltravel : 0,
-          //     target: '',
-          // });
-          //
-          // data.push({
-          //     policy: 's8',
-          //     name: 'Fiscal measures',
-          //     description: 'What economic stimulus policies are adopted',
-          //     value: this.translateGovtResponse('s8',(latest['s8'] ? latest['s8'].fiscalmeasures : 0)),
-          //     raw_value: latest['s8'] ? latest['s8'].fiscalmeasures : 0,
-          //     target: '',
-          // });
-          //
-          // data.push({
-          //     policy: 's9',
-          //     name: 'Emergency investment in health care',
-          //     description: 'Short-term spending on, e.g. hospitals, masks, etc',
-          //     value: this.translateGovtResponse('s9',(latest['s9'] ? latest['s9'].monetarymeasures : 0)),
-          //     raw_value: latest['s9'] ? latest['s9'].monetarymeasures : 0,
-          //     target: '',
-          // });
-          //
-          // data.push({
-          //     policy: 's10',
-          //     name: 'Monetary measures',
-          //     description: 'What monetary policy interventions?',
-          //     value: this.translateGovtResponse('s10',(latest['s10'] ? latest['s10'].emergencyinvestment : 0)),
-          //     raw_value: latest['s10'] ? latest['s10'].emergencyinvestment : 0,
-          //     target: '',
-          // });
-          //
-          // data.push({
-          //     policy: 's11',
-          //     name: 'Investment in vaccines',
-          //     description: 'Announced public spending on vaccine development',
-          //     value: this.translateGovtResponse('s11',(latest['s11'] ? latest['s11'].investmentinvaccines : 0)),
-          //     raw_value: latest['s11'] ? latest['s11'].investmentinvaccines : 0,
-          //     target: '',
-          // });
-          //
-          // data.push({
-          //     policy: 's12',
-          //     name: 'Testing policy',
-          //     description: 'Who can get tested',
-          //     value: this.translateGovtResponse('s12',(latest['s12'] ? latest['s12'].testingframework : 0)),
-          //     raw_value: latest['s12'] ? latest['s12'].testingframework : 0,
-          //     target: (latest['s12'] && latest['s12'].isgeneral == 1 ? 'General' : 'Targeted'),
-          // });
-          //
-          // data.push({
-          //     policy: 's13',
-          //     name: 'Contact tracing',
-          //     description: 'Are governments doing contact tracing?',
-          //     value: this.translateGovtResponse('s13',(latest['s13'] ? latest['s13'].contacttracing : 0)),
-          //     raw_value: latest['s13'] ? latest['s13'].contacttracing : 0,
-          //     target: (latest['s13'] && latest['s13'].isgeneral == 1 ? 'General' : 'Targeted'),
-          // });
-
+          };
           return data;
         }
       }
@@ -5193,7 +5050,6 @@ __webpack_require__.r(__webpack_exports__);
 
       if (row) {
         // If it is already processed, let's use it
-        console.log('skipped the assembly, good job!');
         return row;
       }
 
@@ -5321,6 +5177,8 @@ __webpack_require__.r(__webpack_exports__);
       return found;
     },
     removeCompare: function removeCompare(item) {
+      console.log('iotem');
+      console.log(item);
       var found = this.findCompare(item);
 
       if (found) {
@@ -87880,129 +87738,157 @@ var render = function() {
               "div",
               {
                 staticClass: "p-2 text-xs",
-                class: key % 2 == 1 ? "bg-slab-secondary" : ""
+                class: key % 2 == 1 ? "bg-slab-primary" : ""
               },
               [
-                _c("div", { staticClass: "w-full flex justify-center" }, [
-                  _c("div", { staticClass: "w-24" }, [
-                    _vm._v(_vm._s(_vm.moment(row["date"]).format("YYYY-MM-DD")))
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "w-32" }, [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(
-                          _vm._f("numeralFormat")(
-                            isNaN(row.confirmed) ? 0 : row.confirmed
-                          )
-                        ) +
-                        "\n                        "
-                    ),
-                    row.deltaConfirmed >= 0
-                      ? _c("span", { staticClass: "text-red-400" }, [
-                          _vm._v(
-                            "(+" +
-                              _vm._s(
-                                _vm._f("numeralFormat")(row.deltaConfirmed)
-                              ) +
-                              ")"
-                          )
-                        ])
-                      : _c("span", { staticClass: "text-green-400" }, [
-                          _vm._v(
-                            "(" +
-                              _vm._s(
-                                _vm._f("numeralFormat")(row.deltaConfirmed)
-                              ) +
-                              ")"
-                          )
-                        ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "w-32" }, [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(
-                          _vm._f("numeralFormat")(
-                            isNaN(row.deaths) ? 0 : row.deaths
-                          )
-                        ) +
-                        "\n                        "
-                    ),
-                    row.deltaDeaths >= 0
-                      ? _c("span", { staticClass: "text-red-400" }, [
-                          _vm._v(
-                            "(+" +
-                              _vm._s(_vm._f("numeralFormat")(row.deltaDeaths)) +
-                              ")"
-                          )
-                        ])
-                      : _c("span", { staticClass: "text-green-400" }, [
-                          _vm._v(
-                            "(" +
-                              _vm._s(_vm._f("numeralFormat")(row.deltaDeaths)) +
-                              ")"
-                          )
-                        ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "w-32" }, [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(
-                          _vm._f("numeralFormat")(
-                            isNaN(row.recovered) ? 0 : row.recovered
-                          )
-                        ) +
-                        "\n                        "
-                    ),
-                    row.deltaRecovered >= 0
-                      ? _c("span", { staticClass: "text-green-400" }, [
-                          _vm._v(
-                            "(+" +
-                              _vm._s(
-                                _vm._f("numeralFormat")(row.deltaRecovered)
-                              ) +
-                              ")"
-                          )
-                        ])
-                      : _c("span", { staticClass: "text-red-400" }, [
-                          _vm._v(
-                            "(" +
-                              _vm._s(
-                                _vm._f("numeralFormat")(row.deltaRecovered)
-                              ) +
-                              ")"
-                          )
-                        ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "w-32" }, [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(_vm.data.growth[key]) +
-                        "\n                    "
+                _c(
+                  "div",
+                  {
+                    staticClass: "w-full flex justify-center",
+                    class: key == 0 ? "font-bold" : ""
+                  },
+                  [
+                    _c("div", { staticClass: "w-24" }, [
+                      _vm._v(
+                        _vm._s(_vm.moment(row["date"]).format("YYYY-MM-DD"))
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-32" }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(
+                            _vm._f("numeralFormat")(
+                              isNaN(row.confirmed) ? 0 : row.confirmed
+                            )
+                          ) +
+                          "\n                        "
+                      ),
+                      row.deltaConfirmed >= 0
+                        ? _c("span", { staticClass: "text-red-400" }, [
+                            _vm._v(
+                              "(+" +
+                                _vm._s(
+                                  _vm._f("numeralFormat")(row.deltaConfirmed)
+                                ) +
+                                ")"
+                            )
+                          ])
+                        : _c("span", { staticClass: "text-green-400" }, [
+                            _vm._v(
+                              "(" +
+                                _vm._s(
+                                  _vm._f("numeralFormat")(row.deltaConfirmed)
+                                ) +
+                                ")"
+                            )
+                          ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-32" }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(
+                            _vm._f("numeralFormat")(
+                              isNaN(row.deaths) ? 0 : row.deaths
+                            )
+                          ) +
+                          "\n                        "
+                      ),
+                      row.deltaDeaths >= 0
+                        ? _c("span", { staticClass: "text-red-400" }, [
+                            _vm._v(
+                              "(+" +
+                                _vm._s(
+                                  _vm._f("numeralFormat")(row.deltaDeaths)
+                                ) +
+                                ")"
+                            )
+                          ])
+                        : _c("span", { staticClass: "text-green-400" }, [
+                            _vm._v(
+                              "(" +
+                                _vm._s(
+                                  _vm._f("numeralFormat")(row.deltaDeaths)
+                                ) +
+                                ")"
+                            )
+                          ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-32" }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(
+                            _vm._f("numeralFormat")(
+                              isNaN(row.recovered) ? 0 : row.recovered
+                            )
+                          ) +
+                          "\n                        "
+                      ),
+                      row.deltaRecovered >= 0
+                        ? _c("span", { staticClass: "text-green-400" }, [
+                            _vm._v(
+                              "(+" +
+                                _vm._s(
+                                  _vm._f("numeralFormat")(row.deltaRecovered)
+                                ) +
+                                ")"
+                            )
+                          ])
+                        : _c("span", { staticClass: "text-red-400" }, [
+                            _vm._v(
+                              "(" +
+                                _vm._s(
+                                  _vm._f("numeralFormat")(row.deltaRecovered)
+                                ) +
+                                ")"
+                            )
+                          ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-32" }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(row.growth) +
+                          "\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-32" }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(row.average) +
+                          "\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-32" }, [
+                      row.growthFactor > 1
+                        ? _c("span", { staticClass: "text-red-400" }, [
+                            _vm._v(_vm._s(row.growthFactor))
+                          ])
+                        : _c("span", { staticClass: "text-green-400" }, [
+                            _vm._v(_vm._s(row.growthFactor))
+                          ])
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                key == 0
+                  ? _c(
+                      "div",
+                      {
+                        staticClass:
+                          "w-full text-lightlabel flex justify-center"
+                      },
+                      [
+                        _vm._v(
+                          "\n                    * today's numbers are still processing and can still change throughout the day\n                "
+                        )
+                      ]
                     )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "w-32" }, [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(_vm.data.average[key]) +
-                        "\n                    "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "w-32" }, [
-                    row.growthFactor > 1
-                      ? _c("span", { staticClass: "text-red-400" }, [
-                          _vm._v(_vm._s(row.growthFactor))
-                        ])
-                      : _c("span", { staticClass: "text-green-400" }, [
-                          _vm._v(_vm._s(row.growthFactor))
-                        ])
-                  ])
-                ])
+                  : _vm._e()
               ]
             )
           ])
@@ -89614,6 +89500,74 @@ var render = function() {
                           "absolute top-0 right-0 bottom-0 left-0 mt-28 p-4"
                       },
                       [
+                        _vm.view != "charts"
+                          ? _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "text-xs flex items-center justify-start absolute top-0 mt-4"
+                              },
+                              _vm._l(_vm.compare, function(
+                                country,
+                                key,
+                                index
+                              ) {
+                                return _c("div", [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "w-48 cursor-pointer relative rounded rounded-b-none py-2 px-4 mx-1 whitespace-no-wrap overflow-hidden truncate ...",
+                                      class:
+                                        _vm.selectedCompareTab == key
+                                          ? "bg-hoverslab"
+                                          : "bg-slab-primary",
+                                      on: {
+                                        click: function($event) {
+                                          _vm.selectedCompareTab = key
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(
+                                            _vm.compare.length > 0 && country[2]
+                                              ? country[2] + " - "
+                                              : ""
+                                          ) +
+                                          "\n                                        " +
+                                          _vm._s(
+                                            _vm.compare.length > 0
+                                              ? country[1]
+                                              : "(none)"
+                                          ) +
+                                          "\n                                        "
+                                      ),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "text-lightlabel text-xs absolute top-0 right-0 m-2 px-2 pb-1 rounded hover:text-heading hover:bg-lightlabel",
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.removeCompare([
+                                                country[1],
+                                                country[2]
+                                              ])
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("x")]
+                                      )
+                                    ]
+                                  )
+                                ])
+                              }),
+                              0
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
                         _c(
                           "div",
                           {
@@ -89625,170 +89579,272 @@ var render = function() {
                                 expression: "view == 'response'"
                               }
                             ],
-                            staticClass: "h-full relative"
+                            staticClass: "h-full relative mt-8"
                           },
                           [
-                            _c(
-                              "simplebar",
-                              {
-                                staticClass: "top-0 right-0 bottom-0 left-0",
-                                staticStyle: { position: "absolute" },
-                                attrs: { "data-simplebar-auto-hide": "false" }
-                              },
-                              _vm._l(_vm.compare, function(row, key, index) {
-                                return _c(
+                            _vm.compare.length == 0
+                              ? _c("div", [
+                                  _c(
+                                    "h1",
+                                    { staticClass: "text-3xl font-bold" },
+                                    [_vm._v("Government Response Tracker")]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._m(0)
+                                ])
+                              : _c(
                                   "div",
+                                  {
+                                    staticClass:
+                                      "absolute top-0 left-0 right-0 bottom-0 rounded bg-hoverslab",
+                                    staticStyle: { bottom: "32px" }
+                                  },
                                   [
-                                    _c("div", { staticClass: "my-4" }, [
-                                      _c(
-                                        "div",
-                                        { staticClass: "text-4xl font-bold" },
-                                        [_vm._v(_vm._s(row[1]))]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "text-2xl font-bold" },
-                                        [
-                                          _vm._v(
-                                            _vm._s(
-                                              _vm.getGovtResponse(row[1]).latest
-                                                .stringencyindex
-                                            )
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("div", { staticClass: "text-xs" }, [
-                                        _vm._v("stringency index")
-                                      ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _vm._l(
-                                      _vm.getLatestGovtResponse(row[1]),
-                                      function(policy, key, index) {
-                                        return _vm.getGovtResponse(row[1])
-                                          ? _c("div", { staticClass: "py-1" }, [
+                                    _c(
+                                      "simplebar",
+                                      {
+                                        staticClass:
+                                          "top-0 right-0 bottom-0 left-0 m-4",
+                                        staticStyle: { position: "absolute" },
+                                        attrs: {
+                                          "data-simplebar-auto-hide": "false"
+                                        }
+                                      },
+                                      _vm._l(
+                                        _vm.getUniqueCountriesCompare(),
+                                        function(row, key, index) {
+                                          return _c(
+                                            "div",
+                                            {
+                                              directives: [
+                                                {
+                                                  name: "show",
+                                                  rawName: "v-show",
+                                                  value:
+                                                    _vm.selectedCompareTab ==
+                                                    key,
+                                                  expression:
+                                                    "selectedCompareTab == key"
+                                                }
+                                              ],
+                                              staticClass:
+                                                "bg-hoverslab rounded p-4"
+                                            },
+                                            [
                                               _c(
                                                 "div",
-                                                {
-                                                  staticClass:
-                                                    "flex items-start justify-start rounded bg-slab-primary mr-4"
-                                                },
+                                                { staticClass: "my-4 flex" },
                                                 [
                                                   _c(
                                                     "div",
                                                     {
                                                       staticClass:
-                                                        "w-128 h-full p-2 pb-4"
+                                                        "w-128 text-2xl font-bold"
                                                     },
-                                                    [
-                                                      _c(
-                                                        "div",
-                                                        {
-                                                          staticClass:
-                                                            "font-bold"
-                                                        },
-                                                        [
-                                                          _vm._v(
-                                                            _vm._s(
-                                                              policy.name
-                                                            ) +
-                                                              " - " +
-                                                              _vm._s(policy.id)
-                                                          )
-                                                        ]
-                                                      ),
-                                                      _vm._v(" "),
-                                                      _c(
-                                                        "div",
-                                                        {
-                                                          staticClass: "text-xs"
-                                                        },
-                                                        [
-                                                          _vm._v(
-                                                            _vm._s(
-                                                              policy.description
-                                                            )
-                                                          )
-                                                        ]
-                                                      )
-                                                    ]
+                                                    [_vm._v(_vm._s(row[1]))]
                                                   ),
                                                   _vm._v(" "),
-                                                  _c(
-                                                    "div",
-                                                    {
-                                                      staticClass: "p-2 w-full"
-                                                    },
-                                                    [
-                                                      policy.value > 1000
-                                                        ? _c("div", [
-                                                            _vm._v(
-                                                              "US$" +
-                                                                _vm._s(
-                                                                  _vm._f(
-                                                                    "numeralFormat"
-                                                                  )(
-                                                                    policy.value
-                                                                  )
-                                                                )
-                                                            )
-                                                          ])
-                                                        : policy.id == "s9"
-                                                        ? _c("div", [
-                                                            _vm._v(
-                                                              _vm._s(
-                                                                policy.value
-                                                              ) + "%"
-                                                            )
-                                                          ])
-                                                        : _c("div", [
-                                                            _vm._v(
-                                                              _vm._s(
-                                                                policy.value
-                                                              )
-                                                            )
-                                                          ]),
-                                                      _vm._v(" "),
-                                                      _c("div", {}, [
+                                                  _c("div", [
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "text-2xl font-bold"
+                                                      },
+                                                      [
                                                         _vm._v(
-                                                          _vm._s(policy.target)
-                                                        )
-                                                      ]),
-                                                      _vm._v(" "),
-                                                      policy.help.length == 1
-                                                        ? _c(
-                                                            "div",
-                                                            {
-                                                              staticClass:
-                                                                "text-xs"
-                                                            },
-                                                            [
-                                                              _vm._v(
-                                                                _vm._s(
-                                                                  policy.help[0]
-                                                                )
-                                                              )
-                                                            ]
+                                                          _vm._s(
+                                                            _vm.getGovtResponse(
+                                                              row[1]
+                                                            ).latest
+                                                              .stringencyindex
                                                           )
-                                                        : _vm._e()
-                                                    ]
-                                                  )
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "text-xs text-lightlabel"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "stringency index"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ])
                                                 ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass: "flex flex-wrap"
+                                                },
+                                                _vm._l(
+                                                  _vm.getLatestGovtResponse(
+                                                    row[1]
+                                                  ),
+                                                  function(policy, key, index) {
+                                                    return _vm.getGovtResponse(
+                                                      row[1]
+                                                    )
+                                                      ? _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "py-1 w-1/3"
+                                                          },
+                                                          [
+                                                            _c(
+                                                              "div",
+                                                              {
+                                                                staticClass:
+                                                                  "flex items-start justify-start rounded bg-slab-primary mr-4 h-32"
+                                                              },
+                                                              [
+                                                                _c(
+                                                                  "div",
+                                                                  {
+                                                                    staticClass:
+                                                                      "w-72 h-full p-2 pb-4"
+                                                                  },
+                                                                  [
+                                                                    _c(
+                                                                      "div",
+                                                                      {
+                                                                        staticClass:
+                                                                          "font-bold"
+                                                                      },
+                                                                      [
+                                                                        _vm._v(
+                                                                          _vm._s(
+                                                                            policy.name
+                                                                          )
+                                                                        )
+                                                                      ]
+                                                                    ),
+                                                                    _vm._v(" "),
+                                                                    _c(
+                                                                      "div",
+                                                                      {
+                                                                        staticClass:
+                                                                          "text-lightlabel text-xs"
+                                                                      },
+                                                                      [
+                                                                        _vm._v(
+                                                                          _vm._s(
+                                                                            policy.description
+                                                                          )
+                                                                        )
+                                                                      ]
+                                                                    )
+                                                                  ]
+                                                                ),
+                                                                _vm._v(" "),
+                                                                _c(
+                                                                  "div",
+                                                                  {
+                                                                    staticClass:
+                                                                      "p-2 w-full text-xs"
+                                                                  },
+                                                                  [
+                                                                    policy.value >
+                                                                    1000
+                                                                      ? _c(
+                                                                          "div",
+                                                                          [
+                                                                            _vm._v(
+                                                                              "US$" +
+                                                                                _vm._s(
+                                                                                  _vm._f(
+                                                                                    "numeralFormat"
+                                                                                  )(
+                                                                                    policy.value
+                                                                                  )
+                                                                                )
+                                                                            )
+                                                                          ]
+                                                                        )
+                                                                      : policy.id ==
+                                                                        "s9"
+                                                                      ? _c(
+                                                                          "div",
+                                                                          [
+                                                                            _vm._v(
+                                                                              _vm._s(
+                                                                                policy.value
+                                                                              ) +
+                                                                                "%"
+                                                                            )
+                                                                          ]
+                                                                        )
+                                                                      : _c(
+                                                                          "div",
+                                                                          [
+                                                                            _vm._v(
+                                                                              _vm._s(
+                                                                                policy.value
+                                                                              )
+                                                                            )
+                                                                          ]
+                                                                        ),
+                                                                    _vm._v(" "),
+                                                                    _c(
+                                                                      "div",
+                                                                      {},
+                                                                      [
+                                                                        _vm._v(
+                                                                          _vm._s(
+                                                                            policy.target
+                                                                          )
+                                                                        )
+                                                                      ]
+                                                                    ),
+                                                                    _vm._v(" "),
+                                                                    policy.help
+                                                                      .length ==
+                                                                    1
+                                                                      ? _c(
+                                                                          "div",
+                                                                          {
+                                                                            staticClass:
+                                                                              "text-lightlabel"
+                                                                          },
+                                                                          [
+                                                                            _vm._v(
+                                                                              _vm._s(
+                                                                                policy
+                                                                                  .help[0]
+                                                                              )
+                                                                            )
+                                                                          ]
+                                                                        )
+                                                                      : _vm._e()
+                                                                  ]
+                                                                )
+                                                              ]
+                                                            )
+                                                          ]
+                                                        )
+                                                      : _vm._e()
+                                                  }
+                                                ),
+                                                0
                                               )
-                                            ])
-                                          : _vm._e()
-                                      }
+                                            ]
+                                          )
+                                        }
+                                      ),
+                                      0
                                     )
                                   ],
-                                  2
+                                  1
                                 )
-                              }),
-                              0
-                            )
-                          ],
-                          1
+                          ]
                         ),
                         _vm._v(" "),
                         _c(
@@ -89802,59 +89858,9 @@ var render = function() {
                                 expression: "view == 'daily'"
                               }
                             ],
-                            staticClass: "h-full relative"
+                            staticClass: "h-full relative mt-8"
                           },
                           [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "text-xs flex items-center justify-start"
-                              },
-                              _vm._l(_vm.compare, function(
-                                country,
-                                key,
-                                index
-                              ) {
-                                return _c("div", [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "w-48 cursor-pointer rounded rounded-b-none py-2 px-4 mx-1 whitespace-no-wrap overflow-hidden truncate ...",
-                                      class:
-                                        _vm.selectedCompareTab == key
-                                          ? "bg-hoverslab"
-                                          : "bg-slab-primary",
-                                      on: {
-                                        click: function($event) {
-                                          _vm.selectedCompareTab = key
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                                            " +
-                                          _vm._s(
-                                            _vm.compare.length > 0 && country[2]
-                                              ? country[2] + " - "
-                                              : ""
-                                          ) +
-                                          "\n                                            " +
-                                          _vm._s(
-                                            _vm.compare.length > 0
-                                              ? country[1]
-                                              : "(none)"
-                                          ) +
-                                          "\n                                        "
-                                      )
-                                    ]
-                                  )
-                                ])
-                              }),
-                              0
-                            ),
-                            _vm._v(" "),
                             _vm.compare.length == 0
                               ? _c("div", [
                                   _vm._v(
@@ -89865,7 +89871,8 @@ var render = function() {
                                   "div",
                                   {
                                     staticClass:
-                                      "absolute top-0 right-0 bottom-0 left-0 mt-8 bg-hoverslab rounded"
+                                      "absolute top-0 right-0 bottom-0 left-0 bg-hoverslab rounded",
+                                    staticStyle: { bottom: "32px" }
                                   },
                                   _vm._l(_vm.compare, function(
                                     row,
@@ -89916,7 +89923,7 @@ var render = function() {
                                 expression: "view == 'charts'"
                               }
                             ],
-                            staticClass: "h-full relative"
+                            staticClass: "h-full relative flex flex-1 pt-8"
                           },
                           [
                             _c("StatsChart", {
@@ -89935,7 +89942,52 @@ var render = function() {
         ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("p", [
+        _vm._v("These data are based on the "),
+        _c(
+          "a",
+          {
+            staticClass: "text-orangeslab hover:text-blue-400 hover:underline",
+            attrs: {
+              href:
+                "https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker"
+            }
+          },
+          [_vm._v("Coronavirus Government Response Tracker")]
+        ),
+        _vm._v(" by the University of Oxford.")
+      ]),
+      _vm._v(" "),
+      _c(
+        "blockquote",
+        { staticClass: "italic m-2 ml-4 border-l-4 p-4 border-lightslab" },
+        [
+          _c("p", { staticClass: "py-2" }, [
+            _vm._v(
+              "Systematic information on which governments have taken which measures, and when, can help decision-makers and citizens understand the robustness of governmental responses in a consistent way, aiding efforts to fight the pandemic. The Oxford COVID-19 Government Response Tracker (OxCGRT) systematically collects information on several different common policy responses governments have taken, scores the stringency of such measures, and aggregates these scores into a common Stringency Index."
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "py-2" }, [
+            _vm._v(
+              "Data is collected from public sources by a team of over one hundred Oxford University students and staff from every part of the world."
+            )
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("p", { staticClass: "mt-8" }, [
+        _vm._v("Select a country or state to begin comparing.")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

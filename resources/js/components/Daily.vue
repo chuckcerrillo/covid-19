@@ -65,9 +65,9 @@
                     </div>
                 </div>
                 <div class="p-2 text-xs"
-                                         :class="key % 2 == 1 ? 'bg-slab-secondary' : ''">
+                                         :class="key % 2 == 1 ? 'bg-slab-primary' : ''">
 
-                    <div class="w-full flex justify-center">
+                    <div class="w-full flex justify-center" :class="key == 0 ? 'font-bold' : ''">
                         <div class="w-24">{{moment(row['date']).format('YYYY-MM-DD')}}</div>
                         <div class="w-32">
                             {{ isNaN(row.confirmed) ? 0 : row.confirmed | numeralFormat}}
@@ -85,15 +85,18 @@
                             <span class="text-red-400" v-else>({{row.deltaRecovered| numeralFormat}})</span>
                         </div>
                         <div class="w-32">
-                            {{data.growth[key]}}
+                            {{row.growth}}
                         </div>
                         <div class="w-32">
-                            {{data.average[key]}}
+                            {{row.average}}
                         </div>
                         <div class="w-32">
                             <span class="text-red-400" v-if="row.growthFactor > 1">{{row.growthFactor}}</span>
                             <span class="text-green-400" v-else>{{row.growthFactor}}</span>
                         </div>
+                    </div>
+                    <div v-if="key==0" class="w-full text-lightlabel flex justify-center">
+                        * today's numbers are still processing and can still change throughout the day
                     </div>
                 </div>
             </div>
@@ -235,6 +238,8 @@
                         deltaDeaths: this.recomputed.delta[x].deaths,
                         recovered: row.recovered,
                         deltaRecovered: this.recomputed.delta[x].recovered,
+                        growth: this.recomputed.growth[x],
+                        average: this.recomputed.average[x],
                         growthFactor: this.recomputed.growthFactor[x],
                     });
                 }
