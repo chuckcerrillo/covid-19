@@ -104,7 +104,7 @@ thi<template>
                                                      class="py-1 w-1/3">
                                                     <div class="flex items-start justify-start rounded bg-slab-primary mr-4 h-32">
                                                         <div class="w-72 h-full p-2 pb-4">
-                                                            <div class="font-bold">{{policy.name}}<!-- - {{policy.id}}--></div>
+                                                            <div class="font-bold"><span class="uppercase">{{policy.id}}</span> - {{policy.name}}</div>
                                                             <div class="text-lightlabel text-xs">{{policy.description}}</div>
                                                         </div>
                                                         <div class="p-2 w-full text-xs">
