@@ -53,7 +53,6 @@
                         'oxford' : false,
                     },
                 },
-                title: '',
             }
         },
         components: {
@@ -106,6 +105,8 @@
                 .catch(error => {
 
                 });
+
+            this.setPageTitle(this.$route.meta.title);
         },
         methods: {
             showAbout()
@@ -124,6 +125,10 @@
             {
                 this.database.processed.dataset[name] = row;
             },
+            setPageTitle(title)
+            {
+                document.title = title + ' | COVID19 Tracker';
+            }
         },
         computed:
         {
@@ -133,18 +138,13 @@
             },
             countries()
             {
-                console.log('App.vue - countries');
-                console.log(this.database.processed.countries);
                 return this.database.processed.countries;
             },
         },
         watch: {
             $route(to,from) {
-                this.title = to.meta.title;
+                this.setPageTitle(to.meta.title);
             },
-            title() {
-                document.title = this.title + ' | COVID19 Tracker';
-            }
         }
     }
 </script>
