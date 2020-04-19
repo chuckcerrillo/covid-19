@@ -204,7 +204,7 @@ class StatsController extends Controller
         'Romania' => 'Romania',
         'Russia' => 'Russia',
         'Rwanda' => 'Rwanda',
-        'Saint Kitts and Nevis' => 'Saint Kitts and NEvis',
+        'Saint Kitts and Nevis' => 'Saint Kitts and Nevis',
         'Saint Lucia' => 'Saint Lucia',
         'St. Vincent Grenadines' => 'Saint Vincent and the Grenadines',
         'San Marino' => 'San Marino',
@@ -245,6 +245,194 @@ class StatsController extends Controller
         'Vietnam' => 'Vietnam',
         'Western Sahara' => 'Western Sahara',
         'Yemen' => 'Yemen',
+        'Zambia' => 'Zambia',
+        'Zimbabwe' => 'Zimbabwe',
+    ];
+
+    protected $oxford_jh_map = [
+        'Afghanistan' => 'Afghanistan',
+//        'Albania' => 'Albania',
+        'Algeria' => 'Algeria',
+        'Andorra' => 'Andorra',
+        'Angola' => 'Angola',
+//        'Antigua and Barbuda' => 'Antigua and Barbuda',
+        'Argentina' => 'Argentina',
+//        'Armenia' => 'Armenia',
+        'Australia' => 'Australia',
+        'Austria' => 'Austria',
+        'Azerbaijan' => 'Azerbaijan',
+//        'Bahamas' => 'Bahamas',
+//        'Bahrain' => 'Bahrain',
+        'Bangladesh' => 'Bangladesh',
+        'Barbados' => 'Barbados',
+//        'Belarus' => 'Belarus',
+        'Belgium' => 'Belgium',
+        'Belize' => 'Belize',
+//        'Benin' => 'Benin',
+//        'Bhutan' => 'Bhutan',
+        'Bolivia' => 'Bolivia',
+        'Bosnia and Herzegovina' => 'Bosnia and Herzegovina', // 22
+        'Botswana' => 'Botswana',
+        'Brazil' => 'Brazil',
+        'Brunei' => 'Brunei',
+        'Bulgaria' => 'Bulgaria',
+        'Burkina Faso' => 'Burkina Faso',
+        'Myanmar' => 'Burma',
+        'Burundi' => 'Burundi',
+//        'Cabo Verde' => 'Cabo Verde', // 30
+//        'Cambodia' => 'Cambodia',
+        'Cameroon' => 'Cameroon',
+        'Canada' => 'Canada',
+//        'CAR' => 'Central African Republic',
+        'Chad' => 'Chad',
+        'Chile' => 'Chile',
+        'China' => 'China',
+        'Colombia' => 'Colombia',
+//        'Congo (Brazzaville)' => 'Congo (Brazzaville)',
+        'Democratic Republic of Congo' => 'Congo (Kinshasa)',
+        'Costa Rica' => 'Costa Rica',
+//        'Ivory Coast' => 'Cote d\'Ivoire',
+        'Croatia' => 'Croatia',
+        'Cuba' => 'Cuba',
+        'Cyprus' => 'Cyprus',
+        'Czech Republic' => 'Czechia',
+        'Denmark' => 'Denmark',
+//        'Diamond Princess' => 'Diamond Princess',
+        'Djibouti' => 'Djibouti',
+//        'Dominica' => 'Dominica',
+        'Dominican Republic' => 'Dominican Republic',
+        'Ecuador' => 'Ecuador',
+        'Egypt' => 'Egypt',
+        'El Salvador' => 'El Salvador',
+//        'Equatorial Guinea' => 'Equatorial Guinea',
+//        'Eritrea' => 'Eritrea',
+        'Estonia' => 'Estonia',
+        'Eswatini' => 'Eswatini',
+//        'Ethiopia' => 'Ethiopia',
+//        'Fiji' => 'Fiji',
+        'Finland' => 'Finland',
+        'France' => 'France',
+        'Gabon' => 'Gabon',
+        'Gambia' => 'Gambia',
+//        'Georgia' => 'Georgia',
+        'Germany' => 'Germany',
+        'Ghana' => 'Ghana',
+        'Greece' => 'Greece',
+//        'Grenada' => 'Grenada',
+        'Guatemala' => 'Guatemala',
+//        'Guinea' => 'Guinea',
+//        'Guinea-Bissau' => 'Guinea-Bissau',
+        'Guyana' => 'Guyana',
+//        'Haiti' => 'Haiti',
+//        'Vatican City' => 'Holy See',
+        'Honduras' => 'Honduras',
+//        'Hungary' => 'Hungary',
+        'Iceland' => 'Iceland',
+        'India' => 'India',
+        'Indonesia' => 'Indonesia',
+        'Iran' => 'Iran',
+        'Iraq' => 'Iraq',
+        'Ireland' => 'Ireland',
+        'Israel' => 'Israel',
+        'Italy' => 'Italy',
+        'Jamaica' => 'Jamaica',
+        'Japan' => 'Japan',
+        'Jordan' => 'Jordan',
+        'Kazakhstan' => 'Kazakhstan',
+        'Kenya' => 'Kenya',
+        'South Korea' => 'Korea, South',
+        'Kosovo' => 'Kosovo',
+        'Kuwait' => 'Kuwait',
+        'Kyrgyz Republic' => 'Kyrgyzstan',
+        'Laos' => 'Laos',
+//        'Latvia' => 'Latvia',
+        'Lebanon' => 'Lebanon',
+//        'Liberia' => 'Liberia',
+        'Libya' => 'Libya',
+//        'Liechtenstein' => 'Liechtenstein',
+//        'Lithuania' => 'Lithuania',
+        'Luxembourg' => 'Luxembourg',
+        'Madagascar' => 'Madagascar',
+        'Malawi' => 'Malawi',
+        'Malaysia' => 'Malaysia',
+//        'Maldives' => 'Maldives',
+        'Mali' => 'Mali',
+//        'Malta' => 'Malta',
+        'Mauritania' => 'Mauritania',
+        'Mauritius' => 'Mauritius',
+        'Mexico' => 'Mexico',
+        'Moldova' => 'Moldova',
+//        'Monaco' => 'Monaco',
+        'Mongolia' => 'Mongolia',
+//        'Montenegro' => 'Montenegro',
+        'Morocco' => 'Morocco',
+        'Mozambique' => 'Mozambique',
+//        'MS Zaandam' => 'MS Zaandam',
+        'Namibia' => 'Namibia',
+//        'Nepal' => 'Nepal',
+        'Netherlands' => 'Netherlands',
+        'New Zealand' => 'New Zealand',
+        'Nicaragua' => 'Nicaragua',
+        'Niger' => 'Niger',
+        'Nigeria' => 'Nigeria',
+//        'North Macedonia' => 'North Macedonia',
+        'Norway' => 'Norway',
+        'Oman' => 'Oman',
+        'Pakistan' => 'Pakistan',
+        'Panama' => 'Panama',
+        'Papua New Guinea' => 'Papua New Guinea',
+        'Paraguay' => 'Paraguay',
+        'Peru' => 'Peru',
+        'Philippines' => 'Philippines',
+        'Poland' => 'Poland',
+        'Portugal' => 'Portugal',
+        'Qatar' => 'Qatar',
+        'Romania' => 'Romania',
+        'Russia' => 'Russia',
+        'Rwanda' => 'Rwanda',
+//        'Saint Kitts and Nevis' => 'Saint Kitts and Nevis',
+//        'Saint Lucia' => 'Saint Lucia',
+//        'St. Vincent Grenadines' => 'Saint Vincent and the Grenadines',
+        'San Marino' => 'San Marino',
+//        'Sao Tome and Principe' => 'Sao Tome and Principe',
+        'Saudi Arabia' => 'Saudi Arabia',
+//        'Senegal' => 'Senegal',
+        'Serbia' => 'Serbia',
+        'Seychelles' => 'Seychelles',
+        'Sierra Leone' => 'Sierra Leone',
+        'Singapore' => 'Singapore',
+        'Slovak Republic' => 'Slovakia',
+        'Slovenia' => 'Slovenia',
+//        'Somalia' => 'Somalia',
+        'South Africa' => 'South Africa',
+        'South Sudan' => 'South Sudan',
+        'Spain' => 'Spain',
+        'Sri Lanka' => 'Sri Lanka',
+        'Sudan' => 'Sudan',
+//        'Suriname' => 'Suriname',
+        'Sweden' => 'Sweden',
+        'Switzerland' => 'Switzerland',
+        'Syria' => 'Syria',
+        'Taiwan' => 'Taiwan*',
+        'Tanzania' => 'Tanzania',
+        'Thailand' => 'Thailand',
+//        'Timor-Leste' => 'Timor-Leste',
+//        'Togo' => 'Togo',
+        'Trinidad and Tobago' => 'Trinidad and Tobago',
+        'Tunisia' => 'Tunisia',
+        'Turkey' => 'Turkey',
+        'Uganda' => 'Uganda',
+        'United Arab Emirates' => 'United Arab Emirates',
+        'United Kingdom' => 'United Kingdom',
+        'Ukraine' => 'Ukraine',
+        'Uruguay' => 'Uruguay',
+        'United States' => 'US',
+        'Uzbekistan' => 'Uzbekistan',
+        'Venezuela' => 'Venezuela',
+        'Vietnam' => 'Vietnam',
+//        'West Bank and Gaza' => 'West Bank and Gaza',
+//        'Western Sahara' => 'Western Sahara',
+//        'Yemen' => 'Yemen',
         'Zambia' => 'Zambia',
         'Zimbabwe' => 'Zimbabwe',
     ];
@@ -364,6 +552,7 @@ class StatsController extends Controller
         foreach($result AS $file)
         {
             $date = str_replace('.csv','',$file);
+
             $filename = COVID_DATA . $file;
             $csv = array_map('str_getcsv', file($filename));
             array_shift($csv); # remove column header
@@ -404,6 +593,8 @@ class StatsController extends Controller
                         {
                             $state = $row[0];
                         }
+
+
                         if(!isset($data[$country]['daily'][$date]))
                         {
                             $data[$country]['daily'][$date] = [
@@ -415,6 +606,7 @@ class StatsController extends Controller
                                 ]
                             ];
                         }
+
                         if(!isset($data[$country]['daily'][$date]['states'][$state]))
                         {
                             $data[$country]['daily'][$date]['states'][$state] = [
@@ -567,6 +759,7 @@ class StatsController extends Controller
                                 ]
                             ];
                         }
+
                         if(!isset($data[$row[3]]['daily'][$date]['states'][$state]))
                         {
                             $data[$row[3]]['daily'][$date]['states'][$state] = [
@@ -601,6 +794,7 @@ class StatsController extends Controller
                         $global['daily'][$date]['recovered'] += (int)$row[9];
                     }
                 }
+
 
                 // Manual override here
                 if(isset($manual_override[$country]))
@@ -644,6 +838,7 @@ class StatsController extends Controller
                 }
             }
         }
+
         if(array_key_last ($result) != $current_date)
         {
             foreach($worldometer_override AS $override)
@@ -887,6 +1082,8 @@ class StatsController extends Controller
 
         file_put_contents(STATS . 'global.json',json_encode($global));
 
+        $this->harvest_oxford();
+
         return response('Done harvesting data')->setStatusCode(Response::HTTP_OK);
     }
 
@@ -1072,23 +1269,489 @@ class StatsController extends Controller
         return $data;
     }
 
-    protected function oxford()
+    protected function harvest_oxford()
     {
-        $result = array_diff(scandir(OXFORD_DATA), array('..', '.','README.md','.gitignore'));
 
-        dump($result);
+        $filename = OXFORD_LATEST;
+        $csv = array_map('str_getcsv', file($filename));
+        $filename = str_replace(OXFORD_DATA,'',$filename);
+        $filename = str_replace('.csv','',$filename);
+//        $key[$file_id] = $filename;
+        $header = array_shift($csv); # remove column header
 
-        foreach($result AS $file) {
-            if(substr($file,0,1) == 's')
+//        [
+//            0 => "CountryName"
+//            1 => "CountryCode"
+//            2 => "Date"
+//            3 => "S1_School closing"
+//            4 => "S1_IsGeneral"
+//            5 => "S2_Workplace closing"
+//            6 => "S2_IsGeneral"
+//            7 => "S3_Cancel public events"
+//            8 => "S3_IsGeneral"
+//            9 => "S4_Close public transport"
+//            10 => "S4_IsGeneral"
+//            11 => "S5_Public information campaigns"
+//            12 => "S5_IsGeneral"
+//            13 => "S6_Restrictions on internal movement"
+//            14 => "S6_IsGeneral"
+//            15 => "S7_International travel controls"
+//            16 => "S8_Fiscal measures"
+//            17 => "S9_Monetary measures"
+//            18 => "S10_Emergency investment in health care"
+//            19 => "S11_Investment in Vaccines"
+//            20 => "S12_Testing framework"
+//            21 => "S13_Contact tracing"
+//            22 => "ConfirmedCases"
+//            23 => "ConfirmedDeaths"
+//            24 => "StringencyIndex"
+//            25 => "StringencyIndexForDisplay"
+//            26 => ""
+//        ]
+
+        $key = [
+            's1' => [
+                'name' => 'School closing',
+                'description' => 'Record closings of schools and universities',
+                'type' => 'lookup',
+                'values' => [
+                    'No measures',
+                    'Recommend closing',
+                    'Require closing',
+                ],
+                'hasTarget' => true
+            ],
+            's2' => [
+                'name' => 'Workplace closing',
+                'description' => 'Record closings of workplaces',
+                'type' => 'lookup',
+                'values' => [
+                    'No measures',
+                    'Recommend closing',
+                    'Require closing',
+                ],
+                'hasTarget' => true
+            ],
+            's3' => [
+                'name' => 'Cancel public events',
+                'description' => 'Record cancelling public events',
+                'type' => 'lookup',
+                'values' => [
+                    'No measures',
+                    'Recommend cancelling',
+                    'Require cancelling',
+                ],
+                'hasTarget' => true
+            ],
+            's4' => [
+                'name' => 'Close public transport',
+                'description' => 'Record closing of public transport',
+                'type' => 'lookup',
+                'values' => [
+                    'No measures',
+                    'Recommend closing',
+                    'Require closing',
+                ],
+                'hasTarget' => true
+            ],
+            's5' => [
+                'name' => 'Public info campaigns',
+                'description' => 'Record presence of public info campaigns',
+                'type' => 'lookup',
+                'values' => [
+                    'No COVID-19 public information campaign',
+                    'COVID-19 public information campaign',
+                ],
+                'hasTarget' => true
+            ],
+            's6' => [
+                'name' => 'Restrictions on internal movement',
+                'description' => 'Record restrictions on internal movement',
+                'type' => 'lookup',
+                'values' => [
+                    'No measures',
+                    'Recommend movement restriction',
+                    'Restrict movement',
+                ],
+                'hasTarget' => true
+            ],
+            's7' => [
+                'name' => 'International travel controls',
+                'description' => 'Record restrictions on international travel',
+                'type' => 'lookup',
+                'values' => [
+                    'No measures',
+                    'Screening',
+                    'Quarantine on high-risk regions',
+                    'Ban on high-risk regions',
+                ],
+                'hasTarget' => false
+            ],
+            's8' => [
+                'name' => 'Fiscal measures',
+                'description' => 'What economic stimulus policies are adopted',
+                'type' => 'custom',
+                'values' => ['Value of fiscal stimuli, including spending or tax cuts'],
+                'hasTarget' => false
+            ],
+            's9' => [
+                'name' => 'Monetary measures',
+                'description' => 'What monetary policy interventions?',
+                'type' => 'custom',
+                'values' => ['Value of interest rate'],
+                'hasTarget' => false
+            ],
+            's10' => [
+
+                'name' => 'Emergency investment in health care',
+                'description' => 'Short-term spending on, e.g. hospitals, masks, etc',
+                'type' => 'custom',
+                'values' => ['Value of new short-term spending on health'],
+                'hasTarget' => false
+            ],
+            's11' => [
+                'name' => 'Investment in vaccines',
+                'description' => 'Announced public spending on vaccine development',
+                'type' => 'custom',
+                'values' => ['Value of investment'],
+                'hasTarget' => false
+            ],
+            's12' => [
+                'name' => 'Testing policy',
+                'description' => 'Who can get tested?',
+                'type' => 'lookup',
+                'values' => [
+                    'No testing policy',
+                    'Only testing those who both (a) have symptoms, and (b) meet specific criteria (e.g. key workers, admitted to hospital, came into contact with a known case, returned from overseas)',
+                    'Testing of anyone showing, COVID-19 symptoms',
+                    'Open public testing (e.g. "drive through" testing available to asymptomatic people)',
+                ],
+                'hasTarget' => false
+            ],
+            's13' => [
+                'name' => 'Contact tracing',
+                'description' => 'Are governments doing contact tracing?',
+                'type' => 'lookup',
+                'values' => [
+                    'No contact tracing',
+                    'Limited contact tracing - not done for all cases',
+                    'Comprehensive contact tracing - done for all cases',
+                ],
+                'hasTarget' => false
+            ],
+        ];
+
+
+        $daily = [];
+        $latest = [];
+        foreach($csv AS $row)
+        {
+            if(isset($this->oxford_jh_map[$row[0]]))
             {
-                $filename = OXFORD_DATA . $file;
-                $csv = array_map('str_getcsv', file($filename));
-                array_shift($csv); # remove column header
+                $country = $this->oxford_jh_map[$row[0]];
+                $date = date('Y-m-d',strtotime($row[2]));
 
-                foreach ($csv AS $row) {
-                    dump($row);
+                // Daily
+                // data:  [country] [date] [stringencyindex]                             = value
+                // data:  [country] [date] ['policies']      [policynumber] [policyname] = value
+
+                // Latest
+                // data: [country] [stringencyindex / policies]
+
+                if(strlen($row[3]) > 0)
+                {
+                    $daily[$country][$date]['policies'] = [
+                        's1' => [
+                            'value' => $row[3],
+                            'target' => $row[4],
+                        ],
+                    ];
+
+                    $latest[$country]['policies']['s1'] = [
+                        'value' => $row[3],
+                        'target' => $row[4],
+                    ];
                 }
+
+                if(strlen($row[5]) > 0)
+                {
+                    $daily[$country][$date]['policies'] = [
+                        's2' => [
+                            'value' => $row[5],
+                            'target' => $row[6],
+                        ],
+                    ];
+
+                    $latest[$country]['policies']['s2'] = [
+                        'value' => $row[5],
+                        'target' => $row[6],
+                    ];
+                }
+
+                if(strlen($row[7]) > 0)
+                {
+                    $daily[$country][$date]['policies'] = [
+                        's3' => [
+                            'value' => $row[7],
+                            'target' => $row[8],
+                        ],
+                    ];
+
+                    $latest[$country]['policies']['s3'] = [
+                        'value' => $row[7],
+                        'target' => $row[8],
+                    ];
+                }
+
+                if(strlen($row[9]) > 0)
+                {
+                    $daily[$country][$date]['policies'] = [
+                        's4' => [
+                            'value' => $row[9],
+                            'target' => $row[10],
+                        ],
+                    ];
+
+                    $latest[$country]['policies']['s4'] = [
+                        'value' => $row[9],
+                        'target' => $row[10],
+                    ];
+                }
+
+                if(strlen($row[11]) > 0)
+                {
+                    $daily[$country][$date]['policies'] = [
+                        's5' => [
+                            'value' => $row[11],
+                            'target' => $row[12],
+                        ],
+                    ];
+
+                    $latest[$country]['policies']['s5'] = [
+                        'value' => $row[11],
+                        'target' => $row[12],
+                    ];
+                }
+
+                if(strlen($row[13]) > 0)
+                {
+                    $daily[$country][$date]['policies'] = [
+                        's6' => [
+                            'value' => $row[13],
+                            'target' => $row[14],
+                        ],
+                    ];
+
+                    $latest[$country]['policies']['s6'] = [
+                        'value' => $row[13],
+                        'target' => $row[14],
+                    ];
+                }
+
+                if(strlen($row[15]) > 0)
+                {
+                    $daily[$country][$date]['policies'] = [
+                        's7' => [
+                            'value' => $row[15],
+                            'target' => '',
+                        ],
+                    ];
+
+                    $latest[$country]['policies']['s7'] = [
+                        'value' => $row[15],
+                        'target' => '',
+                    ];
+                }
+
+                if($row[16] > 0)
+                {
+                    $daily[$country][$date]['policies'] = [
+                        's8' => [
+                            'value' => $row[16],
+                            'target' => '',
+                        ],
+                    ];
+
+                    $latest[$country]['policies']['s8'] = [
+                        'value' => $row[16],
+                        'target' => '',
+                    ];
+                }
+
+                if($row[17] > 0)
+                {
+                    $daily[$country][$date]['policies'] = [
+                        's9' => [
+                            'value' => $row[17],
+                            'target' => '',
+                        ],
+                    ];
+
+                    $latest[$country]['policies']['s9'] = [
+                        'value' => $row[17],
+                        'target' => '',
+                    ];
+                }
+
+                if($row[18] > 0)
+                {
+                    $daily[$country][$date]['policies'] = [
+                        's10' => [
+                            'value' => $row[18],
+                            'target' => '',
+                        ],
+                    ];
+
+                    $latest[$country]['policies']['s10'] = [
+                        'value' => $row[18],
+                        'target' => '',
+                    ];
+                }
+
+                if($row[19] > 0)
+                {
+                    $daily[$country][$date]['policies'] = [
+                        's11' => [
+                            'value' => $row[19],
+                            'target' => '',
+                        ],
+                    ];
+
+                    $latest[$country]['policies']['s11'] = [
+                        'value' => $row[19],
+                        'target' => '',
+                    ];
+                }
+
+                if(strlen($row[20]) > 0)
+                {
+                    $daily[$country][$date]['policies'] = [
+                        's12' => [
+                            'value' => $row[20],
+                            'target' => '',
+                        ],
+                    ];
+
+                    $latest[$country]['policies']['s12'] = [
+                        'value' => $row[20],
+                        'target' => '',
+                    ];
+                }
+
+                if(strlen($row[21]) > 0)
+                {
+                    $daily[$country][$date]['policies'] = [
+                        's13' => [
+                            'value' => $row[21],
+                            'target' => '',
+                        ],
+                    ];
+
+                    $latest[$country]['policies']['s13'] = [
+                        'value' => $row[21],
+                        'target' => '',
+                    ];
+                }
+
+                $daily[$country][$date]['stringencyindex'] = $row[25];
+                $latest[$country]['stringencyindex'] = $row[25];
             }
         }
+
+        $data = [
+            'key' => $key,
+            'daily' => $daily,
+            'latest' => $latest,
+        ];
+
+
+//        dd($data);
+//
+//
+//
+//        $result = array_diff(scandir(OXFORD_DATA), array('..', '.','README.md','.gitignore'));
+//
+//
+//        $daily = [];
+//        $key = [];
+//        foreach($result AS $file_id => $file) {
+//            if(substr($file,0,1) == 's')
+//            {
+//                $filename = OXFORD_DATA . $file;
+//                $csv = array_map('str_getcsv', file($filename));
+//                $filename = str_replace(OXFORD_DATA,'',$filename);
+//                $filename = str_replace('.csv','',$filename);
+//                $key[$file_id] = $filename;
+//                $header = array_shift($csv); # remove column header
+//                $csv = array_slice($csv,0,count($csv) - 3);
+//
+//                foreach ($csv AS $row) {
+//                    foreach($row AS $index=>$value)
+//                    {
+//
+//                        if($value > 0)
+//                        {
+//                            // Data - filename - country name - date = value
+////                            $daily[$filename][$row[0]][$header[$index]] = $value;
+//
+//                            // data:  [country] [date] [stringencyindex]              = value
+//                            // data:  [country] [date] [policynumber]    [policyname] = value
+//                            $date = date('Y-m-d',strtotime($header[$index]));
+//                            if($filename == 'stringencyindex')
+//                            {
+//                                $daily[$row[0]][$date]['stringencyindex'] = $value;
+//                            }
+//                            else
+//                            {
+//                                $policy = explode('_',$filename);
+//                                $daily[$row[0]][$date]['policy'][$policy[0]][$policy[1]] = $value;
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        $latest = [];
+//        foreach($daily AS $country=>$country_row)
+//        {
+//            $last_date = array_slice($country_row,-1,1);
+//            foreach($last_date AS $date => $date_row)
+//            {
+//                foreach($date_row['policy'] AS $policy_number=>$policy_row)
+//                {
+//                    foreach($policy_row AS $policy => $value)
+//                    {
+//                        $latest[$country]['policy'][$policy_number][$policy] = $value;
+//                    }
+//
+//                }
+//                if(isset($date_row['stringencyindex']))
+//                {
+//                    $latest[$country]['stringencyindex'] =
+//                        $date_row['stringencyindex'];
+//                }
+//            }
+//        }
+
+
+        $data = [
+            'key' => $key,
+            'daily' => $daily,
+            'latest' => $latest,
+        ];
+
+        file_put_contents(STATS . 'oxford.json',json_encode($data));
+
+        return response('Done harvesting data')->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function oxford()
+    {
+
+        $filename = STATS . 'oxford.json';
+        $file = fopen($filename,'r');
+        $countries = fread($file,filesize($filename));
+        return response($countries)->setStatusCode(Response::HTTP_OK);
     }
 }

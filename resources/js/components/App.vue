@@ -5,6 +5,7 @@
             v-on:setMode="setMode"
             :mode="mode"
         />
+        <div class="hidden">{{countries}}</div>
         <About
             v-show="about"
             v-on:showAbout="showAbout"
@@ -12,6 +13,7 @@
         />
         <router-view
             v-on:updateCompare="updateCompare"
+            v-on:saveProcessedData="saveProcessedData"
             :mode="mode" :key="$route.fullPath" class="fixed top-0 left-0 right-0 bottom-0 xl:mt-14" :loading="database.loading" :database="database"></router-view>
     </div>
 </template>
@@ -32,20 +34,26 @@
                         'raw_countries': [],
                         'raw_state_data': [],
                         'raw_stats': [],
+                        'raw_annotations' : [],
+                        'raw_oxford' : [],
                     },
                     processed: {
                         'global' : {},
                         'countries': {},
                         'compare' : [],
+                        'dataset' : {},
+                        'oxford' : {},
+                        'annotations' : {},
                     },
                     loading: {
                         'countries' : false,
                         'states' : false,
                         'annotations' : false,
                         'global' : false,
+                        'oxford' : false,
                     },
                 },
-
+                title: '',
             }
         },
         components: {
@@ -57,8 +65,6 @@
             axios.get('/api/stats/global')
                 .then(res => {
                     this.database.raw.raw_global = res.data;
-                    console.log('---global---');
-                    console.log(this.database.raw.raw_global);
                     this.database.loading.global = true;
                 })
                 .catch(error => {
@@ -91,6 +97,15 @@
                 .catch(error => {
 
                 });
+
+            axios.get('/api/stats/oxford')
+                .then(res => {
+                    this.database.raw.raw_oxford = res.data;
+                    this.database.loading.oxford = true;
+                })
+                .catch(error => {
+
+                });
         },
         methods: {
             showAbout()
@@ -104,8 +119,24 @@
             updateCompare(compare)
             {
                 this.database.processed.compare = compare;
-                console.log('Updating compare array');
-            }
+            },
+            saveProcessedData(row,name)
+            {
+                this.database.processed.dataset[name] = row;
+            },
+        },
+        computed:
+        {
+            global()
+            {
+                return this.database.processed.global;
+            },
+            countries()
+            {
+                console.log('App.vue - countries');
+                console.log(this.database.processed.countries);
+                return this.database.processed.countries;
+            },
         },
         watch: {
             $route(to,from) {

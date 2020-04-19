@@ -225,7 +225,7 @@
                 var data = [];
                 for(var x in this.recomputed.daily)
                 {
-                    var row = this.recomputed.daily[x];
+                    var row = _.cloneDeep(this.recomputed.daily[x]);
 
                     data.push({
                         date: moment(row['date']).format('YYYY-MM-DD'),
