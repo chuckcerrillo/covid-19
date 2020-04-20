@@ -58,13 +58,16 @@
                         <div class="xl:flex xl:flex-1">
                             <div class="m-2 xl:m-0 xl:w-1/3">
                                 <div class="font-bold tracking-tight mb-4">Countries with most cumulative cases</div>
-                                <div class="bg-lightslab rounded-lg">
+                                <div class="bg-hoverslab rounded-lg">
                                     <div v-for="(row,key,index) in getSortedCountries('confirmed','desc',5)"
-                                         class="p-2 xl:p-4 flex items-end justify-center">
+                                         class="p-2 xl:p-4 flex items-center justify-center">
                                         <div class="mr-4 xl:mr-0 xl:w-8 xl:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
                                         <div class="flex xl:block flex-1 xl:flex-none justify-between items-center ">
-                                            <div class="text-primary text-sm xl:px-2 xl:w-64">{{row.name}}</div>
+                                            <div class="text-primary font-bold text-sm xl:px-2 xl:w-64">{{row.name}}</div>
                                             <div class="font-bold text-white xl:text-3xl xl:px-2">{{row.total.c | numeralFormat}}</div>
+                                            <div v-if="getLastDelta(row.name)" class="px-2 text-xs text-lightlabel">
+                                                +{{getLastDelta(row.name).confirmed|numeralFormat}} (+{{getLastDelta(row.name).confirmedpc|numeralFormat}}%)
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -72,26 +75,32 @@
 
                             <div class="m-2 xl:m-0 xl:w-1/3 xl:ml-2">
                                 <div class="font-bold tracking-tight mb-4">Countries with most deaths</div>
-                                <div class="bg-lightslab rounded-lg">
+                                <div class="bg-hoverslab rounded-lg">
                                     <div v-for="(row,key,index) in getSortedCountries('deaths','desc',5)"
-                                         class="p-2 xl:p-4 flex items-end justify-center">
+                                         class="p-2 xl:p-4 flex items-center justify-center">
                                         <div class="mr-4 xl:mr-0 xl:w-8 xl:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
                                         <div class="flex xl:block flex-1 xl:flex-none justify-between items-center ">
-                                            <div class="text-primary text-sm xl:px-2 xl:w-64">{{row.name}}</div>
+                                            <div class="text-primary font-bold text-sm xl:px-2 xl:w-64">{{row.name}}</div>
                                             <div class="font-bold text-white xl:text-3xl xl:px-2">{{row.total.d | numeralFormat}}</div>
+                                            <div v-if="getLastDelta(row.name)" class="px-2 text-xs text-lightlabel">
+                                                +{{getLastDelta(row.name).deaths|numeralFormat}} (+{{getLastDelta(row.name).deathspc|numeralFormat}})
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="m-2 xl:m-0 xl:w-1/3 xl:ml-2">
                                 <div class="font-bold tracking-tight mb-4">Countries with most recoveries</div>
-                                <div class="bg-lightslab rounded-lg">
+                                <div class="bg-hoverslab rounded-lg">
                                     <div v-for="(row,key,index) in getSortedCountries('recovered','desc',5)"
-                                         class="p-2 xl:p-4 flex items-end justify-center">
+                                         class="p-2 xl:p-4 flex items-center justify-center">
                                         <div class="mr-4 xl:mr-0 xl:w-8 xl:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
                                         <div class="flex xl:block flex-1 xl:flex-none justify-between items-center ">
-                                            <div class="text-primary text-sm xl:px-2 xl:w-64">{{row.name}}</div>
+                                            <div class="text-primary font-bold text-sm xl:px-2 xl:w-64">{{row.name}}</div>
                                             <div class="font-bold text-white xl:text-3xl xl:px-2">{{row.total.r | numeralFormat}}</div>
+                                            <div v-if="getLastDelta(row.name)" class="px-2 text-xs text-lightlabel">
+                                                +{{getLastDelta(row.name).recovered|numeralFormat}} (+{{getLastDelta(row.name).recoveredpc|numeralFormat}}%)
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -340,6 +349,41 @@
                 }
                 return data;
             },
+            getLastDelta(country)
+            {
+                var data = {
+                    'confirmed': 0,
+                    'deaths': 0,
+                    'recovered': 0,
+                }
+
+                if(country)
+                {
+                    var row = this.database.raw.raw_countries[country];
+                    var count = 0, current, previous;
+                    for(var x in row.daily)
+                    {
+                        if(count > 0)
+                        {
+                            current = row.daily[x].total;
+                            if (current.c != previous.c)
+                            {
+                                data = {
+                                    'confirmed' : parseInt(current.c) - parseInt(previous.c),
+                                    'confirmedpc' : (parseInt(current.c) - parseInt(previous.c)) / parseInt(previous.c),
+                                    'deaths' : parseInt(current.d) - parseInt(previous.d),
+                                    'deathspc' : (parseInt(current.d) - parseInt(previous.d)) / parseInt(previous.d),
+                                    'recovered' : parseInt(current.r) - parseInt(previous.r),
+                                    'recoveredpc' : (parseInt(current.r) - parseInt(previous.r)) / parseInt(previous.r),
+                                }
+                            }
+                        }
+                        previous = row.daily[x].total;
+                        count++;
+                    }
+                }
+                return data;
+            },
             getSortedCountries(field,order,limit)
             {
                 var sort = {key: field, order: order};
@@ -472,23 +516,6 @@
 
                 return row;
             },
-            getComparisonData()
-            {
-                var data = [],
-                    row = [];
-
-                if(this.compare.length > 0)
-                {
-
-                    for(var x in this.compare)
-                    {
-                        row = this.assembleDataset(this.compare[x])
-
-                        data.push(row);
-                    }
-                }
-                return data;
-            },
         },
         computed: {
             loading()
@@ -600,7 +627,15 @@
                     last_update = '';
 
                 data = _.cloneDeep(this.raw_global);
-                data.last_update = data.total.last_update;
+                if(data.total && data.total.last_update)
+                {
+                    data.last_update = data.total.last_update;
+                }
+                else
+                {
+                    data.last_update = '';
+                }
+
                 data.name = {
                     full: 'Global',
                     country: 'Global',

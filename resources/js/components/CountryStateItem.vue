@@ -18,15 +18,15 @@
             <div @click="selectCountry(data['name'],false)" class="text-xs pl-2 py-1 w-20">{{data['total']['r']| numeralFormat}}</div>
         </div>
         <div v-for="row in data.states" class="pb-1 hover:bg-lightslab cursor-pointer flex items-center text-xs" v-show="expanded"
-             :class="isSelected(data.name,row.name) ? 'bg-hoverslab' : (row.name % 2 == 0) ? 'bg-slab-primary':'bg-slab-secondary'"
+             :class="isSelected(data.name,row.name) ? 'bg-hoverslab' : 'bg-darkslab'"
         >
             <div class="w-4 p-2 m-1 ml-0"></div>
             <div @click="selectCountry(data['name'],row['name'])" class="w-32 px-2">
                 <div>{{row['name']}}</div>
             </div>
-            <div @click="selectCountry(data['name'],row['name'])" v-if="row.total && row.total.c >= 0" class="w-20 pl-2">{{row['total']['c']| numeralFormat}}</div>
-            <div @click="selectCountry(data['name'],row['name'])" v-if="row.total && row.total.d >= 0" class="w-20 pl-2">{{row['total']['d']| numeralFormat}}</div>
-            <div @click="selectCountry(data['name'],row['name'])" v-if="row.total && row.total.r >= 0" class="w-20 pl-2">{{row['total']['r']| numeralFormat}}</div>
+            <div @click="selectCountry(data['name'],row['name'])" class="w-20 pl-2">{{(row['total']['c'] ? row['total']['c'] : 0) | numeralFormat}}</div>
+            <div @click="selectCountry(data['name'],row['name'])" class="w-20 pl-2">{{(row['total']['d']?row['total']['d']:0)| numeralFormat}}</div>
+            <div @click="selectCountry(data['name'],row['name'])" class="w-20 pl-2">{{(row['total']['r']?row['total']['r']:0)| numeralFormat}}</div>
         </div>
     </div>
 </template>
