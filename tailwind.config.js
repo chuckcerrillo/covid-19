@@ -11,6 +11,7 @@ module.exports = {
               base : '#2c3531',
               heading : '#d1e8e2',
               orangeslab : '#d9b08c',
+              darkslab : '#094445',
               'slab-primary' : '#0c5658',
               'slab-secondary' : '#116466',
               'date-slab': '#80cbcd',
