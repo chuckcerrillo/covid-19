@@ -1195,9 +1195,6 @@ class StatsController extends Controller
                 array_splice($row,0,4);
                 $current_date = new \DateTime($first_date);
 
-
-
-
                 foreach ($this->combine AS $key => $combine) {
                     if (in_array($country, $combine)) {
                         $country = $key;
@@ -1214,6 +1211,13 @@ class StatsController extends Controller
                 // Skip things that we do not know where to put
                 if (in_array($country, $this->skip)) {
                     break;
+                }
+
+
+                // We have already done United States separately...
+                if($country == 'United States' && ($type == 'confirmed' || $type == 'deaths'))
+                {
+                    continue;
                 }
 
 
@@ -1518,16 +1522,60 @@ class StatsController extends Controller
         unset($data['Cruise Ship']);
 
         $global['total'] = [
+            'last_update' => $current_date,
             'confirmed' => 0,
             'deaths' => 0,
             'recovered' => 0,
         ];
-        foreach($data AS $country => $row)
+//        foreach($data AS $country => $row)
+//        {
+//            $global['total']['confirmed'] += $row['total']['c'];
+//            $global['total']['deaths'] += $row['total']['d'];
+//            $global['total']['recovered'] += $row['total']['r'];
+//        }
+
+
+        echo '<table border="1">
+            <tr>
+                <td>Country</td>
+                <td>Confirmed</td>
+                <td>Deaths</td>
+                <td>Recovered</td>
+
+                <td>Cumulative Confirmed</td>
+                <td>Cumulative Deaths</td>
+                <td>Cumulative Recovered</td>
+            </tr>
+        ';
+
+        foreach($data AS $country=> $row)
         {
             $global['total']['confirmed'] += $row['total']['c'];
             $global['total']['deaths'] += $row['total']['d'];
             $global['total']['recovered'] += $row['total']['r'];
+            echo '
+            <tr>
+            <td>' . $country . '</td>
+            <td>' . $row['total']['c'] . '</td>
+            <td>' . $row['total']['d'] . '</td>
+            <td>' . $row['total']['r'] . '</td>
+            <td>' . $global['total']['confirmed'] . '</td>
+            <td>' . $global['total']['deaths'] . '</td>
+            <td>' . $global['total']['recovered'] . '</td>
+            </tr>
+            ';
         }
+        echo '
+        <tr>
+            <td>GLOBAL TOTAL</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>' . $global['total']['confirmed'] . '</td>
+            <td>' . $global['total']['deaths'] . '</td>
+            <td>' . $global['total']['recovered'] . '</td>
+        </tr>
+        </table>';
 
         // Write the file
         file_put_contents(STATS . 'master.json',json_encode($data));
@@ -1589,14 +1637,6 @@ class StatsController extends Controller
             }
         }
         file_put_contents(STATS . 'annotations.json',json_encode($data));
-
-
-
-
-        $sequence = array_reverse($global['daily']);
-        $last = reset($sequence);
-        $global['total'] = $last;
-
         file_put_contents(STATS . 'global.json',json_encode($global));
 
         $this->harvest_oxford();

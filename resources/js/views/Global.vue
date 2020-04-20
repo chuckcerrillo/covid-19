@@ -11,7 +11,7 @@
                             <div v-else class="text-5xl xl:mr-4 xl:text-7xl font-bold text-white"></div>
                             <div>
                                 <div class="text-2xl xl:text-3xl font-bold tracking-tight">active cases</div>
-                                <div class="text-xs text-heading">as of {{global.last_update}}</div>
+                                <div class="text-xs text-lightslab">as of {{global.last_update}}</div>
                             </div>
                         </div>
                         <div class="flex items-start mt-4 xl:mt-0 flex-1 justify-center px-4 xl:px-0">
@@ -600,15 +600,7 @@
                     last_update = '';
 
                 data = _.cloneDeep(this.raw_global);
-                for(var x in this.countries)
-                {
-                    if(last_update.length === 0 || moment(this.countries[x].total.l).format('YYYY-MM-DD') > last_update)
-                    {
-                        data.last_update = moment(this.countries[x].total.l).format('YYYY-MM-DD HH:mm:ss');
-                        last_update = moment(this.countries[x].total.l).format('YYYY-MM-DD');
-                    }
-
-                }
+                data.last_update = data.total.last_update;
                 data.name = {
                     full: 'Global',
                     country: 'Global',

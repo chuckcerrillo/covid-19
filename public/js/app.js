@@ -6008,14 +6008,7 @@ __webpack_require__.r(__webpack_exports__);
       var data = {},
           last_update = '';
       data = _.cloneDeep(this.raw_global);
-
-      for (var x in this.countries) {
-        if (last_update.length === 0 || moment__WEBPACK_IMPORTED_MODULE_2___default()(this.countries[x].total.l).format('YYYY-MM-DD') > last_update) {
-          data.last_update = moment__WEBPACK_IMPORTED_MODULE_2___default()(this.countries[x].total.l).format('YYYY-MM-DD HH:mm:ss');
-          last_update = moment__WEBPACK_IMPORTED_MODULE_2___default()(this.countries[x].total.l).format('YYYY-MM-DD');
-        }
-      }
-
+      data.last_update = data.total.last_update;
       data.name = {
         full: 'Global',
         country: 'Global',
@@ -90143,7 +90136,7 @@ var render = function() {
                         [_vm._v("active cases")]
                       ),
                       _vm._v(" "),
-                      _c("div", { staticClass: "text-xs text-heading" }, [
+                      _c("div", { staticClass: "text-xs text-lightslab" }, [
                         _vm._v("as of " + _vm._s(_vm.global.last_update))
                       ])
                     ])
