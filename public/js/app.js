@@ -87765,7 +87765,7 @@ var render = function() {
                           ) +
                           "\n                        "
                       ),
-                      row.deltaConfirmed >= 0
+                      row.deltaConfirmed > 0
                         ? _c("span", { staticClass: "text-red-400" }, [
                             _vm._v(
                               "(+" +
@@ -87796,7 +87796,7 @@ var render = function() {
                           ) +
                           "\n                        "
                       ),
-                      row.deltaDeaths >= 0
+                      row.deltaDeaths > 0
                         ? _c("span", { staticClass: "text-red-400" }, [
                             _vm._v(
                               "(+" +
