@@ -4878,6 +4878,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -89644,23 +89645,32 @@ var render = function() {
                                                     [_vm._v(_vm._s(row[1]))]
                                                   ),
                                                   _vm._v(" "),
-                                                  _c(
-                                                    "div",
-                                                    {
-                                                      staticClass:
-                                                        "text-6xl font-bold"
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm.getGovtResponse(
-                                                            row[1]
-                                                          ).latest
-                                                            .stringencyindex
-                                                        )
+                                                  _vm.getGovtResponse(row[1])
+                                                    ? _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "text-6xl font-bold"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              _vm.getGovtResponse(
+                                                                row[1]
+                                                              ).latest
+                                                                .stringencyindex
+                                                            )
+                                                          )
+                                                        ]
                                                       )
-                                                    ]
-                                                  ),
+                                                    : _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "text-6xl font-bold"
+                                                        },
+                                                        [_vm._v("N/A")]
+                                                      ),
                                                   _vm._v(" "),
                                                   _c(
                                                     "div",

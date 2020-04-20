@@ -14,6 +14,7 @@ Route::get('/statistics/worldometer', 'StatsController@harvest_worldometer');
 Route::get('/statistics/manual', 'StatsController@manual_override');
 Route::get('/statistics/harvest_oxford', 'StatsController@harvest_oxford');
 Route::get('/statistics/oxford', 'StatsController@oxford');
+Route::get('/statistics/harvest_time_series', 'StatsController@harvest_time_series');
 Route::get('{any}', 'AppController@index')
     ->where('any','.*')
     ->name('home');

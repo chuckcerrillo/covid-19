@@ -3,6 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/covid-data" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/covid-data-clean" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/oxford" vcs="Git" />
   </component>
 </project>
