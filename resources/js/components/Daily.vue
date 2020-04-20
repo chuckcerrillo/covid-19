@@ -81,7 +81,8 @@
                         </div>
                         <div class="w-32">
                             {{ isNaN(row.recovered) ? 0 : row.recovered | numeralFormat}}
-                            <span class="text-green-400" v-if="row.deltaRecovered >= 0">(+{{row.deltaRecovered| numeralFormat}})</span>
+                            <span class="text-green-400" v-if="row.deltaRecovered > 0">(+{{row.deltaRecovered| numeralFormat}})</span>
+                            <span class="text-green-400" v-else-if="row.deltaRecovered == 0">({{row.deltaRecovered| numeralFormat}})</span>
                             <span class="text-red-400" v-else>({{row.deltaRecovered| numeralFormat}})</span>
                         </div>
                         <div class="w-32">
