@@ -27,8 +27,13 @@ class StatsController extends Controller
         'United Kingdom' => ['UK','United Kingdom'],
         'Holy See' => ['Holy See','Vatican City'],
         'Azerbaijan' => ['Azerbaijan',' Azerbaijan'],
+        'United States' => ['US','United States'],
+        'West Bank and Gaza' => ['West Bank and Gaza','occupied Palestinian territory'],
+        'Congo (Brazzaville)' => ['Republic of the Congo','Congo (Brazzaville)'],
+        'Cabo Verde' => ['Cape Verde', 'Cabo Verde'],
+        'Timor-Leste' => ['Timor-Leste','East Timor'],
     ];
-    protected $skip = [
+    protected $skip_old = [
         'Cape Verde',
         'Cayman Islands',
         'Channel Islands',
@@ -61,6 +66,36 @@ class StatsController extends Controller
         'Puerto Rico',
         'Saint Martin',
     ];
+
+    protected $skip = [
+        'Others',
+    ];
+
+    protected $transfer = [
+        'Hong Kong' => 'China',
+        'Macau' => 'China',
+        'French Guiana' => 'France',
+        'Martinique' => 'France',
+        'Reunion' => 'France',
+        'Cayman Islands' => 'United Kingdom',
+        'Guadeloupe' => 'France',
+        'Aruba' => 'Netherlands',
+        'Jersey' => 'United Kingdom',
+        'Curacao' => 'Netherlands',
+        'Guernsey' => 'United Kingdom',
+        'Guam' => 'United States',
+        'Puerto Rico' => 'United States',
+        'Greenland' => 'Denmark',
+        'Mayotte' => 'France',
+    ];
+
+    protected $rename = [
+        'US' => 'United States',
+        'Korea, South' => 'South Korea',
+        'Taiwan*' => 'Taiwan',
+    ];
+
+
 
 //    Congo x2
 //    Kosovo
@@ -155,7 +190,7 @@ class StatsController extends Controller
         'Jordan' => 'Jordan',
         'Kazakhstan' => 'Kazakhstan',
         'Kenya' => 'Kenya',
-        'S. Korea' => 'Korea, South',
+        'S. Korea' => 'South Korea',
         'Kuwait' => 'Kuwait',
         'Kyrgyzstan' => 'Kyrgyzstan',
         'Laos' => 'Laos',
@@ -227,7 +262,8 @@ class StatsController extends Controller
         'Sweden' => 'Sweden',
         'Switzerland' => 'Switzerland',
         'Syria' => 'Syria',
-        'Taiwan' => 'Taiwan*',
+        'Taiwan' => 'Taiwan',
+//        'Taiwan' => 'Taiwan*',
         'Tanzania' => 'Tanzania',
         'Thailand' => 'Thailand',
         'Togo' => 'Togo',
@@ -426,7 +462,7 @@ class StatsController extends Controller
         'United Kingdom' => 'United Kingdom',
         'Ukraine' => 'Ukraine',
         'Uruguay' => 'Uruguay',
-        'United States' => 'US',
+        'United States' => 'United States',
         'Uzbekistan' => 'Uzbekistan',
         'Venezuela' => 'Venezuela',
         'Vietnam' => 'Vietnam',
@@ -439,7 +475,17 @@ class StatsController extends Controller
     public function __construct()
     {
         define('MASTER_LIST','../covid-data/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv');
-        define('COVID_DATA','../covid-data/csse_covid_19_data/csse_covid_19_daily_reports/');
+//        define('MASTER_LIST','../covid-data-clean/COVID-19_CLEAN/csse_cleaned_supporting_material/Cleaned_Lookup.csv');
+//        define('COVID_DATA','../covid-data/csse_covid_19_data/csse_covid_19_daily_reports/');
+        define('COVID_DATA_TIME_SERIES',[
+            'confirmed' => '../covid-data/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv',
+            'deaths' => '../covid-data/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv',
+            'recovered' => '../covid-data/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv',
+            'confirmedUS' => '../covid-data/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv',
+            'deathsUS' => '../covid-data/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv',
+        ]);
+
+        define('COVID_DATA','../covid-data-clean/COVID-19_CLEAN/csse_covid_19_daily_reports_cleaned/');
         define('OXFORD_DATA','../oxford/data/timeseries/');
         define('OXFORD_LATEST','../oxford/data/OxCGRT_latest.csv');
         define('STATS','./stats/');
@@ -479,7 +525,1086 @@ class StatsController extends Controller
         return response($countries)->setStatusCode(Response::HTTP_OK);
     }
 
+
+    public function harvest_time_series()
+    {
+        $worldometer_override = $this->harvest_worldometer();
+        $manual_override = $this->manual_override();
+        $current_timestamp = time();
+        $current_date = gmdate('Y-m-d',$current_timestamp);
+        $current_datetime = gmdate('Y-m-d H:i:s',$current_timestamp);
+
+
+        $data = [];
+
+        // Generate master country list
+        $csv = array_map('str_getcsv', file(MASTER_LIST));
+        array_walk($csv, function(&$a) use ($csv) {
+            $a = array_combine($csv[0], $a);
+        });
+        array_shift($csv); # remove column header
+
+        $states = [];
+        $data = [];
+        $global = [
+            'daily' => [],
+            'total' => [
+                'confirmed' => 0,
+                'deaths' => 0,
+                'recovered' => 0,
+            ],
+        ];
+
+        foreach($csv AS $row)
+        {
+            // Get a list of countries
+            if($row['Province_State'] == 'NA' )
+            {
+                if(!isset($data[ $row['Country_Region'] ]))
+                {
+                    $data[$row['Country_Region']] = [
+                        'name' => $row['Country_Region'],
+                        'uid' => $row['UID'],
+                        'iso2' => $row['iso2'],
+                        'iso3' => $row['iso3'],
+                        'code3' => $row['code3'],
+                        'fips' => $row['FIPS'],
+                        'admin2' => $row['Admin2'],
+                        'lat' => $row['Latitude'],
+                        'long' => $row['Longitude'],
+                        'population' => $row['Population'],
+                        'states' => [],
+                        'daily' => [],
+                        'total' => [
+                            'l' => '',
+                            'c' => '0',
+                            'd' => '0',
+                            'r' => '0',
+                        ]
+                    ];
+                }
+            }
+
+            // Get a list of states inside countries
+            else
+            {
+                if(isset($data[$row['Country_Region']])) {
+                    $data[$row['Country_Region']]['states'][$row['Province_State']] = [
+                        'uid' => $row['UID'],
+                        'name' => $row['Province_State'],
+                        'lat' => $row['Latitude'],
+                        'long' => $row['Longitude'],
+                        'population' => $row['Population'],
+                        'total' => [
+                            'l' => '',
+                            'c' => '0',
+                            'd' => '0',
+                            'r' => '0',
+                        ]
+                    ];
+                }
+            }
+        }
+
+        // Then generate daily and tally data
+        foreach(COVID_DATA_TIME_SERIES AS $type => $file) {
+            $date = str_replace('.csv', '', $file);
+            $csv = array_map('str_getcsv', file($file));
+//            array_shift($csv); # remove column header
+
+
+            $first_date = $csv[0][4];
+            $first_date = explode('/',$first_date);
+            $first_date = '20' . $first_date[2] . '-' . str_pad($first_date[0],2,'0',STR_PAD_LEFT) . '-' . str_pad($first_date[1],2,'0',STR_PAD_LEFT);
+
+            foreach($csv AS $row)
+            {
+                /*
+                 * 0 => "Province/State"
+                 * 1 => "Country/Region"
+                 * 2 => "Lat"
+                 * 3 => "Long"
+                */
+
+                $original_row = $row;
+
+                $total_columns = count($csv[0]);
+                $state = strlen($row[0]) == 0 ? '(Unspecified)' : $row[0];
+                $country = $row[1];
+                $lat = $row[2];
+                $long = $row[3];
+                array_splice($row,0,4);
+                $current_date = new \DateTime($first_date);
+
+
+                foreach ($this->combine AS $key => $combine) {
+                    if (in_array($country, $combine)) {
+                        $country = $key;
+                        break;
+                    }
+                }
+
+                // Move countries into states
+                if (in_array($country, array_keys($this->transfer))) {
+                    $state = $country;
+                    $country = $this->transfer[$country];
+                }
+
+                // Skip things that we do not know where to put
+                if (in_array($country, $this->skip)) {
+                    break;
+                }
+
+
+                if($type == 'confirmed')
+                {
+                    $global['total']['confirmed'] += (int)$row[count($row)-1];
+                }
+                if($type == 'deaths')
+                {
+                    $global['total']['deaths'] += (int)$row[count($row)-1];
+                }
+                if($type == 'recovered')
+                {
+                    $global['total']['recovered'] += (int)$row[count($row)-1];
+                }
+
+                if(isset($data[$country]))
+                {
+//                    dd($row);
+                    for($x = 0; $x < count($row); $x++)
+                    {
+
+                        $date = $current_date->format('Y-m-d');
+                        if(!isset($global['daily'][$date]))
+                        {
+                            $global['daily'][$date] = [
+                                'confirmed' => 0,
+                                'deaths' => 0,
+                                'recovered' => 0,
+                            ];
+                        }
+
+                        if(!isset($data[$country]['daily'][$date]['states'][$state]))
+                        {
+                            $data[$country]['daily'][$date]['states'][$state] = [
+                                'c' => 0,
+                                'd' => 0,
+                                'r' => 0,
+                            ];
+                        }
+
+                        // Manual override here
+                        if (isset($manual_override[$country])) {
+                            if (isset($data[$country]['daily'][$date]['states'][$state]) && isset($manual_override[$country][$date][$state])) {
+                                if (strlen($manual_override[$country][$date][$state]['confirmed']) > 0) {
+                                    $data[$country]['daily'][$date]['total']['c'] = 0;
+                                    $global['daily'][$date]['confirmed'] += intval($manual_override[$country][$date][$state]['confirmed']) - isset($data[$country]['daily'][$date]['states'][$state]['c']) ? $data[$country]['daily'][$date]['states'][$state]['c'] : 0;
+                                    $data[$country]['daily'][$date]['states'][$state]['c'] = intval($manual_override[$country][$date][$state]['confirmed']);
+//                                    foreach ($data[$country]['daily'][$date]['states'] AS $s) {
+//                                        $data[$country]['daily'][$date]['total']['c'] += $s['c'];
+//                                    }
+                                }
+                                if (strlen($manual_override[$country][$date][$state]['deaths']) > 0) {
+                                    $data[$country]['daily'][$date]['total']['d'] = 0;
+                                    $global['daily'][$date]['deaths'] += intval($manual_override[$country][$date][$state]['deaths']) - isset($data[$country]['daily'][$date]['states'][$state]['d']) ? $data[$country]['daily'][$date]['states'][$state]['d'] : 0;
+                                    $data[$country]['daily'][$date]['states'][$state]['d'] = intval($manual_override[$country][$date][$state]['deaths']);
+//                                    foreach ($data[$country]['daily'][$date]['states'] AS $s) {
+//                                        $data[$country]['daily'][$date]['total']['d'] += $s['d'];
+//                                    }
+                                }
+                                if (strlen($manual_override[$country][$date][$state]['recovered']) > 0) {
+                                    $data[$country]['daily'][$date]['total']['r'] = 0;
+                                    $global['daily'][$date]['recovered'] += intval($manual_override[$country][$date][$state]['recovered']) - isset($data[$country]['daily'][$date]['states'][$state]['r']) ? $data[$country]['daily'][$date]['states'][$state]['r'] : 0;
+                                    $data[$country]['daily'][$date]['states'][$state]['r'] = intval($manual_override[$country][$date][$state]['recovered']);
+//                                    foreach ($data[$country]['daily'][$date]['states'] AS $s) {
+//                                        $data[$country]['daily'][$date]['total']['r'] += $s['r'];
+//                                    }
+                                }
+                            }
+                        }
+
+
+
+                        if($type == 'confirmed')
+                        {
+                            $data[$country]['daily'][$date]['states'][$state]['c'] = (int)$row[$x];
+                            $data[$country]['states'][$state]['total']['c'] = (int)$row[$x];
+
+                            $global['daily'][$date]['confirmed'] += (int)$row[$x];
+
+                        }
+                        else if($type == 'deaths')
+                        {
+                            $data[$country]['daily'][$date]['states'][$state]['d'] = (int)$row[$x];
+                            $data[$country]['states'][$state]['total']['d'] = (int)$row[$x];
+
+                            $global['daily'][$date]['deaths'] += (int)$row[$x];
+                        }
+                        else if ($type == 'recovered')
+                        {
+                            $data[$country]['daily'][$date]['states'][$state]['r'] = (int)$row[$x];
+                            $data[$country]['states'][$state]['total']['r'] = (int)$row[$x];
+
+                            $global['daily'][$date]['recovered'] += (int)$row[$x];
+                        }
+
+                        $current_date->add(new \DateInterval('P1D'))->format('Y-m-d');
+                    }
+
+                    // Compute daily total for state
+                    foreach($data[$country]['daily'] AS $date => $daily_row)
+                    {
+                        $data[$country]['daily'][$date]['total'] = [
+                            'c' => 0,
+                            'd' => 0,
+                            'r' => 0,
+                        ];
+
+                        foreach($daily_row['states'] AS $state_id => $state_row)
+                        {
+                            if(isset($state_row['c']))
+                                $data[$country]['daily'][$date]['total']['c'] += $state_row['c'];
+                            if(isset($state_row['d']))
+                                $data[$country]['daily'][$date]['total']['d'] += $state_row['d'];
+                            if(isset($state_row['r']))
+                                $data[$country]['daily'][$date]['total']['r'] += $state_row['r'];
+                        }
+                    }
+
+                    // Compute total for country
+                    if($type == 'confirmed')
+                    {
+                        $data[$country]['total']['c'] = 0;
+                    }
+                    if($type == 'deaths')
+                    {
+                        $data[$country]['total']['d'] = 0;
+                    }
+                    if($type == 'recovered')
+                    {
+                        $data[$country]['total']['r'] = 0;
+                    }
+                    foreach($data[$country]['states'] AS $state => $row)
+                    {
+                        if($type == 'confirmed' && isset($row['total']['c']))
+                        {
+                            $data[$country]['total']['c'] += $row['total']['c'];
+                        }
+                        else if($type == 'deaths' && isset($row['total']['d']))
+                        {
+                            $data[$country]['total']['d'] += $row['total']['d'];
+                        }
+                        else if($type == 'recovered' && isset($row['total']['r']))
+                        {
+                            $data[$country]['total']['r'] += $row['total']['r'];
+                        }
+
+
+
+                    }
+                }
+            }
+        }
+
+
+        $current_date = $current_date->format('Y-m-d');
+
+        // Worldometer
+        foreach($worldometer_override AS $override)
+        {
+//                array:4 [▼
+//                    "country" => "North America"
+//                    "confirmed" => "696,905"
+//                    "deaths" => "35,276"
+//                    "recovered" => "61,446"
+//                ]
+
+            if(isset($this->worldometer_jh_map[$override['country']]))
+            {
+                $country = $this->worldometer_jh_map[$override['country']];
+                if(isset($country))
+                {
+                    if (isset($data[$country]))
+                    {
+                        $statename = '(Unspecified)';
+
+                        // Copy last record
+                        $last_daily_record = $data[$country]['daily'][array_key_last($data[$country]['daily'])];
+                        $new_daily_record = $data[$country]['daily'][array_key_last($data[$country]['daily'])];
+
+                        if($override['confirmed'] == 'N/A')
+                        {
+                            $confirmed = $last_daily_record['total']['c'];
+                        }
+                        else
+                        {
+                            if($override['confirmed'] > $last_daily_record['total']['c'])
+                                $confirmed = (int) str_replace(',','',$override['confirmed']);
+                            else
+                                $confirmed = $last_daily_record['total']['c'];
+                        }
+
+                        if($override['deaths'] == 'N/A')
+                        {
+                            $deaths = $last_daily_record['total']['d'];
+                        }
+                        else
+                        {
+                            if($override['deaths'] > $last_daily_record['total']['d'])
+                                $deaths = (int) str_replace(',','',$override['deaths']);
+                            else
+                                $deaths = $last_daily_record['total']['d'];
+                        }
+
+                        if($override['recovered'] == 'N/A')
+                        {
+                            $recovered = $last_daily_record['total']['r'];
+                        }
+                        else
+                        {
+                            if($override['recovered'] > $last_daily_record['total']['r'])
+                                $recovered = (int) str_replace(',','',$override['recovered']);
+                            else
+                                $recovered = $last_daily_record['total']['r'];
+                        }
+
+
+                        $temp_state_data = [
+                            'c' => 0,
+                            'd' => 0,
+                            'r' => 0
+                        ];
+                        foreach($last_daily_record['states'] AS $index=>$state)
+                        {
+
+                            if(!isset($state['name']))
+                            {
+                                $state['name'] = '(Unspecified)';
+                            }
+                            if($state['name'] != '(Unspecified)')
+                            {
+                                $temp_state_data['c'] += intval($state['c']);
+                                $temp_state_data['d'] += intval($state['d']);
+                                $temp_state_data['r'] += intval($state['r']);
+                            }
+
+                        }
+
+                        if(!isset($new_daily_record['states'][$statename]))
+                        {
+                            $new_daily_record['states'][$statename] = [
+                                'name' => $statename,
+                                'lat' => '',
+                                'lng' => '',
+                                'l' => $current_datetime,
+                                'c' => $confirmed - $temp_state_data['c'],
+                                'd' => $deaths - $temp_state_data['d'],
+                                'r' => $recovered - $temp_state_data['r'],
+                            ];
+                        }
+                        else
+                        {
+                            $new_daily_record['states'][$statename]['c'] = $confirmed - $temp_state_data['c'];
+                            $new_daily_record['states'][$statename]['d'] = $deaths - $temp_state_data['d'];
+                            $new_daily_record['states'][$statename]['r'] = $recovered - $temp_state_data['r'];
+                        }
+
+
+                        $new_daily_record['total'] = [
+                            'c' => $confirmed,
+                            'd' => $deaths,
+                            'r' => $recovered
+                        ];
+
+
+                        $data[$country]['daily'][$current_date] = $new_daily_record;
+
+                        if(!isset($global['daily'][$current_date]))
+                        {
+                            $global['daily'][$current_date] = [
+                                'confirmed' => 0,
+                                'deaths' => 0,
+                                'recovered' => 0,
+                            ];
+                        }
+
+                        $global['daily'][$current_date]['confirmed'] += $confirmed;
+                        $global['daily'][$current_date]['deaths'] += $deaths;
+                        $global['daily'][$current_date]['recovered'] += $recovered;
+                    }
+                }
+            }
+        }
+        dd($data['Australia']['daily']['2020-04-18']);
+    }
+
     public function master()
+    {
+        $worldometer_override = $this->harvest_worldometer();
+        $manual_override = $this->manual_override();
+//        $worldometer_override = [];
+//        $manual_override = [];
+        $current_timestamp = time();
+        $current_date = gmdate('Y-m-d',$current_timestamp);
+        $current_datetime = gmdate('Y-m-d H:i:s',$current_timestamp);
+
+        $first_date = '2020-01-22';
+        $data = [];
+
+        // Generate master country list
+        $csv = array_map('str_getcsv', file(MASTER_LIST));
+        array_walk($csv, function(&$a) use ($csv) {
+            $a = array_combine($csv[0], $a);
+        });
+        array_shift($csv); # remove column header
+
+        $states = [];
+        $data = [];
+        $global = [
+            'daily' => [],
+            'total' => [
+                'confirmed' => 0,
+                'deaths' => 0,
+                'recovered' => 0,
+            ],
+        ];
+
+        foreach($csv AS $row)
+        {
+            if(isset($this->rename[$row['Country_Region']]))
+            {
+//                dump('Found ' . $row['Country_Region'] . ' rename to ' . $this->rename[$row['Country_Region']]);
+                $row['Country_Region'] = $this->rename[$row['Country_Region']];
+
+            }
+            // Get a list of countries
+            if(strlen($row['Province_State']) == 0 )
+            {
+                if(!isset($data[ $row['Country_Region'] ]))
+                {
+                    $data[$row['Country_Region']] = [
+                        'name' => $row['Country_Region'],
+                        'uid' => $row['UID'],
+                        'iso2' => $row['iso2'],
+                        'iso3' => $row['iso3'],
+                        'code3' => $row['code3'],
+                        'fips' => $row['FIPS'],
+                        'admin2' => $row['Admin2'],
+                        'lat' => $row['Lat'],
+                        'long' => $row['Long_'],
+                        'population' => $row['Population'],
+                        'states' => [],
+                        'daily' => [],
+                        'total' => [
+                            'l' => '',
+                            'c' => '0',
+                            'd' => '0',
+                            'r' => '0',
+                        ]
+                    ];
+                }
+            }
+
+            // Get a list of states inside countries
+            else
+            {
+                if(isset($data[$row['Country_Region']])) {
+                    $data[$row['Country_Region']]['states'][$row['Province_State']] = [
+                        'uid' => $row['UID'],
+                        'name' => $row['Province_State'],
+                        'lat' => $row['Lat'],
+                        'long' => $row['Long_'],
+                        'population' => $row['Population'],
+                        'total' => [
+                            'l' => '',
+                            'c' => '0',
+                            'd' => '0',
+                            'r' => '0',
+                        ]
+                    ];
+                }
+            }
+        }
+
+
+        // Special preparation for the US time series data...
+        $files = COVID_DATA_TIME_SERIES;
+        unset($files['confirmed']);
+        unset($files['deaths']);
+        unset($files['recovered']);
+
+        $time_series_us = [
+            'confirmed' => [],
+            'deaths' => [],
+        ];
+        foreach($files AS $type => $file)
+        {
+            $date = str_replace('.csv', '', $file);
+            $csv = array_map('str_getcsv', file($file));
+
+            foreach($csv AS $key=>$row)
+            {
+                if($key == 0)
+                {
+                    continue;
+                }
+                /*
+                 * Global
+                 * 0 => "Province/State"
+                 * 1 => "Country/Region"
+                 * 2 => "Lat"
+                 * 3 => "Long"
+                 *
+                 * US
+                 * 0 => UID
+                 * 1 => iso2
+                 * 2 => iso3
+                 * 3 => code3
+                 * 4 => FIPS
+                 * 5 => Admin2
+                 * 6 => Province/State
+                 * 7 => Country/Region
+                 * 8 => Lat
+                 * 9 => Long
+                 * 10 => Combined
+                */
+
+                $state = strlen($row[6]) == 0 ? '(Unspecified)' : $row[6];
+                $country = $row[7];
+                $lat = $row[8];
+                $long = $row[9];
+
+                if($type == 'confirmedUS')
+                {
+                    array_splice($row,0,11);
+                }
+                else if($type == 'deathsUS')
+                {
+                    array_splice($row,0,12);
+                }
+
+//                $current_date = new \DateTime($first_date);
+
+                $total_cols = count($row);
+
+
+                if($type == 'confirmedUS')
+                {
+                    if(!isset($time_series_us['confirmed'][$state]))
+                    {
+                        $time_series_us['confirmed'][$state] = [
+                            $state,
+                            $country,
+                            '',
+                            '',
+                        ];
+                    }
+
+                    if(count($time_series_us['confirmed'][$state]) <= 4 )
+                    {
+                        for($x = 0; $x < count($row); $x++)
+                        {
+                            $time_series_us['confirmed'][$state][] = 0;
+                        }
+                    }
+
+                    for($x = 0; $x < count($row); $x++) {
+                        $time_series_us['confirmed'][$state][($x+4)] +=
+                            $row[$x];
+                    }
+                }
+                else if($type == 'deathsUS')
+                {
+                    if(!isset($time_series_us['deaths'][$state]))
+                    {
+                        $time_series_us['deaths'][$state] = [
+                            $state,
+                            $country,
+                            '',
+                            '',
+                        ];
+                    }
+
+                    if(count($time_series_us['deaths'][$state]) <= 4 )
+                    {
+                        for($x = 0; $x < count($row); $x++)
+                        {
+                            $time_series_us['deaths'][$state][] = 0;
+                        }
+                    }
+
+                    for($x = 0; $x < count($row); $x++) {
+                        $time_series_us['deaths'][$state][($x+4)] +=
+                            $row[$x];
+                    }
+                }
+            }
+        }
+
+        $files = COVID_DATA_TIME_SERIES;
+        unset($files['confirmedUS']);
+        unset($files['deathsUS']);
+
+        $file_processed = [];
+        $file_processed['confirmedUS'] = $time_series_us['confirmed'];
+        $file_processed['deathsUS'] = $time_series_us['deaths'];
+
+
+//        dump($file_processed['confirmed']);
+//        dd($file_processed['confirmedUS']);
+//        // Then generate daily and tally data
+        foreach($files AS $type => $file) {
+            $date = str_replace('.csv', '', $file);
+            $csv = array_map('str_getcsv', file($file));
+            $file_processed[$type] = $csv;
+        }
+
+        foreach($file_processed AS $type => $csv)
+        {
+            foreach($csv AS $row)
+            {
+                /*
+                 * Global
+                 * 0 => "Province/State"
+                 * 1 => "Country/Region"
+                 * 2 => "Lat"
+                 * 3 => "Long"
+                 *
+                 * US
+                 * 0 => UID
+                 * 1 => iso2
+                 * 2 => iso3
+                 * 3 => code3
+                 * 4 => FIPS
+                 * 5 => Admin2
+                 * 6 => Province/State
+                 * 7 => Country/Region
+                 * 8 => Lat
+                 * 9 => Long
+                 * 10 => Combined
+                */
+
+                $original_row = $row;
+                $total_columns = count($row);
+
+                $state = strlen($row[0]) == 0 ? '(Unspecified)' : $row[0];
+                $country = $row[1];
+                $lat = $row[2];
+                $long = $row[3];
+                array_splice($row,0,4);
+                $current_date = new \DateTime($first_date);
+
+
+
+
+                foreach ($this->combine AS $key => $combine) {
+                    if (in_array($country, $combine)) {
+                        $country = $key;
+                        break;
+                    }
+                }
+
+                // Move countries into states
+                if (in_array($country, array_keys($this->transfer))) {
+                    $state = $country;
+                    $country = $this->transfer[$country];
+                }
+
+                // Skip things that we do not know where to put
+                if (in_array($country, $this->skip)) {
+                    break;
+                }
+
+
+                if($type == 'confirmed' || $type == 'confirmedUS')
+                {
+                    $global['total']['confirmed'] += (int)$row[count($row)-1];
+                }
+                if($type == 'deaths' || $type == 'deathsUS')
+                {
+                    $global['total']['deaths'] += (int)$row[count($row)-1];
+                }
+                if($type == 'recovered')
+                {
+                    $global['total']['recovered'] += (int)$row[count($row)-1];
+                }
+
+                if(isset($data[$country]))
+                {
+//                    dd($row);
+                    for($x = 0; $x < count($row); $x++)
+                    {
+
+                        $date = $current_date->format('Y-m-d');
+                        if(!isset($global['daily'][$date]))
+                        {
+                            $global['daily'][$date] = [
+                                'confirmed' => 0,
+                                'deaths' => 0,
+                                'recovered' => 0,
+                            ];
+                        }
+
+                        if(!isset($data[$country]['daily'][$date]['states'][$state]))
+                        {
+                            $data[$country]['daily'][$date]['states'][$state] = [
+                                'c' => 0,
+                                'd' => 0,
+                                'r' => 0,
+                            ];
+                        }
+
+                        // Manual override here
+                        if (isset($manual_override[$country])) {
+                            if (isset($data[$country]['daily'][$date]['states'][$state]) && isset($manual_override[$country][$date][$state])) {
+                                if (strlen($manual_override[$country][$date][$state]['confirmed']) > 0) {
+                                    $data[$country]['daily'][$date]['total']['c'] = 0;
+                                    $global['daily'][$date]['confirmed'] += intval($manual_override[$country][$date][$state]['confirmed']) - isset($data[$country]['daily'][$date]['states'][$state]['c']) ? $data[$country]['daily'][$date]['states'][$state]['c'] : 0;
+                                    $data[$country]['daily'][$date]['states'][$state]['c'] = intval($manual_override[$country][$date][$state]['confirmed']);
+//                                    foreach ($data[$country]['daily'][$date]['states'] AS $s) {
+//                                        $data[$country]['daily'][$date]['total']['c'] += $s['c'];
+//                                    }
+                                }
+                                if (strlen($manual_override[$country][$date][$state]['deaths']) > 0) {
+                                    $data[$country]['daily'][$date]['total']['d'] = 0;
+                                    $global['daily'][$date]['deaths'] += intval($manual_override[$country][$date][$state]['deaths']) - isset($data[$country]['daily'][$date]['states'][$state]['d']) ? $data[$country]['daily'][$date]['states'][$state]['d'] : 0;
+                                    $data[$country]['daily'][$date]['states'][$state]['d'] = intval($manual_override[$country][$date][$state]['deaths']);
+//                                    foreach ($data[$country]['daily'][$date]['states'] AS $s) {
+//                                        $data[$country]['daily'][$date]['total']['d'] += $s['d'];
+//                                    }
+                                }
+                                if (strlen($manual_override[$country][$date][$state]['recovered']) > 0) {
+                                    $data[$country]['daily'][$date]['total']['r'] = 0;
+                                    $global['daily'][$date]['recovered'] += intval($manual_override[$country][$date][$state]['recovered']) - isset($data[$country]['daily'][$date]['states'][$state]['r']) ? $data[$country]['daily'][$date]['states'][$state]['r'] : 0;
+                                    $data[$country]['daily'][$date]['states'][$state]['r'] = intval($manual_override[$country][$date][$state]['recovered']);
+//                                    foreach ($data[$country]['daily'][$date]['states'] AS $s) {
+//                                        $data[$country]['daily'][$date]['total']['r'] += $s['r'];
+//                                    }
+                                }
+                            }
+                        }
+
+
+
+                        if($type == 'confirmed' || $type == 'confirmedUS')
+                        {
+                            $data[$country]['daily'][$date]['states'][$state]['c'] = (int)$row[$x];
+                            $data[$country]['states'][$state]['total']['c'] = (int)$row[$x];
+
+                            $global['daily'][$date]['confirmed'] += (int)$row[$x];
+
+                        }
+                        else if($type == 'deaths' || $type == 'deathsUS')
+                        {
+                            $data[$country]['daily'][$date]['states'][$state]['d'] = (int)$row[$x];
+                            $data[$country]['states'][$state]['total']['d'] = (int)$row[$x];
+
+                            $global['daily'][$date]['deaths'] += (int)$row[$x];
+                        }
+                        else if ($type == 'recovered')
+                        {
+                            $data[$country]['daily'][$date]['states'][$state]['r'] = (int)$row[$x];
+                            $data[$country]['states'][$state]['total']['r'] = (int)$row[$x];
+
+                            $global['daily'][$date]['recovered'] += (int)$row[$x];
+                        }
+
+                        $current_date->add(new \DateInterval('P1D'))->format('Y-m-d');
+                    }
+
+                    // Compute daily total for state
+                    foreach($data[$country]['daily'] AS $date => $daily_row)
+                    {
+                        $data[$country]['daily'][$date]['total'] = [
+                            'c' => 0,
+                            'd' => 0,
+                            'r' => 0,
+                        ];
+
+                        foreach($daily_row['states'] AS $state_id => $state_row)
+                        {
+                            if(isset($state_row['c']))
+                                $data[$country]['daily'][$date]['total']['c'] += $state_row['c'];
+                            if(isset($state_row['d']))
+                                $data[$country]['daily'][$date]['total']['d'] += $state_row['d'];
+                            if(isset($state_row['r']))
+                                $data[$country]['daily'][$date]['total']['r'] += $state_row['r'];
+                        }
+                    }
+
+                    // Compute total for country
+                    if($type == 'confirmed' || $type == 'confirmedUS')
+                    {
+                        $data[$country]['total']['c'] = 0;
+                    }
+                    if($type == 'deaths' || $type == 'deathsUS')
+                    {
+                        $data[$country]['total']['d'] = 0;
+                    }
+                    if($type == 'recovered')
+                    {
+                        $data[$country]['total']['r'] = 0;
+                    }
+                    foreach($data[$country]['states'] AS $state => $row)
+                    {
+                        if(($type == 'confirmed' || $type == 'confirmedUS') && isset($row['total']['c']))
+                        {
+                            $data[$country]['total']['c'] += $row['total']['c'];
+                        }
+                        else if(($type == 'deaths' || $type == 'deathsUS') && isset($row['total']['d']))
+                        {
+                            $data[$country]['total']['d'] += $row['total']['d'];
+                        }
+                        else if($type == 'recovered' && isset($row['total']['r']))
+                        {
+                            $data[$country]['total']['r'] += $row['total']['r'];
+                        }
+
+
+
+                    }
+                }
+            }
+        }
+
+
+
+        $current_date = $current_date->format('Y-m-d');
+
+        // Worldometer
+        foreach($worldometer_override AS $override)
+        {
+//                array:4 [▼
+//                    "country" => "North America"
+//                    "confirmed" => "696,905"
+//                    "deaths" => "35,276"
+//                    "recovered" => "61,446"
+//                ]
+
+            if(isset($this->worldometer_jh_map[$override['country']]))
+            {
+                $country = $this->worldometer_jh_map[$override['country']];
+                if(isset($country))
+                {
+                    if (isset($data[$country]))
+                    {
+                        $statename = '(Unspecified)';
+
+                        // Copy last record
+                        $last_daily_record = $data[$country]['daily'][array_key_last($data[$country]['daily'])];
+                        $new_daily_record = $data[$country]['daily'][array_key_last($data[$country]['daily'])];
+
+                        if($override['confirmed'] == 'N/A')
+                        {
+                            $confirmed = $last_daily_record['total']['c'];
+                        }
+                        else
+                        {
+                            if($override['confirmed'] > $last_daily_record['total']['c'])
+                                $confirmed = (int) str_replace(',','',$override['confirmed']);
+                            else
+                                $confirmed = $last_daily_record['total']['c'];
+                        }
+
+                        if($override['deaths'] == 'N/A')
+                        {
+                            $deaths = $last_daily_record['total']['d'];
+                        }
+                        else
+                        {
+                            if($override['deaths'] > $last_daily_record['total']['d'])
+                                $deaths = (int) str_replace(',','',$override['deaths']);
+                            else
+                                $deaths = $last_daily_record['total']['d'];
+                        }
+
+                        if($override['recovered'] == 'N/A')
+                        {
+                            $recovered = $last_daily_record['total']['r'];
+                        }
+                        else
+                        {
+                            if($override['recovered'] > $last_daily_record['total']['r'])
+                                $recovered = (int) str_replace(',','',$override['recovered']);
+                            else
+                                $recovered = $last_daily_record['total']['r'];
+                        }
+
+
+                        $temp_state_data = [
+                            'c' => 0,
+                            'd' => 0,
+                            'r' => 0
+                        ];
+                        foreach($last_daily_record['states'] AS $index=>$state)
+                        {
+
+                            if(!isset($state['name']))
+                            {
+                                $state['name'] = '(Unspecified)';
+                            }
+                            if($state['name'] != '(Unspecified)')
+                            {
+                                $temp_state_data['c'] += intval($state['c']);
+                                $temp_state_data['d'] += intval($state['d']);
+                                $temp_state_data['r'] += intval($state['r']);
+                            }
+
+                        }
+
+                        if(!isset($new_daily_record['states'][$statename]))
+                        {
+                            $new_daily_record['states'][$statename] = [
+                                'name' => $statename,
+                                'lat' => '',
+                                'lng' => '',
+                                'l' => $current_datetime,
+                                'c' => $confirmed - $temp_state_data['c'],
+                                'd' => $deaths - $temp_state_data['d'],
+                                'r' => $recovered - $temp_state_data['r'],
+                            ];
+                        }
+                        else
+                        {
+                            $new_daily_record['states'][$statename]['c'] = $confirmed - $temp_state_data['c'];
+                            $new_daily_record['states'][$statename]['d'] = $deaths - $temp_state_data['d'];
+                            $new_daily_record['states'][$statename]['r'] = $recovered - $temp_state_data['r'];
+                        }
+
+
+                        $new_daily_record['total'] = [
+                            'c' => $confirmed,
+                            'd' => $deaths,
+                            'r' => $recovered
+                        ];
+
+
+                        $data[$country]['daily'][$current_date] = $new_daily_record;
+
+                        if(!isset($global['daily'][$current_date]))
+                        {
+                            $global['daily'][$current_date] = [
+                                'confirmed' => 0,
+                                'deaths' => 0,
+                                'recovered' => 0,
+                            ];
+                        }
+
+                        $global['daily'][$current_date]['confirmed'] += $confirmed;
+                        $global['daily'][$current_date]['deaths'] += $deaths;
+                        $global['daily'][$current_date]['recovered'] += $recovered;
+                    }
+                }
+            }
+        }
+
+
+
+        // Cleanup
+        foreach($data AS $index=>$row)
+        {
+            // Remove state data from single state countries
+            if(count($row['states']) == 1)
+            {
+                unset($data[$index]['states']['(Unspecified)']);
+            }
+            // Remove empty unknown states
+            else if(!isset($row['states']['(Unspecified)']) || !isset($row['states']['(Unspecified)']['total']))
+            {
+                unset($data[$index]['states']['(Unspecified)']);
+            }
+        }
+        unset($data['Cruise Ship']);
+
+        $global['total'] = [
+            'confirmed' => 0,
+            'deaths' => 0,
+            'recovered' => 0,
+        ];
+        foreach($data AS $country => $row)
+        {
+            $global['total']['confirmed'] += $row['total']['c'];
+            $global['total']['deaths'] += $row['total']['d'];
+            $global['total']['recovered'] += $row['total']['r'];
+        }
+
+        // Write the file
+        file_put_contents(STATS . 'master.json',json_encode($data));
+
+
+        // Create daily json for states
+        $states = [];
+
+        foreach($data AS $country=>$row)
+        {
+            $states[$country] = [
+                'name' => $row['name'],
+                'states' => [],
+            ];
+
+
+            if(count($row['states']) > 0)
+            {
+                foreach($row['states'] AS $state => $state_row)
+                {
+                    if(isset($state_row['total']))
+                    {
+                        $states[$country]['states'][$state]['total'] = $state_row['total'];
+                    }
+                }
+            }
+
+            foreach($row['daily'] AS $date => $daily_row)
+            {
+                foreach($daily_row['states'] AS $state => $state_row)
+                {
+                    $states[$country]['states'][$state]['daily'][$date] = $state_row;
+                }
+            }
+        }
+
+        // Write the file
+        file_put_contents(STATS . 'states.json',json_encode($states));
+
+        // Annotations
+        // https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1Pov2AbAscAXUNphDrjd3ZmzlbuvMy_Pd195bXlylwgdDnu1OQ0CBKXfMeDAHBZWbtLL9t5McfIcD/pubhtml
+        $url = 'https://spreadsheets.google.com/feeds/list/1XfndFdJ0VSJnLqY83s8ITmuRVgsUSWPhCm-Fvd_rNb4/oejzle4/public/values?alt=json';
+        $file= file_get_contents($url);
+
+        $json = json_decode($file,true);
+        $rows = $json['feed']['entry'];
+        $data = [];
+        foreach($rows AS $row)
+        {
+            if($row['gsx$publish']['$t'] == 'Y')
+            {
+                $data[$row['gsx$country']['$t']][] = [
+                    'country' => $row['gsx$country']['$t'],
+                    'state' => $row['gsx$state']['$t'],
+                    'date' => $row['gsx$date']['$t'],
+                    'notes' => $row['gsx$notes']['$t'],
+                    'url' => $row['gsx$url']['$t'],
+                ];
+            }
+        }
+        file_put_contents(STATS . 'annotations.json',json_encode($data));
+
+
+
+
+        $sequence = array_reverse($global['daily']);
+        $last = reset($sequence);
+        $global['total'] = $last;
+
+        file_put_contents(STATS . 'global.json',json_encode($global));
+
+        $this->harvest_oxford();
+
+        return response('Done harvesting data')->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function master_old()
     {
         $worldometer_override = $this->harvest_worldometer();
         $manual_override = $this->manual_override();
@@ -528,7 +1653,7 @@ class StatsController extends Controller
                     ]
                 ];
             }
-            if (strlen($row['Province_State']) == 0)
+            if (strlen($row['Province_State']) == 0 || $row['Province_State'] == 'NA')
                 $row['Province_State'] = '(Unspecified)';
             if(
                 strlen($row['Province_State']) > 0
