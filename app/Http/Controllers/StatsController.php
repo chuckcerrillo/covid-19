@@ -1253,10 +1253,13 @@ class StatsController extends Controller
                         if(!isset($data[$country]['daily'][$date]['states'][$state]))
                         {
                             $data[$country]['daily'][$date]['states'][$state] = [
+                                'name' => $state,
                                 'c' => 0,
                                 'd' => 0,
                                 'r' => 0,
                             ];
+
+                            $data[$country]['states'][$state]['name'] = $state;
                         }
 
                         // Manual override here
@@ -1295,7 +1298,6 @@ class StatsController extends Controller
                         {
                             $data[$country]['daily'][$date]['states'][$state]['c'] = (int)$row[$x];
                             $data[$country]['states'][$state]['total']['c'] = (int)$row[$x];
-
                             $global['daily'][$date]['confirmed'] += (int)$row[$x];
 
                         }
