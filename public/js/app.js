@@ -4880,6 +4880,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -89769,6 +89770,7 @@ var render = function() {
                                                           staticClass:
                                                             "text-orangeslab hover:text-blue-400 hover:underline",
                                                           attrs: {
+                                                            target: "_blank",
                                                             href:
                                                               "https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker"
                                                           }
@@ -89778,6 +89780,19 @@ var render = function() {
                                                             "University of Oxford's coronavirus government response tracker (OxCGRT)"
                                                           )
                                                         ]
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "py-2 text-sm"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "A higher position in the Stringency Index does not necessarily mean that a country's response is ‘better’ than others lower on the index."
                                                       )
                                                     ]
                                                   )
@@ -90075,6 +90090,7 @@ var staticRenderFns = [
           {
             staticClass: "text-orangeslab hover:text-blue-400 hover:underline",
             attrs: {
+              target: "_blank",
               href:
                 "https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker"
             }
