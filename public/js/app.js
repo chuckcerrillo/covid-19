@@ -87468,9 +87468,7 @@ var render = function() {
               "pb-1 hover:bg-lightslab cursor-pointer flex items-center text-xs",
             class: _vm.isSelected(_vm.data.name, row.name)
               ? "bg-hoverslab"
-              : row.name % 2 == 0
-              ? "bg-slab-primary"
-              : "bg-slab-secondary"
+              : "bg-darkslab"
           },
           [
             _c("div", { staticClass: "w-4 p-2 m-1 ml-0" }),
@@ -87488,50 +87486,68 @@ var render = function() {
               [_c("div", [_vm._v(_vm._s(row["name"]))])]
             ),
             _vm._v(" "),
-            row.total && row.total.c >= 0
-              ? _c(
-                  "div",
-                  {
-                    staticClass: "w-20 pl-2",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(_vm.data["name"], row["name"])
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row["total"]["c"])))]
+            _c(
+              "div",
+              {
+                staticClass: "w-20 pl-2",
+                on: {
+                  click: function($event) {
+                    return _vm.selectCountry(_vm.data["name"], row["name"])
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  _vm._s(
+                    _vm._f("numeralFormat")(
+                      row["total"]["c"] ? row["total"]["c"] : 0
+                    )
+                  )
                 )
-              : _vm._e(),
+              ]
+            ),
             _vm._v(" "),
-            row.total && row.total.d >= 0
-              ? _c(
-                  "div",
-                  {
-                    staticClass: "w-20 pl-2",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(_vm.data["name"], row["name"])
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row["total"]["d"])))]
+            _c(
+              "div",
+              {
+                staticClass: "w-20 pl-2",
+                on: {
+                  click: function($event) {
+                    return _vm.selectCountry(_vm.data["name"], row["name"])
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  _vm._s(
+                    _vm._f("numeralFormat")(
+                      row["total"]["d"] ? row["total"]["d"] : 0
+                    )
+                  )
                 )
-              : _vm._e(),
+              ]
+            ),
             _vm._v(" "),
-            row.total && row.total.r >= 0
-              ? _c(
-                  "div",
-                  {
-                    staticClass: "w-20 pl-2",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(_vm.data["name"], row["name"])
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row["total"]["r"])))]
+            _c(
+              "div",
+              {
+                staticClass: "w-20 pl-2",
+                on: {
+                  click: function($event) {
+                    return _vm.selectCountry(_vm.data["name"], row["name"])
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  _vm._s(
+                    _vm._f("numeralFormat")(
+                      row["total"]["r"] ? row["total"]["r"] : 0
+                    )
+                  )
                 )
-              : _vm._e()
+              ]
+            )
           ]
         )
       })
