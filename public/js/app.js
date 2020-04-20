@@ -5763,6 +5763,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5799,6 +5808,42 @@ __webpack_require__.r(__webpack_exports__);
       for (var x in this.globalDataset[0].annotations) {
         if (this.globalDataset[0].annotations[x].date == date) {
           data.push(this.globalDataset[0].annotations[x]);
+        }
+      }
+
+      return data;
+    },
+    getLastDelta: function getLastDelta(country) {
+      var data = {
+        'confirmed': 0,
+        'deaths': 0,
+        'recovered': 0
+      };
+
+      if (country) {
+        var row = this.database.raw.raw_countries[country];
+        var count = 0,
+            current,
+            previous;
+
+        for (var x in row.daily) {
+          if (count > 0) {
+            current = row.daily[x].total;
+
+            if (current.c != previous.c) {
+              data = {
+                'confirmed': parseInt(current.c) - parseInt(previous.c),
+                'confirmedpc': (parseInt(current.c) - parseInt(previous.c)) / parseInt(previous.c),
+                'deaths': parseInt(current.d) - parseInt(previous.d),
+                'deathspc': (parseInt(current.d) - parseInt(previous.d)) / parseInt(previous.d),
+                'recovered': parseInt(current.r) - parseInt(previous.r),
+                'recoveredpc': (parseInt(current.r) - parseInt(previous.r)) / parseInt(previous.r)
+              };
+            }
+          }
+
+          previous = row.daily[x].total;
+          count++;
         }
       }
 
@@ -5913,19 +5958,6 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return row;
-    },
-    getComparisonData: function getComparisonData() {
-      var data = [],
-          row = [];
-
-      if (this.compare.length > 0) {
-        for (var x in this.compare) {
-          row = this.assembleDataset(this.compare[x]);
-          data.push(row);
-        }
-      }
-
-      return data;
     }
   },
   computed: {
@@ -6008,7 +6040,13 @@ __webpack_require__.r(__webpack_exports__);
       var data = {},
           last_update = '';
       data = _.cloneDeep(this.raw_global);
-      data.last_update = data.total.last_update;
+
+      if (data.total && data.total.last_update) {
+        data.last_update = data.total.last_update;
+      } else {
+        data.last_update = '';
+      }
+
       data.name = {
         full: 'Global',
         country: 'Global',
@@ -90311,7 +90349,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "bg-lightslab rounded-lg" },
+                          { staticClass: "bg-hoverslab rounded-lg" },
                           _vm._l(
                             _vm.getSortedCountries("confirmed", "desc", 5),
                             function(row, key, index) {
@@ -90319,7 +90357,7 @@ var render = function() {
                                 "div",
                                 {
                                   staticClass:
-                                    "p-2 xl:p-4 flex items-end justify-center"
+                                    "p-2 xl:p-4 flex items-center justify-center"
                                 },
                                 [
                                   _c(
@@ -90342,7 +90380,7 @@ var render = function() {
                                         "div",
                                         {
                                           staticClass:
-                                            "text-primary text-sm xl:px-2 xl:w-64"
+                                            "text-primary font-bold text-sm xl:px-2 xl:w-64"
                                         },
                                         [_vm._v(_vm._s(row.name))]
                                       ),
@@ -90362,7 +90400,36 @@ var render = function() {
                                             )
                                           )
                                         ]
-                                      )
+                                      ),
+                                      _vm._v(" "),
+                                      _vm.getLastDelta(row.name)
+                                        ? _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "px-2 text-xs text-lightlabel"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                            +" +
+                                                  _vm._s(
+                                                    _vm._f("numeralFormat")(
+                                                      _vm.getLastDelta(row.name)
+                                                        .confirmed
+                                                    )
+                                                  ) +
+                                                  " (+" +
+                                                  _vm._s(
+                                                    _vm._f("numeralFormat")(
+                                                      _vm.getLastDelta(row.name)
+                                                        .confirmedpc
+                                                    )
+                                                  ) +
+                                                  "%)\n                                        "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e()
                                     ]
                                   )
                                 ]
@@ -90385,7 +90452,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "div",
-                            { staticClass: "bg-lightslab rounded-lg" },
+                            { staticClass: "bg-hoverslab rounded-lg" },
                             _vm._l(
                               _vm.getSortedCountries("deaths", "desc", 5),
                               function(row, key, index) {
@@ -90393,7 +90460,7 @@ var render = function() {
                                   "div",
                                   {
                                     staticClass:
-                                      "p-2 xl:p-4 flex items-end justify-center"
+                                      "p-2 xl:p-4 flex items-center justify-center"
                                   },
                                   [
                                     _c(
@@ -90416,7 +90483,7 @@ var render = function() {
                                           "div",
                                           {
                                             staticClass:
-                                              "text-primary text-sm xl:px-2 xl:w-64"
+                                              "text-primary font-bold text-sm xl:px-2 xl:w-64"
                                           },
                                           [_vm._v(_vm._s(row.name))]
                                         ),
@@ -90436,7 +90503,38 @@ var render = function() {
                                               )
                                             )
                                           ]
-                                        )
+                                        ),
+                                        _vm._v(" "),
+                                        _vm.getLastDelta(row.name)
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "px-2 text-xs text-lightlabel"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                            +" +
+                                                    _vm._s(
+                                                      _vm._f("numeralFormat")(
+                                                        _vm.getLastDelta(
+                                                          row.name
+                                                        ).deaths
+                                                      )
+                                                    ) +
+                                                    " (+" +
+                                                    _vm._s(
+                                                      _vm._f("numeralFormat")(
+                                                        _vm.getLastDelta(
+                                                          row.name
+                                                        ).deathspc
+                                                      )
+                                                    ) +
+                                                    ")\n                                        "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e()
                                       ]
                                     )
                                   ]
@@ -90460,7 +90558,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "div",
-                            { staticClass: "bg-lightslab rounded-lg" },
+                            { staticClass: "bg-hoverslab rounded-lg" },
                             _vm._l(
                               _vm.getSortedCountries("recovered", "desc", 5),
                               function(row, key, index) {
@@ -90468,7 +90566,7 @@ var render = function() {
                                   "div",
                                   {
                                     staticClass:
-                                      "p-2 xl:p-4 flex items-end justify-center"
+                                      "p-2 xl:p-4 flex items-center justify-center"
                                   },
                                   [
                                     _c(
@@ -90491,7 +90589,7 @@ var render = function() {
                                           "div",
                                           {
                                             staticClass:
-                                              "text-primary text-sm xl:px-2 xl:w-64"
+                                              "text-primary font-bold text-sm xl:px-2 xl:w-64"
                                           },
                                           [_vm._v(_vm._s(row.name))]
                                         ),
@@ -90511,7 +90609,38 @@ var render = function() {
                                               )
                                             )
                                           ]
-                                        )
+                                        ),
+                                        _vm._v(" "),
+                                        _vm.getLastDelta(row.name)
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "px-2 text-xs text-lightlabel"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                            +" +
+                                                    _vm._s(
+                                                      _vm._f("numeralFormat")(
+                                                        _vm.getLastDelta(
+                                                          row.name
+                                                        ).recovered
+                                                      )
+                                                    ) +
+                                                    " (+" +
+                                                    _vm._s(
+                                                      _vm._f("numeralFormat")(
+                                                        _vm.getLastDelta(
+                                                          row.name
+                                                        ).recoveredpc
+                                                      )
+                                                    ) +
+                                                    "%)\n                                        "
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e()
                                       ]
                                     )
                                   ]
