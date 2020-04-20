@@ -664,6 +664,8 @@
                     });
                 }
 
+                daily.pop();
+
 
                 data.push(this.assembleDataset(this.global,daily,this.global.name));
                 return data;

@@ -6073,6 +6073,7 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
 
+      daily.pop();
       data.push(this.assembleDataset(this.global, daily, this.global.name));
       return data;
     }
