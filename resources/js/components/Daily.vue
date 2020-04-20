@@ -71,12 +71,12 @@
                         <div class="w-24">{{moment(row['date']).format('YYYY-MM-DD')}}</div>
                         <div class="w-32">
                             {{ isNaN(row.confirmed) ? 0 : row.confirmed | numeralFormat}}
-                            <span class="text-red-400" v-if="row.deltaConfirmed >= 0">(+{{row.deltaConfirmed| numeralFormat}})</span>
+                            <span class="text-red-400" v-if="row.deltaConfirmed > 0">(+{{row.deltaConfirmed| numeralFormat}})</span>
                             <span class="text-green-400" v-else>({{row.deltaConfirmed| numeralFormat}})</span>
                         </div>
                         <div class="w-32">
                             {{ isNaN(row.deaths) ? 0 : row.deaths | numeralFormat}}
-                            <span class="text-red-400" v-if="row.deltaDeaths >= 0">(+{{row.deltaDeaths| numeralFormat}})</span>
+                            <span class="text-red-400" v-if="row.deltaDeaths > 0">(+{{row.deltaDeaths| numeralFormat}})</span>
                             <span class="text-green-400" v-else>({{row.deltaDeaths| numeralFormat}})</span>
                         </div>
                         <div class="w-32">
