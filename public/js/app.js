@@ -2982,6 +2982,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -87827,10 +87828,20 @@ var render = function() {
                           ) +
                           "\n                        "
                       ),
-                      row.deltaRecovered >= 0
+                      row.deltaRecovered > 0
                         ? _c("span", { staticClass: "text-green-400" }, [
                             _vm._v(
                               "(+" +
+                                _vm._s(
+                                  _vm._f("numeralFormat")(row.deltaRecovered)
+                                ) +
+                                ")"
+                            )
+                          ])
+                        : row.deltaRecovered == 0
+                        ? _c("span", { staticClass: "text-green-400" }, [
+                            _vm._v(
+                              "(" +
                                 _vm._s(
                                   _vm._f("numeralFormat")(row.deltaRecovered)
                                 ) +
