@@ -90439,10 +90439,11 @@ var render = function() {
                                                   _vm._s(
                                                     _vm._f("numeralFormat")(
                                                       _vm.getLastDelta(row.name)
-                                                        .confirmedpc
+                                                        .confirmedpc,
+                                                      "0.0%"
                                                     )
                                                   ) +
-                                                  "%)\n                                        "
+                                                  ")\n                                        "
                                               )
                                             ]
                                           )
@@ -90544,7 +90545,8 @@ var render = function() {
                                                       _vm._f("numeralFormat")(
                                                         _vm.getLastDelta(
                                                           row.name
-                                                        ).deathspc
+                                                        ).deathspc,
+                                                        "0.0%"
                                                       )
                                                     ) +
                                                     ")\n                                        "
@@ -90650,10 +90652,11 @@ var render = function() {
                                                       _vm._f("numeralFormat")(
                                                         _vm.getLastDelta(
                                                           row.name
-                                                        ).recoveredpc
+                                                        ).recoveredpc,
+                                                        "0.0%"
                                                       )
                                                     ) +
-                                                    "%)\n                                        "
+                                                    ")\n                                        "
                                                 )
                                               ]
                                             )

@@ -66,7 +66,7 @@
                                             <div class="text-primary font-bold text-sm xl:px-2 xl:w-64">{{row.name}}</div>
                                             <div class="font-bold text-white xl:text-3xl xl:px-2">{{row.total.c | numeralFormat}}</div>
                                             <div v-if="getLastDelta(row.name)" class="px-2 text-xs text-lightlabel">
-                                                +{{getLastDelta(row.name).confirmed|numeralFormat}} (+{{getLastDelta(row.name).confirmedpc|numeralFormat}}%)
+                                                +{{getLastDelta(row.name).confirmed|numeralFormat}} (+{{getLastDelta(row.name).confirmedpc |numeralFormat('0.0%')}})
                                             </div>
                                         </div>
                                     </div>
@@ -83,7 +83,7 @@
                                             <div class="text-primary font-bold text-sm xl:px-2 xl:w-64">{{row.name}}</div>
                                             <div class="font-bold text-white xl:text-3xl xl:px-2">{{row.total.d | numeralFormat}}</div>
                                             <div v-if="getLastDelta(row.name)" class="px-2 text-xs text-lightlabel">
-                                                +{{getLastDelta(row.name).deaths|numeralFormat}} (+{{getLastDelta(row.name).deathspc|numeralFormat}})
+                                                +{{getLastDelta(row.name).deaths|numeralFormat}} (+{{getLastDelta(row.name).deathspc |numeralFormat('0.0%')}})
                                             </div>
                                         </div>
                                     </div>
@@ -99,7 +99,7 @@
                                             <div class="text-primary font-bold text-sm xl:px-2 xl:w-64">{{row.name}}</div>
                                             <div class="font-bold text-white xl:text-3xl xl:px-2">{{row.total.r | numeralFormat}}</div>
                                             <div v-if="getLastDelta(row.name)" class="px-2 text-xs text-lightlabel">
-                                                +{{getLastDelta(row.name).recovered|numeralFormat}} (+{{getLastDelta(row.name).recoveredpc|numeralFormat}}%)
+                                                +{{getLastDelta(row.name).recovered|numeralFormat}} (+{{getLastDelta(row.name).recoveredpc|numeralFormat('0.0%')}})
                                             </div>
                                         </div>
                                     </div>
