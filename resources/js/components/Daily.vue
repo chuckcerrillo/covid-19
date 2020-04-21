@@ -101,7 +101,7 @@
                             {{ (isNaN(row.active) ? 0 : row.active) | numeralFormat}}
                             <span class="text-green-400" v-if="row.activeDelta < 0">({{row.activeDelta| numeralFormat}})</span>
                             <span class="text-green-400" v-else-if="row.activeDelta == 0">({{row.activeDelta| numeralFormat}})</span>
-                            <span class="text-red-400" v-else>(+{{row.activeDelta| numeralFormat}})</span>
+                            <span class="text-red-400" v-else>(+{{row.activeDelta| numeralFormat}})</span><br />
                             <span class="text-blue-400">{{row.activepoppc | numeralFormat('0.00%')}} of total population</span>
                         </div>
                         <div class="w-20">
