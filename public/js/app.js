@@ -88060,6 +88060,7 @@ var render = function() {
                                 ")"
                             )
                           ]),
+                      _c("br"),
                       _vm._v(" "),
                       _c("span", { staticClass: "text-blue-400" }, [
                         _vm._v(
