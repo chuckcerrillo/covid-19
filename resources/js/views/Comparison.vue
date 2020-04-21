@@ -244,8 +244,6 @@ thi<template>
                         else
                         {
                             var help = [];
-                            console.log('undefined - cant find it - ' + x);
-                            console.log(response);
                         }
 
                         if(key.hasTarget)
@@ -379,9 +377,35 @@ thi<template>
                 }
 
                 const arrAvg = arr => arr.reduce((a,b) => a + b, 0) / arr.length;
+
+                var population = 0,
+                    lat, long;
+
+                if(this.database.raw.raw_countries && this.database.raw.raw_countries[source[1]])
+                {
+                    if(source[2])
+                    {
+                        if(this.database.raw.raw_countries[source[1]]['states'][source[2]])
+                        {
+                            lat = this.database.raw.raw_countries[source[1]]['states'][source[2]].lat;
+                            long = this.database.raw.raw_countries[source[1]]['states'][source[2]].long;
+                            population = this.database.raw.raw_countries[source[1]]['states'][source[2]].population;
+                        }
+                    }
+                    else
+                    {
+                        lat = this.database.raw.raw_countries[source[1]].lat;
+                        long = this.database.raw.raw_countries[source[1]].long;
+                        population = this.database.raw.raw_countries[source[1]].population;
+                    }
+                }
+
                 row = {
                     name: name ? name : this.getCompareName(source),
                     daily: (daily ? daily : this.getDaily(source)),
+                    lat: lat,
+                    long: long,
+                    population: population,
                     delta: [],
                     growth: [],
                     average: [],
@@ -401,13 +425,20 @@ thi<template>
                         count++;
                         continue;
                     }
+                    console.log(population);
 
                     row.delta[y] = {
                         date: row.daily[y].date,
                         confirmed: parseInt(row.daily[y].confirmed) - parseInt(previous.confirmed),
+                        confirmedpc: (parseInt(row.daily[y].confirmed) - parseInt(previous.confirmed)) / parseInt(previous.confirmed),
+                        confirmedcap: parseInt(row.daily[y].confirmed) / population * 1000000,
                         deaths: parseInt(row.daily[y].deaths) - parseInt(previous.deaths),
+                        deathspc: (parseInt(row.daily[y].deaths) - parseInt(previous.deaths)) / parseInt(previous.deaths),
                         recovered: parseInt(row.daily[y].recovered) - parseInt(previous.recovered),
-                        active: parseInt(row.daily[y].confirmed) - parseInt(previous.confirmed) - parseInt(row.daily[y].deaths) - parseInt(previous.deaths) - parseInt(row.daily[y].recovered) - parseInt(previous.recovered),
+                        recoveredpc: (parseInt(row.daily[y].recovered) - parseInt(previous.recovered)) / parseInt(previous.recovered),
+                        active: parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered),
+                        activeDelta: (parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered)) - (parseInt(previous.confirmed) - parseInt(previous.deaths) - parseInt(previous.recovered)),
+                        activepoppc: (parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered)) / population,
                     }
                     previous = row.daily[y];
                     count++;
@@ -480,7 +511,6 @@ thi<template>
                     for(var x in this.database.processed.compare)
                     {
                         row = this.assembleDataset(this.database.processed.compare[x])
-
                         data.push(row);
                     }
                 }
@@ -522,8 +552,6 @@ thi<template>
             },
             removeCompare(item)
             {
-                console.log('iotem');
-                console.log(item);
                 var found = this.findCompare(item);
                 if(found)
                 {
