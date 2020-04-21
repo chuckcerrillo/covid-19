@@ -4694,6 +4694,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "About",
   methods: {
@@ -4726,6 +4727,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _Single__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Single */ "./resources/js/views/Single.vue");
 /* harmony import */ var _components_Map__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/Map */ "./resources/js/components/Map.vue");
+//
 //
 //
 //
@@ -4954,21 +4956,30 @@ __webpack_require__.r(__webpack_exports__);
           var key = response.key[x];
           var target = '';
           var value = row.value;
-          var help = key.values;
+
+          if (key && key.values) {
+            var help = key.values;
+          } else {
+            var help = [];
+            console.log('undefined - cant find it - ' + x);
+            console.log(response);
+          }
 
           if (key.hasTarget) {
-            if (row.target == 1) {
-              target = 'Targeted';
+            if (row.t == 1) {
+              target = 'Scope: Targeted';
             } else {
-              target = 'General';
+              target = 'Scope: General';
             }
           }
 
-          if (row.value.length == 0) {
+          if (row.v.length == 0) {
             value = '';
             target = '';
           } else if (key.type == 'lookup') {
-            value = key.values[row.value];
+            value = key.values[row.v];
+          } else {
+            value = row.v;
           }
 
           data.push({
@@ -4977,6 +4988,7 @@ __webpack_require__.r(__webpack_exports__);
             description: key.description,
             value: value,
             target: target,
+            since: row.s,
             help: help
           });
           data = data.sort(function (a, b) {
@@ -89246,6 +89258,8 @@ var render = function() {
           _vm._v(" "),
           _vm._m(2),
           _vm._v(" "),
+          _vm._m(3),
+          _vm._v(" "),
           _c("p", { staticClass: "mt-4" }, [_vm._v("© Simpler Solutions")])
         ]
       )
@@ -89287,6 +89301,26 @@ var staticRenderFns = [
         [_vm._v("https://www.worldometers.info/coronavirus/")]
       ),
       _vm._v(")")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _vm._v("· "),
+      _c(
+        "a",
+        {
+          attrs: {
+            href:
+              "https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker",
+            target: "_blank"
+          }
+        },
+        [_vm._v("Coronavirus Government Response Tracker")]
+      ),
+      _vm._v(" by University of Oxford")
     ])
   },
   function() {
@@ -89717,8 +89751,7 @@ var render = function() {
                                                             _vm._s(
                                                               _vm.getGovtResponse(
                                                                 row[1]
-                                                              ).latest
-                                                                .stringencyindex
+                                                              ).latest.si
                                                             )
                                                           )
                                                         ]
@@ -89884,7 +89917,7 @@ var render = function() {
                                                                   "div",
                                                                   {
                                                                     staticClass:
-                                                                      "p-2 w-full text-xs"
+                                                                      "p-2 w-full"
                                                                   },
                                                                   [
                                                                     policy.value >
@@ -89919,6 +89952,7 @@ var render = function() {
                                                                         )
                                                                       : _c(
                                                                           "div",
+                                                                          {},
                                                                           [
                                                                             _vm._v(
                                                                               _vm._s(
@@ -89930,12 +89964,31 @@ var render = function() {
                                                                     _vm._v(" "),
                                                                     _c(
                                                                       "div",
-                                                                      {},
+                                                                      {
+                                                                        staticClass:
+                                                                          "text-xs"
+                                                                      },
                                                                       [
                                                                         _vm._v(
                                                                           _vm._s(
                                                                             policy.target
                                                                           )
+                                                                        )
+                                                                      ]
+                                                                    ),
+                                                                    _vm._v(" "),
+                                                                    _c(
+                                                                      "div",
+                                                                      {
+                                                                        staticClass:
+                                                                          "text-xs"
+                                                                      },
+                                                                      [
+                                                                        _vm._v(
+                                                                          "since " +
+                                                                            _vm._s(
+                                                                              policy.since
+                                                                            )
                                                                         )
                                                                       ]
                                                                     ),
@@ -89947,7 +90000,7 @@ var render = function() {
                                                                           "div",
                                                                           {
                                                                             staticClass:
-                                                                              "text-lightlabel"
+                                                                              "text-lightlabel text-xs"
                                                                           },
                                                                           [
                                                                             _vm._v(
