@@ -2983,6 +2983,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3071,7 +3099,6 @@ __webpack_require__.r(__webpack_exports__);
         if (this.data.annotations[x].country == 'All') {
           data.push(this.data.annotations[x]);
         } else if (this.data.annotations[x].state && this.data.name.state == this.data.annotations[x].state) {
-          console.log('Comparing ' + this.data.name.state + ' vs ' + this.data.annotations[x].state);
           data.push(this.data.annotations[x]);
         }
       }
@@ -3090,12 +3117,19 @@ __webpack_require__.r(__webpack_exports__);
 
         data.push({
           date: moment__WEBPACK_IMPORTED_MODULE_0___default()(row['date']).format('YYYY-MM-DD'),
+          active: this.recomputed.delta[x].active,
+          activeDelta: this.recomputed.delta[x].activeDelta,
+          activepoppc: this.recomputed.delta[x].activepoppc,
           confirmed: row.confirmed,
           deltaConfirmed: this.recomputed.delta[x].confirmed,
+          confirmedpc: this.recomputed.delta[x].confirmedpc,
+          confirmedcap: this.recomputed.delta[x].confirmedcap,
           deaths: row.deaths,
           deltaDeaths: this.recomputed.delta[x].deaths,
+          deathspc: this.recomputed.delta[x].deathspc,
           recovered: row.recovered,
           deltaRecovered: this.recomputed.delta[x].recovered,
+          recoveredpc: this.recomputed.delta[x].recoveredpc,
           growth: this.recomputed.growth[x],
           average: this.recomputed.average[x],
           growthFactor: this.recomputed.growthFactor[x]
@@ -4961,8 +4995,6 @@ __webpack_require__.r(__webpack_exports__);
             var help = key.values;
           } else {
             var help = [];
-            console.log('undefined - cant find it - ' + x);
-            console.log(response);
           }
 
           if (key.hasTarget) {
@@ -5074,9 +5106,30 @@ __webpack_require__.r(__webpack_exports__);
         }, 0) / arr.length;
       };
 
+      var population = 0,
+          lat,
+          _long;
+
+      if (this.database.raw.raw_countries && this.database.raw.raw_countries[source[1]]) {
+        if (source[2]) {
+          if (this.database.raw.raw_countries[source[1]]['states'][source[2]]) {
+            lat = this.database.raw.raw_countries[source[1]]['states'][source[2]].lat;
+            _long = this.database.raw.raw_countries[source[1]]['states'][source[2]]["long"];
+            population = this.database.raw.raw_countries[source[1]]['states'][source[2]].population;
+          }
+        } else {
+          lat = this.database.raw.raw_countries[source[1]].lat;
+          _long = this.database.raw.raw_countries[source[1]]["long"];
+          population = this.database.raw.raw_countries[source[1]].population;
+        }
+      }
+
       row = {
         name: name ? name : this.getCompareName(source),
         daily: daily ? daily : this.getDaily(source),
+        lat: lat,
+        "long": _long,
+        population: population,
         delta: [],
         growth: [],
         average: [],
@@ -5094,12 +5147,19 @@ __webpack_require__.r(__webpack_exports__);
           continue;
         }
 
+        console.log(population);
         row.delta[y] = {
           date: row.daily[y].date,
           confirmed: parseInt(row.daily[y].confirmed) - parseInt(previous.confirmed),
+          confirmedpc: (parseInt(row.daily[y].confirmed) - parseInt(previous.confirmed)) / parseInt(previous.confirmed),
+          confirmedcap: parseInt(row.daily[y].confirmed) / population * 1000000,
           deaths: parseInt(row.daily[y].deaths) - parseInt(previous.deaths),
+          deathspc: (parseInt(row.daily[y].deaths) - parseInt(previous.deaths)) / parseInt(previous.deaths),
           recovered: parseInt(row.daily[y].recovered) - parseInt(previous.recovered),
-          active: parseInt(row.daily[y].confirmed) - parseInt(previous.confirmed) - parseInt(row.daily[y].deaths) - parseInt(previous.deaths) - parseInt(row.daily[y].recovered) - parseInt(previous.recovered)
+          recoveredpc: (parseInt(row.daily[y].recovered) - parseInt(previous.recovered)) / parseInt(previous.recovered),
+          active: parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered),
+          activeDelta: parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered) - (parseInt(previous.confirmed) - parseInt(previous.deaths) - parseInt(previous.recovered)),
+          activepoppc: (parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered)) / population
         };
         previous = row.daily[y];
         count++;
@@ -5192,8 +5252,6 @@ __webpack_require__.r(__webpack_exports__);
       return found;
     },
     removeCompare: function removeCompare(item) {
-      console.log('iotem');
-      console.log(item);
       var found = this.findCompare(item);
 
       if (found) {
@@ -87681,7 +87739,17 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "mx-4 mt-4" }, [
           _c("div", { staticClass: "flex text-sm w-full items-center" }, [
-            _c("div", { staticClass: "pr-4" }, [
+            _c("div", { staticClass: "pr-4 border-r border-lightslab mr-4" }, [
+              _c("div", { staticClass: "text-xs font-bold" }, [
+                _vm._v("Population")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "text-3xl font-bold" }, [
+                _vm._v(_vm._s(_vm._f("numeralFormat")(_vm.data.population)))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "pr-4 border-r border-lightslab mr-4" }, [
               _c("div", { staticClass: "text-xs font-bold" }, [
                 _vm._v("Confirmed")
               ]),
@@ -87693,7 +87761,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "pr-4" }, [
+            _c("div", { staticClass: "pr-4 border-r border-lightslab mr-4" }, [
               _c("div", { staticClass: "text-xs font-bold" }, [
                 _vm._v("Deaths")
               ]),
@@ -87703,7 +87771,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", {}, [
+            _c("div", { staticClass: "pr-4 border-r border-lightslab mr-4" }, [
               _c("div", { staticClass: "text-xs font-bold" }, [
                 _vm._v("Recovered")
               ]),
@@ -87711,6 +87779,24 @@ var render = function() {
               _c("div", { staticClass: "text-3xl font-bold" }, [
                 _vm._v(
                   _vm._s(_vm._f("numeralFormat")(_vm.data.total.recovered))
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", {}, [
+              _c("div", { staticClass: "text-xs border-lightslab font-bold" }, [
+                _vm._v("Active")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "text-3xl font-bold" }, [
+                _vm._v(
+                  _vm._s(
+                    _vm._f("numeralFormat")(
+                      _vm.data.total.confirmed -
+                        _vm.data.total.deaths -
+                        _vm.data.total.recovered
+                    )
+                  )
                 )
               ])
             ])
@@ -87731,7 +87817,7 @@ var render = function() {
         "simplebar",
         {
           staticClass:
-            "top-0 right-0 bottom-0 left-0 bg-slab absolute m-4 mt-52 rounded",
+            "top-0 right-0 bottom-0 left-0 bg-slab absolute m-4 mt-60 rounded",
           staticStyle: { position: "absolute" },
           attrs: { "data-simplebar-auto-hide": "false" }
         },
@@ -87827,12 +87913,15 @@ var render = function() {
                           ) +
                           "\n                        "
                       ),
-                      row.deltaConfirmed > 0
+                      row.confirmedpc > 0
                         ? _c("span", { staticClass: "text-red-400" }, [
                             _vm._v(
                               "(+" +
                                 _vm._s(
-                                  _vm._f("numeralFormat")(row.deltaConfirmed)
+                                  _vm._f("numeralFormat")(
+                                    row.confirmedpc,
+                                    "0.0%"
+                                  )
                                 ) +
                                 ")"
                             )
@@ -87841,7 +87930,10 @@ var render = function() {
                             _vm._v(
                               "(" +
                                 _vm._s(
-                                  _vm._f("numeralFormat")(row.deltaConfirmed)
+                                  _vm._f("numeralFormat")(
+                                    row.confirmedpc,
+                                    "0.0%"
+                                  )
                                 ) +
                                 ")"
                             )
@@ -87858,12 +87950,12 @@ var render = function() {
                           ) +
                           "\n                        "
                       ),
-                      row.deltaDeaths > 0
+                      row.deathspc > 0
                         ? _c("span", { staticClass: "text-red-400" }, [
                             _vm._v(
                               "(+" +
                                 _vm._s(
-                                  _vm._f("numeralFormat")(row.deltaDeaths)
+                                  _vm._f("numeralFormat")(row.deathspc, "0.0%")
                                 ) +
                                 ")"
                             )
@@ -87872,7 +87964,7 @@ var render = function() {
                             _vm._v(
                               "(" +
                                 _vm._s(
-                                  _vm._f("numeralFormat")(row.deltaDeaths)
+                                  _vm._f("numeralFormat")(row.deathspc, "0.0%")
                                 ) +
                                 ")"
                             )
@@ -87889,22 +87981,28 @@ var render = function() {
                           ) +
                           "\n                        "
                       ),
-                      row.deltaRecovered > 0
+                      row.recoveredpc > 0
                         ? _c("span", { staticClass: "text-green-400" }, [
                             _vm._v(
                               "(+" +
                                 _vm._s(
-                                  _vm._f("numeralFormat")(row.deltaRecovered)
+                                  _vm._f("numeralFormat")(
+                                    row.recoveredpc,
+                                    "0.0%"
+                                  )
                                 ) +
                                 ")"
                             )
                           ])
-                        : row.deltaRecovered == 0
+                        : row.recoveredpc == 0
                         ? _c("span", { staticClass: "text-green-400" }, [
                             _vm._v(
                               "(" +
                                 _vm._s(
-                                  _vm._f("numeralFormat")(row.deltaRecovered)
+                                  _vm._f("numeralFormat")(
+                                    row.recoveredpc,
+                                    "0.0%"
+                                  )
                                 ) +
                                 ")"
                             )
@@ -87913,7 +88011,10 @@ var render = function() {
                             _vm._v(
                               "(" +
                                 _vm._s(
-                                  _vm._f("numeralFormat")(row.deltaRecovered)
+                                  _vm._f("numeralFormat")(
+                                    row.recoveredpc,
+                                    "0.0%"
+                                  )
                                 ) +
                                 ")"
                             )
@@ -87923,20 +88024,100 @@ var render = function() {
                     _c("div", { staticClass: "w-32" }, [
                       _vm._v(
                         "\n                        " +
-                          _vm._s(row.growth) +
-                          "\n                    "
-                      )
+                          _vm._s(
+                            _vm._f("numeralFormat")(
+                              isNaN(row.active) ? 0 : row.active
+                            )
+                          ) +
+                          "\n                        "
+                      ),
+                      row.activeDelta < 0
+                        ? _c("span", { staticClass: "text-green-400" }, [
+                            _vm._v(
+                              "(" +
+                                _vm._s(
+                                  _vm._f("numeralFormat")(row.activeDelta)
+                                ) +
+                                ")"
+                            )
+                          ])
+                        : row.activeDelta == 0
+                        ? _c("span", { staticClass: "text-green-400" }, [
+                            _vm._v(
+                              "(" +
+                                _vm._s(
+                                  _vm._f("numeralFormat")(row.activeDelta)
+                                ) +
+                                ")"
+                            )
+                          ])
+                        : _c("span", { staticClass: "text-red-400" }, [
+                            _vm._v(
+                              "(+" +
+                                _vm._s(
+                                  _vm._f("numeralFormat")(row.activeDelta)
+                                ) +
+                                ")"
+                            )
+                          ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "text-blue-400" }, [
+                        _vm._v(
+                          _vm._s(
+                            _vm._f("numeralFormat")(row.activepoppc, "0.00%")
+                          ) + " of total population"
+                        )
+                      ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-32" }, [
+                    _c("div", { staticClass: "w-20" }, [
                       _vm._v(
                         "\n                        " +
-                          _vm._s(row.average) +
+                          _vm._s(_vm._f("numeralFormat")(row.deltaConfirmed)) +
                           "\n                    "
                       )
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-32" }, [
+                    _c("div", { staticClass: "w-20" }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(_vm._f("numeralFormat")(row.deltaDeaths)) +
+                          "\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-20" }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(_vm._f("numeralFormat")(row.deltaRecovered)) +
+                          "\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-24" }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(
+                            _vm._f("numeralFormat")(
+                              row.confirmedcap,
+                              "0,000.00"
+                            )
+                          ) +
+                          "\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-24" }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(
+                            _vm._f("numeralFormat")(row.average, "0,000.0")
+                          ) +
+                          "\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-16" }, [
                       row.growthFactor > 1
                         ? _c("span", { staticClass: "text-red-400" }, [
                             _vm._v(_vm._s(row.growthFactor))
@@ -87988,7 +88169,7 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "px-2 mx-4 py-2 flex text-xs font-bold justify-between bg-slab-primary rounded-t h-8"
+          "px-2 mx-4 py-2 flex text-xs font-bold justify-between bg-slab-primary rounded-t h-16"
       },
       [
         _c("div", { staticClass: "justify-center flex w-full items-end" }, [
@@ -88000,11 +88181,21 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("div", { staticClass: "w-32" }, [_vm._v("Recovered")]),
           _vm._v(" "),
-          _c("div", { staticClass: "w-32" }, [_vm._v("New Cases")]),
+          _c("div", { staticClass: "w-32" }, [_vm._v("Active")]),
           _vm._v(" "),
-          _c("div", { staticClass: "w-32" }, [_vm._v("5D Ave")]),
+          _c("div", { staticClass: "w-20" }, [_vm._v("New Cases")]),
           _vm._v(" "),
-          _c("div", { staticClass: "w-32" }, [_vm._v("Growth Factor")])
+          _c("div", { staticClass: "w-20" }, [_vm._v("New Deaths")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "w-20" }, [_vm._v("New Recovered")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "w-24" }, [
+            _vm._v("Confirmed Per 1,000,000 population")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "w-24" }, [_vm._v("5D Ave")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "w-16" }, [_vm._v("Growth Factor")])
         ])
       ]
     )

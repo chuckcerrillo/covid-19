@@ -1390,6 +1390,9 @@ class StatsController extends Controller
 //                    "deaths" => "35,276"
 //                    "recovered" => "61,446"
 //                ]
+            $override['confirmed'] = (int) str_replace(',','',$override['confirmed']);
+            $override['deaths'] = (int) str_replace(',','',$override['deaths']);
+            $override['recovered'] = (int) str_replace(',','',$override['recovered']);
 
             if(isset($this->worldometer_jh_map[$override['country']]))
             {
@@ -1488,6 +1491,9 @@ class StatsController extends Controller
                             'r' => $recovered
                         ];
 
+                        $data[$country]['total']['c'] = $confirmed;
+                        $data[$country]['total']['d'] = $deaths;
+                        $data[$country]['total']['r'] = $recovered;
 
                         $data[$country]['daily'][$current_date] = $new_daily_record;
 
