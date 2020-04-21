@@ -94,7 +94,7 @@ thi<template>
                                         <div v-for="(row,key,index) in getUniqueCountriesCompare()" class="bg-hoverslab rounded p-4" v-show="selectedCompareTab == key">
                                             <div class="my-4">
                                                 <div class="w-128 text-4xl font-bold">{{row[1]}}</div>
-                                                <div v-if="getGovtResponse(row[1])" class="text-6xl font-bold">{{getGovtResponse(row[1]).latest.stringencyindex}}</div>
+                                                <div v-if="getGovtResponse(row[1])" class="text-6xl font-bold">{{getGovtResponse(row[1]).latest.si}}</div>
                                                 <div v-else class="text-6xl font-bold">N/A</div>
                                                 <div class="text-lightlabel font-bold tracking-tight">stringency index</div>
                                                 <div class="py-2 text-sm">The stringency index is based on publicly available information on 13 indicators of government response. Nine of the indicators (S1–S7, S12 and S13) take policies such as school closures, travel bans, etc, and are recorded on an ordinal scale; the others (S8–S11) are financial indicators such as fiscal or monetary measures.</div>
@@ -109,12 +109,13 @@ thi<template>
                                                             <div class="font-bold"><span class="uppercase">{{policy.id}}</span> - {{policy.name}}</div>
                                                             <div class="text-lightlabel text-xs">{{policy.description}}</div>
                                                         </div>
-                                                        <div class="p-2 w-full text-xs">
+                                                        <div class="p-2 w-full">
                                                             <div v-if="policy.value > 1000">US${{policy.value | numeralFormat}}</div>
                                                             <div v-else-if="policy.id == 's9'">{{policy.value}}%</div>
-                                                            <div v-else>{{policy.value}}</div>
-                                                            <div class="">{{policy.target}}</div>
-                                                            <div v-if="policy.help.length == 1" class="text-lightlabel">{{policy.help[0]}}</div>
+                                                            <div v-else class="">{{policy.value}}</div>
+                                                            <div class="text-xs">{{policy.target}}</div>
+                                                            <div class="text-xs">since {{policy.since}}</div>
+                                                            <div v-if="policy.help.length == 1" class="text-lightlabel text-xs">{{policy.help[0]}}</div>
                                                         </div>
 
                                                     </div>
@@ -236,26 +237,40 @@ thi<template>
                         var key = response.key[x];
                         var target = '';
                         var value = row.value;
-                        var help = key.values;
+                        if(key && key.values)
+                        {
+                            var help = key.values;
+                        }
+                        else
+                        {
+                            var help = [];
+                            console.log('undefined - cant find it - ' + x);
+                            console.log(response);
+                        }
+
                         if(key.hasTarget)
                         {
-                            if(row.target == 1)
+                            if(row.t == 1)
                             {
-                                target = 'Targeted';
+                                target = 'Scope: Targeted';
                             }
                             else
                             {
-                                target = 'General';
+                                target = 'Scope: General';
                             }
                         }
-                        if(row.value.length == 0)
+                        if(row.v.length == 0)
                         {
                             value = '';
                             target = '';
                         }
                         else if(key.type == 'lookup')
                         {
-                            value = key.values[row.value];
+                            value = key.values[row.v];
+                        }
+                        else
+                        {
+                            value = row.v;
                         }
 
                         data.push({
@@ -264,6 +279,7 @@ thi<template>
                             description: key.description,
                             value: value,
                             target: target,
+                            since: row.s,
                             help: help,
                         })
 
