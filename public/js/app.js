@@ -89312,6 +89312,7 @@ var staticRenderFns = [
       _c(
         "a",
         {
+          staticClass: "underline hover:text-lightslab",
           attrs: {
             href:
               "https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker",
