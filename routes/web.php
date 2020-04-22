@@ -11,6 +11,7 @@ Route::get('/statistics/master', 'StatsController@master');
 Route::get('/statistics/annotations', 'StatsController@annotations');
 Route::get('/statistics/global', 'StatsController@global');
 Route::get('/statistics/worldometer', 'StatsController@harvest_worldometer');
+Route::get('/statistics/wikipedia', 'StatsController@harvest_wikipedia');
 Route::get('/statistics/manual', 'StatsController@manual_override');
 Route::get('/statistics/harvest_oxford', 'StatsController@harvest_oxford');
 Route::get('/statistics/oxford', 'StatsController@oxford');

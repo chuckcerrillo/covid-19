@@ -1711,6 +1711,40 @@ class StatsController extends Controller
         return $data;
     }
 
+    public function harvest_wikipedia()
+    {
+        $data = [];
+        $client = new Client();
+        $crawler = $client->request('GET', 'https://en.m.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_pandemic');
+        $data = $crawler->filter('#thetable tbody tr')->each(function (Crawler $node, $i) {
+            $children = [];
+            $col_headers = $node->filter('th')->each(function(Crawler $column,$i){
+                return $column->text();
+            });
+            $col_body = $node->filter('td')->each(function(Crawler $column,$i){
+                return $column->text();
+            });
+            if(count($col_headers) == 2)
+            {
+                return [
+                'country' => preg_replace('/\[.*?\]/','',$col_headers[1]),
+                'confirmed' => str_replace(',','',$col_body[0]),
+                'deaths' => str_replace(',','',$col_body[1]),
+                'recovered' => str_replace(',','',$col_body[2]),
+                ];
+            }
+        });
+
+        foreach($data AS $index=>$row)
+        {
+            if($row == null)
+            {
+                unset($data[$index]);
+            }
+        }
+        return $data;
+    }
+
     protected function manual_override()
     {
 //        https://docs.google.com/spreadsheets/d/e/2PACX-1vThKLEaifDmgMxx4C1IgjXyRkJFIdr8rM5skPGo3frgrr775w1KWMlmor2a-0yIhuTfdqzwdMm50WX4/pubhtml
