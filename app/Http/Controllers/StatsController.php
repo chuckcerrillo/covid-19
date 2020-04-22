@@ -275,7 +275,7 @@ class StatsController extends Controller
         'UK' => 'United Kingdom',
         'Ukraine' => 'Ukraine',
         'Uruguay' => 'Uruguay',
-        'USA' => 'US',
+        'USA' => 'United States',
         'Uzbekistan' => 'Uzbekistan',
         'Venezuela' => 'Venezuela',
         'Vietnam' => 'Vietnam',
@@ -472,6 +472,193 @@ class StatsController extends Controller
         'Zambia' => 'Zambia',
         'Zimbabwe' => 'Zimbabwe',
     ];
+
+    protected $wikipedia_jh_map = [
+        'Afghanistan' => 'Afghanistan',
+        'Algeria' => 'Algeria',
+        'Albania' => 'Albania',
+        'Argentina' => 'Argentina',
+        'Armenia' => 'Armenia',
+        'Andorra' => 'Andorra',
+        'Angola' => 'Angola',
+        'Antigua & Barbuda' => 'Antigua and Barbuda',
+        'Austria' => 'Austria',
+        'Australia' => 'Australia',
+        'Azerbaijan' => 'Azerbaijan',
+        'Bahrain' => 'Bahrain',
+        'Bangladesh' => 'Bangladesh',
+        'Bahamas' => 'Bahamas',
+        'Barbados' => 'Barbados',
+        'Belarus' => 'Belarus',
+        'Belgium' => 'Belgium',
+        'Belize' => 'Belize',
+        'Benin' => 'Benin',
+        'Bhutan' => 'Bhutan',
+        'Bolivia' => 'Bolivia',
+        'Bosnia & Herzegovina' => 'Bosnia and Herzegovina', // 22
+        'Botswana' => 'Botswana',
+        'Burkina Faso' => 'Burkina Faso',
+        'Myanmar' => 'Burma',
+        'Burundi' => 'Burundi',
+        'Brazil' => 'Brazil',
+        'Brunei' => 'Brunei',
+        'Bulgaria' => 'Bulgaria',
+        'Cape Verde' => 'Cabo Verde', // 30
+        'Cambodia' => 'Cambodia',
+        'Cameroon' => 'Cameroon',
+        'Canada' => 'Canada',
+        'Central African Republic' => 'Central African Republic',
+        'Chad' => 'Chad',
+        'Chile' => 'Chile',
+        'China' => 'China',
+        'Colombia' => 'Colombia',
+        'DR Congo' => 'Congo (Kinshasa)',
+        'Reupblic of the Congo' => 'Congo (Brazzaville)',
+        'Costa Rica' => 'Costa Rica',
+        'Ivory Coast' => 'Cote d\'Ivoire',
+        'Croatia' => 'Croatia',
+        'Cuba' => 'Cuba',
+        'Cyprus' => 'Cyprus',
+        'Czech Republic' => 'Czechia',
+        'Denmark' => 'Denmark',
+        'Diamond Princess' => 'Diamond Princess',
+        'Djibouti' => 'Djibouti',
+        'Dominica' => 'Dominica',
+        'Dominican Republic' => 'Dominican Republic',
+        'Ecuador' => 'Ecuador',
+        'Egypt' => 'Egypt',
+        'El Salvador' => 'El Salvador',
+        'Equatorial Guinea' => 'Equatorial Guinea',
+        'Eritrea' => 'Eritrea',
+        'Estonia' => 'Estonia',
+        'Eswatini' => 'Eswatini',
+        'Ethiopia' => 'Ethiopia',
+        'Fiji' => 'Fiji',
+        'Finland' => 'Finland',
+        'France' => 'France',
+        'Gabon' => 'Gabon',
+        'Gambia' => 'Gambia',
+        'Georgia' => 'Georgia',
+        'Germany' => 'Germany',
+        'Ghana' => 'Ghana',
+        'Greece' => 'Greece',
+        'Grenada' => 'Grenada',
+        'Guatemala' => 'Guatemala',
+        'Guinea' => 'Guinea',
+        'Guinea-Bissau' => 'Guinea-Bissau',
+        'Guyana' => 'Guyana',
+        'Haiti' => 'Haiti',
+        'Honduras' => 'Honduras',
+        'Vatican City' => 'Holy See',
+        'Hungary' => 'Hungary',
+        'Iceland' => 'Iceland',
+        'India' => 'India',
+        'Indonesia' => 'Indonesia',
+        'Iran' => 'Iran',
+        'Iraq' => 'Iraq',
+        'Ireland' => 'Ireland',
+        'Israel' => 'Israel',
+        'Italy' => 'Italy',
+        'Jamaica' => 'Jamaica',
+        'Japan' => 'Japan',
+        'Jordan' => 'Jordan',
+        'Kazakhstan' => 'Kazakhstan',
+        'Kenya' => 'Kenya',
+        'South Korea' => 'South Korea',
+        'Kuwait' => 'Kuwait',
+        'Kyrgyzstan' => 'Kyrgyzstan',
+        'Laos' => 'Laos',
+        'Latvia' => 'Latvia',
+        'Lebanon' => 'Lebanon',
+        'Liberia' => 'Liberia',
+        'Libya' => 'Libya',
+        'Liechtenstein' => 'Liechtenstein',
+        'Lithuania' => 'Lithuania',
+        'Luxembourg' => 'Luxembourg',
+        'Madagascar' => 'Madagascar',
+        'Malawi' => 'Malawi',
+        'Malaysia' => 'Malaysia',
+        'Maldives' => 'Maldives',
+        'Mali' => 'Mali',
+        'Malta' => 'Malta',
+        'Mauritania' => 'Mauritania',
+        'Mauritius' => 'Mauritius',
+        'Mexico' => 'Mexico',
+        'Moldova' => 'Moldova',
+        'Monaco' => 'Monaco',
+        'Mongolia' => 'Mongolia',
+        'Montenegro' => 'Montenegro',
+        'Morocco' => 'Morocco',
+        'Mozambique' => 'Mozambique',
+        'MS Zaandam' => 'MS Zaandam',
+        'Namibia' => 'Namibia',
+        'Nepal' => 'Nepal',
+        'Netherlands' => 'Netherlands',
+        'New Zealand' => 'New Zealand',
+        'Nicaragua' => 'Nicaragua',
+        'Niger' => 'Niger',
+        'Nigeria' => 'Nigeria',
+        'North Macedonia' => 'North Macedonia',
+        'Norway' => 'Norway',
+        'Oman' => 'Oman',
+        'Pakistan' => 'Pakistan',
+        'Panama' => 'Panama',
+        'Papua New Guinea' => 'Papua New Guinea',
+        'Paraguay' => 'Paraguay',
+        'Peru' => 'Peru',
+        'Philippines' => 'Philippines',
+        'Poland' => 'Poland',
+        'Portugal' => 'Portugal',
+        'Qatar' => 'Qatar',
+        'Romania' => 'Romania',
+        'Russia' => 'Russia',
+        'Rwanda' => 'Rwanda',
+        'Saint Kitts & Nevis' => 'Saint Kitts and Nevis',
+        'Saint Lucia' => 'Saint Lucia',
+        'Saint Vincent' => 'Saint Vincent and the Grenadines',
+        'San Marino' => 'San Marino',
+        'São Tomé & Príncipe' => 'Sao Tome and Principe',
+        'Saudi Arabia' => 'Saudi Arabia',
+        'Senegal' => 'Senegal',
+        'Serbia' => 'Serbia',
+        'Seychelles' => 'Seychelles',
+        'Sierra Leone' => 'Sierra Leone',
+        'Singapore' => 'Singapore',
+        'Slovakia' => 'Slovakia',
+        'Slovenia' => 'Slovenia',
+        'Somalia' => 'Somalia',
+        'South Africa' => 'South Africa',
+        'South Sudan' => 'South Sudan',
+        'Spain' => 'Spain',
+        'Sri Lanka' => 'Sri Lanka',
+        'Sudan' => 'Sudan',
+        'Suriname' => 'Suriname',
+        'Sweden' => 'Sweden',
+        'Switzerland' => 'Switzerland',
+        'Syria' => 'Syria',
+        'Taiwan' => 'Taiwan',
+        'Tanzania' => 'Tanzania',
+        'Thailand' => 'Thailand',
+        'East Timor' => 'Timor-Leste',
+        'Togo' => 'Togo',
+        'Trinidad & Tobago' => 'Trinidad and Tobago',
+        'Tunisia' => 'Tunisia',
+        'Turkey' => 'Turkey',
+        'United Arab Emirates' => 'United Arab Emirates',
+        'Uganda' => 'Uganda',
+        'UK' => 'United Kingdom',
+        'Ukraine' => 'Ukraine',
+        'Uruguay' => 'Uruguay',
+        'United States' => 'United States',
+        'Uzbekistan' => 'Uzbekistan',
+        'Venezuela' => 'Venezuela',
+        'Vietnam' => 'Vietnam',
+        'Western Sahara' => 'Western Sahara',
+        'Yemen' => 'Yemen',
+        'Zambia' => 'Zambia',
+        'Zimbabwe' => 'Zimbabwe',
+    ];
+
     public function __construct()
     {
         define('MASTER_LIST','../covid-data/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv');
@@ -942,6 +1129,7 @@ class StatsController extends Controller
     public function master()
     {
         $worldometer_override = $this->harvest_worldometer();
+        $wikipedia_override = $this->harvest_wikipedia();
         $manual_override = $this->manual_override();
 //        $worldometer_override = [];
 //        $manual_override = [];
@@ -1533,6 +1721,139 @@ class StatsController extends Controller
             }
         }
 
+        // Wikipedia
+        foreach($wikipedia_override AS $override)
+        {
+//                array:4 [▼
+//                    "country" => "North America"
+//                    "confirmed" => "696,905"
+//                    "deaths" => "35,276"
+//                    "recovered" => "61,446"
+//                ]
+            $override['confirmed'] = (int) str_replace(',','',$override['confirmed']);
+            $override['deaths'] = (int) str_replace(',','',$override['deaths']);
+            $override['recovered'] = (int) str_replace(',','',$override['recovered']);
+
+            if(isset($this->wikipedia_jh_map[$override['country']]))
+            {
+                $country = $this->wikipedia_jh_map[$override['country']];
+                if(isset($country))
+                {
+                    if (isset($data[$country]))
+                    {
+                        $statename = '(Unspecified)';
+
+                        // Copy last record
+                        $last_daily_record = $data[$country]['daily'][array_key_last($data[$country]['daily'])];
+                        $new_daily_record = $data[$country]['daily'][array_key_last($data[$country]['daily'])];
+
+                        if($override['confirmed'] == 'N/A')
+                        {
+                            $confirmed = $last_daily_record['total']['c'];
+                        }
+                        else
+                        {
+                            if($override['confirmed'] > $last_daily_record['total']['c'])
+                                $confirmed = (int) str_replace(',','',$override['confirmed']);
+                            else
+                                $confirmed = $last_daily_record['total']['c'];
+                        }
+
+                        if($override['deaths'] == 'N/A')
+                        {
+                            $deaths = $last_daily_record['total']['d'];
+                        }
+                        else
+                        {
+                            if($override['deaths'] > $last_daily_record['total']['d'])
+                                $deaths = (int) str_replace(',','',$override['deaths']);
+                            else
+                                $deaths = $last_daily_record['total']['d'];
+                        }
+
+                        if($override['recovered'] == 'N/A')
+                        {
+                            $recovered = $last_daily_record['total']['r'];
+                        }
+                        else
+                        {
+                            if($override['recovered'] > $last_daily_record['total']['r'])
+                                $recovered = (int) str_replace(',','',$override['recovered']);
+                            else
+                                $recovered = $last_daily_record['total']['r'];
+                        }
+
+
+                        $temp_state_data = [
+                            'c' => 0,
+                            'd' => 0,
+                            'r' => 0
+                        ];
+                        foreach($last_daily_record['states'] AS $index=>$state)
+                        {
+
+                            if(!isset($state['name']))
+                            {
+                                $state['name'] = '(Unspecified)';
+                            }
+                            if($state['name'] != '(Unspecified)')
+                            {
+                                $temp_state_data['c'] += intval($state['c']);
+                                $temp_state_data['d'] += intval($state['d']);
+                                $temp_state_data['r'] += intval($state['r']);
+                            }
+
+                        }
+
+                        if(!isset($new_daily_record['states'][$statename]))
+                        {
+                            $new_daily_record['states'][$statename] = [
+                                'name' => $statename,
+                                'lat' => '',
+                                'lng' => '',
+                                'l' => $current_datetime,
+                                'c' => $confirmed - $temp_state_data['c'],
+                                'd' => $deaths - $temp_state_data['d'],
+                                'r' => $recovered - $temp_state_data['r'],
+                            ];
+                        }
+                        else
+                        {
+                            $new_daily_record['states'][$statename]['c'] = $confirmed - $temp_state_data['c'];
+                            $new_daily_record['states'][$statename]['d'] = $deaths - $temp_state_data['d'];
+                            $new_daily_record['states'][$statename]['r'] = $recovered - $temp_state_data['r'];
+                        }
+
+
+                        $new_daily_record['total'] = [
+                            'c' => $confirmed,
+                            'd' => $deaths,
+                            'r' => $recovered
+                        ];
+
+                        $data[$country]['total']['c'] = $confirmed;
+                        $data[$country]['total']['d'] = $deaths;
+                        $data[$country]['total']['r'] = $recovered;
+
+                        $data[$country]['daily'][$current_date] = $new_daily_record;
+
+                        if(!isset($global['daily'][$current_date]))
+                        {
+                            $global['daily'][$current_date] = [
+                                'confirmed' => 0,
+                                'deaths' => 0,
+                                'recovered' => 0,
+                            ];
+                        }
+
+                        $global['daily'][$current_date]['confirmed'] += $confirmed;
+                        $global['daily'][$current_date]['deaths'] += $deaths;
+                        $global['daily'][$current_date]['recovered'] += $recovered;
+                    }
+                }
+            }
+        }
+
 
 
         // Cleanup
@@ -1716,7 +2037,7 @@ class StatsController extends Controller
         $data = [];
         $client = new Client();
         $crawler = $client->request('GET', 'https://en.m.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_pandemic');
-        $data = $crawler->filter('#thetable tbody tr')->each(function (Crawler $node, $i) {
+        $source = $crawler->filter('#thetable tbody tr')->each(function (Crawler $node, $i) {
             $children = [];
             $col_headers = $node->filter('th')->each(function(Crawler $column,$i){
                 return $column->text();
@@ -1735,11 +2056,13 @@ class StatsController extends Controller
             }
         });
 
-        foreach($data AS $index=>$row)
+
+
+        foreach($source AS $index=>$row)
         {
-            if($row == null)
+            if($row != null)
             {
-                unset($data[$index]);
+                $data[] = $row;
             }
         }
         return $data;
