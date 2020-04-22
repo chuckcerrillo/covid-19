@@ -1196,19 +1196,33 @@ class StatsController extends Controller
             else
             {
                 if(isset($data[$row['Country_Region']])) {
-                    $data[$row['Country_Region']]['states'][$row['Province_State']] = [
-                        'uid' => $row['UID'],
-                        'name' => $row['Province_State'],
-                        'lat' => $row['Lat'],
-                        'long' => $row['Long_'],
-                        'population' => $row['Population'],
-                        'total' => [
-                            'l' => '',
-                            'c' => '0',
-                            'd' => '0',
-                            'r' => '0',
-                        ]
-                    ];
+                    if(!isset($data[$row['Country_Region']]['states'][$row['Province_State']]))
+                    {
+                        $data[$row['Country_Region']]['states'][$row['Province_State']] = [
+                            'uid' => $row['UID'],
+                            'name' => $row['Province_State'],
+                            'lat' => $row['Lat'],
+                            'long' => $row['Long_'],
+                            'population' => $row['Population'],
+                            'total' => [
+                                'l' => '',
+                                'c' => '0',
+                                'd' => '0',
+                                'r' => '0',
+                            ]
+                        ];
+                    }
+                    else
+                    {
+                        if($row['Population'] >
+                            $data[$row['Country_Region']]['states'][$row['Province_State']]['population'])
+                        {
+                            $data[$row['Country_Region']]['states'][$row['Province_State']]['population'] = $row['Population'];
+                            $data[$row['Country_Region']]['states'][$row['Province_State']]['lat'] = $row['Lat'];
+                            $data[$row['Country_Region']]['states'][$row['Province_State']]['long'] = $row['Long_'];
+                        }
+
+                    }
                 }
             }
         }
