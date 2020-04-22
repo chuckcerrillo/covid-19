@@ -10,7 +10,7 @@
                     >View full stats</div>
                     <div
                         class="mr-4 mb-4 text-xs px-4 py-2 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab"
-                        @click="remove([data.name.country,data.name.state])"
+                        @click="remove({country:data.name.country,state:data.name.state})"
                     >Remove</div>
                 </div>
             </div>
@@ -39,93 +39,108 @@
                 </div>
                 <div class="text-xs mb-4">As of {{moment(data.total.date).format('YYYY-MM-DD')}}</div>
             </div>
-            <div class="px-2 mx-4 py-2 flex text-xs font-bold justify-between bg-slab-primary rounded-t h-16">
-                <div class="justify-center flex w-full items-end">
-                    <div class="w-24">Date</div>
-                    <div class="w-32">Confirmed</div>
-                    <div class="w-32">Deaths</div>
-                    <div class="w-32">Recovered</div>
-                    <div class="w-32">Active</div>
-                    <div class="w-20">New Cases</div>
-                    <div class="w-20">New Deaths</div>
-                    <div class="w-20">New Recovered</div>
-                    <div class="w-24">Confirmed Per 1,000,000 population</div>
-                    <div class="w-24">5D Ave</div>
-                    <div class="w-16">Growth Factor</div>
+            <div class="mx-4 flex text-xs font-bold justify-between bg-slab-primary rounded-t z-10 relative">
+                <div class="justify-center flex w-full items-end border-b border-lightslab">
+                    <div class="w-24 p-2">Date</div>
+                    <div class="w-24 h-full p-2 border-l border-slab flex items-end">Confirmed</div>
+                    <div class="w-24 p-2">Deaths</div>
+                    <div class="w-24 p-2">Recovered</div>
+                    <div class="w-24 p-2">Active</div>
+                    <div class="w-20 h-full p-2 border-l border-slab flex items-end">New Cases</div>
+                    <div class="w-20 p-2">New Deaths</div>
+                    <div class="w-20 p-2">New Recovered</div>
+                    <div class="w-24 h-full p-2 border-l border-slab flex items-end">Confirmed Per 1M population</div>
+                    <div class="w-24 h-full p-2 border-l border-slab flex items-end">Deaths Per 1M population</div>
+                    <div class="w-24 h-full p-2 border-l border-slab flex items-end">Recovered Per 1M population</div>
+                    <div class="w-24 p-2">5D Ave</div>
+                    <div class="w-16 p-2">Growth Factor</div>
                 </div>
             </div>
         </div>
-        <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0 bg-slab absolute m-4 mt-60 rounded" style="position:absolute">
+        <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0 bg-slab absolute m-4 rounded" style="top: 232px; position:absolute">
             <div
 
                 v-for="(row, key, index) in daily.reverse()"
             >
-                <div v-if="getDayNotes(moment(row['date']).format('YYYY-MM-DD')).length > 0">
-                    <div v-for="annotation in getDayNotes(moment(row['date']).format('YYYY-MM-DD'))"
-                         class="p-1 m-1 text-xs rounded bg-slab-primary flex justify-center"
-                    >
-                        <div class="w-216 flex">
-                            <div v-if="annotation.state.length > 0" class="font-bold mr-2">{{annotation.state}}</div>
-                            <div>
-                                <div>{{annotation.notes}}</div>
-                                <div v-if="annotation.url" class="flex items-center text-lightslab">
-                                    <div class="mr-1">Source:</div>
-                                    <a class="underline hover:text-white truncate ... inline-block w-64" :href="annotation.url">{{annotation.url}}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-2 text-xs"
+                <div class="text-xs"
                                          :class="key % 2 == 1 ? 'bg-slab-primary' : ''">
 
                     <div class="w-full flex justify-center" :class="key == 0 ? 'font-bold' : ''">
-                        <div class="w-24">{{moment(row['date']).format('YYYY-MM-DD')}}</div>
-                        <div class="w-32">
-                            {{ isNaN(row.confirmed) ? 0 : row.confirmed | numeralFormat}}
+                        <div class="w-24 p-2">{{moment(row['date']).format('YYYY-MM-DD')}}</div>
+                        <div class="w-24 p-2 border-l border-lightslab">
+                            {{ isNaN(row.confirmed) ? 0 : row.confirmed | numeralFormat}}<br />
                             <span class="text-red-400" v-if="row.confirmedpc > 0">(+{{row.confirmedpc| numeralFormat('0.0%')}})</span>
                             <span class="text-green-400" v-else>({{row.confirmedpc| numeralFormat('0.0%')}})</span>
                         </div>
-                        <div class="w-32">
-                            {{ isNaN(row.deaths) ? 0 : row.deaths | numeralFormat}}
+                        <div class="w-24 p-2">
+                            {{ isNaN(row.deaths) ? 0 : row.deaths | numeralFormat}}<br />
                             <span class="text-red-400" v-if="row.deathspc > 0">(+{{row.deathspc| numeralFormat('0.0%')}})</span>
                             <span class="text-green-400" v-else>({{row.deathspc| numeralFormat('0.0%')}})</span>
                         </div>
-                        <div class="w-32">
-                            {{ isNaN(row.recovered) ? 0 : row.recovered | numeralFormat}}
+                        <div class="w-24 p-2">
+                            {{ isNaN(row.recovered) ? 0 : row.recovered | numeralFormat}}<br />
                             <span class="text-green-400" v-if="row.recoveredpc > 0">(+{{row.recoveredpc| numeralFormat('0.0%')}})</span>
                             <span class="text-green-400" v-else-if="row.recoveredpc == 0">({{row.recoveredpc| numeralFormat('0.0%')}})</span>
                             <span class="text-red-400" v-else>({{row.recoveredpc| numeralFormat('0.0%')}})</span>
                         </div>
-                        <div class="w-32">
-                            {{ (isNaN(row.active) ? 0 : row.active) | numeralFormat}}
+                        <div class="w-24 p-2">
+                            {{ (isNaN(row.active) ? 0 : row.active) | numeralFormat}}<br />
                             <span class="text-green-400" v-if="row.activeDelta < 0">({{row.activeDelta| numeralFormat}})</span>
                             <span class="text-green-400" v-else-if="row.activeDelta == 0">({{row.activeDelta| numeralFormat}})</span>
                             <span class="text-red-400" v-else>(+{{row.activeDelta| numeralFormat}})</span><br />
-                            <span class="text-blue-400">{{row.activepoppc | numeralFormat('0.00%')}} of total population</span>
+                            <span class="text-blue-400">{{row.activepoppc | numeralFormat('0.000%')}} of total population</span>
                         </div>
-                        <div class="w-20">
+                        <div class="w-20 p-2 border-l border-slab">
                             {{row.deltaConfirmed| numeralFormat}}
                         </div>
-                        <div class="w-20">
+                        <div class="w-20 p-2">
                             {{row.deltaDeaths| numeralFormat}}
                         </div>
-                        <div class="w-20">
+                        <div class="w-20 p-2">
                             {{row.deltaRecovered| numeralFormat}}
                         </div>
-                        <div class="w-24">
+                        <div class="w-24 p-2 border-l border-slab">
                             {{row.confirmedcap | numeralFormat('0,000.00')}}
                         </div>
-                        <div class="w-24">
+                        <div class="w-24 p-2 border-l border-slab">
+                            {{row.deathscap | numeralFormat('0,000.00')}}
+                        </div>
+                        <div class="w-24 p-2 border-l border-slab">
+                            {{row.recoveredcap | numeralFormat('0,000.00')}}
+                        </div>
+                        <div class="w-24 p-2">
                             {{row.average | numeralFormat('0,000.0')}}
                         </div>
-                        <div class="w-16">
+                        <div class="w-16 p-2">
                             <span class="text-red-400" v-if="row.growthFactor > 1">{{row.growthFactor}}</span>
                             <span class="text-green-400" v-else>{{row.growthFactor}}</span>
                         </div>
                     </div>
                     <div v-if="key==0" class="w-full text-lightlabel flex justify-center">
-                        * today's numbers are still processing and can still change throughout the day
+                        <div class="w-24 p-2"></div>
+                        <div class="w-268 p-2 border-l border-lightslab">
+                            * today's numbers are still processing and can still change throughout the day
+                        </div>
+                    </div>
+                </div>
+                <div v-if="row.date.length > 0">
+                    <div v-for="annotation in getDayNotes(row.date)"
+                         class="text-xs rounded flex justify-center"
+                         :class="key % 2 == 1 ? 'bg-slab-primary' : ''"
+                    >
+                        <div class="w-24 p-2 pt-0"></div>
+                        <div class="w-268 p-2 pt-0 border-l border-lightslab">
+                            <div class="flex rounded bg-hoverslab p-2">
+                                <div v-if="annotation.state.length > 0" class="font-bold mr-2">{{annotation.state}}</div>
+                                <div>
+                                    <div>{{annotation.notes}}</div>
+                                    <div v-if="annotation.url" class="flex items-center text-orangeslab">
+                                        <div class="mr-1">Source:</div>
+                                        <a class="underline hover:text-white truncate ... inline-block w-128" :href="annotation.url">{{annotation.url}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -178,7 +193,7 @@
                 this.expanded = !this.expanded;
             },
             remove(item){
-                this.$emit('remove',item);
+                this.$emit('removeCompare',item);
             },
             recomputeGrowth()
             {
@@ -239,7 +254,14 @@
                     {
                         data.push(this.data.annotations[x]);
                     }
-                    else if(this.data.annotations[x].state && this.data.name.state == this.data.annotations[x].state)
+                    else if(this.data.annotations[x].state && this.data.name.state.length > 0)
+                    {
+                        if(this.data.name.state == this.data.annotations[x].state)
+                        {
+                            data.push(this.data.annotations[x]);
+                        }
+                    }
+                    else
                     {
                         data.push(this.data.annotations[x]);
                     }
@@ -270,9 +292,11 @@
                         deaths: row.deaths,
                         deltaDeaths: this.recomputed.delta[x].deaths,
                         deathspc: this.recomputed.delta[x].deathspc,
+                        deathscap: this.recomputed.delta[x].deathscap,
                         recovered: row.recovered,
                         deltaRecovered: this.recomputed.delta[x].recovered,
                         recoveredpc: this.recomputed.delta[x].recoveredpc,
+                        recoveredcap: this.recomputed.delta[x].recoveredcap,
                         growth: this.recomputed.growth[x],
                         average: this.recomputed.average[x],
                         growthFactor: this.recomputed.growthFactor[x],

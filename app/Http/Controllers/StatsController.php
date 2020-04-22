@@ -1375,6 +1375,25 @@ class StatsController extends Controller
         }
 
 
+        // Recompute state total
+        foreach($data AS $country => $country_row)
+        {
+            if(count($country_row['states']) > 1)
+            {
+                $last_daily_record = $country_row['daily'][array_key_last($country_row['daily'])];
+                foreach($country_row['states'] AS $state => $state_row)
+                {
+                    if(isset($last_daily_record['states'][$state]['c']))
+                        $data[$country]['states'][$state]['total']['c'] = $last_daily_record['states'][$state]['c'];
+                    if(isset($last_daily_record['states'][$state]['d']))
+                        $data[$country]['states'][$state]['total']['d'] = $last_daily_record['states'][$state]['d'];
+                    if(isset($last_daily_record['states'][$state]['r']))
+                        $data[$country]['states'][$state]['total']['r'] = $last_daily_record['states'][$state]['r'];
+                }
+            }
+        }
+
+
         $update_date = $current_date;
         $current_date = $current_date->format('Y-m-d');
 

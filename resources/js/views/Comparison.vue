@@ -27,7 +27,7 @@ thi<template>
 <!--                    </div>-->
                     <div class="overflow-hidden bg-slab rounded m-4 flex flex-col items-start h-full p-4 relative">
                         <div class="">
-                            <div class="tracking-tight font-bold">Countries and states <br>({{countries.length}} total)</div>
+                            <div class="tracking-tight font-bold">Countries and states <br>({{countries().length}} total)</div>
                             <div class="text-xs text-right">Sorting by {{sort_stats.key}} {{sort_stats.order}}</div>
                             <div class="flex font-bold py-2 text-xs items-center">
                                 <div class="w-4 p-2 m-1 ml-0"></div>
@@ -57,7 +57,7 @@ thi<template>
                 <div class="m-4 ml-0 w-full overflow-hidden relative">
                     <div class="bg-slab rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col p-4">
                         <div class="absolute top-0 right-0 left-0 h-28 p-4">
-                            <div class="text-2xl font-bold mb-2">Compare statistics</div>
+                            <div @click="preload()" class="text-2xl font-bold mb-2">Compare statistics</div>
                             <div class="text-sm font-bold flex items-center">
                                 <!--                                <div @click="ui.content.selectedTab = 'summary'" class="cursor-pointer text-lightslab mr-2 py-2 px-4 pl-0 border-b-4 hover:text-heading" :class="ui.content.selectedTab == 'summary' ? 'border-hoverslab text-heading' : 'border-slab'">Summary</div>-->
                                 <!--                                <div @click="ui.content.selectedTab = 'timeline'" class="cursor-pointer text-lightslab mr-2 py-2 px-4 pl-0 border-b-4 hover:text-heading" :class="ui.content.selectedTab == 'timeline' ? 'border-hoverslab text-heading' : 'border-slab'">Timeline</div>-->
@@ -68,16 +68,16 @@ thi<template>
                         </div>
                         <div class="absolute top-0 right-0 bottom-0 left-0 mt-28 p-4">
                             <div v-if="view != 'charts'" class="text-xs flex items-center justify-start absolute top-0 mt-4">
-                                <div v-for="(country,key,index) in compare">
-                                    <div @click="selectedCompareTab = key" class="w-48 cursor-pointer relative rounded rounded-b-none py-2 px-4 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'">
-                                        {{compare.length > 0 && country[2] ? country[2] + ' - ' : ''}}
-                                        {{compare.length > 0 ? country[1] : '(none)'}}
-                                        <div @click="removeCompare([country[1],country[2]])" class="text-lightlabel text-xs absolute top-0 right-0 m-2 px-2 pb-1 rounded hover:text-heading hover:bg-lightlabel">x</div>
+                                <div v-for="(row,key,index) in compare">
+                                    <div @click="updateSelected(key)" class="w-48 cursor-pointer relative rounded rounded-b-none py-2 px-4 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'">
+                                        {{getCompareLength() > 0 && row.state ? row.state + ' - ' : ''}}
+                                        {{getCompareLength() > 0 ? row.country : '(none)'}}
+                                        <div v-on:click.stop="removeCompare({country: row.country,state: row.state})" class="text-lightlabel text-xs absolute top-0 right-0 m-2 px-2 pb-1 rounded hover:text-heading hover:bg-lightlabel">x</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="h-full relative mt-8" v-show="view == 'response'">
-                                <div v-if="compare.length == 0">
+                                <div v-if="getCompareLength() == 0">
                                     <h1 class="text-3xl font-bold">Government Response Tracker</h1>
                                     <div>
                                         <p>These data are based on the <a class="text-orangeslab hover:text-blue-400 hover:underline" target="_blank" href="https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker">Coronavirus Government Response Tracker</a> by the University of Oxford.</p>
@@ -91,10 +91,10 @@ thi<template>
                                 </div>
                                 <div v-else class="absolute top-0 left-0 right-0 bottom-0 rounded bg-hoverslab" style="bottom: 32px;">
                                     <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0 m-4" style="position:absolute">
-                                        <div v-for="(row,key,index) in getUniqueCountriesCompare()" class="bg-hoverslab rounded p-4" v-show="selectedCompareTab == key">
+                                        <div v-for="(row,key,index) in getUniqueCountriesCompare()" class="bg-hoverslab rounded p-4" v-show="selectedCompareTab == row.country+'false'">
                                             <div class="my-4">
-                                                <div class="w-128 text-4xl font-bold">{{row[1]}}</div>
-                                                <div v-if="getGovtResponse(row[1])" class="text-6xl font-bold">{{getGovtResponse(row[1]).latest.si}}</div>
+                                                <div class="w-128 text-4xl font-bold">{{row.country}}</div>
+                                                <div v-if="getGovtResponse(row.country)" class="text-6xl font-bold">{{getGovtResponse(row.country).latest.si}}</div>
                                                 <div v-else class="text-6xl font-bold">N/A</div>
                                                 <div class="text-lightlabel font-bold tracking-tight">stringency index</div>
                                                 <div class="py-2 text-sm">The stringency index is based on publicly available information on 13 indicators of government response. Nine of the indicators (S1–S7, S12 and S13) take policies such as school closures, travel bans, etc, and are recorded on an ordinal scale; the others (S8–S11) are financial indicators such as fiscal or monetary measures.</div>
@@ -102,7 +102,7 @@ thi<template>
                                                 <div class="py-2 text-sm">A higher position in the Stringency Index does not necessarily mean that a country's response is ‘better’ than others lower on the index.</div>
                                             </div>
                                             <div class="flex flex-wrap">
-                                                <div v-if="getGovtResponse(row[1])" v-for="(policy,key,index) in getLatestGovtResponse(row[1])"
+                                                <div v-if="getGovtResponse(row.country)" v-for="(policy,key,index) in getLatestGovtResponse(row.country)"
                                                      class="py-1 w-1/3">
                                                     <div class="flex items-start justify-start rounded bg-slab-primary mr-4 h-32">
                                                         <div class="w-72 h-full p-2 pb-4">
@@ -128,22 +128,22 @@ thi<template>
                             </div>
                             <!--                                <div class="" v-show="ui.content.selectedTab == 'timeline'">Timeline</div>-->
                             <div class="h-full relative mt-8" v-show="view == 'daily'">
-                                <div v-if="compare.length == 0">
-                                    Select a country or state to begin comparing.
+                                <div v-if="getCompareLength() == 0">
+                                    Select up to {{options.compare_limit}} countries or states to begin comparing.
                                 </div>
                                 <div v-else class="absolute top-0 right-0 bottom-0 left-0 bg-hoverslab rounded" style="bottom: 32px;">
-                                    <div v-if="compare.length > 0" v-for="(row,key,index) in compare" class="">
+                                    <div v-if="getCompareLength() > 0" v-for="(row,key,index) in compare" class="">
                                         <div class="h-full" :class="selectedCompareTab != key ? 'hidden' : ''">
                                             <Daily
-                                                v-on:remove="removeCompare"
-                                                :data="getComparisonData()[key]"
+                                                v-on:removeCompare="removeCompare"
+                                                :data="getComparisonData()[index]"
                                             />
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="h-full relative flex flex-1 pt-8" v-show="view == 'charts'">
-                                <StatsChart :data="comparisonDataset" :full="true" />
+                                <StatsChart :data="getComparisonData()" :full="true" />
                             </div>
                         </div>
                     </div>
@@ -197,10 +197,8 @@ thi<template>
                 'options' : {
                     'compare_limit' : 5,
                 },
-                'compare' : [],
                 'comparison' : [],
 
-                'selectedCompareTab' : 0,
                 'show_countries': true,
                 'ui' : {
                     'content' : {
@@ -216,9 +214,9 @@ thi<template>
                     data = [];
                 for(var x in this.compare)
                 {
-                    if(countries.indexOf(this.compare[x][1]) === -1)
+                    if(countries.indexOf(this.compare[x].country) === -1)
                     {
-                        countries.push(this.compare[x][1]);
+                        countries.push(this.compare[x].country);
                         data.push(this.compare[x]);
                     }
                 }
@@ -300,7 +298,6 @@ thi<template>
                             latest: this.database.raw.raw_oxford.latest[country],
                             daily: this.database.raw.raw_oxford.daily[country],
                         }
-                        return data;
                     }
                 }
                 return false;
@@ -366,6 +363,15 @@ thi<template>
                 }
                 return false;
             },
+            preload()
+            {
+                for(var x in this.database.raw.raw_countries)
+                {
+                    var country = x;
+                    var state = false;
+                    this.assembleDataset([this.getCountryId(country), country, state]);
+                }
+            },
             assembleDataset(source,daily,name)
             {
                 // Check if this source has already been processed
@@ -381,24 +387,25 @@ thi<template>
                 var population = 0,
                     lat, long;
 
-                if(this.database.raw.raw_countries && this.database.raw.raw_countries[source[1]])
+                if(this.database.raw.raw_countries && this.database.raw.raw_countries[source.country])
                 {
-                    if(source[2])
+                    if(source.state)
                     {
-                        if(this.database.raw.raw_countries[source[1]]['states'][source[2]])
+                        if(this.database.raw.raw_countries[source.country]['states'][source.state])
                         {
-                            lat = this.database.raw.raw_countries[source[1]]['states'][source[2]].lat;
-                            long = this.database.raw.raw_countries[source[1]]['states'][source[2]].long;
-                            population = this.database.raw.raw_countries[source[1]]['states'][source[2]].population;
+                            lat = this.database.raw.raw_countries[source.country]['states'][source.state].lat;
+                            long = this.database.raw.raw_countries[source.country]['states'][source.state].long;
+                            population = this.database.raw.raw_countries[source.country]['states'][source.state].population;
                         }
                     }
                     else
                     {
-                        lat = this.database.raw.raw_countries[source[1]].lat;
-                        long = this.database.raw.raw_countries[source[1]].long;
-                        population = this.database.raw.raw_countries[source[1]].population;
+                        lat = this.database.raw.raw_countries[source.country].lat;
+                        long = this.database.raw.raw_countries[source.country].long;
+                        population = this.database.raw.raw_countries[source.country].population;
                     }
                 }
+
 
                 row = {
                     name: name ? name : this.getCompareName(source),
@@ -425,7 +432,6 @@ thi<template>
                         count++;
                         continue;
                     }
-                    console.log(population);
 
                     row.delta[y] = {
                         date: row.daily[y].date,
@@ -434,11 +440,13 @@ thi<template>
                         confirmedcap: parseInt(row.daily[y].confirmed) / population * 1000000,
                         deaths: parseInt(row.daily[y].deaths) - parseInt(previous.deaths),
                         deathspc: (parseInt(row.daily[y].deaths) - parseInt(previous.deaths)) / parseInt(previous.deaths),
+                        deathscap: parseInt(row.daily[y].deaths) / population * 1000000,
                         recovered: parseInt(row.daily[y].recovered) - parseInt(previous.recovered),
                         recoveredpc: (parseInt(row.daily[y].recovered) - parseInt(previous.recovered)) / parseInt(previous.recovered),
+                        recoveredcap: parseInt(row.daily[y].recovered) / population * 1000000,
                         active: parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered),
                         activeDelta: (parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered)) - (parseInt(previous.confirmed) - parseInt(previous.deaths) - parseInt(previous.recovered)),
-                        activepoppc: (parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered)) / population,
+                        activepoppc: (parseInt(row.daily[y].confirmed) - (isNaN(row.daily[y].deaths) ? 0 : parseInt(row.daily[y].deaths)) - (isNaN(row.daily[y].recovered) ? 0 : parseInt(row.daily[y].recovered))) / population,
                     }
                     previous = row.daily[y];
                     count++;
@@ -484,16 +492,16 @@ thi<template>
                     row.growthFactor.push(gf);
                 }
 
-                if(this.raw_annotations)
+                if(this.database.raw.raw_annotations)
                 {
-                    if (this.raw_annotations['All'] && this.raw_annotations['All'].length > 0)
+                    if (this.database.raw.raw_annotations['All'] && this.database.raw.raw_annotations['All'].length > 0)
                     {
-                        row.annotations = row.annotations.concat(this.raw_annotations['All']);
+                        row.annotations = row.annotations.concat(this.database.raw.raw_annotations['All']);
                     }
 
-                    if (this.raw_annotations[row.name.country])
+                    if (this.database.raw.raw_annotations[row.name.country])
                     {
-                        row.annotations = row.annotations.concat(this.raw_annotations[row.name.country]);
+                        row.annotations = row.annotations.concat(this.database.raw.raw_annotations[row.name.country]);
                     }
                 }
                 var compareName = this.getCompareName(source).full;
@@ -505,10 +513,10 @@ thi<template>
                 var data = [],
                     row = [];
 
-                if(this.database.processed.compare.length > 0)
-                {
 
-                    for(var x in this.database.processed.compare)
+                for(var x in this.database.processed.compare)
+                {
+                    if(this.database.processed.compare[x])
                     {
                         row = this.assembleDataset(this.database.processed.compare[x])
                         data.push(row);
@@ -539,9 +547,10 @@ thi<template>
                 var found = false;
                 for(var x in this.compare)
                 {
-                    if(this.compare[x][1] == item[0])
+                    if(this.compare[x].country == item.country)
                     {
-                        if(this.compare[x][2] == item[1])
+
+                        if(this.compare[x].state == item.state)
                         {
                             found = x;
                             break;
@@ -555,15 +564,21 @@ thi<template>
                 var found = this.findCompare(item);
                 if(found)
                 {
-                    this.compare.splice(found, 1);
+                    var key = item.country + item.state;
+                    delete this.compare[found];
+                    if(key == this.selectedCompareTab)
+                    {
+                        this.updateSelected(this.getLastCompareItem());
+                    }
                 }
+
                 this.$emit('updateCompare',this.compare);
             },
             getDaily(compare)
             {
-                if(compare && compare[0])
+                if(compare && compare.country)
                 {
-                    if(!compare[2])
+                    if(!compare.state)
                     {
                         return this.getCountryDaily(compare);
                     }
@@ -576,8 +591,8 @@ thi<template>
             },
             getStateDaily(item)
             {
-                var country = this.stats[item[0]].name,
-                    state = item[2],
+                var country = item.country,
+                    state = item.state,
                     data = [];
 
                 if(this.states[country])
@@ -604,16 +619,15 @@ thi<template>
                 return data;
             },
             getCountryDaily(item){
-                var country = item[0],
+                var country = item.country,
                     data = [],
                     empty = true;
-
-                if(this.stats[country].daily)
+                if(this.raw_countries[country].daily)
                 {
-                    for(var x in this.stats[country].daily)
+                    for(var x in this.raw_countries[country].daily)
                     {
 
-                        var row = this.stats[country].daily[x];
+                        var row = this.raw_countries[country].daily[x];
                         if(empty && row.total.c == 0)
                         {
                             continue;
@@ -641,16 +655,16 @@ thi<template>
             },
             getCompareName(item)
             {
-                if(item && item[0])
+                if(item && item.country)
                 {
-                    var country = item[1];
-                    if(item[2])
+                    var country = item.country;
+                    if(item.state)
                     {
                         return {
-                            full: item[2] + ' - ' + country,
+                            full: item.state + ' - ' + country,
                             country: country,
-                            state: item[2],
-                            country_id: item[0],
+                            state: item.state,
+                            country_id: false,
                         };
                     }
                     else
@@ -659,51 +673,106 @@ thi<template>
                             full: country,
                             country: country,
                             state: '',
-                            country_id: item[0],
+                            country_id: false,
                         }
                     }
                 }
                 return '';
             },
-            selectCountry(country,state,key){
+            getFirstCompareItem()
+            {
+                for (var x in this.compare)
+                {
+                    if(this.compare[x])
+                        return x;
+                }
+                return false;
+            },
+            getLastCompareItem()
+            {
+                var last = false;
+                var compare = _.cloneDeep(this.compare);
+                for (var x in compare)
+                {
+                    if(compare[x])
+                        last = x;
+                }
+                return last;
+            },
+            getCompareLength()
+            {
+                var count = 0;
+                for(var x in this.compare)
+                {
+                    if(this.compare[x])
+                        count++;
+                }
+
+                return count;
+            },
+            selectCountry(country,state){
                 if (!key)
                 {
                     var key = this.getCountryId(country);
                 }
                 var key = this.getCountryId(country);
 
-                var find = this.findCompare([country,state]);
+                var find = this.findCompare({country: country,state: state});
                 if(find !== false)
                 {
-                    this.compare.splice(find,1);
+                    // Remove from queue
+                    this.removeCompare({country:country,state:state});
                 }
                 else
                 {
-                    if(this.compare.length >= this.options.compare_limit)
+                    // Trim current queue
+                    if(this.getCompareLength() >= this.options.compare_limit)
                     {
-                        this.compare.shift();
+                        this.removeCompare(this.compare[this.getFirstCompareItem()]);
                     }
-                    if(this.compare.length < this.options.compare_limit)
-                    {
-                        this.compare.push([key,country,state]);
-                    }
-                }
-                if (this.compare.length > 0)
-                {
-                    this.selectedCompareTab = this.compare.length - 1;
-                }
-                else
-                {
-                    this.selectedCompareTab = 0;
-                }
 
+                    // Add new item
+                    if(this.getCompareLength() < this.options.compare_limit)
+                    {
+                        this.compare[country+state] = {country: country, state: state};
+                    }
+
+                    this.updateSelected(this.getLastCompareItem());
+                }
                 this.$emit('updateCompare',this.compare);
             },
             isSelected(key){
                 return false;
+            },
+            countries(){
+                var data = [];
+
+                for(var x in this.raw_countries)
+                {
+                    var row = this.raw_countries[x];
+                    data.push(row);
+                }
+                return data;
+            },
+            updateSelected(key)
+            {
+                this.$emit('updateSelected',key);
             }
         },
         computed: {
+            selectedCompareTab()
+            {
+                return this.database.processed.selectedCompareTab;
+            },
+            compare: {
+                get: function(){
+                    return this.database.processed.compare;
+                },
+                set: function(value)
+                {
+                    return value;
+                }
+            },
             view()
             {
                 if(this.$route.name == 'comparisonDaily')
@@ -752,20 +821,14 @@ thi<template>
             {
                 return this.database.raw.raw_stats;
             },
-            countries(){
-                var data = [];
-
-                for(var x in this.raw_countries)
-                {
-                    var row = this.raw_countries[x];
-                    data.push(row);
-                }
-                return data;
+            compareLength()
+            {
+                return this.compareLength();
             },
             countries_sorted()
             {
                 var sort = this.sort_stats;
-                var data = _.cloneDeep(this.countries);
+                var data = _.cloneDeep(this.countries());
                 return data.sort(function (a, b) {
                     if (sort.key == 'country')
                     {
@@ -814,99 +877,6 @@ thi<template>
             {
                 return this.raw_state_data;
             },
-            sorted_stats()
-            {
-                var sort = this.sort_stats;
-                var data = _.cloneDeep(this.countries);
-                return data.sort(function (a, b) {
-                    if (sort.key == 'country')
-                    {
-                        if (sort.order == 'asc')
-                            return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;
-                        else
-                            return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
-                    }
-
-                    else if (sort.key == 'confirmed') {
-                        if (sort.order == 'desc')
-                            return a.total.c < b.total.c ? 1 : -1;
-                        else
-                            return a.total.c > b.total.c ? 1 : -1;
-                    }
-
-                    else if (sort.key == 'deaths') {
-                        if (sort.order == 'desc')
-                            return a.total.d < b.total.d ? 1 : -1;
-                        else
-                            return a.total.d > b.total.d ? 1 : -1;
-                    }
-
-                    else if (sort.key == 'recovered') {
-                        if (sort.order == 'desc')
-                            return a.total.r < b.total.r ? 1 : -1;
-                        else
-                            return a.total.r > b.total.r ? 1 : -1;
-                    }
-                });
-
-            },
-            daily()
-            {
-                if(this.database.processed.compare.length > 1)
-                    return this.comparisonDataset;
-                else
-                    return [];
-            },
-            comparisonDataset()
-            {
-                return this.getComparisonData();
-            },
-            global(){
-                var data = {},
-                    last_update = '';
-
-                data = _.cloneDeep(this.raw_global);
-                for(var x in this.countries)
-                {
-                    if(last_update.length === 0 || moment(this.countries[x].total.l).format('YYYY-MM-DD') > last_update)
-                    {
-                        data.last_update = moment(this.countries[x].total.l).format('YYYY-MM-DD HH:mm:ss');
-                        last_update = moment(this.countries[x].total.l).format('YYYY-MM-DD');
-                    }
-
-                }
-                data.name = {
-                    full: 'Global',
-                    country: 'Global',
-                    state: false
-                }
-
-                if(data.total)
-                {
-                    data.total.active = data.total.confirmed - data.total.deaths - data.total.recovered;
-                }
-                return data;
-            },
-            globalDataset()
-            {
-                var data = [],
-                    daily = [];
-
-                for(var x in this.global.daily)
-                {
-                    var row = this.global.daily[x];
-                    daily.push({
-                        'date' : x,
-                        'confirmed' : row.confirmed,
-                        'deaths' : row.deaths,
-                        'recovered' : row.recovered
-                    });
-                }
-
-
-                data.push(this.assembleDataset(this.global,daily,this.global.name));
-                return data;
-            }
         }
     }
 </script>

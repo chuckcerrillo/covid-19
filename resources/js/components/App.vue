@@ -13,6 +13,7 @@
         />
         <router-view
             v-on:updateCompare="updateCompare"
+            v-on:updateSelected="updateSelected"
             v-on:saveProcessedData="saveProcessedData"
             :mode="mode" :key="$route.fullPath" class="fixed top-0 left-0 right-0 bottom-0 xl:mt-14" :loading="database.loading" :database="database"></router-view>
     </div>
@@ -40,10 +41,12 @@
                     processed: {
                         'global' : {},
                         'countries': {},
-                        'compare' : [],
+                        'compare' : {},
                         'dataset' : {},
                         'oxford' : {},
                         'annotations' : {},
+                        'country_ids': {},
+                        'selectedCompareTab' : '',
                     },
                     loading: {
                         'countries' : false,
@@ -73,6 +76,14 @@
             axios.get('/api/stats/countries')
                 .then(res => {
                     this.database.raw.raw_countries = res.data;
+                    // for(var x in res.data)
+                    // {
+                    //     this.processed.country_ids[res.data[x].name] = x;
+                    // }
+                    //
+                    // console.log('country ids');
+                    // console.log('this.processed.country_ids');
+
                     this.database.loading.countries = true;
                 })
                 .catch(error => {
@@ -117,9 +128,18 @@
             {
                 this.mode = mode;
             },
+            updateSelected(key)
+            {
+                this.database.processed.selectedCompareTab = key;
+            },
             updateCompare(compare)
             {
-                this.database.processed.compare = compare;
+                var data = {};
+                for(var x in compare)
+                {
+                    data[x] = compare[x];
+                }
+                this.database.processed.compare = data;
             },
             saveProcessedData(row,name)
             {
@@ -140,6 +160,10 @@
             {
                 return this.database.processed.countries;
             },
+            datasets()
+            {
+                return this.database.processed.dataset;
+            }
         },
         watch: {
             $route(to,from) {

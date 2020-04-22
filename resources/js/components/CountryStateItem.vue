@@ -48,21 +48,18 @@
         methods: {
             isSelected(country,state)
             {
-                if(this.compare && this.compare.length > 0)
+                for(var x in this.compare)
                 {
-                    for(var x in this.compare)
+                    var item = this.compare[x];
+                    if(country == item.country)
                     {
-                        var item = this.compare[x];
-                        if(country == item[1])
+                        if (state == false)
                         {
-                            if (state == false)
-                            {
-                                return true;
-                            }
-                            else if (state == item[2])
-                            {
-                                return true;
-                            }
+                            return true;
+                        }
+                        else if (state == item.state)
+                        {
+                            return true;
                         }
                     }
                 }

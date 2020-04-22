@@ -1930,6 +1930,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1950,10 +1951,12 @@ __webpack_require__.r(__webpack_exports__);
         processed: {
           'global': {},
           'countries': {},
-          'compare': [],
+          'compare': {},
           'dataset': {},
           'oxford': {},
-          'annotations': {}
+          'annotations': {},
+          'country_ids': {},
+          'selectedCompareTab': ''
         },
         loading: {
           'countries': false,
@@ -1977,7 +1980,14 @@ __webpack_require__.r(__webpack_exports__);
       _this.database.loading.global = true;
     })["catch"](function (error) {});
     axios.get('/api/stats/countries').then(function (res) {
-      _this.database.raw.raw_countries = res.data;
+      _this.database.raw.raw_countries = res.data; // for(var x in res.data)
+      // {
+      //     this.processed.country_ids[res.data[x].name] = x;
+      // }
+      //
+      // console.log('country ids');
+      // console.log('this.processed.country_ids');
+
       _this.database.loading.countries = true;
     })["catch"](function (error) {});
     axios.get('/api/stats/states').then(function (res) {
@@ -2001,8 +2011,17 @@ __webpack_require__.r(__webpack_exports__);
     setMode: function setMode(mode) {
       this.mode = mode;
     },
+    updateSelected: function updateSelected(key) {
+      this.database.processed.selectedCompareTab = key;
+    },
     updateCompare: function updateCompare(compare) {
-      this.database.processed.compare = compare;
+      var data = {};
+
+      for (var x in compare) {
+        data[x] = compare[x];
+      }
+
+      this.database.processed.compare = data;
     },
     saveProcessedData: function saveProcessedData(row, name) {
       this.database.processed.dataset[name] = row;
@@ -2017,6 +2036,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     countries: function countries() {
       return this.database.processed.countries;
+    },
+    datasets: function datasets() {
+      return this.database.processed.dataset;
     }
   },
   watch: {
@@ -2830,16 +2852,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     isSelected: function isSelected(country, state) {
-      if (this.compare && this.compare.length > 0) {
-        for (var x in this.compare) {
-          var item = this.compare[x];
+      for (var x in this.compare) {
+        var item = this.compare[x];
 
-          if (country == item[1]) {
-            if (state == false) {
-              return true;
-            } else if (state == item[2]) {
-              return true;
-            }
+        if (country == item.country) {
+          if (state == false) {
+            return true;
+          } else if (state == item.state) {
+            return true;
           }
         }
       }
@@ -2870,6 +2890,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var simplebar_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! simplebar-vue */ "./node_modules/simplebar-vue/dist/simplebar-vue.esm.js");
 /* harmony import */ var _FullCountry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FullCountry */ "./resources/js/components/FullCountry.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3044,7 +3079,7 @@ __webpack_require__.r(__webpack_exports__);
       this.expanded = !this.expanded;
     },
     remove: function remove(item) {
-      this.$emit('remove', item);
+      this.$emit('removeCompare', item);
     },
     recomputeGrowth: function recomputeGrowth() {
       var arrAvg = function arrAvg(arr) {
@@ -3098,7 +3133,11 @@ __webpack_require__.r(__webpack_exports__);
       for (var x in this.data.annotations) {
         if (this.data.annotations[x].country == 'All') {
           data.push(this.data.annotations[x]);
-        } else if (this.data.annotations[x].state && this.data.name.state == this.data.annotations[x].state) {
+        } else if (this.data.annotations[x].state && this.data.name.state.length > 0) {
+          if (this.data.name.state == this.data.annotations[x].state) {
+            data.push(this.data.annotations[x]);
+          }
+        } else {
           data.push(this.data.annotations[x]);
         }
       }
@@ -3127,9 +3166,11 @@ __webpack_require__.r(__webpack_exports__);
           deaths: row.deaths,
           deltaDeaths: this.recomputed.delta[x].deaths,
           deathspc: this.recomputed.delta[x].deathspc,
+          deathscap: this.recomputed.delta[x].deathscap,
           recovered: row.recovered,
           deltaRecovered: this.recomputed.delta[x].recovered,
           recoveredpc: this.recomputed.delta[x].recoveredpc,
+          recoveredcap: this.recomputed.delta[x].recoveredcap,
           growth: this.recomputed.growth[x],
           average: this.recomputed.average[x],
           growthFactor: this.recomputed.growthFactor[x]
@@ -4955,9 +4996,7 @@ __webpack_require__.r(__webpack_exports__);
       'options': {
         'compare_limit': 5
       },
-      'compare': [],
       'comparison': [],
-      'selectedCompareTab': 0,
       'show_countries': true,
       'ui': {
         'content': {
@@ -4972,8 +5011,8 @@ __webpack_require__.r(__webpack_exports__);
           data = [];
 
       for (var x in this.compare) {
-        if (countries.indexOf(this.compare[x][1]) === -1) {
-          countries.push(this.compare[x][1]);
+        if (countries.indexOf(this.compare[x].country) === -1) {
+          countries.push(this.compare[x].country);
           data.push(this.compare[x]);
         }
       }
@@ -5039,7 +5078,6 @@ __webpack_require__.r(__webpack_exports__);
             latest: this.database.raw.raw_oxford.latest[country],
             daily: this.database.raw.raw_oxford.daily[country]
           };
-          return data;
         }
       }
 
@@ -5091,6 +5129,13 @@ __webpack_require__.r(__webpack_exports__);
 
       return false;
     },
+    preload: function preload() {
+      for (var x in this.database.raw.raw_countries) {
+        var country = x;
+        var state = false;
+        this.assembleDataset([this.getCountryId(country), country, state]);
+      }
+    },
     assembleDataset: function assembleDataset(source, daily, name) {
       // Check if this source has already been processed
       var row = this.getProcessedData(source);
@@ -5110,17 +5155,17 @@ __webpack_require__.r(__webpack_exports__);
           lat,
           _long;
 
-      if (this.database.raw.raw_countries && this.database.raw.raw_countries[source[1]]) {
-        if (source[2]) {
-          if (this.database.raw.raw_countries[source[1]]['states'][source[2]]) {
-            lat = this.database.raw.raw_countries[source[1]]['states'][source[2]].lat;
-            _long = this.database.raw.raw_countries[source[1]]['states'][source[2]]["long"];
-            population = this.database.raw.raw_countries[source[1]]['states'][source[2]].population;
+      if (this.database.raw.raw_countries && this.database.raw.raw_countries[source.country]) {
+        if (source.state) {
+          if (this.database.raw.raw_countries[source.country]['states'][source.state]) {
+            lat = this.database.raw.raw_countries[source.country]['states'][source.state].lat;
+            _long = this.database.raw.raw_countries[source.country]['states'][source.state]["long"];
+            population = this.database.raw.raw_countries[source.country]['states'][source.state].population;
           }
         } else {
-          lat = this.database.raw.raw_countries[source[1]].lat;
-          _long = this.database.raw.raw_countries[source[1]]["long"];
-          population = this.database.raw.raw_countries[source[1]].population;
+          lat = this.database.raw.raw_countries[source.country].lat;
+          _long = this.database.raw.raw_countries[source.country]["long"];
+          population = this.database.raw.raw_countries[source.country].population;
         }
       }
 
@@ -5147,7 +5192,6 @@ __webpack_require__.r(__webpack_exports__);
           continue;
         }
 
-        console.log(population);
         row.delta[y] = {
           date: row.daily[y].date,
           confirmed: parseInt(row.daily[y].confirmed) - parseInt(previous.confirmed),
@@ -5155,11 +5199,13 @@ __webpack_require__.r(__webpack_exports__);
           confirmedcap: parseInt(row.daily[y].confirmed) / population * 1000000,
           deaths: parseInt(row.daily[y].deaths) - parseInt(previous.deaths),
           deathspc: (parseInt(row.daily[y].deaths) - parseInt(previous.deaths)) / parseInt(previous.deaths),
+          deathscap: parseInt(row.daily[y].deaths) / population * 1000000,
           recovered: parseInt(row.daily[y].recovered) - parseInt(previous.recovered),
           recoveredpc: (parseInt(row.daily[y].recovered) - parseInt(previous.recovered)) / parseInt(previous.recovered),
+          recoveredcap: parseInt(row.daily[y].recovered) / population * 1000000,
           active: parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered),
           activeDelta: parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered) - (parseInt(previous.confirmed) - parseInt(previous.deaths) - parseInt(previous.recovered)),
-          activepoppc: (parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered)) / population
+          activepoppc: (parseInt(row.daily[y].confirmed) - (isNaN(row.daily[y].deaths) ? 0 : parseInt(row.daily[y].deaths)) - (isNaN(row.daily[y].recovered) ? 0 : parseInt(row.daily[y].recovered))) / population
         };
         previous = row.daily[y];
         count++;
@@ -5199,13 +5245,13 @@ __webpack_require__.r(__webpack_exports__);
         row.growthFactor.push(gf);
       }
 
-      if (this.raw_annotations) {
-        if (this.raw_annotations['All'] && this.raw_annotations['All'].length > 0) {
-          row.annotations = row.annotations.concat(this.raw_annotations['All']);
+      if (this.database.raw.raw_annotations) {
+        if (this.database.raw.raw_annotations['All'] && this.database.raw.raw_annotations['All'].length > 0) {
+          row.annotations = row.annotations.concat(this.database.raw.raw_annotations['All']);
         }
 
-        if (this.raw_annotations[row.name.country]) {
-          row.annotations = row.annotations.concat(this.raw_annotations[row.name.country]);
+        if (this.database.raw.raw_annotations[row.name.country]) {
+          row.annotations = row.annotations.concat(this.database.raw.raw_annotations[row.name.country]);
         }
       }
 
@@ -5217,8 +5263,8 @@ __webpack_require__.r(__webpack_exports__);
       var data = [],
           row = [];
 
-      if (this.database.processed.compare.length > 0) {
-        for (var x in this.database.processed.compare) {
+      for (var x in this.database.processed.compare) {
+        if (this.database.processed.compare[x]) {
           row = this.assembleDataset(this.database.processed.compare[x]);
           data.push(row);
         }
@@ -5241,8 +5287,8 @@ __webpack_require__.r(__webpack_exports__);
       var found = false;
 
       for (var x in this.compare) {
-        if (this.compare[x][1] == item[0]) {
-          if (this.compare[x][2] == item[1]) {
+        if (this.compare[x].country == item.country) {
+          if (this.compare[x].state == item.state) {
             found = x;
             break;
           }
@@ -5255,14 +5301,19 @@ __webpack_require__.r(__webpack_exports__);
       var found = this.findCompare(item);
 
       if (found) {
-        this.compare.splice(found, 1);
+        var key = item.country + item.state;
+        delete this.compare[found];
+
+        if (key == this.selectedCompareTab) {
+          this.updateSelected(this.getLastCompareItem());
+        }
       }
 
       this.$emit('updateCompare', this.compare);
     },
     getDaily: function getDaily(compare) {
-      if (compare && compare[0]) {
-        if (!compare[2]) {
+      if (compare && compare.country) {
+        if (!compare.state) {
           return this.getCountryDaily(compare);
         } else {
           return this.getStateDaily(compare);
@@ -5272,8 +5323,8 @@ __webpack_require__.r(__webpack_exports__);
       return [];
     },
     getStateDaily: function getStateDaily(item) {
-      var country = this.stats[item[0]].name,
-          state = item[2],
+      var country = item.country,
+          state = item.state,
           data = [];
 
       if (this.states[country]) {
@@ -5296,13 +5347,13 @@ __webpack_require__.r(__webpack_exports__);
       return data;
     },
     getCountryDaily: function getCountryDaily(item) {
-      var country = item[0],
+      var country = item.country,
           data = [],
           empty = true;
 
-      if (this.stats[country].daily) {
-        for (var x in this.stats[country].daily) {
-          var row = this.stats[country].daily[x];
+      if (this.raw_countries[country].daily) {
+        for (var x in this.raw_countries[country].daily) {
+          var row = this.raw_countries[country].daily[x];
 
           if (empty && row.total.c == 0) {
             continue;
@@ -5329,61 +5380,120 @@ __webpack_require__.r(__webpack_exports__);
       return null;
     },
     getCompareName: function getCompareName(item) {
-      if (item && item[0]) {
-        var country = item[1];
+      if (item && item.country) {
+        var country = item.country;
 
-        if (item[2]) {
+        if (item.state) {
           return {
-            full: item[2] + ' - ' + country,
+            full: item.state + ' - ' + country,
             country: country,
-            state: item[2],
-            country_id: item[0]
+            state: item.state,
+            country_id: false
           };
         } else {
           return {
             full: country,
             country: country,
             state: '',
-            country_id: item[0]
+            country_id: false
           };
         }
       }
 
       return '';
     },
-    selectCountry: function selectCountry(country, state, key) {
+    getFirstCompareItem: function getFirstCompareItem() {
+      for (var x in this.compare) {
+        if (this.compare[x]) return x;
+      }
+
+      return false;
+    },
+    getLastCompareItem: function getLastCompareItem() {
+      var last = false;
+
+      var compare = _.cloneDeep(this.compare);
+
+      for (var x in compare) {
+        if (compare[x]) last = x;
+      }
+
+      return last;
+    },
+    getCompareLength: function getCompareLength() {
+      var count = 0;
+
+      for (var x in this.compare) {
+        if (this.compare[x]) count++;
+      }
+
+      return count;
+    },
+    selectCountry: function selectCountry(country, state) {
       if (!key) {
         var key = this.getCountryId(country);
       }
 
       var key = this.getCountryId(country);
-      var find = this.findCompare([country, state]);
+      var find = this.findCompare({
+        country: country,
+        state: state
+      });
 
       if (find !== false) {
-        this.compare.splice(find, 1);
+        // Remove from queue
+        this.removeCompare({
+          country: country,
+          state: state
+        });
       } else {
-        if (this.compare.length >= this.options.compare_limit) {
-          this.compare.shift();
+        // Trim current queue
+        if (this.getCompareLength() >= this.options.compare_limit) {
+          this.removeCompare(this.compare[this.getFirstCompareItem()]);
+        } // Add new item
+
+
+        if (this.getCompareLength() < this.options.compare_limit) {
+          this.compare[country + state] = {
+            country: country,
+            state: state
+          };
         }
 
-        if (this.compare.length < this.options.compare_limit) {
-          this.compare.push([key, country, state]);
-        }
-      }
-
-      if (this.compare.length > 0) {
-        this.selectedCompareTab = this.compare.length - 1;
-      } else {
-        this.selectedCompareTab = 0;
+        this.updateSelected(this.getLastCompareItem());
       }
 
       this.$emit('updateCompare', this.compare);
     },
     isSelected: function isSelected(key) {
       return false;
+    },
+    countries: function countries() {
+      var data = [];
+
+      for (var x in this.raw_countries) {
+        var row = this.raw_countries[x];
+        data.push(row);
+      }
+
+      return data;
+    },
+    updateSelected: function updateSelected(key) {
+      this.$emit('updateSelected', key);
     }
   },
   computed: {
+    selectedCompareTab: function selectedCompareTab() {
+      return this.database.processed.selectedCompareTab;
+    },
+    compare: {
+      get: function get() {
+        return this.database.processed.compare;
+      },
+      set: function set(value) {
+        return value;
+      }
+    },
     view: function view() {
       if (this.$route.name == 'comparisonDaily') {
         this.ui.content.selectedTab = 'daily';
@@ -5417,20 +5527,13 @@ __webpack_require__.r(__webpack_exports__);
     raw_stats: function raw_stats() {
       return this.database.raw.raw_stats;
     },
-    countries: function countries() {
-      var data = [];
-
-      for (var x in this.raw_countries) {
-        var row = this.raw_countries[x];
-        data.push(row);
-      }
-
-      return data;
+    compareLength: function compareLength() {
+      return this.compareLength();
     },
     countries_sorted: function countries_sorted() {
       var sort = this.sort_stats;
 
-      var data = _.cloneDeep(this.countries);
+      var data = _.cloneDeep(this.countries());
 
       return data.sort(function (a, b) {
         if (sort.key == 'country') {
@@ -5456,70 +5559,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     states: function states() {
       return this.raw_state_data;
-    },
-    sorted_stats: function sorted_stats() {
-      var sort = this.sort_stats;
-
-      var data = _.cloneDeep(this.countries);
-
-      return data.sort(function (a, b) {
-        if (sort.key == 'country') {
-          if (sort.order == 'asc') return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;else return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
-        } else if (sort.key == 'confirmed') {
-          if (sort.order == 'desc') return a.total.c < b.total.c ? 1 : -1;else return a.total.c > b.total.c ? 1 : -1;
-        } else if (sort.key == 'deaths') {
-          if (sort.order == 'desc') return a.total.d < b.total.d ? 1 : -1;else return a.total.d > b.total.d ? 1 : -1;
-        } else if (sort.key == 'recovered') {
-          if (sort.order == 'desc') return a.total.r < b.total.r ? 1 : -1;else return a.total.r > b.total.r ? 1 : -1;
-        }
-      });
-    },
-    daily: function daily() {
-      if (this.database.processed.compare.length > 1) return this.comparisonDataset;else return [];
-    },
-    comparisonDataset: function comparisonDataset() {
-      return this.getComparisonData();
-    },
-    global: function global() {
-      var data = {},
-          last_update = '';
-      data = _.cloneDeep(this.raw_global);
-
-      for (var x in this.countries) {
-        if (last_update.length === 0 || moment__WEBPACK_IMPORTED_MODULE_7___default()(this.countries[x].total.l).format('YYYY-MM-DD') > last_update) {
-          data.last_update = moment__WEBPACK_IMPORTED_MODULE_7___default()(this.countries[x].total.l).format('YYYY-MM-DD HH:mm:ss');
-          last_update = moment__WEBPACK_IMPORTED_MODULE_7___default()(this.countries[x].total.l).format('YYYY-MM-DD');
-        }
-      }
-
-      data.name = {
-        full: 'Global',
-        country: 'Global',
-        state: false
-      };
-
-      if (data.total) {
-        data.total.active = data.total.confirmed - data.total.deaths - data.total.recovered;
-      }
-
-      return data;
-    },
-    globalDataset: function globalDataset() {
-      var data = [],
-          daily = [];
-
-      for (var x in this.global.daily) {
-        var row = this.global.daily[x];
-        daily.push({
-          'date': x,
-          'confirmed': row.confirmed,
-          'deaths': row.deaths,
-          'recovered': row.recovered
-        });
-      }
-
-      data.push(this.assembleDataset(this.global, daily, this.global.name));
-      return data;
     }
   }
 });
@@ -87347,6 +87386,7 @@ var render = function() {
         },
         on: {
           updateCompare: _vm.updateCompare,
+          updateSelected: _vm.updateSelected,
           saveProcessedData: _vm.saveProcessedData
         }
       })
@@ -87724,10 +87764,10 @@ var render = function() {
                     "mr-4 mb-4 text-xs px-4 py-2 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab",
                   on: {
                     click: function($event) {
-                      return _vm.remove([
-                        _vm.data.name.country,
-                        _vm.data.name.state
-                      ])
+                      return _vm.remove({
+                        country: _vm.data.name.country,
+                        state: _vm.data.name.state
+                      })
                     }
                   }
                 },
@@ -87817,76 +87857,16 @@ var render = function() {
         "simplebar",
         {
           staticClass:
-            "top-0 right-0 bottom-0 left-0 bg-slab absolute m-4 mt-60 rounded",
-          staticStyle: { position: "absolute" },
+            "top-0 right-0 bottom-0 left-0 bg-slab absolute m-4 rounded",
+          staticStyle: { top: "232px", position: "absolute" },
           attrs: { "data-simplebar-auto-hide": "false" }
         },
         _vm._l(_vm.daily.reverse(), function(row, key, index) {
           return _c("div", [
-            _vm.getDayNotes(_vm.moment(row["date"]).format("YYYY-MM-DD"))
-              .length > 0
-              ? _c(
-                  "div",
-                  _vm._l(
-                    _vm.getDayNotes(
-                      _vm.moment(row["date"]).format("YYYY-MM-DD")
-                    ),
-                    function(annotation) {
-                      return _c(
-                        "div",
-                        {
-                          staticClass:
-                            "p-1 m-1 text-xs rounded bg-slab-primary flex justify-center"
-                        },
-                        [
-                          _c("div", { staticClass: "w-216 flex" }, [
-                            annotation.state.length > 0
-                              ? _c("div", { staticClass: "font-bold mr-2" }, [
-                                  _vm._v(_vm._s(annotation.state))
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _c("div", [
-                              _c("div", [_vm._v(_vm._s(annotation.notes))]),
-                              _vm._v(" "),
-                              annotation.url
-                                ? _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "flex items-center text-lightslab"
-                                    },
-                                    [
-                                      _c("div", { staticClass: "mr-1" }, [
-                                        _vm._v("Source:")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c(
-                                        "a",
-                                        {
-                                          staticClass:
-                                            "underline hover:text-white truncate ... inline-block w-64",
-                                          attrs: { href: annotation.url }
-                                        },
-                                        [_vm._v(_vm._s(annotation.url))]
-                                      )
-                                    ]
-                                  )
-                                : _vm._e()
-                            ])
-                          ])
-                        ]
-                      )
-                    }
-                  ),
-                  0
-                )
-              : _vm._e(),
-            _vm._v(" "),
             _c(
               "div",
               {
-                staticClass: "p-2 text-xs",
+                staticClass: "text-xs",
                 class: key % 2 == 1 ? "bg-slab-primary" : ""
               },
               [
@@ -87897,59 +87877,65 @@ var render = function() {
                     class: key == 0 ? "font-bold" : ""
                   },
                   [
-                    _c("div", { staticClass: "w-24" }, [
+                    _c("div", { staticClass: "w-24 p-2" }, [
                       _vm._v(
                         _vm._s(_vm.moment(row["date"]).format("YYYY-MM-DD"))
                       )
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-32" }, [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(
-                            _vm._f("numeralFormat")(
-                              isNaN(row.confirmed) ? 0 : row.confirmed
+                    _c(
+                      "div",
+                      { staticClass: "w-24 p-2 border-l border-lightslab" },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(
+                              _vm._f("numeralFormat")(
+                                isNaN(row.confirmed) ? 0 : row.confirmed
+                              )
                             )
-                          ) +
-                          "\n                        "
-                      ),
-                      row.confirmedpc > 0
-                        ? _c("span", { staticClass: "text-red-400" }, [
-                            _vm._v(
-                              "(+" +
-                                _vm._s(
-                                  _vm._f("numeralFormat")(
-                                    row.confirmedpc,
-                                    "0.0%"
-                                  )
-                                ) +
-                                ")"
-                            )
-                          ])
-                        : _c("span", { staticClass: "text-green-400" }, [
-                            _vm._v(
-                              "(" +
-                                _vm._s(
-                                  _vm._f("numeralFormat")(
-                                    row.confirmedpc,
-                                    "0.0%"
-                                  )
-                                ) +
-                                ")"
-                            )
-                          ])
-                    ]),
+                        ),
+                        _c("br"),
+                        _vm._v(" "),
+                        row.confirmedpc > 0
+                          ? _c("span", { staticClass: "text-red-400" }, [
+                              _vm._v(
+                                "(+" +
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(
+                                      row.confirmedpc,
+                                      "0.0%"
+                                    )
+                                  ) +
+                                  ")"
+                              )
+                            ])
+                          : _c("span", { staticClass: "text-green-400" }, [
+                              _vm._v(
+                                "(" +
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(
+                                      row.confirmedpc,
+                                      "0.0%"
+                                    )
+                                  ) +
+                                  ")"
+                              )
+                            ])
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-32" }, [
+                    _c("div", { staticClass: "w-24 p-2" }, [
                       _vm._v(
                         "\n                        " +
                           _vm._s(
                             _vm._f("numeralFormat")(
                               isNaN(row.deaths) ? 0 : row.deaths
                             )
-                          ) +
-                          "\n                        "
+                          )
                       ),
+                      _c("br"),
+                      _vm._v(" "),
                       row.deathspc > 0
                         ? _c("span", { staticClass: "text-red-400" }, [
                             _vm._v(
@@ -87971,16 +87957,17 @@ var render = function() {
                           ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-32" }, [
+                    _c("div", { staticClass: "w-24 p-2" }, [
                       _vm._v(
                         "\n                        " +
                           _vm._s(
                             _vm._f("numeralFormat")(
                               isNaN(row.recovered) ? 0 : row.recovered
                             )
-                          ) +
-                          "\n                        "
+                          )
                       ),
+                      _c("br"),
+                      _vm._v(" "),
                       row.recoveredpc > 0
                         ? _c("span", { staticClass: "text-green-400" }, [
                             _vm._v(
@@ -88021,16 +88008,17 @@ var render = function() {
                           ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-32" }, [
+                    _c("div", { staticClass: "w-24 p-2" }, [
                       _vm._v(
                         "\n                        " +
                           _vm._s(
                             _vm._f("numeralFormat")(
                               isNaN(row.active) ? 0 : row.active
                             )
-                          ) +
-                          "\n                        "
+                          )
                       ),
+                      _c("br"),
+                      _vm._v(" "),
                       row.activeDelta < 0
                         ? _c("span", { staticClass: "text-green-400" }, [
                             _vm._v(
@@ -88065,21 +88053,27 @@ var render = function() {
                       _c("span", { staticClass: "text-blue-400" }, [
                         _vm._v(
                           _vm._s(
-                            _vm._f("numeralFormat")(row.activepoppc, "0.00%")
+                            _vm._f("numeralFormat")(row.activepoppc, "0.000%")
                           ) + " of total population"
                         )
                       ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-20" }, [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(_vm._f("numeralFormat")(row.deltaConfirmed)) +
-                          "\n                    "
-                      )
-                    ]),
+                    _c(
+                      "div",
+                      { staticClass: "w-20 p-2 border-l border-slab" },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(
+                              _vm._f("numeralFormat")(row.deltaConfirmed)
+                            ) +
+                            "\n                    "
+                        )
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-20" }, [
+                    _c("div", { staticClass: "w-20 p-2" }, [
                       _vm._v(
                         "\n                        " +
                           _vm._s(_vm._f("numeralFormat")(row.deltaDeaths)) +
@@ -88087,7 +88081,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-20" }, [
+                    _c("div", { staticClass: "w-20 p-2" }, [
                       _vm._v(
                         "\n                        " +
                           _vm._s(_vm._f("numeralFormat")(row.deltaRecovered)) +
@@ -88095,20 +88089,55 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-24" }, [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(
-                            _vm._f("numeralFormat")(
-                              row.confirmedcap,
-                              "0,000.00"
-                            )
-                          ) +
-                          "\n                    "
-                      )
-                    ]),
+                    _c(
+                      "div",
+                      { staticClass: "w-24 p-2 border-l border-slab" },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(
+                              _vm._f("numeralFormat")(
+                                row.confirmedcap,
+                                "0,000.00"
+                              )
+                            ) +
+                            "\n                    "
+                        )
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-24" }, [
+                    _c(
+                      "div",
+                      { staticClass: "w-24 p-2 border-l border-slab" },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(
+                              _vm._f("numeralFormat")(row.deathscap, "0,000.00")
+                            ) +
+                            "\n                    "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "w-24 p-2 border-l border-slab" },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(
+                              _vm._f("numeralFormat")(
+                                row.recoveredcap,
+                                "0,000.00"
+                              )
+                            ) +
+                            "\n                    "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-24 p-2" }, [
                       _vm._v(
                         "\n                        " +
                           _vm._s(
@@ -88118,7 +88147,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-16" }, [
+                    _c("div", { staticClass: "w-16 p-2" }, [
                       row.growthFactor > 1
                         ? _c("span", { staticClass: "text-red-400" }, [
                             _vm._v(_vm._s(row.growthFactor))
@@ -88138,14 +88167,95 @@ var render = function() {
                           "w-full text-lightlabel flex justify-center"
                       },
                       [
-                        _vm._v(
-                          "\n                    * today's numbers are still processing and can still change throughout the day\n                "
+                        _c("div", { staticClass: "w-24 p-2" }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "w-268 p-2 border-l border-lightslab"
+                          },
+                          [
+                            _vm._v(
+                              "\n                        * today's numbers are still processing and can still change throughout the day\n                    "
+                            )
+                          ]
                         )
                       ]
                     )
                   : _vm._e()
               ]
-            )
+            ),
+            _vm._v(" "),
+            row.date.length > 0
+              ? _c(
+                  "div",
+                  _vm._l(_vm.getDayNotes(row.date), function(annotation) {
+                    return _c(
+                      "div",
+                      {
+                        staticClass: "text-xs rounded flex justify-center",
+                        class: key % 2 == 1 ? "bg-slab-primary" : ""
+                      },
+                      [
+                        _c("div", { staticClass: "w-24 p-2 pt-0" }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "w-268 p-2 pt-0 border-l border-lightslab"
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "flex rounded bg-hoverslab p-2" },
+                              [
+                                annotation.state.length > 0
+                                  ? _c(
+                                      "div",
+                                      { staticClass: "font-bold mr-2" },
+                                      [_vm._v(_vm._s(annotation.state))]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _c("div", [
+                                  _c("div", [_vm._v(_vm._s(annotation.notes))]),
+                                  _vm._v(" "),
+                                  annotation.url
+                                    ? _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "flex items-center text-orangeslab"
+                                        },
+                                        [
+                                          _c("div", { staticClass: "mr-1" }, [
+                                            _vm._v("Source:")
+                                          ]),
+                                          _vm._v(" "),
+                                          _c(
+                                            "a",
+                                            {
+                                              staticClass:
+                                                "underline hover:text-white truncate ... inline-block w-128",
+                                              attrs: { href: annotation.url }
+                                            },
+                                            [_vm._v(_vm._s(annotation.url))]
+                                          )
+                                        ]
+                                      )
+                                    : _vm._e()
+                                ])
+                              ]
+                            )
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e()
           ])
         }),
         0
@@ -88170,34 +88280,78 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "px-2 mx-4 py-2 flex text-xs font-bold justify-between bg-slab-primary rounded-t h-16"
+          "mx-4 flex text-xs font-bold justify-between bg-slab-primary rounded-t z-10 relative"
       },
       [
-        _c("div", { staticClass: "justify-center flex w-full items-end" }, [
-          _c("div", { staticClass: "w-24" }, [_vm._v("Date")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-32" }, [_vm._v("Confirmed")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-32" }, [_vm._v("Deaths")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-32" }, [_vm._v("Recovered")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-32" }, [_vm._v("Active")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-20" }, [_vm._v("New Cases")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-20" }, [_vm._v("New Deaths")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-20" }, [_vm._v("New Recovered")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-24" }, [
-            _vm._v("Confirmed Per 1,000,000 population")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-24" }, [_vm._v("5D Ave")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-16" }, [_vm._v("Growth Factor")])
-        ])
+        _c(
+          "div",
+          {
+            staticClass:
+              "justify-center flex w-full items-end border-b border-lightslab"
+          },
+          [
+            _c("div", { staticClass: "w-24 p-2" }, [_vm._v("Date")]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-24 h-full p-2 border-l border-slab flex items-end"
+              },
+              [_vm._v("Confirmed")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-24 p-2" }, [_vm._v("Deaths")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-24 p-2" }, [_vm._v("Recovered")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-24 p-2" }, [_vm._v("Active")]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-20 h-full p-2 border-l border-slab flex items-end"
+              },
+              [_vm._v("New Cases")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-20 p-2" }, [_vm._v("New Deaths")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-20 p-2" }, [_vm._v("New Recovered")]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-24 h-full p-2 border-l border-slab flex items-end"
+              },
+              [_vm._v("Confirmed Per 1M population")]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-24 h-full p-2 border-l border-slab flex items-end"
+              },
+              [_vm._v("Deaths Per 1M population")]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-24 h-full p-2 border-l border-slab flex items-end"
+              },
+              [_vm._v("Recovered Per 1M population")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-24 p-2" }, [_vm._v("5D Ave")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-16 p-2" }, [_vm._v("Growth Factor")])
+          ]
+        )
       ]
     )
   }
@@ -89578,7 +89732,7 @@ var render = function() {
                     _c("div", { staticClass: "tracking-tight font-bold" }, [
                       _vm._v("Countries and states "),
                       _c("br"),
-                      _vm._v("(" + _vm._s(_vm.countries.length) + " total)")
+                      _vm._v("(" + _vm._s(_vm.countries().length) + " total)")
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "text-xs text-right" }, [
@@ -89724,9 +89878,18 @@ var render = function() {
                       "div",
                       { staticClass: "absolute top-0 right-0 left-0 h-28 p-4" },
                       [
-                        _c("div", { staticClass: "text-2xl font-bold mb-2" }, [
-                          _vm._v("Compare statistics")
-                        ]),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "text-2xl font-bold mb-2",
+                            on: {
+                              click: function($event) {
+                                return _vm.preload()
+                              }
+                            }
+                          },
+                          [_vm._v("Compare statistics")]
+                        ),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -89795,11 +89958,7 @@ var render = function() {
                                 staticClass:
                                   "text-xs flex items-center justify-start absolute top-0 mt-4"
                               },
-                              _vm._l(_vm.compare, function(
-                                country,
-                                key,
-                                index
-                              ) {
+                              _vm._l(_vm.compare, function(row, key, index) {
                                 return _c("div", [
                                   _c(
                                     "div",
@@ -89812,7 +89971,7 @@ var render = function() {
                                           : "bg-slab-primary",
                                       on: {
                                         click: function($event) {
-                                          _vm.selectedCompareTab = key
+                                          return _vm.updateSelected(key)
                                         }
                                       }
                                     },
@@ -89820,14 +89979,15 @@ var render = function() {
                                       _vm._v(
                                         "\n                                        " +
                                           _vm._s(
-                                            _vm.compare.length > 0 && country[2]
-                                              ? country[2] + " - "
+                                            _vm.getCompareLength() > 0 &&
+                                              row.state
+                                              ? row.state + " - "
                                               : ""
                                           ) +
                                           "\n                                        " +
                                           _vm._s(
-                                            _vm.compare.length > 0
-                                              ? country[1]
+                                            _vm.getCompareLength() > 0
+                                              ? row.country
                                               : "(none)"
                                           ) +
                                           "\n                                        "
@@ -89839,10 +89999,11 @@ var render = function() {
                                             "text-lightlabel text-xs absolute top-0 right-0 m-2 px-2 pb-1 rounded hover:text-heading hover:bg-lightlabel",
                                           on: {
                                             click: function($event) {
-                                              return _vm.removeCompare([
-                                                country[1],
-                                                country[2]
-                                              ])
+                                              $event.stopPropagation()
+                                              return _vm.removeCompare({
+                                                country: row.country,
+                                                state: row.state
+                                              })
                                             }
                                           }
                                         },
@@ -89870,7 +90031,7 @@ var render = function() {
                             staticClass: "h-full relative mt-8"
                           },
                           [
-                            _vm.compare.length == 0
+                            _vm.getCompareLength() == 0
                               ? _c("div", [
                                   _c(
                                     "h1",
@@ -89910,9 +90071,9 @@ var render = function() {
                                                   rawName: "v-show",
                                                   value:
                                                     _vm.selectedCompareTab ==
-                                                    key,
+                                                    row.country + "false",
                                                   expression:
-                                                    "selectedCompareTab == key"
+                                                    "selectedCompareTab == row.country+'false'"
                                                 }
                                               ],
                                               staticClass:
@@ -89929,10 +90090,16 @@ var render = function() {
                                                       staticClass:
                                                         "w-128 text-4xl font-bold"
                                                     },
-                                                    [_vm._v(_vm._s(row[1]))]
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(row.country)
+                                                      )
+                                                    ]
                                                   ),
                                                   _vm._v(" "),
-                                                  _vm.getGovtResponse(row[1])
+                                                  _vm.getGovtResponse(
+                                                    row.country
+                                                  )
                                                     ? _c(
                                                         "div",
                                                         {
@@ -89943,7 +90110,7 @@ var render = function() {
                                                           _vm._v(
                                                             _vm._s(
                                                               _vm.getGovtResponse(
-                                                                row[1]
+                                                                row.country
                                                               ).latest.si
                                                             )
                                                           )
@@ -90032,11 +90199,11 @@ var render = function() {
                                                 },
                                                 _vm._l(
                                                   _vm.getLatestGovtResponse(
-                                                    row[1]
+                                                    row.country
                                                   ),
                                                   function(policy, key, index) {
                                                     return _vm.getGovtResponse(
-                                                      row[1]
+                                                      row.country
                                                     )
                                                       ? _c(
                                                           "div",
@@ -90242,10 +90409,12 @@ var render = function() {
                             staticClass: "h-full relative mt-8"
                           },
                           [
-                            _vm.compare.length == 0
+                            _vm.getCompareLength() == 0
                               ? _c("div", [
                                   _vm._v(
-                                    "\n                                    Select a country or state to begin comparing.\n                                "
+                                    "\n                                    Select up to " +
+                                      _vm._s(_vm.options.compare_limit) +
+                                      " countries or states to begin comparing.\n                                "
                                   )
                                 ])
                               : _c(
@@ -90260,7 +90429,7 @@ var render = function() {
                                     key,
                                     index
                                   ) {
-                                    return _vm.compare.length > 0
+                                    return _vm.getCompareLength() > 0
                                       ? _c("div", {}, [
                                           _c(
                                             "div",
@@ -90275,11 +90444,12 @@ var render = function() {
                                               _c("Daily", {
                                                 attrs: {
                                                   data: _vm.getComparisonData()[
-                                                    key
+                                                    index
                                                   ]
                                                 },
                                                 on: {
-                                                  remove: _vm.removeCompare
+                                                  removeCompare:
+                                                    _vm.removeCompare
                                                 }
                                               })
                                             ],
@@ -90308,7 +90478,10 @@ var render = function() {
                           },
                           [
                             _c("StatsChart", {
-                              attrs: { data: _vm.comparisonDataset, full: true }
+                              attrs: {
+                                data: _vm.getComparisonData(),
+                                full: true
+                              }
                             })
                           ],
                           1
