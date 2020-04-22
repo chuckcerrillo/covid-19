@@ -425,7 +425,6 @@ thi<template>
                         count++;
                         continue;
                     }
-                    console.log(population);
 
                     row.delta[y] = {
                         date: row.daily[y].date,
@@ -434,11 +433,13 @@ thi<template>
                         confirmedcap: parseInt(row.daily[y].confirmed) / population * 1000000,
                         deaths: parseInt(row.daily[y].deaths) - parseInt(previous.deaths),
                         deathspc: (parseInt(row.daily[y].deaths) - parseInt(previous.deaths)) / parseInt(previous.deaths),
+                        deathscap: parseInt(row.daily[y].deaths) / population * 1000000,
                         recovered: parseInt(row.daily[y].recovered) - parseInt(previous.recovered),
                         recoveredpc: (parseInt(row.daily[y].recovered) - parseInt(previous.recovered)) / parseInt(previous.recovered),
+                        recoveredcap: parseInt(row.daily[y].recovered) / population * 1000000,
                         active: parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered),
                         activeDelta: (parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered)) - (parseInt(previous.confirmed) - parseInt(previous.deaths) - parseInt(previous.recovered)),
-                        activepoppc: (parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered)) / population,
+                        activepoppc: (parseInt(row.daily[y].confirmed) - (isNaN(row.daily[y].deaths) ? 0 : parseInt(row.daily[y].deaths)) - (isNaN(row.daily[y].recovered) ? 0 : parseInt(row.daily[y].recovered))) / population,
                     }
                     previous = row.daily[y];
                     count++;
@@ -484,16 +485,16 @@ thi<template>
                     row.growthFactor.push(gf);
                 }
 
-                if(this.raw_annotations)
+                if(this.database.raw.raw_annotations)
                 {
-                    if (this.raw_annotations['All'] && this.raw_annotations['All'].length > 0)
+                    if (this.database.raw.raw_annotations['All'] && this.database.raw.raw_annotations['All'].length > 0)
                     {
-                        row.annotations = row.annotations.concat(this.raw_annotations['All']);
+                        row.annotations = row.annotations.concat(this.database.raw.raw_annotations['All']);
                     }
 
-                    if (this.raw_annotations[row.name.country])
+                    if (this.database.raw.raw_annotations[row.name.country])
                     {
-                        row.annotations = row.annotations.concat(this.raw_annotations[row.name.country]);
+                        row.annotations = row.annotations.concat(this.database.raw.raw_annotations[row.name.country]);
                     }
                 }
                 var compareName = this.getCompareName(source).full;
@@ -681,7 +682,7 @@ thi<template>
                 {
                     if(this.compare.length >= this.options.compare_limit)
                     {
-                        this.compare.shift();
+                        this.removeCompare(this.compare[0]);
                     }
                     if(this.compare.length < this.options.compare_limit)
                     {

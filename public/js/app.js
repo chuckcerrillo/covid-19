@@ -3011,6 +3011,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3098,7 +3113,11 @@ __webpack_require__.r(__webpack_exports__);
       for (var x in this.data.annotations) {
         if (this.data.annotations[x].country == 'All') {
           data.push(this.data.annotations[x]);
-        } else if (this.data.annotations[x].state && this.data.name.state == this.data.annotations[x].state) {
+        } else if (this.data.annotations[x].state && this.data.name.state.length > 0) {
+          if (this.data.name.state == this.data.annotations[x].state) {
+            data.push(this.data.annotations[x]);
+          }
+        } else {
           data.push(this.data.annotations[x]);
         }
       }
@@ -3127,9 +3146,11 @@ __webpack_require__.r(__webpack_exports__);
           deaths: row.deaths,
           deltaDeaths: this.recomputed.delta[x].deaths,
           deathspc: this.recomputed.delta[x].deathspc,
+          deathscap: this.recomputed.delta[x].deathscap,
           recovered: row.recovered,
           deltaRecovered: this.recomputed.delta[x].recovered,
           recoveredpc: this.recomputed.delta[x].recoveredpc,
+          recoveredcap: this.recomputed.delta[x].recoveredcap,
           growth: this.recomputed.growth[x],
           average: this.recomputed.average[x],
           growthFactor: this.recomputed.growthFactor[x]
@@ -5147,7 +5168,6 @@ __webpack_require__.r(__webpack_exports__);
           continue;
         }
 
-        console.log(population);
         row.delta[y] = {
           date: row.daily[y].date,
           confirmed: parseInt(row.daily[y].confirmed) - parseInt(previous.confirmed),
@@ -5155,11 +5175,13 @@ __webpack_require__.r(__webpack_exports__);
           confirmedcap: parseInt(row.daily[y].confirmed) / population * 1000000,
           deaths: parseInt(row.daily[y].deaths) - parseInt(previous.deaths),
           deathspc: (parseInt(row.daily[y].deaths) - parseInt(previous.deaths)) / parseInt(previous.deaths),
+          deathscap: parseInt(row.daily[y].deaths) / population * 1000000,
           recovered: parseInt(row.daily[y].recovered) - parseInt(previous.recovered),
           recoveredpc: (parseInt(row.daily[y].recovered) - parseInt(previous.recovered)) / parseInt(previous.recovered),
+          recoveredcap: parseInt(row.daily[y].recovered) / population * 1000000,
           active: parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered),
           activeDelta: parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered) - (parseInt(previous.confirmed) - parseInt(previous.deaths) - parseInt(previous.recovered)),
-          activepoppc: (parseInt(row.daily[y].confirmed) - parseInt(row.daily[y].deaths) - parseInt(row.daily[y].recovered)) / population
+          activepoppc: (parseInt(row.daily[y].confirmed) - (isNaN(row.daily[y].deaths) ? 0 : parseInt(row.daily[y].deaths)) - (isNaN(row.daily[y].recovered) ? 0 : parseInt(row.daily[y].recovered))) / population
         };
         previous = row.daily[y];
         count++;
@@ -5199,13 +5221,13 @@ __webpack_require__.r(__webpack_exports__);
         row.growthFactor.push(gf);
       }
 
-      if (this.raw_annotations) {
-        if (this.raw_annotations['All'] && this.raw_annotations['All'].length > 0) {
-          row.annotations = row.annotations.concat(this.raw_annotations['All']);
+      if (this.database.raw.raw_annotations) {
+        if (this.database.raw.raw_annotations['All'] && this.database.raw.raw_annotations['All'].length > 0) {
+          row.annotations = row.annotations.concat(this.database.raw.raw_annotations['All']);
         }
 
-        if (this.raw_annotations[row.name.country]) {
-          row.annotations = row.annotations.concat(this.raw_annotations[row.name.country]);
+        if (this.database.raw.raw_annotations[row.name.country]) {
+          row.annotations = row.annotations.concat(this.database.raw.raw_annotations[row.name.country]);
         }
       }
 
@@ -5363,7 +5385,7 @@ __webpack_require__.r(__webpack_exports__);
         this.compare.splice(find, 1);
       } else {
         if (this.compare.length >= this.options.compare_limit) {
-          this.compare.shift();
+          this.removeCompare(this.compare[0]);
         }
 
         if (this.compare.length < this.options.compare_limit) {
@@ -87817,76 +87839,16 @@ var render = function() {
         "simplebar",
         {
           staticClass:
-            "top-0 right-0 bottom-0 left-0 bg-slab absolute m-4 mt-60 rounded",
-          staticStyle: { position: "absolute" },
+            "top-0 right-0 bottom-0 left-0 bg-slab absolute m-4 rounded",
+          staticStyle: { top: "232px", position: "absolute" },
           attrs: { "data-simplebar-auto-hide": "false" }
         },
         _vm._l(_vm.daily.reverse(), function(row, key, index) {
           return _c("div", [
-            _vm.getDayNotes(_vm.moment(row["date"]).format("YYYY-MM-DD"))
-              .length > 0
-              ? _c(
-                  "div",
-                  _vm._l(
-                    _vm.getDayNotes(
-                      _vm.moment(row["date"]).format("YYYY-MM-DD")
-                    ),
-                    function(annotation) {
-                      return _c(
-                        "div",
-                        {
-                          staticClass:
-                            "p-1 m-1 text-xs rounded bg-slab-primary flex justify-center"
-                        },
-                        [
-                          _c("div", { staticClass: "w-216 flex" }, [
-                            annotation.state.length > 0
-                              ? _c("div", { staticClass: "font-bold mr-2" }, [
-                                  _vm._v(_vm._s(annotation.state))
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _c("div", [
-                              _c("div", [_vm._v(_vm._s(annotation.notes))]),
-                              _vm._v(" "),
-                              annotation.url
-                                ? _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "flex items-center text-lightslab"
-                                    },
-                                    [
-                                      _c("div", { staticClass: "mr-1" }, [
-                                        _vm._v("Source:")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c(
-                                        "a",
-                                        {
-                                          staticClass:
-                                            "underline hover:text-white truncate ... inline-block w-64",
-                                          attrs: { href: annotation.url }
-                                        },
-                                        [_vm._v(_vm._s(annotation.url))]
-                                      )
-                                    ]
-                                  )
-                                : _vm._e()
-                            ])
-                          ])
-                        ]
-                      )
-                    }
-                  ),
-                  0
-                )
-              : _vm._e(),
-            _vm._v(" "),
             _c(
               "div",
               {
-                staticClass: "p-2 text-xs",
+                staticClass: "text-xs",
                 class: key % 2 == 1 ? "bg-slab-primary" : ""
               },
               [
@@ -87897,59 +87859,65 @@ var render = function() {
                     class: key == 0 ? "font-bold" : ""
                   },
                   [
-                    _c("div", { staticClass: "w-24" }, [
+                    _c("div", { staticClass: "w-24 p-2" }, [
                       _vm._v(
                         _vm._s(_vm.moment(row["date"]).format("YYYY-MM-DD"))
                       )
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-32" }, [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(
-                            _vm._f("numeralFormat")(
-                              isNaN(row.confirmed) ? 0 : row.confirmed
+                    _c(
+                      "div",
+                      { staticClass: "w-24 p-2 border-l border-lightslab" },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(
+                              _vm._f("numeralFormat")(
+                                isNaN(row.confirmed) ? 0 : row.confirmed
+                              )
                             )
-                          ) +
-                          "\n                        "
-                      ),
-                      row.confirmedpc > 0
-                        ? _c("span", { staticClass: "text-red-400" }, [
-                            _vm._v(
-                              "(+" +
-                                _vm._s(
-                                  _vm._f("numeralFormat")(
-                                    row.confirmedpc,
-                                    "0.0%"
-                                  )
-                                ) +
-                                ")"
-                            )
-                          ])
-                        : _c("span", { staticClass: "text-green-400" }, [
-                            _vm._v(
-                              "(" +
-                                _vm._s(
-                                  _vm._f("numeralFormat")(
-                                    row.confirmedpc,
-                                    "0.0%"
-                                  )
-                                ) +
-                                ")"
-                            )
-                          ])
-                    ]),
+                        ),
+                        _c("br"),
+                        _vm._v(" "),
+                        row.confirmedpc > 0
+                          ? _c("span", { staticClass: "text-red-400" }, [
+                              _vm._v(
+                                "(+" +
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(
+                                      row.confirmedpc,
+                                      "0.0%"
+                                    )
+                                  ) +
+                                  ")"
+                              )
+                            ])
+                          : _c("span", { staticClass: "text-green-400" }, [
+                              _vm._v(
+                                "(" +
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(
+                                      row.confirmedpc,
+                                      "0.0%"
+                                    )
+                                  ) +
+                                  ")"
+                              )
+                            ])
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-32" }, [
+                    _c("div", { staticClass: "w-24 p-2" }, [
                       _vm._v(
                         "\n                        " +
                           _vm._s(
                             _vm._f("numeralFormat")(
                               isNaN(row.deaths) ? 0 : row.deaths
                             )
-                          ) +
-                          "\n                        "
+                          )
                       ),
+                      _c("br"),
+                      _vm._v(" "),
                       row.deathspc > 0
                         ? _c("span", { staticClass: "text-red-400" }, [
                             _vm._v(
@@ -87971,16 +87939,17 @@ var render = function() {
                           ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-32" }, [
+                    _c("div", { staticClass: "w-24 p-2" }, [
                       _vm._v(
                         "\n                        " +
                           _vm._s(
                             _vm._f("numeralFormat")(
                               isNaN(row.recovered) ? 0 : row.recovered
                             )
-                          ) +
-                          "\n                        "
+                          )
                       ),
+                      _c("br"),
+                      _vm._v(" "),
                       row.recoveredpc > 0
                         ? _c("span", { staticClass: "text-green-400" }, [
                             _vm._v(
@@ -88021,16 +87990,17 @@ var render = function() {
                           ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-32" }, [
+                    _c("div", { staticClass: "w-24 p-2" }, [
                       _vm._v(
                         "\n                        " +
                           _vm._s(
                             _vm._f("numeralFormat")(
                               isNaN(row.active) ? 0 : row.active
                             )
-                          ) +
-                          "\n                        "
+                          )
                       ),
+                      _c("br"),
+                      _vm._v(" "),
                       row.activeDelta < 0
                         ? _c("span", { staticClass: "text-green-400" }, [
                             _vm._v(
@@ -88065,21 +88035,27 @@ var render = function() {
                       _c("span", { staticClass: "text-blue-400" }, [
                         _vm._v(
                           _vm._s(
-                            _vm._f("numeralFormat")(row.activepoppc, "0.00%")
+                            _vm._f("numeralFormat")(row.activepoppc, "0.000%")
                           ) + " of total population"
                         )
                       ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-20" }, [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(_vm._f("numeralFormat")(row.deltaConfirmed)) +
-                          "\n                    "
-                      )
-                    ]),
+                    _c(
+                      "div",
+                      { staticClass: "w-20 p-2 border-l border-slab" },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(
+                              _vm._f("numeralFormat")(row.deltaConfirmed)
+                            ) +
+                            "\n                    "
+                        )
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-20" }, [
+                    _c("div", { staticClass: "w-20 p-2" }, [
                       _vm._v(
                         "\n                        " +
                           _vm._s(_vm._f("numeralFormat")(row.deltaDeaths)) +
@@ -88087,7 +88063,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-20" }, [
+                    _c("div", { staticClass: "w-20 p-2" }, [
                       _vm._v(
                         "\n                        " +
                           _vm._s(_vm._f("numeralFormat")(row.deltaRecovered)) +
@@ -88095,20 +88071,55 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-24" }, [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(
-                            _vm._f("numeralFormat")(
-                              row.confirmedcap,
-                              "0,000.00"
-                            )
-                          ) +
-                          "\n                    "
-                      )
-                    ]),
+                    _c(
+                      "div",
+                      { staticClass: "w-24 p-2 border-l border-slab" },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(
+                              _vm._f("numeralFormat")(
+                                row.confirmedcap,
+                                "0,000.00"
+                              )
+                            ) +
+                            "\n                    "
+                        )
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-24" }, [
+                    _c(
+                      "div",
+                      { staticClass: "w-24 p-2 border-l border-slab" },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(
+                              _vm._f("numeralFormat")(row.deathscap, "0,000.00")
+                            ) +
+                            "\n                    "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "w-24 p-2 border-l border-slab" },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(
+                              _vm._f("numeralFormat")(
+                                row.recoveredcap,
+                                "0,000.00"
+                              )
+                            ) +
+                            "\n                    "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-24 p-2" }, [
                       _vm._v(
                         "\n                        " +
                           _vm._s(
@@ -88118,7 +88129,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-16" }, [
+                    _c("div", { staticClass: "w-16 p-2" }, [
                       row.growthFactor > 1
                         ? _c("span", { staticClass: "text-red-400" }, [
                             _vm._v(_vm._s(row.growthFactor))
@@ -88138,14 +88149,95 @@ var render = function() {
                           "w-full text-lightlabel flex justify-center"
                       },
                       [
-                        _vm._v(
-                          "\n                    * today's numbers are still processing and can still change throughout the day\n                "
+                        _c("div", { staticClass: "w-24 p-2" }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "w-268 p-2 border-l border-lightslab"
+                          },
+                          [
+                            _vm._v(
+                              "\n                        * today's numbers are still processing and can still change throughout the day\n                    "
+                            )
+                          ]
                         )
                       ]
                     )
                   : _vm._e()
               ]
-            )
+            ),
+            _vm._v(" "),
+            row.date.length > 0
+              ? _c(
+                  "div",
+                  _vm._l(_vm.getDayNotes(row.date), function(annotation) {
+                    return _c(
+                      "div",
+                      {
+                        staticClass: "text-xs rounded flex justify-center",
+                        class: key % 2 == 1 ? "bg-slab-primary" : ""
+                      },
+                      [
+                        _c("div", { staticClass: "w-24 p-2 pt-0" }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "w-268 p-2 pt-0 border-l border-lightslab"
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "flex rounded bg-hoverslab p-2" },
+                              [
+                                annotation.state.length > 0
+                                  ? _c(
+                                      "div",
+                                      { staticClass: "font-bold mr-2" },
+                                      [_vm._v(_vm._s(annotation.state))]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _c("div", [
+                                  _c("div", [_vm._v(_vm._s(annotation.notes))]),
+                                  _vm._v(" "),
+                                  annotation.url
+                                    ? _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "flex items-center text-orangeslab"
+                                        },
+                                        [
+                                          _c("div", { staticClass: "mr-1" }, [
+                                            _vm._v("Source:")
+                                          ]),
+                                          _vm._v(" "),
+                                          _c(
+                                            "a",
+                                            {
+                                              staticClass:
+                                                "underline hover:text-white truncate ... inline-block w-128",
+                                              attrs: { href: annotation.url }
+                                            },
+                                            [_vm._v(_vm._s(annotation.url))]
+                                          )
+                                        ]
+                                      )
+                                    : _vm._e()
+                                ])
+                              ]
+                            )
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e()
           ])
         }),
         0
@@ -88170,34 +88262,78 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "px-2 mx-4 py-2 flex text-xs font-bold justify-between bg-slab-primary rounded-t h-16"
+          "mx-4 flex text-xs font-bold justify-between bg-slab-primary rounded-t z-10 relative"
       },
       [
-        _c("div", { staticClass: "justify-center flex w-full items-end" }, [
-          _c("div", { staticClass: "w-24" }, [_vm._v("Date")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-32" }, [_vm._v("Confirmed")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-32" }, [_vm._v("Deaths")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-32" }, [_vm._v("Recovered")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-32" }, [_vm._v("Active")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-20" }, [_vm._v("New Cases")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-20" }, [_vm._v("New Deaths")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-20" }, [_vm._v("New Recovered")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-24" }, [
-            _vm._v("Confirmed Per 1,000,000 population")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-24" }, [_vm._v("5D Ave")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-16" }, [_vm._v("Growth Factor")])
-        ])
+        _c(
+          "div",
+          {
+            staticClass:
+              "justify-center flex w-full items-end border-b border-lightslab"
+          },
+          [
+            _c("div", { staticClass: "w-24 p-2" }, [_vm._v("Date")]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-24 h-full p-2 border-l border-slab flex items-end"
+              },
+              [_vm._v("Confirmed")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-24 p-2" }, [_vm._v("Deaths")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-24 p-2" }, [_vm._v("Recovered")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-24 p-2" }, [_vm._v("Active")]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-20 h-full p-2 border-l border-slab flex items-end"
+              },
+              [_vm._v("New Cases")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-20 p-2" }, [_vm._v("New Deaths")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-20 p-2" }, [_vm._v("New Recovered")]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-24 h-full p-2 border-l border-slab flex items-end"
+              },
+              [_vm._v("Confirmed Per 1M population")]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-24 h-full p-2 border-l border-slab flex items-end"
+              },
+              [_vm._v("Deaths Per 1M population")]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-24 h-full p-2 border-l border-slab flex items-end"
+              },
+              [_vm._v("Recovered Per 1M population")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-24 p-2" }, [_vm._v("5D Ave")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-16 p-2" }, [_vm._v("Growth Factor")])
+          ]
+        )
       ]
     )
   }
