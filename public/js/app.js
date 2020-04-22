@@ -90070,10 +90070,12 @@ var render = function() {
                                                   name: "show",
                                                   rawName: "v-show",
                                                   value:
-                                                    _vm.selectedCompareTab ==
-                                                    row.country + "false",
+                                                    _vm.selectedCompareTab.substr(
+                                                      0,
+                                                      row.country.length
+                                                    ) == row.country,
                                                   expression:
-                                                    "selectedCompareTab == row.country+'false'"
+                                                    "selectedCompareTab.substr(0,row.country.length) == row.country"
                                                 }
                                               ],
                                               staticClass:
