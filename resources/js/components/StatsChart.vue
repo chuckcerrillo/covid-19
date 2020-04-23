@@ -1,21 +1,83 @@
 <template>
     <div class="absolute top-0 left-0 right-0 bottom-0">
 <!--        <div class="absolute top-0 right-0 bottom-0 left-0 bg-red-400"></div>-->
-        <div v-if="full" class="absolute top-0 right-0 bottom-0 left-0">
-            <div class="py-4" v-if="settings.controls.menu">
-                <div class="text-xs flex items-start justify-between">
-                    <div class="flex items-center">
-                        <div class="mr-2">Scale</div>
-                        <div class="flex">
-                            <div v-for="row in graphControls.scaleType"
-                                 class="p-2 border border-hoverslab m-1 cursor-pointer"
-                                 :class="selectedScaleType(row[0]) ? 'bg-hoverslab':''"
-                                 @click="selectScaleType(row[0])"
-                            >
-                                {{row[1]}}
+        <div class="absolute left-0 top-0 mt-20 ml-4 border border-gray-600 bg-gray-100 text-gray-800 p-4 rounded flex items-start" :class="ui.settings ? 'z-10':'z-0'">
+            <div>
+                <div class="font-bold text-2xl mb-4">Chart Settings</div>
+                <div class="flex flex-wrap border" style="max-width:940px; max-height:530px">
+                    <div v-if="chartsettings.length == 0" class="p-4 text-xs">
+                        Choose countries or states to begin comparing.
+                    </div>
+                    <div v-show="chartsettings.length > 0" v-for="row in chartsettings" class="m-2 bg-gray-200 p-2">
+                        <div class="font-bold text-sm">{{row.name}}</div>
+                        <div class="flex text-xs">
+                            <div class="w-24"></div>
+                            <div class="w-24 border-l border-gray-400 p-2">Colour</div>
+                            <div class="w-24 border-l border-gray-400 p-2">Chart Type</div>
+                            <div class=" border-l border-gray-400 p-2">Scale Type</div>
+                        </div>
+                        <div class="flex text-xs">
+                            <div class="w-24">Primary Metric</div>
+                            <div class="w-24 border-l border-gray-400 p-2 relative">
+                                <div class="p-1 border border-gray-500">
+                                    <div @click="toggleColorDropdown(row.name+'primary')" class="p-2" :style="'background: ' + row.primary.border"></div>
+                                </div>
+                                <div class="p-1 border border-gray-500 absolute top-0 left-0 z-10 bg-gray-100" :class="ui.colordropdown.id == (row.name + 'primary') && ui.colordropdown.show ? '' : 'hidden'">
+                                    <div class="m-1 text-xs font-bold">Pick a colour</div>
+                                    <div v-for="(color,key,index) in options.colors" @click="setColor(row.name,{primary: { color: color.bg, border: color.border}})" class="cursor-pointer w-20 m-1 border border-gray-400 p-2" :style="'background: ' + color.border"></div>
+                                </div>
+                            </div>
+                            <div class="w-24 flex border-l border-gray-400">
+                                <div @click="addSetting(row.name,{primary:{type: 'bar'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.type == 'bar'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Bar</div>
+                                <div @click="addSetting(row.name,{primary:{type: 'line'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.type == 'line'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Line</div>
+                            </div>
+                            <div class="flex border-l border-gray-400">
+                                <div @click="addSetting(row.name,{primary:{scale: 'linear'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.scale == 'linear'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Linear</div>
+                                <div @click="addSetting(row.name,{primary:{scale: 'logarithmic'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.scale == 'logarithmic'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Logarithmic</div>
+                            </div>
+                        </div>
+                        <div class="flex text-xs">
+                            <div class="w-24">Secondary Metric</div>
+                            <div class="w-24 border-l border-gray-400 p-2 relative">
+                                <div class="p-1 border border-gray-500">
+                                    <div @click="toggleColorDropdown(row.name+'secondary')" class="p-2" :style="'background: ' + row.secondary.border"></div>
+                                </div>
+                                <div class="p-1 border border-gray-500 absolute top-0 left-0 z-10 bg-gray-100" :class="ui.colordropdown.id == (row.name + 'secondary') && ui.colordropdown.show ? '' : 'hidden'">
+                                    <div class="m-1 text-xs font-bold">Pick a colour</div>
+                                    <div v-for="(color,key,index) in options.colors" @click="setColor(row.name,{secondary: { color: color.bg, border: color.border}})" class="cursor-pointer w-20 m-1 border border-gray-400 p-2" :style="'background: ' + color.border"></div>
+                                </div>
+                            </div>
+                            <div class="w-24 flex border-l border-gray-400">
+                                <div @click="addSetting(row.name,{secondary:{type: 'bar'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.secondary.type == 'bar'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Bar</div>
+                                <div @click="addSetting(row.name,{secondary:{type: 'line'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.secondary.type == 'line'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Line</div>
+                            </div>
+                            <div class="flex border-l border-gray-400">
+                                <div @click="addSetting(row.name,{secondary:{scale: 'linear'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.secondary.scale == 'linear'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Linear</div>
+                                <div @click="addSetting(row.name,{secondary:{scale: 'logarithmic'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.secondary.scale == 'logarithmic'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Logarithmic</div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="full" class="absolute top-0 right-0 bottom-0 left-0">
+            <div class="py-4" v-if="settings.controls.menu">
+                <div class="text-xs flex items-start justify-between">
+                    <div>
+                        <div @click="ui.settings = !ui.settings" class="hover:bg-lightlabel p-2 border border-lightlabel m-2 cursor-pointer" :class="ui.settings ? 'bg-lightlabel' : ''">Chart Settings</div>
+                    </div>
+<!--                    <div class="flex items-center">-->
+<!--                        <div class="mr-2">Scale</div>-->
+<!--                        <div class="flex">-->
+<!--                            <div v-for="row in graphControls.scaleType"-->
+<!--                                 class="p-2 border border-hoverslab m-1 cursor-pointer"-->
+<!--                                 :class="selectedScaleType(row[0]) ? 'bg-hoverslab':''"-->
+<!--                                 @click="selectScaleType(row[0])"-->
+<!--                            >-->
+<!--                                {{row[1]}}-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="flex items-center">
                         <div class="mr-2">Metrics</div>
                         <div class="flex border border-hoverslab bg-hoverslab m-1 cursor-pointer p-2 relative">
@@ -124,6 +186,9 @@
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <div class="p-2 border border-lightslab m-1 cursor-pointer">Options</div>
+                    </div>
                 </div>
             </div>
         </simplebar>
@@ -153,6 +218,51 @@
                         'scaleType' : 'logarithmic',
                         'menu' : true,
                     },
+
+                    'chartsettings': [],
+
+                    colors: [
+                        {
+                            bg: 'rgba(183,148,244,0.5)',
+                            border: 'rgba(183,148,244,1)',
+                        },
+                        {
+                            bg: 'rgba(246,135,179,0.5)',
+                            border: 'rgba(246,135,179,1)',
+                        },
+                        {
+                            bg: 'rgba(252,129,129,0.5)',
+                            border: 'rgba(252,129,129,1)',
+                        },
+                        {
+                            bg: 'rgba(246,173,85,0.5)',
+                            border: 'rgba(246,173,85,1)',
+                        },
+                        {
+                            bg: 'rgba(246,224,94,0.5)',
+                            border: 'rgba(246,224,94,1)',
+                        },
+                        {
+                            bg: 'rgba(104,211,145,0.5)',
+                            border: 'rgba(104,211,145,1)',
+                        },
+                        {
+                            bg: 'rgba(79,209,197,0.5)',
+                            border: 'rgba(79,209,197,1)',
+                        },
+                        {
+                            bg: 'rgba(99,179,237,0.5)',
+                            border: 'rgba(99,179,237,1)',
+                        },
+                        {
+                            bg: 'rgba(127,156,245,0.5)',
+                            border: 'rgba(127,156,245,1)',
+                        },
+                        {
+                            bg: 'rgba(113,128,150,0.5)',
+                            border: 'rgba(113,128,150,1)',
+                        },
+                    ],
 
                     'background' : [
                         {
@@ -192,6 +302,12 @@
                 ui : {
                     'primary' : false,
                     'secondary' : false,
+                    'settings': false,
+                    'colordropdown': {
+                        show: false,
+                        id: false,
+                    },
+
                 },
                 'graphControls' : {
                     'x' : [
@@ -224,6 +340,145 @@
             'config',
         ],
         methods: {
+            setColor(name,color)
+            {
+                console.log('Set color of ' + name);
+                console.log(color);
+                this.addSetting(name,color)
+                this.ui.colordropdown.show = false;
+            },
+            toggleColorDropdown(name)
+            {
+                if(this.ui.colordropdown.id == name)
+                {
+                    this.ui.colordropdown.show = !this.ui.colordropdown.show;
+                }
+                else
+                {
+                    this.ui.colordropdown.id = name;
+                    this.ui.colordropdown.show = true;
+                }
+            },
+            addSetting(name,settings)
+            {
+                var data = [];
+                var current = this.options.chartsettings;
+                var found = false;
+
+                const getRandomIntInclusive = function(min, max) {
+                    min = Math.ceil(min);
+                    max = Math.floor(max);
+                    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+                }
+
+                // Copy over locations that are still used
+                for(var x in this.data)
+                {
+                    for(var y in current)
+                    {
+                        if(current[y].name == this.data[x].name.full)
+                        {
+                            data.push(current[y]);
+                            break;
+                        }
+                    }
+                }
+
+                // Check if we are adding a new location
+                if (data.length > 0)
+                {
+                    for(var y in data)
+                    {
+                        if (data[y].name == name)
+                        {
+                            found = y;
+                            break;
+                        }
+                    }
+                }
+
+
+                if(!found)
+                {
+                    var random1 = getRandomIntInclusive(1,this.options.colors.length)-1;
+                    var random2 = getRandomIntInclusive(1,this.options.colors.length)-1;
+                    var scaleType = {primary:'logarithmic',secondary: 'logarithmic'};
+
+                    if(data.length > 0)
+                    {
+                        scaleType.primary = data[0].primary.scale;
+                        scaleType.secondary = data[0].secondary.scale;
+                    }
+                    data.push({
+                        name: name,
+                        primary: {
+                            color: this.options.colors[random1].bg,
+                            border: this.options.colors[random1].border,
+                            type: 'bar',
+                            scale: scaleType.primary,
+                        },
+                        secondary: {
+                            color: this.options.colors[random2].bg,
+                            border: this.options.colors[random2].border,
+                            type: 'bar',
+                            scale: scaleType.secondary,
+                        },
+                    })
+                }
+                else
+                {
+                    if(settings && settings.primary && settings.primary.color)
+                    {
+                        data[found].primary.color = settings.primary.color;
+                    }
+
+                    if(settings && settings.primary && settings.primary.border)
+                    {
+                        data[found].primary.border = settings.primary.border;
+                    }
+
+                    if(settings && settings.primary && settings.primary.type)
+                    {
+                        data[found].primary.type = settings.primary.type;
+                    }
+
+                    if(settings && settings.primary && settings.primary.scale)
+                    {
+                        data[found].primary.scale = settings.primary.scale;
+
+                        for(var x in data)
+                        {
+                            data[x].primary.scale = settings.primary.scale;
+                        }
+                    }
+
+                    if(settings && settings.secondary && settings.secondary.color)
+                    {
+                        data[found].secondary.color = settings.secondary.color;
+                    }
+
+                    if(settings && settings.secondary && settings.secondary.border)
+                    {
+                        data[found].secondary.border = settings.secondary.border;
+                    }
+
+                    if(settings && settings.secondary && settings.secondary.type)
+                    {
+                        data[found].secondary.type = settings.secondary.type;
+                    }
+
+                    if(settings && settings.secondary && settings.secondary.scale)
+                    {
+                        data[found].secondary.scale = settings.secondary.scale;
+                        for(var x in data)
+                        {
+                            data[x].secondary.scale = settings.secondary.scale;
+                        }
+                    }
+                }
+
+                this.options.chartsettings = data;
+            },
             getFieldName(key)
             {
                 if(key)
@@ -300,6 +555,15 @@
             }
         },
         computed: {
+            chartsettings()
+            {
+                var data = [];
+                for(var x in this.data)
+                {
+                    this.addSetting(this.data[x].name.full);
+                }
+                return this.options.chartsettings;
+            },
             settings()
             {
                 return {...this.options, ...this.config};
@@ -590,10 +854,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'Confirmed (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -610,7 +874,7 @@
                                         display: true,
                                         labelString: 'Confirmed',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-confirmed',
@@ -638,10 +902,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'Deaths (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -657,7 +921,7 @@
                                         display: true,
                                         labelString: 'Deaths',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-deaths',
@@ -679,10 +943,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'Recovered (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -698,7 +962,7 @@
                                         display: true,
                                         labelString: 'Recovered',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-recovered',
@@ -720,10 +984,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'New cases per day (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -739,7 +1003,7 @@
                                         display: true,
                                         labelString: 'New cases per day',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-deltaConfirmed',
@@ -761,10 +1025,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'New deaths per day (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -780,7 +1044,7 @@
                                         display: true,
                                         labelString: 'New deaths per day',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-deltaDeaths',
@@ -802,10 +1066,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'New recoveries per day (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -821,7 +1085,7 @@
                                         display: true,
                                         labelString: 'New recoveries per day',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-deltaRecovered',
@@ -843,10 +1107,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'Average growth (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -862,7 +1126,7 @@
                                         display: true,
                                         labelString: 'Average growth',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-average',
@@ -884,10 +1148,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'Growth factor (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -903,7 +1167,7 @@
                                         display: true,
                                         labelString: 'Growth Factor',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-growthFactor',
@@ -1089,10 +1353,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'Confirmed (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -1109,7 +1373,7 @@
                                         display: true,
                                         labelString: 'Confirmed',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-confirmed',
@@ -1137,10 +1401,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'Deaths (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -1156,7 +1420,7 @@
                                         display: true,
                                         labelString: 'Deaths',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-deaths',
@@ -1184,10 +1448,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'Recovered (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -1203,7 +1467,7 @@
                                         display: true,
                                         labelString: 'Recovered',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-recovered',
@@ -1231,10 +1495,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'New cases per day (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -1250,7 +1514,7 @@
                                         display: true,
                                         labelString: 'New cases per day',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-deltaConfirmed',
@@ -1278,10 +1542,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'New deaths per day (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -1297,7 +1561,7 @@
                                         display: true,
                                         labelString: 'New deaths per day',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-deltaDeaths',
@@ -1325,10 +1589,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'New recoveries per day (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -1344,7 +1608,7 @@
                                         display: true,
                                         labelString: 'New recoveries per day',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-deltaRecovered',
@@ -1372,10 +1636,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'Average growth (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -1391,7 +1655,7 @@
                                         display: true,
                                         labelString: 'Average growth',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-average',
@@ -1419,10 +1683,10 @@
                         {
                             data.datasets.push(
                                 {
-                                    type: chartType,
                                     label: 'Growth factor (' + this.data[x].name.full + ')',
-                                    backgroundColor: background[x][metric],
-                                    borderColor: background[x][metric],
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
                                     borderDash: [10, 5],
                                     borderWidth: 2,
                                     pointRadius: 5,
@@ -1438,7 +1702,7 @@
                                         display: true,
                                         labelString: 'Growth factor',
                                     },
-                                    type: this.options.controls.scaleType,
+                                    type: this.options.chartsettings[x][metric].scale,
                                     display: true,
                                     position: position,
                                     id: 'y-growthFactor',
