@@ -1,6 +1,9 @@
 module.exports = {
   theme: {
       extend: {
+          screens: {
+              'fullhd' : '1920px',
+          },
           fontSize: {
               '7xl' : '5rem',
           },

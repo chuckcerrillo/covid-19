@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "chart.js": "^2.9.3",
+        "chartjs-plugin-watermark": "^1.0.3",
         "chartjs-plugin-zoom": "^0.7.5",
         "mapbox-gl": "^1.9.1",
         "numeral": "^2.0.6",

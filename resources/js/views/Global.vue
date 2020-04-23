@@ -38,9 +38,9 @@
                         <p class="text-sm text-yellow-400 m-4">For the full experience, including comparison views and charts, please view this website on a larger screen.</p>
                     </div>
 
-                    <div v-if="loaded" class="hidden xl:block mt-12 h-148">
+                    <div v-if="loaded" class="md:block mt-12 h-64 md:h-120 xl:h-148">
                         <Map
-                            class="w-full rounded-lg overflow-hidden h-full"
+                            class="w-full xl:rounded-lg overflow-hidden h-full"
                             id="world_map"
                             :enable="true"
                             :data="countries_sorted"
@@ -52,19 +52,19 @@
                 </div>
 
                 <div v-if="loaded" class="bg-slab flex flex-1 mt-8 py-8 w-full items-center justify-center">
-                    <div class="w-full xl:w-256">
+                    <div class="w-full med:w-256">
                         <h2 class="m-2 xl:m-0 font-bold text-3xl tracking-tight mb-8">At a glance...</h2>
 
-                        <div class="xl:flex xl:flex-1">
-                            <div class="m-2 xl:m-0 xl:w-1/3">
+                        <div class="lg:flex lg:flex-1">
+                            <div class="m-2 lg:m-0 lg:w-1/3">
                                 <div class="font-bold tracking-tight mb-4">Countries with most cumulative cases</div>
                                 <div class="bg-hoverslab rounded-lg">
                                     <div v-for="(row,key,index) in getSortedCountries('confirmed','desc',5)"
-                                         class="p-2 xl:p-4 flex items-center justify-center">
-                                        <div class="mr-4 xl:mr-0 xl:w-8 xl:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
-                                        <div class="flex xl:block flex-1 xl:flex-none justify-between items-center ">
-                                            <div class="text-primary font-bold text-sm xl:px-2 xl:w-64">{{row.name}}</div>
-                                            <div class="font-bold text-white xl:text-3xl xl:px-2">{{row.total.c | numeralFormat}}</div>
+                                         class="p-2 lg:p-4 flex items-center justify-center">
+                                        <div class="mr-4 lg:mr-0 lg:w-8 lg:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
+                                        <div class="flex lg:block flex-1 lg:flex-none justify-start items-center ">
+                                            <div class="w-40 text-primary font-bold text-sm lg:px-2 xl:w-64">{{row.name}}</div>
+                                            <div class="font-bold text-white lg:text-3xl lg:px-2">{{row.total.c | numeralFormat}}</div>
                                             <div v-if="getLastDelta(row.name)" class="px-2 text-xs text-lightlabel">
                                                 +{{getLastDelta(row.name).confirmed|numeralFormat}} (+{{getLastDelta(row.name).confirmedpc |numeralFormat('0.0%')}})
                                             </div>
@@ -73,15 +73,15 @@
                                 </div>
                             </div>
 
-                            <div class="m-2 xl:m-0 xl:w-1/3 xl:ml-2">
+                            <div class="m-2 lg:m-0 lg:w-1/3 lg:ml-2">
                                 <div class="font-bold tracking-tight mb-4">Countries with most deaths</div>
                                 <div class="bg-hoverslab rounded-lg">
                                     <div v-for="(row,key,index) in getSortedCountries('deaths','desc',5)"
-                                         class="p-2 xl:p-4 flex items-center justify-center">
-                                        <div class="mr-4 xl:mr-0 xl:w-8 xl:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
-                                        <div class="flex xl:block flex-1 xl:flex-none justify-between items-center ">
-                                            <div class="text-primary font-bold text-sm xl:px-2 xl:w-64">{{row.name}}</div>
-                                            <div class="font-bold text-white xl:text-3xl xl:px-2">{{row.total.d | numeralFormat}}</div>
+                                         class="p-2 lg:p-4 flex items-center justify-center">
+                                        <div class="mr-4 lg:mr-0 lg:w-8 lg:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
+                                        <div class="flex lg:block flex-1 lg:flex-none justify-start items-center ">
+                                            <div class="w-40 text-primary font-bold text-sm lg:px-2 xl:w-64">{{row.name}}</div>
+                                            <div class="font-bold text-white lg:text-3xl lg:px-2">{{row.total.d | numeralFormat}}</div>
                                             <div v-if="getLastDelta(row.name)" class="px-2 text-xs text-lightlabel">
                                                 +{{getLastDelta(row.name).deaths|numeralFormat}} (+{{getLastDelta(row.name).deathspc |numeralFormat('0.0%')}})
                                             </div>
@@ -89,15 +89,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="m-2 xl:m-0 xl:w-1/3 xl:ml-2">
+                            <div class="m-2 lg:m-0 lg:w-1/3 lg:ml-2">
                                 <div class="font-bold tracking-tight mb-4">Countries with most recoveries</div>
                                 <div class="bg-hoverslab rounded-lg">
                                     <div v-for="(row,key,index) in getSortedCountries('recovered','desc',5)"
-                                         class="p-2 xl:p-4 flex items-center justify-center">
-                                        <div class="mr-4 xl:mr-0 xl:w-8 xl:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
-                                        <div class="flex xl:block flex-1 xl:flex-none justify-between items-center ">
-                                            <div class="text-primary font-bold text-sm xl:px-2 xl:w-64">{{row.name}}</div>
-                                            <div class="font-bold text-white xl:text-3xl xl:px-2">{{row.total.r | numeralFormat}}</div>
+                                         class="p-2 lg:p-4 flex items-center justify-center">
+                                        <div class="mr-4 lg:mr-0 xl:w-8 lg:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
+                                        <div class="flex lg:block flex-1 lg:flex-none justify-start items-center ">
+                                            <div class="w-40 text-primary font-bold text-sm lg:px-2 lg:w-64">{{row.name}}</div>
+                                            <div class="font-bold text-white lg:text-3xl lg:px-2">{{row.total.r | numeralFormat}}</div>
                                             <div v-if="getLastDelta(row.name)" class="px-2 text-xs text-lightlabel">
                                                 +{{getLastDelta(row.name).recovered|numeralFormat}} (+{{getLastDelta(row.name).recoveredpc|numeralFormat('0.0%')}})
                                             </div>
@@ -111,13 +111,13 @@
                 </div>
 
                 <div class="hidden bg-slab-primary xl:flex flex-1 pt-8 w-full items-center justify-center">
-                    <div class="m-2 xl:m-0 xl:w-256 font-bold text-2xl tracking-tight">
+                    <div class="m-2 lg:m-0 lg:w-256 font-bold text-2xl tracking-tight">
                         Global cases graph
                     </div>
                 </div>
-                <div class="hidden bg-slab-primary xl:flex flex-1 w-full items-center justify-center pb-8">
+                <div class="bg-slab-primary lg:flex flex-1 w-full items-center justify-center pb-8">
                     <div class="w-full xl:w-360">
-                        <div v-if="loaded" class="w-full h-128 xl:h-220 relative rounded my-4">
+                        <div v-if="loaded" class="w-full h-128 lg:h-220 relative rounded my-4">
                             <StatsChart class="absolute left-0 right-0 bottom-0 top-0"
                                         :data="globalDataset"
                                         full="true"
@@ -143,15 +143,15 @@
 
                         <div v-show="global_options.table == 'daily'" class="rounded overflow-hidden">
                             <div class="flex flex-1 items-center justify-start w-full text-xs bg-lightslab">
-                                <div class="w-24 font-bold p-2 xl:w-76">Date</div>
-                                <div class="xl:hidden font-bold p-2 w-full">Stats</div>
-                                <div class="hidden xl:block font-bold p-2 w-36">Confirmed</div>
-                                <div class="hidden xl:block font-bold p-2 w-36">Deaths</div>
-                                <div class="hidden xl:block font-bold p-2 w-36">Recovered</div>
-                                <div class="hidden xl:block font-bold p-2 w-36">Active</div>
-                                <div class="hidden xl:block font-bold p-2 w-36">Growth Factor</div>
+                                <div class="w-24 font-bold p-2 lg:w-76">Date</div>
+                                <div class="lg:hidden font-bold p-2 w-full">Stats</div>
+                                <div class="hidden lg:block font-bold p-2 w-36">Confirmed</div>
+                                <div class="hidden lg:block font-bold p-2 w-36">Deaths</div>
+                                <div class="hidden lg:block font-bold p-2 w-36">Recovered</div>
+                                <div class="hidden lg:block font-bold p-2 w-36">Active</div>
+                                <div class="hidden lg:block font-bold p-2 w-36">Growth Factor</div>
                             </div>
-                            <simplebar data-simplebar-auto-hide="false" class="h-160">
+                            <simplebar data-simplebar-auto-hide="false" class="h-80 lg:h-160">
                                 <div v-for="(row,key,index) in globalDaily.reverse()">
                                     <div v-if="getGlobalDayNotes(moment(row.date).format('YYYY-MM-DD')).length > 0">
                                         <div v-for="annotation in getGlobalDayNotes(moment(row.date).format('YYYY-MM-DD'))"
@@ -167,7 +167,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="xl:hidden flex flex-1 items-start text-xs" :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'">
+                                    <div class="lg:hidden flex flex-1 items-start text-xs" :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'">
                                         <div class="p-2">{{moment(row.date).format('YYYY-MM-DD')}}</div>
                                         <div>
                                             <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2">
@@ -203,7 +203,7 @@
                                     </div>
 
                                     <div
-                                        class="xl:flex flex-1 items-center justify-start w-full text-xs hidden"
+                                        class="lg:flex flex-1 items-center justify-start w-full text-xs hidden"
                                     >
                                         <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-76">{{moment(row.date).format('YYYY-MM-DD')}}</div>
                                         <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.confirmed|numeralFormat}}
@@ -233,16 +233,16 @@
 
                         <div v-if="loaded" v-show="global_options.table == 'countries'" class="bg-lightslab rounded overflow-hidden">
                             <div class="flex flex-1 items-center justify-start w-full text-xs">
-                                <div class="w-32 font-bold p-2 xl:w-112">Name</div>
+                                <div class="w-32 font-bold p-2 lg:w-112">Name</div>
                                 <div class="xl:hidden font-bold p-2 w-full">Stats</div>
                                 <div class="hidden xl:block font-bold p-2 w-36">Confirmed</div>
                                 <div class="hidden xl:block font-bold p-2 w-36">Deaths</div>
                                 <div class="hidden xl:block font-bold p-2 w-36">Recovered</div>
                                 <div class="hidden xl:block font-bold p-2 w-36">Active</div>
                             </div>
-                            <simplebar data-simplebar-auto-hide="false" class="h-160">
+                            <simplebar data-simplebar-auto-hide="false" class="h-80 lg:h-160">
                                 <div v-for="(row,key,index) in getSortedCountries('confirmed','desc')">
-                                    <div class="xl:hidden flex flex-1 items-start text-xs" :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'">
+                                    <div class="lg:hidden flex flex-1 items-start text-xs" :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'">
                                         <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-32">{{row.name}}</div>
                                         <div>
                                             <div class="p-2">
@@ -264,7 +264,7 @@
                                         </div>
                                     </div>
                                     <div
-                                        class="hidden xl:flex flex-1 items-center justify-start w-full text-xs"
+                                        class="hidden lg:flex flex-1 items-center justify-start w-full text-xs"
                                     >
                                         <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-112">{{row.name}}</div>
                                         <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.total.c|numeralFormat}}</div>
