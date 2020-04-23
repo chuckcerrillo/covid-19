@@ -1,8 +1,11 @@
-thi<template>
+<template>
     <div>
-        <div v-if="!loaded">Loading data</div>
+        <div class="fullhd:hidden">
+            <p class="text-sm text-yellow-400 m-4">For the full experience, including comparison views and charts, please view this website on a larger screen (at least 1920x1080). We are currently working on making this tool available on smaller screens.</p>
+        </div>
+        <div class="hidden fullhd:block" v-if="!loaded">Loading data</div>
         <div v-else class="h-full overflow-hidden relative">
-            <div class="relative h-full flex flex-1">
+            <div class="hidden relative h-full fullhd:flex flex-1">
                 <div class="flex flex-col">
 <!--                    <div class="hidden m-4 absolute left-0 top-0 w-full overflow-hidden bg-lightslab rounded h-48 z-10 p-4">-->
 <!--                        <div class="text-2xl tracking-tight font-bold">Global tally</div>-->

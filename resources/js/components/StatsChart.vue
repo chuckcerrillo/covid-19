@@ -717,6 +717,18 @@
                                 mode: 'xy',
                             }
                         }
+                    },
+                    watermark: {
+                        image: '/img/simpler-watermark.png',
+                        width: 187,
+                        height: 65,
+                        x: 20,
+                        y: 70,
+                        opacity: 0.2,
+                        alignX: "right",
+                        alignY: "bottom",
+                        alignToChartArea: false,
+                        position: "back",
                     }
                 };
 
@@ -1244,6 +1256,18 @@
                                 mode: 'xy',
                             }
                         }
+                    },
+                    watermark: {
+                        image: 'http://covid-19-tracker.test/img/favicon-32x32.png',
+                        x: 50,
+                        y: 50,
+                        width: 32,
+                        height: 32,
+                        opacity: 0.5,
+                        alignX: "right",
+                        alignY: "bottom",
+                        alignToChartArea: false,
+                        position: "back",
                     }
                 };
 
