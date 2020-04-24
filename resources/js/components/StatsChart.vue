@@ -362,8 +362,6 @@
         methods: {
             setColor(name,color)
             {
-                console.log('Set color of ' + name);
-                console.log(color);
                 this.addSetting(name,color)
                 this.ui.colordropdown.show = false;
             },
@@ -379,7 +377,6 @@
                     this.ui.colordropdown.show = true;
                 }
                 event.stopPropagation();
-                console.log('toggle color dropdown');
             },
             addSetting(name,settings)
             {
@@ -577,7 +574,6 @@
             },
             resetDropdowns()
             {
-                console.log('reset');
                 this.ui.primary = false;
                 this.ui.secondary = false;
                 this.ui.settings = false;
@@ -616,8 +612,6 @@
             },
             comparison()
             {
-                console.log('Comparison data');
-                console.log(this.data);
                 return this.data;
             },
 
@@ -903,7 +897,7 @@
                                     borderWidth: 2,
                                     pointRadius: 5,
                                     fill: false,
-                                    data: _.cloneDeep(content[x].confirmed),
+                                    data: _.clone(content[x].confirmed),
                                     yAxisID: 'y-confirmed'
                                 }
                             );
@@ -951,7 +945,7 @@
                                     borderWidth: 2,
                                     pointRadius: 5,
                                     fill: false,
-                                    data: _.cloneDeep(content[x].deaths),
+                                    data: _.clone(content[x].deaths),
                                     yAxisID: 'y-deaths'
                                 }
                             );
@@ -998,7 +992,7 @@
                                     borderWidth: 2,
                                     pointRadius: 5,
                                     fill: false,
-                                    data: _.cloneDeep(content[x].recovered),
+                                    data: _.clone(content[x].recovered),
                                     yAxisID: 'y-recovered'
                                 }
                             );
@@ -1045,7 +1039,7 @@
                                     borderWidth: 2,
                                     pointRadius: 5,
                                     fill: false,
-                                    data: _.cloneDeep(content[x].deltaConfirmed),
+                                    data: _.clone(content[x].deltaConfirmed),
                                     yAxisID: 'y-deltaConfirmed'
                                 }
                             );
@@ -1092,7 +1086,7 @@
                                     borderWidth: 2,
                                     pointRadius: 5,
                                     fill: false,
-                                    data: _.cloneDeep(content[x].deltaDeaths),
+                                    data: _.clone(content[x].deltaDeaths),
                                     yAxisID: 'y-deltaDeaths'
                                 }
                             );
@@ -1139,7 +1133,7 @@
                                     borderWidth: 2,
                                     pointRadius: 5,
                                     fill: false,
-                                    data: _.cloneDeep(content[x].deltaRecovered),
+                                    data: _.clone(content[x].deltaRecovered),
                                     yAxisID: 'y-deltaRecovered'
                                 }
                             );
@@ -1186,7 +1180,7 @@
                                     borderWidth: 2,
                                     pointRadius: 5,
                                     fill: false,
-                                    data: _.cloneDeep(content[x].average),
+                                    data: _.clone(content[x].average),
                                     yAxisID: 'y-average'
                                 }
                             );
@@ -1233,7 +1227,7 @@
                                     borderWidth: 2,
                                     pointRadius: 5,
                                     fill: false,
-                                    data: _.cloneDeep(content[x].growthFactor),
+                                    data: _.clone(content[x].growthFactor),
                                     yAxisID: 'y-growthFactor'
                                 }
                             );
