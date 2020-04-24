@@ -59,7 +59,7 @@
                             <div class="m-2 lg:m-0 lg:w-1/3">
                                 <div class="font-bold tracking-tight mb-4">Countries with most cumulative cases</div>
                                 <div v-if="loaded" class="bg-hoverslab rounded-lg">
-                                    <div v-for="(row,key,index) in getSortedCountries('confirmed','desc',5)"
+                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('confirmed','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-center">
                                         <div class="mr-4 lg:mr-0 lg:w-8 lg:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
                                         <div class="flex lg:block flex-1 lg:flex-none justify-start items-center ">
@@ -77,7 +77,7 @@
                             <div class="m-2 lg:m-0 lg:w-1/3 lg:ml-2">
                                 <div class="font-bold tracking-tight mb-4">Countries with most deaths</div>
                                 <div v-if="loaded" class="bg-hoverslab rounded-lg">
-                                    <div v-for="(row,key,index) in getSortedCountries('deaths','desc',5)"
+                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('deaths','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-center">
                                         <div class="mr-4 lg:mr-0 lg:w-8 lg:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
                                         <div class="flex lg:block flex-1 lg:flex-none justify-start items-center ">
@@ -94,7 +94,7 @@
                             <div class="m-2 lg:m-0 lg:w-1/3 lg:ml-2">
                                 <div class="font-bold tracking-tight mb-4">Countries with most recoveries</div>
                                 <div v-if="loaded" class="bg-hoverslab rounded-lg">
-                                    <div v-for="(row,key,index) in getSortedCountries('recovered','desc',5)"
+                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('recovered','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-center">
                                         <div class="mr-4 lg:mr-0 xl:w-8 lg:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
                                         <div class="flex lg:block flex-1 lg:flex-none justify-start items-center ">
