@@ -5,7 +5,6 @@
             v-on:setMode="setMode"
             :mode="mode"
         />
-        <div class="hidden">{{countries}}</div>
         <About
             v-show="about"
             v-on:showAbout="showAbout"
