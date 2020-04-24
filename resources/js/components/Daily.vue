@@ -60,7 +60,7 @@
         <simplebar data-simplebar-auto-hide="false" class="bg-slab rounded"  :class="config.absolute ? 'absolute top-0 left-0 right-0 bottom-0 m-4 ': 'mx-4'" :style="config.absolute ? 'top: 232px; position:absolute' : ''">
             <div
 
-                v-for="(row, key, index) in daily.reverse()"
+                v-for="(row, key, index) in daily"
             >
                 <div class="text-xs"
                                          :class="key % 2 == 1 ? 'bg-slab-primary' : ''">
@@ -310,7 +310,7 @@
                         growthFactor: this.recomputed.growthFactor[x],
                     });
                 }
-                return data;
+                return data.reverse();
             }
         },
         watch: {

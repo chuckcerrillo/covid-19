@@ -282,7 +282,8 @@
                             'key' : 'confirmed',
                             'order' : 'desc',
                         }
-                    }
+                    },
+                    'chart' : {}
                 }
             }
         },
@@ -736,10 +737,11 @@
                     empty = true;
                 if(this.raw_countries[country].daily)
                 {
-                    for(var x in this.raw_countries[country].daily)
+                    var daily = _.clone(this.raw_countries[country].daily);
+                    for(var x in daily)
                     {
 
-                        var row = this.raw_countries[country].daily[x];
+                        var row = daily[x];
                         if(empty && row.total.c == 0)
                         {
                             continue;
@@ -979,23 +981,65 @@
 
                     else if (sort.key == 'confirmed') {
                         if (sort.order == 'desc')
-                            return a.total.c < b.total.c ? 1 : -1;
+                            return parseInt(a.total.c) < parseInt(b.total.c) ? 1 : -1;
                         else
-                            return a.total.c > b.total.c ? 1 : -1;
+                            return parseInt(a.total.c) > parseInt(b.total.c) ? 1 : -1;
                     }
 
                     else if (sort.key == 'deaths') {
                         if (sort.order == 'desc')
-                            return a.total.d < b.total.d ? 1 : -1;
+                            return parseInt(a.total.d) < parseInt(b.total.d) ? 1 : -1;
                         else
-                            return a.total.d > b.total.d ? 1 : -1;
+                            return parseInt(a.total.d) > parseInt(b.total.d) ? 1 : -1;
                     }
 
                     else if (sort.key == 'recovered') {
                         if (sort.order == 'desc')
-                            return a.total.r < b.total.r ? 1 : -1;
+                            return parseInt(a.total.r) < parseInt(b.total.r) ? 1 : -1;
                         else
-                            return a.total.r > b.total.r ? 1 : -1;
+                            return parseInt(a.total.r) > parseInt(b.total.r) ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'active') {
+                        if (sort.order == 'desc')
+                            return parseInt(a.total.active) < parseInt(b.total.active) ? 1 : -1;
+                        else
+                            return parseInt(a.total.active) > parseInt(b.total.active) ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'population') {
+                        if (sort.order == 'desc')
+                            return parseInt(a.total.population) < parseInt(b.total.population) ? 1 : -1;
+                        else
+                            return parseInt(a.total.population) > parseInt(b.total.population) ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'confirmedpc') {
+                        if (sort.order == 'desc')
+                            return parseFloat(a.total.confirmedpc) < parseFloat(b.total.confirmedpc) ? 1 : -1;
+                        else
+                            return parseFloat(a.total.confirmedpc) > parseFloat(b.total.confirmedpc) ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'deathspc') {
+                        if (sort.order == 'desc')
+                            return parseFloat(a.total.deathspc) < parseFloat(b.total.deathspc) ? 1 : -1;
+                        else
+                            return parseFloat(a.total.deathspc) > parseFloat(b.total.deathspc) ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'recoveredpc') {
+                        if (sort.order == 'desc')
+                            return parseFloat(a.total.recoveredpc) < parseFloat(b.total.recoveredpc) ? 1 : -1;
+                        else
+                            return parseFloat(a.total.recoveredpc) > parseFloat(b.total.recoveredpc) ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'stringencyindex') {
+                        if (sort.order == 'desc')
+                            return parseFloat(a.total.stringencyindex) < parseFloat(b.total.stringencyindex) ? 1 : -1;
+                        else
+                            return parseFloat(a.total.stringencyindex) > parseFloat(b.total.stringencyindex) ? 1 : -1;
                     }
                 });
 
@@ -1070,7 +1114,7 @@
             countries_sorted()
             {
                 var sort = this.sort_stats;
-                var data = _.cloneDeep(this.countries());
+                var data = _.clone(this.countries());
                 return data.sort(function (a, b) {
                     if (sort.key == 'country')
                     {
