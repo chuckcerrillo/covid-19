@@ -708,12 +708,12 @@
                     state = item.state,
                     data = [];
 
-                if(this.states[country])
+                if(this.states()[country])
                 {
-                    for(var x in this.states[country].states)
+                    for(var x in this.states()[country].states)
                     {
 
-                        var row = this.states[country].states[x];
+                        var row = _.clone(this.states()[country].states[x]);
                         if(x == state)
                         {
                             for(var y in row.daily)
