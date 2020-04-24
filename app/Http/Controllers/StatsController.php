@@ -3110,7 +3110,7 @@ class StatsController extends Controller
         $delta = true;
         foreach($countries AS $country_name => $country_row)
         {
-            $today = array_pop($country_row['daily']);
+            $today1 = array_pop($country_row['daily']);
             $today = array_pop($country_row['daily']);
             $yesterday = array_pop($country_row['daily']);
             $threedaysago = array_pop($country_row['daily']);
@@ -3133,9 +3133,9 @@ class StatsController extends Controller
 
                     $data[] = [
                         'name' => $country_name,
-                        'confirmed' => $today['total']['c'] - $yesterday['total']['c'],
-                        'deaths' => $today['total']['d'] - $yesterday['total']['d'],
-                        'recovered' => $today['total']['r'] - $yesterday['total']['r'],
+                        'confirmed' => $today1['total']['c'] - ($today1['total']['c'] == $today['total']['c'] ? $yesterday['total']['c'] : $today['total']['c']),
+                        'deaths' => $today1['total']['d'] - ($today1['total']['d'] == $today['total']['d'] ? $yesterday['total']['d'] : $today['total']['d']),
+                        'recovered' => $today1['total']['r'] - ($today1['total']['r'] == $today['total']['r'] ? $yesterday['total']['r'] : $today['total']['r']),
                         'movement' => [
                             'confirmed' => '',
                             'deaths' => '',

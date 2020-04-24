@@ -290,7 +290,7 @@
                                 <simplebar data-simplebar-auto-hide="true" class="h-84 w-full sm:w-64 pr-2">
                                     <div v-if="rankingsConfirmed && rankingsConfirmed.length > 0">
                                         <div v-for="(row,key) in rankingsConfirmed" class="flex items-center text-xs">
-                                            <div class="w-8 text-right text-hoverslab font-bold p-2">{{key+1}}</div>
+                                            <div class="w-12 text-right text-hoverslab font-bold p-2">{{key+1}}</div>
 
                                             <div v-if="row.movement.confirmed == 'up'" class="p-2 arrow-up"></div>
                                             <div v-else-if="row.movement.confirmed == 'down'" class="p-2 arrow-down"></div>
@@ -312,7 +312,7 @@
                                 <simplebar data-simplebar-auto-hide="true" class="h-84 w-full sm:w-64 pr-2">
                                     <div v-if="rankingsDeaths && rankingsDeaths.length > 0">
                                         <div v-for="(row,key) in rankingsDeaths" class="flex items-center text-xs">
-                                            <div class="w-8 text-right text-hoverslab font-bold p-2">{{key+1}}</div>
+                                            <div class="w-12 text-right text-hoverslab font-bold p-2">{{key+1}}</div>
 
                                             <div v-if="row.movement.deaths == 'up'" class="p-2 arrow-up"></div>
                                             <div v-else-if="row.movement.deaths == 'down'" class="p-2 arrow-down"></div>
@@ -767,11 +767,11 @@
         border-bottom-width: 10px;
     }
     .arrow-up:before {
-        border-bottom-color: #68d391;
+        border-bottom-color: #c53030;
         top: -6px;
     }
     .arrow-down:before {
-        border-top-color: #c53030;
+        border-top-color: #68d391;
         top: 6px;
     }
     .equal{
