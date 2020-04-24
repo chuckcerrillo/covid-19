@@ -1,7 +1,7 @@
 <template>
     <div class="absolute top-0 left-0 right-0 bottom-0">
 <!--        <div class="absolute top-0 right-0 bottom-0 left-0 bg-red-400"></div>-->
-        <div class="absolute left-0 top-0 mt-20 ml-4 border border-gray-600 bg-gray-100 text-gray-800 p-4 rounded flex items-start" :class="ui.settings ? 'z-10':'z-0'">
+        <div class="absolute left-0 top-0 mt-20 ml-4 border border-gray-600 bg-gray-100 text-gray-800 p-4 rounded flex items-start" :class="ui.settings ? 'z-10':'w-64 z-0'">
             <div>
                 <div class="font-bold text-2xl mb-4">Chart Settings</div>
                 <div class="flex flex-wrap border" style="max-width:940px; max-height:530px">
@@ -719,9 +719,9 @@
                         }
                     },
                     watermark: {
-                        image: '/img/simpler-watermark.png',
-                        width: 187,
-                        height: 65,
+                        image: '/img/logo/logo-text.png',
+                        width: 194,
+                        height: 250,
                         x: 20,
                         y: 70,
                         opacity: 0.2,
@@ -1258,11 +1258,11 @@
                         }
                     },
                     watermark: {
-                        image: 'http://covid-19-tracker.test/img/favicon-32x32.png',
-                        x: 50,
-                        y: 50,
-                        width: 32,
-                        height: 32,
+                        image: '/img/logo/logo-text.png',
+                        x: 20,
+                        y: 70,
+                        width: 194,
+                        height: 250,
                         opacity: 0.5,
                         alignX: "right",
                         alignY: "bottom",
