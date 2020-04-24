@@ -51,8 +51,8 @@
                     </div>
                 </div>
 
-                <div v-if="loaded" class="bg-slab flex flex-1 mt-8 py-8 w-full items-center justify-center">
-                    <div class="w-full med:w-256">
+                <div v-if="loaded" class="bg-slab flex flex-1 mt-8 py-8 w-full med:w-auto items-center justify-center">
+                    <div class="w-full md:w-256">
                         <h2 class="m-2 xl:m-0 font-bold text-3xl tracking-tight mb-8">At a glance...</h2>
 
                         <div class="lg:flex lg:flex-1">
