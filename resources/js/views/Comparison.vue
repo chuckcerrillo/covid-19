@@ -402,7 +402,7 @@
             getSortedCountries(field,order,limit)
             {
                 var sort = {key: field, order: order};
-                var data = _.cloneDeep(this.countries);
+                var data = _.cloneDeep(this.countries());
                 data = data.sort(function (a, b) {
                     if (sort.key == 'country')
                     {
@@ -508,9 +508,6 @@
                     growthFactor: [],
                     annotations: [],
                 }
-
-                console.log('assemble row')
-                console.log(row);
 
                 var count = 0;
                 var previous = {};
