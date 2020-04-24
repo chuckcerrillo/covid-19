@@ -213,9 +213,9 @@
                     'mode': 'chronological',
 
                     'controls' : {
-                        'primary': 'confirmed',
+                        'primary': 'deltaConfirmed',
                         'secondary' : '',
-                        'scaleType' : 'logarithmic',
+                        'scaleType' : 'linear',
                         'menu' : true,
                     },
 
@@ -338,11 +338,11 @@
                     ],
                     'y' : [
                         ['confirmed','Confirmed cases'],
-                        ['deltaConfirmed','New confirmed cases per day'],
-                        ['deaths','Deaths'],
-                        ['deltaDeaths','New deaths per day'],
-                        ['recovered','Recoveries'],
-                        ['deltaRecovered','New recoveries per day'],
+                        ['deltaConfirmed','Daily confirmed cases'],
+                        ['deaths','Confirmed deaths'],
+                        ['deltaDeaths','Daily confirmed deaths'],
+                        ['recovered','Confirmed recoveries'],
+                        ['deltaRecovered','Daily confirmed recoveries'],
                         ['average','Average new cases (5 day spread)'],
                         ['growthFactor','Growth factor'],
                     ],
