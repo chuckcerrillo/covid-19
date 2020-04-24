@@ -14,7 +14,7 @@
             v-on:updateCompare="updateCompare"
             v-on:updateSelected="updateSelected"
             v-on:saveProcessedData="saveProcessedData"
-            :mode="mode" :key="$route.fullPath" class="fixed top-0 left-0 right-0 bottom-0 xl:mt-14" :loading="database.loading" :database="database"></router-view>
+            :mode="mode" :key="$route.fullPath" class="fixed top-0 left-0 right-0 bottom-0 fullhd:mt-14" :loading="database.loading" :database="database"></router-view>
     </div>
 </template>
 

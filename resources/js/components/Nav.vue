@@ -1,5 +1,5 @@
 <template>
-    <div class="hidden xl:block bg-slab text-white text-left">
+    <div class="hidden fullhd:block bg-slab text-white text-left">
         <div class="py-2 px-2 flex text-heading items-center justify-center">
             <router-link to="/comparison" class="flex items-center"><img src="/img/logo/logo-140.png" style="height:40px" />
             <div class="w-128 py-2 px-2 font-bold mx-2">COVID-19 Tracker <sup class="font-normal">beta</sup></div>

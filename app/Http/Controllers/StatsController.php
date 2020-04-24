@@ -3097,4 +3097,121 @@ class StatsController extends Controller
         file_put_contents(STATS . 'country_index.json',json_encode($country_index));
         return response($country_index)->setStatusCode(Response::HTTP_OK);
     }
+
+    public function daily_ranking()
+    {
+        $filename = STATS . 'master.json';
+        $file = fopen($filename,'r');
+        $countries = json_decode(fread($file,filesize($filename)),true);
+        $sort_yesterday = [];
+        $sort_today = [];
+
+        $data = [];
+        $delta = true;
+        foreach($countries AS $country_name => $country_row)
+        {
+            $today = array_pop($country_row['daily']);
+            $today = array_pop($country_row['daily']);
+            $yesterday = array_pop($country_row['daily']);
+            $threedaysago = array_pop($country_row['daily']);
+
+            if($country_name != 'Global')
+            {
+                $sort_3daysago['confirmed'][] = $threedaysago['total']['c'];
+                $sort_3daysago['deaths'][] = $threedaysago['total']['d'];
+                $sort_3daysago['recovered'][] = $threedaysago['total']['r'];
+
+                if($delta)
+                {
+                    $sort_yesterday['confirmed'][] = $yesterday['total']['c'] - $threedaysago['total']['c'];
+                    $sort_yesterday['deaths'][] = $yesterday['total']['d'] - $threedaysago['total']['d'];
+                    $sort_yesterday['recovered'][] = $yesterday['total']['r'] - $threedaysago['total']['r'];
+
+                    $sort_today['confirmed'][] = $today['total']['c'] - $yesterday['total']['c'];
+                    $sort_today['deaths'][] = $today['total']['d'] - $yesterday['total']['d'];
+                    $sort_today['recovered'][] = $today['total']['r'] - $yesterday['total']['r'];
+
+                    $data[] = [
+                        'name' => $country_name,
+                        'confirmed' => $today['total']['c'] - $yesterday['total']['c'],
+                        'deaths' => $today['total']['d'] - $yesterday['total']['d'],
+                        'recovered' => $today['total']['r'] - $yesterday['total']['r'],
+                        'movement' => [
+                            'confirmed' => '',
+                            'deaths' => '',
+                            'recovered' => '',
+                        ]
+                    ];
+                }
+                else
+                {
+                    $sort_yesterday['confirmed'][] = $yesterday['total']['c'];
+                    $sort_yesterday['deaths'][] = $yesterday['total']['d'];
+                    $sort_yesterday['recovered'][] = $yesterday['total']['r'];
+
+                    $sort_today['confirmed'][] = $today['total']['c'];
+                    $sort_today['deaths'][] = $today['total']['d'];
+                    $sort_today['recovered'][] = $today['total']['r'];
+
+                    $data[] = [
+                        'name' => $country_name,
+                        'confirmed' => $today['total']['c'],
+                        'deaths' => $today['total']['d'],
+                        'recovered' => $today['total']['r'],
+                        'movement' => [
+                            'confirmed' => '',
+                            'deaths' => '',
+                            'recovered' => '',
+                        ]
+                    ];
+                }
+
+
+
+
+
+
+            }
+        }
+
+
+        foreach(['confirmed','deaths','recovered'] AS $field)
+        {
+            $sorted_yesterday = $data;
+            $sorted_today = $data;
+
+            // sorting magic
+            array_multisort($sort_yesterday[$field], SORT_DESC,$sorted_yesterday);
+            array_multisort($sort_today[$field], SORT_DESC,$sorted_today);
+
+
+
+            foreach($data AS $index=>$row)
+            {
+                $key1 = array_search($row['name'],array_column($sorted_yesterday,'name'));
+
+                $key2 = array_search($row['name'],array_column($sorted_today,'name'));
+
+                // Yesterday is greater than today, i.e. went up in rank
+                if($key1 > $key2)
+                {
+                    $data[$index]['movement'][$field] = 'up';
+                }
+                // Yesterday is less than today, i.e. went down in rank
+                else if($key1 < $key2)
+                {
+                    $data[$index]['movement'][$field] = 'down';
+                }
+                // No movement
+                else
+                {
+                    $data[$index]['movement'][$field] = 'equal';
+                }
+            }
+        }
+
+
+
+        return response($data)->setStatusCode(Response::HTTP_OK);
+    }
 }
