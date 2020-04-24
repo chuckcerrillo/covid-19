@@ -3,6 +3,8 @@ module.exports = {
       extend: {
           screens: {
               'fullhd' : '1920px',
+              'wqhd' : '2560px',
+              '4k' : '3840px',
           },
           fontSize: {
               '7xl' : '5rem',

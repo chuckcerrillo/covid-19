@@ -99,10 +99,10 @@
                 </div>
             </div>
             <div class="h-full relative w-full">
-
                 <StatsChart
                     :data="[data]"
                     :annotations="annotations"
+                    :full="true"
                 />
             </div>
         </div>

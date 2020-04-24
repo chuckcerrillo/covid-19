@@ -6,8 +6,8 @@
             <h1 class="text-2xl font-bold mb-2">About</h1>
             <p class="my-2">This COVID-19 tracker uses data from the following sources:</p>
             <ul class="list-disc ml-8 mr-4">
-                <li>COVID-19 data repository by Johns Hopkins Centre for Systems Science and Engineering. (<a class="underline hover:text-lightslab" href="https://github.com/CSSEGISandData/COVID-19">https://github.com/CSSEGISandData/COVID-19</a>)</li>
-                <li>Worldometers (<a class="underline hover:text-lightslab" href="https://www.worldometers.info/coronavirus/">https://www.worldometers.info/coronavirus/</a>)</li>
+                <li><a class="underline hover:text-lightslab" href="https://github.com/CSSEGISandData/COVID-19">COVID-19 data repository</a> by Johns Hopkins Centre for Systems Science and Engineering.</li>
+                <li><a class="underline hover:text-lightslab" href="https://www.worldometers.info/coronavirus/">Worldometers</a></li>
                 <li><a class="underline hover:text-lightslab" href="https://en.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_pandemic">Wikipedia - 2019-20 coronavirus pandemic</a></li>
                 <li><a class="underline hover:text-lightslab" href="https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker" target="_blank">Coronavirus Government Response Tracker</a> by University of Oxford</li>
                 <li>"Growth Factor" <a class="underline hover:text-lightslab" href="https://www.abc.net.au/news/2020-04-10/coronavirus-data-australia-growth-factor-covid-19/12132478">according to ABC Australia</a> is a measure of <em>how fast the number of new cases is going up or down.</em></li>

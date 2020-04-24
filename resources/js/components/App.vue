@@ -152,18 +152,18 @@
         },
         computed:
         {
-            global()
-            {
-                return this.database.processed.global;
-            },
-            countries()
-            {
-                return this.database.processed.countries;
-            },
-            datasets()
-            {
-                return this.database.processed.dataset;
-            }
+            // global()
+            // {
+            //     return this.database.processed.global;
+            // },
+            // countries()
+            // {
+            //     return this.database.processed.countries;
+            // },
+            // datasets()
+            // {
+            //     return this.database.processed.dataset;
+            // }
         },
         watch: {
             $route(to,from) {

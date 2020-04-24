@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute top-0 left-0 right-0 bottom-0">
+    <div class="absolute top-0 left-0 right-0 bottom-0" v-on:click="resetDropdowns()">
 <!--        <div class="absolute top-0 right-0 bottom-0 left-0 bg-red-400"></div>-->
         <div class="absolute left-0 top-0 mt-20 ml-4 border border-gray-600 bg-gray-100 text-gray-800 p-4 rounded flex items-start" :class="ui.settings ? 'z-10':'w-64 z-0'">
             <div>
@@ -20,40 +20,40 @@
                             <div class="w-24">Primary Metric</div>
                             <div class="w-24 border-l border-gray-400 p-2 relative">
                                 <div class="p-1 border border-gray-500">
-                                    <div @click="toggleColorDropdown(row.name+'primary')" class="p-2" :style="'background: ' + row.primary.border"></div>
+                                    <div v-on:click.stop="toggleColorDropdown(row.name+'primary', $event)" class="p-2" :style="'background: ' + row.primary.border"></div>
                                 </div>
                                 <div class="p-1 border border-gray-500 absolute top-0 left-0 z-10 bg-gray-100" :class="ui.colordropdown.id == (row.name + 'primary') && ui.colordropdown.show ? '' : 'hidden'">
                                     <div class="m-1 text-xs font-bold">Pick a colour</div>
-                                    <div v-for="(color,key,index) in options.colors" @click="setColor(row.name,{primary: { color: color.bg, border: color.border}})" class="cursor-pointer w-20 m-1 border border-gray-400 p-2" :style="'background: ' + color.border"></div>
+                                    <div v-for="(color,key,index) in options.colors" v-on:click.stop="setColor(row.name,{primary: { color: color.bg, border: color.border}})" class="cursor-pointer w-20 m-1 border border-gray-400 p-2" :style="'background: ' + color.border"></div>
                                 </div>
                             </div>
                             <div class="w-24 flex border-l border-gray-400">
-                                <div @click="addSetting(row.name,{primary:{type: 'bar'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.type == 'bar'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Bar</div>
-                                <div @click="addSetting(row.name,{primary:{type: 'line'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.type == 'line'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Line</div>
+                                <div v-on:click.stop="addSetting(row.name,{primary:{type: 'bar'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.type == 'bar'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Bar</div>
+                                <div v-on:click.stop="addSetting(row.name,{primary:{type: 'line'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.type == 'line'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Line</div>
                             </div>
                             <div class="flex border-l border-gray-400">
-                                <div @click="addSetting(row.name,{primary:{scale: 'linear'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.scale == 'linear'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Linear</div>
-                                <div @click="addSetting(row.name,{primary:{scale: 'logarithmic'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.scale == 'logarithmic'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Logarithmic</div>
+                                <div v-on:click.stop="addSetting(row.name,{primary:{scale: 'linear'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.scale == 'linear'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Linear</div>
+                                <div v-on:click.stop="addSetting(row.name,{primary:{scale: 'logarithmic'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.scale == 'logarithmic'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Logarithmic</div>
                             </div>
                         </div>
                         <div class="flex text-xs">
                             <div class="w-24">Secondary Metric</div>
                             <div class="w-24 border-l border-gray-400 p-2 relative">
                                 <div class="p-1 border border-gray-500">
-                                    <div @click="toggleColorDropdown(row.name+'secondary')" class="p-2" :style="'background: ' + row.secondary.border"></div>
+                                    <div v-on:click.stop="toggleColorDropdown(row.name+'secondary',$event)" class="p-2" :style="'background: ' + row.secondary.border"></div>
                                 </div>
                                 <div class="p-1 border border-gray-500 absolute top-0 left-0 z-10 bg-gray-100" :class="ui.colordropdown.id == (row.name + 'secondary') && ui.colordropdown.show ? '' : 'hidden'">
                                     <div class="m-1 text-xs font-bold">Pick a colour</div>
-                                    <div v-for="(color,key,index) in options.colors" @click="setColor(row.name,{secondary: { color: color.bg, border: color.border}})" class="cursor-pointer w-20 m-1 border border-gray-400 p-2" :style="'background: ' + color.border"></div>
+                                    <div v-for="(color,key,index) in options.colors" v-on:click.stop="setColor(row.name,{secondary: { color: color.bg, border: color.border}})" class="cursor-pointer w-20 m-1 border border-gray-400 p-2" :style="'background: ' + color.border"></div>
                                 </div>
                             </div>
                             <div class="w-24 flex border-l border-gray-400">
-                                <div @click="addSetting(row.name,{secondary:{type: 'bar'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.secondary.type == 'bar'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Bar</div>
-                                <div @click="addSetting(row.name,{secondary:{type: 'line'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.secondary.type == 'line'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Line</div>
+                                <div v-on:click.stop="addSetting(row.name,{secondary:{type: 'bar'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.secondary.type == 'bar'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Bar</div>
+                                <div v-on:click.stop="addSetting(row.name,{secondary:{type: 'line'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.secondary.type == 'line'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Line</div>
                             </div>
                             <div class="flex border-l border-gray-400">
-                                <div @click="addSetting(row.name,{secondary:{scale: 'linear'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.secondary.scale == 'linear'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Linear</div>
-                                <div @click="addSetting(row.name,{secondary:{scale: 'logarithmic'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.secondary.scale == 'logarithmic'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Logarithmic</div>
+                                <div v-on:click.stop="addSetting(row.name,{secondary:{scale: 'linear'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.secondary.scale == 'linear'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Linear</div>
+                                <div v-on:click.stop="addSetting(row.name,{secondary:{scale: 'logarithmic'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.secondary.scale == 'logarithmic'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Logarithmic</div>
                             </div>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
             <div class="py-4" v-if="settings.controls.menu">
                 <div class="text-xs flex items-start justify-between">
                     <div>
-                        <div @click="ui.settings = !ui.settings" class="hover:bg-lightlabel p-2 border border-lightlabel m-2 cursor-pointer" :class="ui.settings ? 'bg-lightlabel' : ''">Chart Settings</div>
+                        <div @click.stop="ui.settings = !ui.settings" class="hover:bg-lightlabel p-2 border border-lightlabel m-2 cursor-pointer" :class="ui.settings ? 'bg-lightlabel' : ''">Chart Settings</div>
                     </div>
 <!--                    <div class="flex items-center">-->
 <!--                        <div class="mr-2">Scale</div>-->
@@ -81,17 +81,17 @@
                     <div class="flex items-center">
                         <div class="mr-2">Metrics</div>
                         <div class="flex border border-hoverslab bg-hoverslab m-1 cursor-pointer p-2 relative">
-                            <div @click="ui.primary = !ui.primary" class="w-32 truncate ..." v-if="options.controls.primary">{{getFieldName(options.controls.primary)}}</div>
-                            <div @click="ui.primary = !ui.primary" class="w-32" v-else>Select primary metric</div>
+                            <div @click.stop="ui.primary = !ui.primary" class="w-32 truncate ..." v-if="options.controls.primary">{{getFieldName(options.controls.primary)}}</div>
+                            <div @click.stop="ui.primary = !ui.primary" class="w-32" v-else>Select primary metric</div>
                             <div v-show="ui.primary" class="absolute z-10 bg-slab border-hoverslab shadow w-44 right-0 top-0 p-2 border border-hoverslab">
-                                <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" @click="selectField(row[0],'primary')">
+                                <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" @click.stop="selectField(row[0],'primary')">
                                     {{row[1]}}
                                 </div>
                             </div>
                         </div>
                         <div class="flex border border-hoverslab bg-hoverslab m-1 mr-0 cursor-pointer p-2 relative">
-                            <div @click="ui.secondary = !ui.secondary" class="w-32 truncate ..." v-if="options.controls.secondary">{{getFieldName(options.controls.secondary)}}</div>
-                            <div @click="ui.secondary = !ui.secondary" class="w-32" v-else>Select secondary metric</div>
+                            <div @click.stop="ui.secondary = !ui.secondary" class="w-32 truncate ..." v-if="options.controls.secondary">{{getFieldName(options.controls.secondary)}}</div>
+                            <div @click.stop="ui.secondary = !ui.secondary" class="w-32" v-else>Select secondary metric</div>
                             <div v-show="ui.secondary" class="absolute z-10 bg-slab border-hoverslab shadow w-44 right-0 top-0 p-2 border border-hoverslab">
                                 <div class="p-2 m-1 hover:bg-hoverslab"  @click="selectField('','secondary')">None</div>
                                 <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" @click="selectField(row[0],'secondary')">
@@ -135,7 +135,7 @@
                             <div v-for="row in graphControls.scaleType"
                                  class="p-2 border border-hoverslab m-1 cursor-pointer"
                                  :class="selectedScaleType(row[0]) ? 'bg-hoverslab':''"
-                                 @click="selectScaleType(row[0])"
+                                 v-on:click.stop="selectScaleType(row[0])"
                             >
                                 {{row[1]}}
                             </div>
@@ -144,20 +144,20 @@
                     <div class="flex items-center">
                         <div class="mr-2">Metrics</div>
                         <div class="flex border border-hoverslab bg-hoverslab m-1 cursor-pointer p-2 relative">
-                            <div @click="ui.primary = !ui.primary" class="w-32 truncate ..." v-if="options.controls.primary">{{getFieldName(options.controls.primary)}}</div>
-                            <div @click="ui.primary = !ui.primary" class="w-32" v-else>Select primary metric</div>
+                            <div v-on:click.stop="ui.primary = !ui.primary" class="w-32 truncate ..." v-if="options.controls.primary">{{getFieldName(options.controls.primary)}}</div>
+                            <div v-on:click.stop="ui.primary = !ui.primary" class="w-32" v-else>Select primary metric</div>
                             <div v-show="ui.primary" class="absolute z-10 bg-slab border-hoverslab shadow w-44 right-0 top-0 p-2 border border-hoverslab">
-                                <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" @click="selectField(row[0],'primary')">
+                                <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" v-on:click.stop="selectField(row[0],'primary')">
                                     {{row[1]}}
                                 </div>
                             </div>
                         </div>
                         <div class="flex border border-hoverslab bg-hoverslab m-1 mr-0 cursor-pointer p-2 relative">
-                            <div @click="ui.secondary = !ui.secondary" class="w-32 truncate ..." v-if="options.controls.secondary">{{getFieldName(options.controls.secondary)}}</div>
-                            <div @click="ui.secondary = !ui.secondary" class="w-32" v-else>Select secondary metric</div>
+                            <div v-on:click.stop="ui.secondary = !ui.secondary" class="w-32 truncate ..." v-if="options.controls.secondary">{{getFieldName(options.controls.secondary)}}</div>
+                            <div v-on:click.stop="ui.secondary = !ui.secondary" class="w-32" v-else>Select secondary metric</div>
                             <div v-show="ui.secondary" class="absolute z-10 bg-slab border-hoverslab shadow w-44 right-0 top-0 p-2 border border-hoverslab">
-                                <div class="p-2 m-1 hover:bg-hoverslab"  @click="selectField('','secondary')">None</div>
-                                <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" @click="selectField(row[0],'secondary')">
+                                <div class="p-2 m-1 hover:bg-hoverslab"  v-on:click.stop="selectField('','secondary')">None</div>
+                                <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" v-on:click.stop="selectField(row[0],'secondary')">
                                     {{row[1]}}
                                 </div>
                             </div>
@@ -180,7 +180,7 @@
                                 v-for="row in graphControls.x"
                                 class="p-2 border border-lightslab m-1 cursor-pointer"
                                 :class="selectedMode(row[0]) ? 'bg-lightslab':''"
-                                @click="selectMode(row[0])"
+                                v-on:click.stop="selectMode(row[0])"
                             >
                                 {{row[1]}}
                             </div>
@@ -223,6 +223,10 @@
 
                     colors: [
                         {
+                            bg: 'rgba(102,14,255,0.5)',
+                            border: 'rgba(102,14,255,1)',
+                        },
+                        {
                             bg: 'rgba(183,148,244,0.5)',
                             border: 'rgba(183,148,244,1)',
                         },
@@ -235,12 +239,20 @@
                             border: 'rgba(252,129,129,1)',
                         },
                         {
-                            bg: 'rgba(246,173,85,0.5)',
-                            border: 'rgba(246,173,85,1)',
+                            bg: 'rgba(255,36,36,0.5)',
+                            border: 'rgba(255,36,36,1)',
                         },
                         {
-                            bg: 'rgba(246,224,94,0.5)',
-                            border: 'rgba(246,224,94,1)',
+                            bg: 'rgba(158,86,0,0.5)',
+                            border: 'rgba(158,86,0,1)',
+                        },
+                        {
+                            bg: 'rgba(247,139,10,0.5)',
+                            border: 'rgba(247,139,10,1)',
+                        },
+                        {
+                            bg: 'rgba(228,197,16,0.5)',
+                            border: 'rgba(228,197,16,1)',
                         },
                         {
                             bg: 'rgba(104,211,145,0.5)',
@@ -257,6 +269,14 @@
                         {
                             bg: 'rgba(127,156,245,0.5)',
                             border: 'rgba(127,156,245,1)',
+                        },
+                        {
+                            bg: 'rgba(3,65,255,0.5)',
+                            border: 'rgba(3,65,255,1)',
+                        },
+                        {
+                            bg: 'rgba(23,47,82,0.5)',
+                            border: 'rgba(23,47,82,1)',
                         },
                         {
                             bg: 'rgba(113,128,150,0.5)',
@@ -347,7 +367,7 @@
                 this.addSetting(name,color)
                 this.ui.colordropdown.show = false;
             },
-            toggleColorDropdown(name)
+            toggleColorDropdown(name, event)
             {
                 if(this.ui.colordropdown.id == name)
                 {
@@ -358,6 +378,8 @@
                     this.ui.colordropdown.id = name;
                     this.ui.colordropdown.show = true;
                 }
+                event.stopPropagation();
+                console.log('toggle color dropdown');
             },
             addSetting(name,settings)
             {
@@ -552,6 +574,13 @@
                     var country = this.data[x];
 
                 }
+            },
+            resetDropdowns()
+            {
+                console.log('reset');
+                this.ui.primary = false;
+                this.ui.secondary = false;
+                this.ui.settings = false;
             }
         },
         computed: {
@@ -722,9 +751,9 @@
                         image: '/img/logo/logo-text.png',
                         width: 194,
                         height: 250,
-                        x: 20,
+                        x: 100,
                         y: 70,
-                        opacity: 0.2,
+                        opacity: 0.1,
                         alignX: "right",
                         alignY: "bottom",
                         alignToChartArea: false,
@@ -945,7 +974,13 @@
                                     ticks: {
                                         fontColor: '#2c3531',
                                         callback: function(tick, index, ticks) {
-                                            return tick.toLocaleString()
+                                            if(
+                                                tick.toString().substr(0,1) == 1
+                                                || tick.toString().substr(0,1) == 5
+                                            )
+                                            {
+                                                return tick.toLocaleString();
+                                            }
                                         }
                                     }
                                 },
@@ -986,7 +1021,13 @@
                                     ticks: {
                                         fontColor: '#2c3531',
                                         callback: function(tick, index, ticks) {
-                                            return tick.toLocaleString()
+                                            if(
+                                                tick.toString().substr(0,1) == 1
+                                                || tick.toString().substr(0,1) == 5
+                                            )
+                                            {
+                                                return tick.toLocaleString();
+                                            }
                                         }
                                     }
                                 },
@@ -1027,7 +1068,13 @@
                                     ticks: {
                                         fontColor: '#2c3531',
                                         callback: function(tick, index, ticks) {
-                                            return tick.toLocaleString()
+                                            if(
+                                                tick.toString().substr(0,1) == 1
+                                                || tick.toString().substr(0,1) == 5
+                                            )
+                                            {
+                                                return tick.toLocaleString();
+                                            }
                                         }
                                     }
                                 },
@@ -1068,7 +1115,13 @@
                                     ticks: {
                                         fontColor: '#2c3531',
                                         callback: function(tick, index, ticks) {
-                                            return tick.toLocaleString()
+                                            if(
+                                                tick.toString().substr(0,1) == 1
+                                                || tick.toString().substr(0,1) == 5
+                                            )
+                                            {
+                                                return tick.toLocaleString();
+                                            }
                                         }
                                     }
                                 },
@@ -1109,7 +1162,13 @@
                                     ticks: {
                                         fontColor: '#2c3531',
                                         callback: function(tick, index, ticks) {
-                                            return tick.toLocaleString()
+                                            if(
+                                                tick.toString().substr(0,1) == 1
+                                                || tick.toString().substr(0,1) == 5
+                                            )
+                                            {
+                                                return tick.toLocaleString();
+                                            }
                                         }
                                     }
                                 },
@@ -1150,7 +1209,13 @@
                                     ticks: {
                                         fontColor: '#2c3531',
                                         callback: function(tick, index, ticks) {
-                                            return tick.toLocaleString()
+                                            if(
+                                                tick.toString().substr(0,1) == 1
+                                                || tick.toString().substr(0,1) == 5
+                                            )
+                                            {
+                                                return tick.toLocaleString();
+                                            }
                                         }
                                     }
                                 },
@@ -1259,11 +1324,11 @@
                     },
                     watermark: {
                         image: '/img/logo/logo-text.png',
-                        x: 20,
+                        x: 100,
                         y: 70,
                         width: 194,
                         height: 250,
-                        opacity: 0.5,
+                        opacity: 0.1,
                         alignX: "right",
                         alignY: "bottom",
                         alignToChartArea: false,
