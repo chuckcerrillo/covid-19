@@ -51,7 +51,7 @@
                     </div>
                 </div>
 
-                <div v-if="loaded" class="bg-slab flex flex-1 mt-8 py-8 w-full med:w-auto items-center justify-center">
+                <div v-if="loaded" class="bg-slab flex flex-1 py-8 w-full med:w-auto items-center justify-center">
                     <div class="w-full md:w-256">
                         <h2 class="m-2 xl:m-0 font-bold text-3xl tracking-tight mb-8">At a glance...</h2>
 
@@ -118,7 +118,7 @@
                 <div class="bg-slab-primary lg:flex flex-1 w-full items-center justify-center pb-8">
                     <div class="w-full xl:w-360">
                         <div v-if="loaded" class="w-full h-128 lg:h-220 relative rounded my-4">
-                            <StatsChart class="absolute left-0 right-0 bottom-0 top-0"
+                            <StatsChart class="absolute left-0 right-0 bottom-0 top-0 overflow-hidden"
                                         :data="globalDataset"
                                         full="true"
                                         :config="

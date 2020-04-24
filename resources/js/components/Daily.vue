@@ -1,7 +1,7 @@
 <template>
     <div class="h-full">
-        <div class="absolute top-0 left-0 right-0">
-            <div class="mx-4 pt-4 relative flex items-center justify-between">
+        <div class="" :class="config.absolute ? 'absolute top-0 left-0 right-0': ''">
+            <div v-if="config.solo == false" class="mx-4 pt-4 relative flex items-center justify-between">
                 <h2 class="font-bold text-3xl">{{data.name.full}}</h2>
                 <div class="flex">
                     <div
@@ -57,7 +57,7 @@
                 </div>
             </div>
         </div>
-        <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0 bg-slab absolute m-4 rounded" style="top: 232px; position:absolute">
+        <simplebar data-simplebar-auto-hide="false" class="bg-slab rounded"  :class="config.absolute ? 'absolute top-0 left-0 right-0 bottom-0 m-4 ': 'mx-4'" :style="config.absolute ? 'top: 232px; position:absolute' : ''">
             <div
 
                 v-for="(row, key, index) in daily.reverse()"
@@ -167,6 +167,7 @@
         },
         props: [
             'data',
+            'settings'
         ],
         data(){
             return {
@@ -245,6 +246,13 @@
             }
         },
         computed: {
+
+            config() {
+                return {
+                    'absolute': (this.settings && this.settings.absolute) ? this.settings.absolute : false,
+                    'solo': (this.settings && this.settings.solo) ? this.settings.solo : false,
+                }
+            },
             annotations()
             {
                 var data = [];
@@ -252,18 +260,18 @@
                 {
                     if(this.data.annotations[x].country == 'All')
                     {
-                        data.push(this.data.annotations[x]);
+                        data.push(_.clone(this.data.annotations[x]));
                     }
                     else if(this.data.annotations[x].state && this.data.name.state.length > 0)
                     {
                         if(this.data.name.state == this.data.annotations[x].state)
                         {
-                            data.push(this.data.annotations[x]);
+                            data.push(_.clone(this.data.annotations[x]));
                         }
                     }
                     else
                     {
-                        data.push(this.data.annotations[x]);
+                        data.push(_.clone(this.data.annotations[x]));
                     }
                 }
                 return data;

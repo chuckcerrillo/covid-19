@@ -1915,6 +1915,7 @@ class StatsController extends Controller
             </tr>
         ';
 
+        $population = 0;
         foreach($data AS $country=> $row)
         {
             $global['total']['confirmed'] += $row['total']['c'];
@@ -1931,7 +1932,10 @@ class StatsController extends Controller
             <td>' . $global['total']['recovered'] . '</td>
             </tr>
             ';
+            if(isset($row['population']))
+                $population += (int)$row['population'];
         }
+
         echo '
         <tr>
             <td>GLOBAL TOTAL</td>
@@ -1944,6 +1948,50 @@ class StatsController extends Controller
         </tr>
         </table>';
 
+        // Treat "Global" as a country
+        $data['Global'] = [
+            "admin2"=> "",
+            "code3"=> "4",
+            "daily"=> [],
+            "fips"=> "",
+            "iso2"=> "AF",
+            "iso3"=> "AFG",
+            "lat"=> "33.93911",
+            "long"=> "67.709953",
+            "name"=> "Global",
+            "population"=> $population,
+            "states"=> [],
+            "total"=> [
+                'l' => $global['total']['last_update'],
+                'c' => $global['total']['confirmed'],
+                'd' => $global['total']['deaths'],
+                'r' => $global['total']['recovered'],
+            ],
+            "uid" => "0",
+        ];
+
+        foreach($global['daily'] AS $date => $row)
+        {
+            $data['Global']['daily'][$date] = [
+                'states' => [
+                    'Unspecified' => [
+                        'c' => $row['confirmed'],
+                        'd' => $row['deaths'],
+                        'r' => $row['recovered'],
+                    ]
+                ],
+                'total' => [
+                    'c' => $row['confirmed'],
+                    'd' => $row['deaths'],
+                    'r' => $row['recovered'],
+                ]
+            ];
+        }
+
+        $data['Global']['daily'][array_key_last($data['Global']['daily'])]['total']['c'] = $data['Global']['total']['c'];
+        $data['Global']['daily'][array_key_last($data['Global']['daily'])]['total']['d'] = $data['Global']['total']['d'];
+        $data['Global']['daily'][array_key_last($data['Global']['daily'])]['total']['r'] = $data['Global']['total']['r'];
+
         // Write the file
         file_put_contents(STATS . 'master.json',json_encode($data));
 
@@ -1953,28 +2001,31 @@ class StatsController extends Controller
 
         foreach($data AS $country=>$row)
         {
-            $states[$country] = [
-                'name' => $row['name'],
-                'states' => [],
-            ];
-
-
-            if(count($row['states']) > 0)
+            if($country != 'Global')
             {
-                foreach($row['states'] AS $state => $state_row)
+                $states[$country] = [
+                    'name' => $row['name'],
+                    'states' => [],
+                ];
+
+
+                if(count($row['states']) > 0)
                 {
-                    if(isset($state_row['total']))
+                    foreach($row['states'] AS $state => $state_row)
                     {
-                        $states[$country]['states'][$state]['total'] = $state_row['total'];
+                        if(isset($state_row['total']))
+                        {
+                            $states[$country]['states'][$state]['total'] = $state_row['total'];
+                        }
                     }
                 }
-            }
 
-            foreach($row['daily'] AS $date => $daily_row)
-            {
-                foreach($daily_row['states'] AS $state => $state_row)
+                foreach($row['daily'] AS $date => $daily_row)
                 {
-                    $states[$country]['states'][$state]['daily'][$date] = $state_row;
+                    foreach($daily_row['states'] AS $state => $state_row)
+                    {
+                        $states[$country]['states'][$state]['daily'][$date] = $state_row;
+                    }
                 }
             }
         }
@@ -2996,5 +3047,54 @@ class StatsController extends Controller
         $file = fopen($filename,'r');
         $countries = fread($file,filesize($filename));
         return response($countries)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function transform()
+    {
+        $filename = STATS . 'master.json';
+        $file = fopen($filename,'r');
+        $master = json_decode(fread($file,filesize($filename)),true);
+
+        $country_index = [];
+        foreach($master AS $country => $country_row)
+        {
+            $data = $country_row;
+            $country_index[] = $country;
+
+            $previous = false;
+
+            foreach($data['daily'] AS $date => $row)
+            {
+                foreach($row['states'] AS $state => $state_row)
+                {
+                    $data['daily'][$date]['states'][$state]['active'] = $state_row['c'] - $state_row['d'] - $state_row['r'];
+                    if(isset($data['daily'][$previous]['states'][$state]))
+                    {
+                        $data['daily'][$date]['states'][$state]['deltac'] =
+                            $state_row['c'] - $data['daily'][$previous]['states'][$state]['c'];
+                        $data['daily'][$date]['states'][$state]['deltad'] =
+                            $state_row['d'] - $data['daily'][$previous]['states'][$state]['d'];
+                        $data['daily'][$date]['states'][$state]['deltar'] =
+                            $state_row['r'] - $data['daily'][$previous]['states'][$state]['r'];
+                        $data['daily'][$date]['states'][$state]['deltaa'] = $data['daily'][$date]['states'][$state]['active'] - $data['daily'][$previous]['states'][$state]['active'];
+                    }
+                    else
+                    {
+                        $data['daily'][$date]['states'][$state]['deltac'] = $state_row['c'];
+                        $data['daily'][$date]['states'][$state]['deltad'] = $state_row['d'];
+                        $data['daily'][$date]['states'][$state]['deltar'] = $state_row['r'];
+                        $data['daily'][$date]['states'][$state]['deltaa'] = $data['daily'][$date]['states'][$state]['active'];
+                    }
+                }
+
+                $previous = $date;
+            }
+
+
+            file_put_contents(STATS . 'countries/' . (count($country_index) - 1 ) . '.json',json_encode($data));
+        }
+
+        file_put_contents(STATS . 'country_index.json',json_encode($country_index));
+        return response($country_index)->setStatusCode(Response::HTTP_OK);
     }
 }

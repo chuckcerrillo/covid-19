@@ -6,33 +6,31 @@
         <div class="hidden fullhd:block" v-if="!loaded">Loading data</div>
         <div v-else class="h-full overflow-hidden relative">
             <div class="hidden relative h-full fullhd:flex flex-1">
-                <div class="flex flex-col">
-<!--                    <div class="hidden m-4 absolute left-0 top-0 w-full overflow-hidden bg-lightslab rounded h-48 z-10 p-4">-->
-<!--                        <div class="text-2xl tracking-tight font-bold">Global tally</div>-->
-<!--                        <div class="text-xs mb-4">as of {{global.last_update}}</div>-->
+                <div class="flex flex-col" :class="view == 'dashboard' ? 'hidden' : ''">
+                    <div class="m-4 mb-0 overflow-hidden bg-lightslab rounded h-56 z-10 p-4">
+                        <div class="text-2xl tracking-tight font-bold">Global tally</div>
+                        <div class="text-xs mb-4">as of {{global().last_update}}</div>
 
-<!--                        <div class="flex font-bold justify-between items-center">-->
-<!--                            <div class="m-2">-->
-<!--                                <div class="text-sm">Confirmed</div>-->
-<!--                                <div class="text-3xl text-white">{{global.total.confirmed| numeralFormat}}</div>-->
-<!--                            </div>-->
-<!--                            <div class="m-2">-->
-<!--                                <div class="text-sm">Deaths</div>-->
-<!--                                <div class="text-3xl text-white">{{global.total.deaths| numeralFormat}}</div>-->
-<!--                            </div>-->
-<!--                            <div class="m-2">-->
-<!--                                <div class="text-sm">Recovered</div>-->
-<!--                                <div class="text-3xl text-white">{{global.total.recovered| numeralFormat}}</div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
-
-<!--                    </div>-->
+                        <div class="flex font-bold justify-between items-center">
+                            <div class="m-2 ml-0">
+                                <div class="text-sm">Confirmed</div>
+                                <div class="text-3xl text-white">{{global().total.confirmed| numeralFormat}}</div>
+                            </div>
+                            <div class="m-2">
+                                <div class="text-sm">Deaths</div>
+                                <div class="text-3xl text-white">{{global().total.deaths| numeralFormat}}</div>
+                            </div>
+                            <div class="m-2 mr-0">
+                                <div class="text-sm">Recovered</div>
+                                <div class="text-3xl text-white">{{global().total.recovered| numeralFormat}}</div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="overflow-hidden bg-slab rounded m-4 flex flex-col items-start h-full p-4 relative">
                         <div class="">
                             <div class="tracking-tight font-bold">Countries and states <br>({{countries().length}} total)</div>
                             <div class="text-xs text-right">Sorting by {{sort_stats.key}} {{sort_stats.order}}</div>
-                            <div class="flex font-bold py-2 text-xs items-center">
+                            <div class="flex font-bold py-2 text-xs items-center bg-slab-primary">
                                 <div class="w-4 p-2 m-1 ml-0"></div>
                                 <div class="w-32 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key == 'country' ? 'bg-hoverslab' : '' " @click="toggleSort('country')">Country / Region</div>
                                 <div class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmed')">Confirmed</div>
@@ -46,8 +44,10 @@
                                     v-for="(data,key,index) in countries_sorted"
                                     v-on:selectCountry="selectCountry"
                                     :data="data"
+                                    :key="key"
                                     :country_key="key"
                                     :compare="compare"
+                                    :settings="{dashboard:false}"
                                 />
 
                             </simplebar>
@@ -57,20 +57,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="m-4 ml-0 w-full overflow-hidden relative">
+                <div class="m-4 ml-0 w-full overflow-hidden relative" :class="view == 'dashboard' ? 'ml-4': ''">
                     <div class="bg-slab rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col p-4">
-                        <div class="absolute top-0 right-0 left-0 h-28 p-4">
-                            <div @click="preload()" class="text-2xl font-bold mb-2">Compare statistics</div>
-                            <div class="text-sm font-bold flex items-center">
-                                <!--                                <div @click="ui.content.selectedTab = 'summary'" class="cursor-pointer text-lightslab mr-2 py-2 px-4 pl-0 border-b-4 hover:text-heading" :class="ui.content.selectedTab == 'summary' ? 'border-hoverslab text-heading' : 'border-slab'">Summary</div>-->
-                                <!--                                <div @click="ui.content.selectedTab = 'timeline'" class="cursor-pointer text-lightslab mr-2 py-2 px-4 pl-0 border-b-4 hover:text-heading" :class="ui.content.selectedTab == 'timeline' ? 'border-hoverslab text-heading' : 'border-slab'">Timeline</div>-->
-                                <router-link to="/comparison/response/" class="cursor-pointer text-lightslab mr-2 py-2 px-4 pl-0 border-b-4 hover:text-heading" :class="view == 'response' ? 'border-hoverslab text-heading' : 'border-slab'">Government Response</router-link>
-                                <router-link to="/comparison/daily/" class="cursor-pointer text-lightslab mr-2 py-2 px-4 pl-0 border-b-4 hover:text-heading" :class="view == 'daily' ? 'border-hoverslab text-heading' : 'border-slab'">Daily breakdown</router-link>
-                                <router-link to="/comparison/charts/" class="cursor-pointer text-lightslab mr-2 py-2 px-4 pl-0 border-b-4 hover:text-heading" :class="view == 'charts' ? 'border-hoverslab text-heading' : 'border-slab'">Charts</router-link>
-                            </div>
-                        </div>
-                        <div class="absolute top-0 right-0 bottom-0 left-0 mt-28 p-4">
-                            <div v-if="view != 'charts'" class="text-xs flex items-center justify-start absolute top-0 mt-4">
+                        <div class="absolute top-0 right-0 bottom-0 left-0 p-4">
+                            <div v-if="view != 'charts' && view != 'dashboard'" class="text-xs flex items-center justify-start">
                                 <div v-for="(row,key,index) in compare">
                                     <div @click="updateSelected(key)" class="w-48 cursor-pointer relative rounded rounded-b-none py-2 px-4 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'">
                                         {{getCompareLength() > 0 && row.state ? row.state + ' - ' : ''}}
@@ -79,7 +69,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="h-full relative mt-8" v-show="view == 'response'">
+                            <div class="h-full relative" v-show="view == 'response'">
                                 <div v-if="getCompareLength() == 0">
                                     <h1 class="text-3xl font-bold">Government Response Tracker</h1>
                                     <div>
@@ -92,7 +82,7 @@
                                         <p class="mt-8">Select a country or state to begin comparing.</p>
                                     </div>
                                 </div>
-                                <div v-else class="absolute top-0 left-0 right-0 bottom-0 rounded bg-hoverslab" style="bottom: 32px;">
+                                <div v-else class="absolute top-0 left-0 right-0 bottom-0 rounded bg-hoverslab">
                                     <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0 m-4" style="position:absolute">
                                         <div v-for="(row,key,index) in getUniqueCountriesCompare()" class="bg-hoverslab rounded p-4" v-show="selectedCompareTab.substr(0,row.country.length) == row.country">
                                             <div class="my-4">
@@ -130,16 +120,17 @@
                                 </div>
                             </div>
                             <!--                                <div class="" v-show="ui.content.selectedTab == 'timeline'">Timeline</div>-->
-                            <div class="h-full relative mt-8" v-show="view == 'daily'">
+                            <div class="h-full relative" v-show="view == 'daily'">
                                 <div v-if="getCompareLength() == 0">
                                     Select up to {{options.compare_limit}} countries or states to begin comparing.
                                 </div>
-                                <div v-else class="absolute top-0 right-0 bottom-0 left-0 bg-hoverslab rounded" style="bottom: 32px;">
+                                <div v-else class="absolute top-0 right-0 bottom-0 left-0 bg-hoverslab rounded" style="bottom:32px;">
                                     <div v-if="getCompareLength() > 0" v-for="(row,key,index) in compare" class="">
                                         <div class="h-full" :class="selectedCompareTab != key ? 'hidden' : ''">
                                             <Daily
                                                 v-on:removeCompare="removeCompare"
                                                 :data="getComparisonData()[index]"
+                                                :settings="{absolute:true, solo:false}"
                                             />
                                         </div>
                                     </div>
@@ -147,6 +138,84 @@
                             </div>
                             <div class="h-full relative flex flex-1 pt-8" v-show="view == 'charts'">
                                 <StatsChart :data="getComparisonData()" :full="true" />
+                            </div>
+
+
+
+                            <div class="h-full relative flex flex-1" v-show="view == 'dashboard'">
+                                <simplebar data-simplebar-auto-hide="true" class="h-full w-full">
+                                    <div class="flex items-start">
+                                        <div class="w-full h-64 md:h-120 xl:h-148 wqhd:h-200">
+                                            <Map
+                                                class="w-full xl:rounded-lg overflow-hidden h-full"
+                                                id="world_map"
+                                                :enable="true"
+                                                :data="countries_sorted"
+                                            />
+                                            <div class="mt-4 flex">
+                                                <div @click="ui.dashboard.table = 'daily'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="ui.dashboard.table == 'daily' ? 'border border-heading bg-lightslab':''">Daily stats</div>
+                                                <div @click="ui.dashboard.table = 'countries'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="ui.dashboard.table == 'countries' ? 'border border-heading  bg-lightslab':''">Countries</div>
+                                            </div>
+                                            <div class="mt-4 tableforglobaldata relative bg-hoverslab p-2 rounded" v-show="ui.dashboard.table == 'daily'">
+                                                <Daily
+                                                    :data="getGlobalData()"
+                                                    :settings="{absolute:false, solo:true}"
+                                                />
+                                            </div>
+                                            <div class="mt-4 tableforglobaldata relative bg-hoverslab p-2 rounded" v-show="ui.dashboard.table == 'countries'">
+                                                <div class="mx-2 border-b border-hoverslab">
+                                                    <div class="tracking-tight font-bold">Countries and states <br>({{countries().length}} total)</div>
+                                                    <div class="text-xs text-right">Sorting by {{ui.dashboard.sort_stats.key}} {{ui.dashboard.sort_stats.order}}</div>
+                                                    <div class="flex font-bold py-2 text-xs items-center bg-slab-primary rounded-t flex justify-center items-end">
+                                                        <div class="w-4 p-2 m-1 ml-0"></div>
+                                                        <div class="w-32 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'country' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('country')">Country / Region</div>
+                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('confirmed')">Confirmed</div>
+                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'deaths' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('deaths')">Deaths</div>
+                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'recovered' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('recovered')">Recovered</div>
+                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'active' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('active')">Active</div>
+                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'population' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('population')">Population</div>
+                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'confirmedpc' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('confirmedpc')">Confirmed Per 1M population</div>
+                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'deathspc' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('deathspc')">Deaths Per 1M population</div>
+                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'recoveredpc' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('recoveredpc')">Recovered Per 1M population</div>
+                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'stringencyindex' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('stringencyindex')">Stringency Index</div>
+                                                    </div>
+                                                </div>
+                                                <div class="relative mx-2">
+                                                        <CountryStateItem
+                                                            v-for="(data,key,index) in dashboard_countries_sorted()"
+                                                            :key="key"
+                                                            :data="data"
+                                                            :country_key="key"
+                                                            :compare="compare"
+                                                            :settings="{dashboard:true}"
+                                                        />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="w-128 rounded bg-hoverslab p-4 ml-4">
+                                            <div class="font-bold mb-2">Events</div>
+                                            <simplebar data-simplebar-auto-hide="true" class="text-sm h-48 md:h-120 xl:h-132 wqhd:h-184" >
+    <!--                                        {{getAnnotations()}}-->
+                                                <ul>
+                                                    <li v-if="getAnnotations().length == 0" class="text-xs p-4">
+                                                        Nothing to show here.
+                                                    </li>
+                                                    <li v-for="note in getAnnotations()" class="flex text-xs items-start justify-start mr-4">
+                                                        <div class="mr-1 w-20 text-date-slab">{{note.date}}</div>
+                                                        <div class="w-full">
+                                                            <span v-if="note.state.length > 0" class="font-bold mr-1">[{{note.state}}]</span>
+                                                            <span>{{note.notes}}</span>
+                                                            <span v-if="note.url"><a class="underline hover:text-white" :href="note.url">(source)</a></span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </simplebar>
+                                        </div>
+                                    </div>
+
+
+                                </simplebar>
                             </div>
                         </div>
                     </div>
@@ -205,12 +274,25 @@
                 'show_countries': true,
                 'ui' : {
                     'content' : {
-                        'selectedTab' : 'daily'
+                        'selectedTab' : 'dashboard'
+                    },
+                    'dashboard' : {
+                        'table' : 'daily',
+                        'sort_stats' : {
+                            'key' : 'confirmed',
+                            'order' : 'desc',
+                        }
                     }
                 }
             }
         },
         methods:{
+            getAnnotations()
+            {
+                var data = _.clone(this.database.raw.raw_annotations.All);
+                data = data.reverse();
+                return data;
+            },
             getUniqueCountriesCompare()
             {
                 var countries = [],
@@ -308,11 +390,11 @@
             getGlobalDayNotes(date)
             {
                 var data = [];
-                for(var x in this.globalDataset[0].annotations)
+                for(var x in this.globalDataset()[0].annotations)
                 {
-                    if (this.globalDataset[0].annotations[x].date == date)
+                    if (this.globalDataset()[0].annotations[x].date == date)
                     {
-                        data.push(this.globalDataset[0].annotations[x]);
+                        data.push(this.globalDataset()[0].annotations[x]);
                     }
                 }
                 return data;
@@ -388,25 +470,29 @@
                 const arrAvg = arr => arr.reduce((a,b) => a + b, 0) / arr.length;
 
                 var population = 0,
-                    lat, long;
+                    lat = 0, long = 0;
 
-                if(this.database.raw.raw_countries && this.database.raw.raw_countries[source.country])
+                if(!daily && !name)
                 {
-                    if(source.state)
+                    if(this.database.raw.raw_countries && this.database.raw.raw_countries[source.country])
                     {
-                        if(this.database.raw.raw_countries[source.country]['states'][source.state])
+                        if(source.state)
                         {
-                            lat = this.database.raw.raw_countries[source.country]['states'][source.state].lat;
-                            long = this.database.raw.raw_countries[source.country]['states'][source.state].long;
-                            population = this.database.raw.raw_countries[source.country]['states'][source.state].population;
+                            if(this.database.raw.raw_countries[source.country]['states'][source.state])
+                            {
+                                lat = this.database.raw.raw_countries[source.country]['states'][source.state].lat;
+                                long = this.database.raw.raw_countries[source.country]['states'][source.state].long;
+                                population = this.database.raw.raw_countries[source.country]['states'][source.state].population;
+                            }
+                        }
+                        else
+                        {
+                            lat = this.database.raw.raw_countries[source.country].lat;
+                            long = this.database.raw.raw_countries[source.country].long;
+                            population = this.database.raw.raw_countries[source.country].population;
                         }
                     }
-                    else
-                    {
-                        lat = this.database.raw.raw_countries[source.country].lat;
-                        long = this.database.raw.raw_countries[source.country].long;
-                        population = this.database.raw.raw_countries[source.country].population;
-                    }
+
                 }
 
 
@@ -422,6 +508,9 @@
                     growthFactor: [],
                     annotations: [],
                 }
+
+                console.log('assemble row')
+                console.log(row);
 
                 var count = 0;
                 var previous = {};
@@ -511,6 +600,11 @@
                 this.$emit('saveProcessedData',row,compareName);
                 return row;
             },
+            getGlobalData()
+            {
+                var row = _.clone(this.assembleDataset({country:'Global',state:false}));
+                return row;
+            },
             getComparisonData()
             {
                 var data = [],
@@ -543,6 +637,24 @@
                 else
                 {
                     this.sort_stats.key = key;
+                }
+            },
+            toggleDashboardSort(key)
+            {
+                if(this.ui.dashboard.sort_stats.key == key)
+                {
+                    if(this.ui.dashboard.sort_stats.order == 'asc')
+                    {
+                        this.ui.dashboard.sort_stats.order = 'desc';
+                    }
+                    else
+                    {
+                        this.ui.dashboard.sort_stats.order = 'asc';
+                    }
+                }
+                else
+                {
+                    this.ui.dashboard.sort_stats.key = key;
                 }
             },
             findCompare(item)
@@ -752,7 +864,23 @@
 
                 for(var x in this.raw_countries)
                 {
-                    var row = this.raw_countries[x];
+                    var row = _.clone(this.raw_countries[x]);
+                    row.total.active = row.total.c - row.total.d - row.total.r;
+                    row.total.confirmedpc = row.total.c / row.population * 1000000;
+                    row.total.deathspc = row.total.d / row.population * 1000000;
+                    row.total.recoveredpc = row.total.r / row.population * 1000000;
+                    var si = this.getGovtResponse(row.name);
+
+                    if(si && si.latest && si.latest.si)
+                    {
+                        si = si.latest.si;
+                    }
+                    else
+                    {
+                        si = 0;
+                    }
+                    row.total.stringencyindex = si;
+
                     data.push(row);
                 }
                 return data;
@@ -760,7 +888,121 @@
             updateSelected(key)
             {
                 this.$emit('updateSelected',key);
-            }
+            },
+            global(){
+                var data = {},
+                    last_update = '';
+
+                data = _.cloneDeep(this.raw_global);
+                if(data.total && data.total.last_update)
+                {
+                    data.last_update = data.total.last_update;
+                }
+                else
+                {
+                    data.last_update = '';
+                }
+
+                data.name = {
+                    full: 'Global',
+                    country: 'Global',
+                    state: false
+                }
+
+                if(data.total)
+                {
+                    data.total.active = data.total.confirmed - data.total.deaths - data.total.recovered;
+                }
+                return data;
+            },
+            globalDataset()
+            {
+                var data = [],
+                    daily = [];
+
+
+
+                for(var x in this.global().daily)
+                {
+                    var row = this.global().daily[x];
+                    daily.push({
+                        'date' : x,
+                        'confirmed' : row.confirmed,
+                        'deaths' : row.deaths,
+                        'recovered' : row.recovered
+                    });
+                }
+
+                data.push(this.assembleDataset(this.global(),daily,this.global().name));
+                return data;
+            },
+            stats()
+            {
+                return this.countries;
+            },
+            states()
+            {
+                return this.raw_state_data;
+            },
+            globalDaily()
+            {
+                var data = [];
+
+                for(var x in this.globalDataset()[0].daily)
+                {
+                    var row = this.globalDataset()[0].daily[x];
+
+                    data.push({
+                        date: moment(row.date).format('YYYY-MM-DD'),
+                        confirmed: row.confirmed,
+                        confirmedDelta: this.globalDataset()[0].delta[x].confirmed,
+                        deaths: row.deaths,
+                        deathsDelta: this.globalDataset()[0].delta[x].deaths,
+                        recovered: row.recovered,
+                        recoveredDelta: this.globalDataset()[0].delta[x].recovered,
+                        active: parseInt(row.confirmed) - parseInt(row.deaths) - parseInt(row.recovered),
+                        activeDelta: parseInt(this.globalDataset()[0].delta[x].confirmed) - parseInt(this.globalDataset()[0].delta[x].deaths) - parseInt(this.globalDataset()[0].delta[x].recovered),
+                        growthFactor: this.globalDataset()[0].growthFactor[x],
+                    });
+                }
+                return data.reverse();
+            },
+            dashboard_countries_sorted()
+            {
+                var sort = this.ui.dashboard.sort_stats;
+                var data = _.cloneDeep(this.countries());
+                return data.sort(function (a, b) {
+                    if (sort.key == 'country')
+                    {
+                        if (sort.order == 'asc')
+                            return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;
+                        else
+                            return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'confirmed') {
+                        if (sort.order == 'desc')
+                            return a.total.c < b.total.c ? 1 : -1;
+                        else
+                            return a.total.c > b.total.c ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'deaths') {
+                        if (sort.order == 'desc')
+                            return a.total.d < b.total.d ? 1 : -1;
+                        else
+                            return a.total.d > b.total.d ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'recovered') {
+                        if (sort.order == 'desc')
+                            return a.total.r < b.total.r ? 1 : -1;
+                        else
+                            return a.total.r > b.total.r ? 1 : -1;
+                    }
+                });
+
+            },
         },
         computed: {
             selectedCompareTab()
@@ -792,7 +1034,7 @@
                 }
                 else
                 {
-                    this.ui.content.selectedTab = 'daily';
+                    this.ui.content.selectedTab = 'dashboard';
                 }
                 return this.ui.content.selectedTab;
             },
@@ -871,14 +1113,6 @@
                     return true;
                 }
                 return false;
-            },
-            stats()
-            {
-                return this.countries;
-            },
-            states()
-            {
-                return this.raw_state_data;
             },
         }
     }
