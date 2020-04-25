@@ -173,8 +173,8 @@
                             <div class="hidden sm:block text-center font-bold">New confirmed cases (total)</div>
                             <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                 <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
-                                    <div v-if="rankingsConfirmed && rankingsConfirmed.length > 0">
-                                        <div v-for="(row,key) in rankingsConfirmed" class="flex items-center justify-between">
+                                    <div v-if="rankings('confirmed') && rankings('confirmed').length > 0">
+                                        <div v-for="(row,key) in rankings('confirmed')" class="flex items-center justify-between">
                                             <div class="flex items-center">
                                                 <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
@@ -194,8 +194,8 @@
                             <div class="hidden sm:block text-center font-bold">New deaths (total)</div>
                             <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                 <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
-                                    <div v-if="rankingsDeaths && rankingsDeaths.length > 0">
-                                        <div v-for="(row,key) in rankingsDeaths" class="flex items-center justify-between">
+                                    <div v-if="rankings('deaths') && rankings('deaths').length > 0">
+                                        <div v-for="(row,key) in rankings('deaths')" class="flex items-center justify-between">
                                             <div class="flex items-center">
                                                 <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
@@ -215,8 +215,8 @@
                             <div class="hidden sm:block text-center font-bold">Surge of new cases (total)</div>
                             <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                 <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
-                                    <div v-if="rankingsConfirmedSurge && rankingsConfirmedSurge.length > 0">
-                                        <div v-for="(row,key) in rankingsConfirmedSurge" class="flex items-center justify-between">
+                                    <div v-if="rankings('confirmedSurge') && rankings('confirmedSurge').length > 0">
+                                        <div v-for="(row,key) in rankings('confirmedSurge')" class="flex items-center justify-between">
                                             <div class="flex items-center">
                                                 <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
@@ -236,8 +236,8 @@
                             <div class="hidden sm:block text-center font-bold">Surge of new deaths (total)</div>
                             <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                 <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
-                                    <div v-if="rankingsDeathsSurge && rankingsDeathsSurge.length > 0">
-                                        <div v-for="(row,key) in rankingsDeathsSurge" class="flex items-center justify-between">
+                                    <div v-if="rankings('deathsSurge') && rankings('deathsSurge').length > 0">
+                                        <div v-for="(row,key) in rankings('deathsSurge')" class="flex items-center justify-between">
                                             <div class="flex items-center">
                                                 <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
@@ -563,7 +563,7 @@
                     return parseInt(a[field]) < parseInt(b[field]) ? 1 : -1;
                 });
 
-                return data;
+                return _.clone(data);
             },
             global_summary()
             {
@@ -635,22 +635,6 @@
             summary()
             {
                 return this.ajax.summary;
-            },
-            rankingsDeaths()
-            {
-                return this.rankings('deaths');
-            },
-            rankingsConfirmed()
-            {
-                return this.rankings('confirmed');
-            },
-            rankingsDeathsSurge()
-            {
-                return this.rankings('deathsSurge');
-            },
-            rankingsConfirmedSurge()
-            {
-                return this.rankings('confirmedSurge');
             },
             loading()
             {
