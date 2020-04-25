@@ -42,7 +42,7 @@
                         <Map
                             class="w-full xl:rounded-lg overflow-hidden h-full"
                             id="world_map"
-                            :enable="true"
+                            :enable="false"
                             :data="countries_sorted"
                         />
                     </div>
@@ -58,7 +58,7 @@
                         <div class="lg:flex lg:flex-1">
                             <div class="m-2 lg:m-0 lg:w-1/3">
                                 <div class="font-bold tracking-tight mb-4">Countries with most cumulative cases</div>
-                                <div v-if="loaded" class="bg-hoverslab rounded-lg">
+                                <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('confirmed','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-center">
                                         <div class="mr-4 lg:mr-0 lg:w-8 lg:text-3xl font-bold text-lightlabel">{{(key)}}</div>
@@ -76,7 +76,7 @@
 
                             <div class="m-2 lg:m-0 lg:w-1/3 lg:ml-2">
                                 <div class="font-bold tracking-tight mb-4">Countries with most deaths</div>
-                                <div v-if="loaded" class="bg-hoverslab rounded-lg">
+                                <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('deaths','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-center">
                                         <div class="mr-4 lg:mr-0 lg:w-8 lg:text-3xl font-bold text-lightlabel">{{(key)}}</div>
@@ -93,7 +93,7 @@
                             </div>
                             <div class="m-2 lg:m-0 lg:w-1/3 lg:ml-2">
                                 <div class="font-bold tracking-tight mb-4">Countries with most recoveries</div>
-                                <div v-if="loaded" class="bg-hoverslab rounded-lg">
+                                <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('recovered','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-center">
                                         <div class="mr-4 lg:mr-0 xl:w-8 lg:text-3xl font-bold text-lightlabel">{{(key)}}</div>
@@ -282,44 +282,93 @@
 <!--                </div>-->
 
                 <div class="bg-slab-primary w-full flex justify-center">
-                    <div class="sm:flex items-start w-full xl:w-256 justify-center my-8">
-
-                        <div>
-                            <div class="text-center font-bold">New confirmed cases by country</div>
+                    <div class="sm:flex sm:flex-wrap items-start w-full sm:w-256 justify-center my-8">
+                        <div class="sm:w-full font-bold m-2 text-3xl tracking-tight mb-8">Daily movement</div>
+                        <div class="sm:hidden text-xs text-center rounded mx-2 border border-lightslab flex items-center justify-center bg-slab">
+                            <div class="p-1 h-16" :class="ui.rankings.view == 'confirmedDelta' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'confirmedDelta'">New confirmed cases by country</div>
+                            <div class="p-1 h-16" :class="ui.rankings.view == 'deathsDelta' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'deathsDelta'">New confirmed deaths by country</div>
+                            <div class="p-1 h-16" :class="ui.rankings.view == 'confirmedSurge' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'confirmedSurge'">Surge of new cases by country</div>
+                            <div class="p-1 h-16" :class="ui.rankings.view == 'deathsSurge' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'deathsSurge'">Surge of new deaths by country</div>
+                        </div>
+                        <div class="sm:block" :class="ui.rankings.view != 'confirmedDelta' ? 'hidden' : ''">
+                            <div class="hidden sm:block text-center font-bold">New confirmed cases by country</div>
                             <div class="m-2 my-4 p-2 bg-slab rounded-lg">
-                                <simplebar data-simplebar-auto-hide="true" class="h-84 w-full sm:w-64 pr-2">
+                                <simplebar data-simplebar-auto-hide="true" class="h-84 w-full sm:w-80 pr-2">
                                     <div v-if="rankingsConfirmed && rankingsConfirmed.length > 0">
-                                        <div v-for="(row,key) in rankingsConfirmed" class="flex items-center text-xs">
-                                            <div class="w-12 text-right text-hoverslab font-bold p-2">{{key+1}}</div>
+                                        <div v-for="(row,key) in rankingsConfirmed" class="flex items-center text-xs justify-between">
+                                            <div class="flex items-center">
+                                                <div class="w-12 text-right text-hoverslab font-bold p-2">{{key+1}}</div>
 
-                                            <div v-if="row.movement.confirmed == 'up'" class="p-2 arrow-up"></div>
-                                            <div v-else-if="row.movement.confirmed == 'down'" class="p-2 arrow-down"></div>
-                                            <div v-else class="p-2 equal"></div>
+                                                <div v-if="row.movement.confirmed == 'up'" class="p-2 arrow-up"></div>
+                                                <div v-else-if="row.movement.confirmed == 'down'" class="p-2 arrow-down"></div>
+                                                <div v-else class="p-2 equal"></div>
 
-                                            <div class="p-2 w-64">{{row.name}}</div>
+                                                <div class="p-2">{{row.name}}</div>
+                                            </div>
                                             <div class="p-2">{{row.confirmed | numeralFormat}}</div>
-
-
-
                                         </div>
                                     </div>
                                 </simplebar>
                             </div>
                         </div>
-                        <div>
-                            <div class="text-center font-bold">New deaths by country</div>
+                        <div class="sm:block" :class="ui.rankings.view != 'deathsDelta' ? 'hidden' : ''">
+                            <div class="hidden sm:block text-center font-bold">New deaths by country</div>
                             <div class="m-2 my-4 p-2 bg-slab rounded-lg">
-                                <simplebar data-simplebar-auto-hide="true" class="h-84 w-full sm:w-64 pr-2">
+                                <simplebar data-simplebar-auto-hide="true" class="h-84 w-full sm:w-80 pr-2">
                                     <div v-if="rankingsDeaths && rankingsDeaths.length > 0">
-                                        <div v-for="(row,key) in rankingsDeaths" class="flex items-center text-xs">
-                                            <div class="w-12 text-right text-hoverslab font-bold p-2">{{key+1}}</div>
+                                        <div v-for="(row,key) in rankingsDeaths" class="flex items-center text-xs justify-between">
+                                            <div class="flex items-center">
+                                                <div class="w-12 text-right text-hoverslab font-bold p-2">{{key+1}}</div>
 
-                                            <div v-if="row.movement.deaths == 'up'" class="p-2 arrow-up"></div>
-                                            <div v-else-if="row.movement.deaths == 'down'" class="p-2 arrow-down"></div>
-                                            <div v-else class="p-2 equal"></div>
+                                                <div v-if="row.movement.deaths == 'up'" class="p-2 arrow-up"></div>
+                                                <div v-else-if="row.movement.deaths == 'down'" class="p-2 arrow-down"></div>
+                                                <div v-else class="p-2 equal"></div>
 
-                                            <div class="p-2 w-64">{{row.name}}</div>
-                                            <div class=" p-2">{{row.deaths| numeralFormat}}</div>
+                                                <div class="p-2  ">{{row.name}}</div>
+                                            </div>
+                                            <div class="p-2 ">{{row.deaths| numeralFormat}}</div>
+                                        </div>
+                                    </div>
+                                </simplebar>
+                            </div>
+                        </div>
+                        <div class="sm:block" :class="ui.rankings.view != 'confirmedSurge' ? 'hidden' : ''">
+                            <div class="hidden sm:block text-center font-bold">Surge of new cases by country</div>
+                            <div class="m-2 my-4 p-2 bg-slab rounded-lg">
+                                <simplebar data-simplebar-auto-hide="true" class="h-84 w-full sm:w-80 pr-2">
+                                    <div v-if="rankingsConfirmedSurge && rankingsConfirmedSurge.length > 0">
+                                        <div v-for="(row,key) in rankingsConfirmedSurge" class="flex items-center text-xs justify-between">
+                                            <div class="flex items-center">
+                                                <div class="w-12 text-right text-hoverslab font-bold p-2">{{key+1}}</div>
+
+                                                <div v-if="row.movement.confirmedSurge == 'up'" class="p-2 arrow-up"></div>
+                                                <div v-else-if="row.movement.confirmedSurge == 'down'" class="p-2 arrow-down"></div>
+                                                <div v-else class="p-2 equal"></div>
+
+                                                <div class="p-2 ">{{row.name}}</div>
+                                            </div>
+                                            <div class="p-2 ">{{row.confirmed| numeralFormat}} ({{row.confirmedSurge| numeralFormat('0.00%')}})</div>
+                                        </div>
+                                    </div>
+                                </simplebar>
+                            </div>
+                        </div>
+                        <div class="sm:block" :class="ui.rankings.view != 'deathsSurge' ? 'hidden' : ''">
+                            <div class="hidden sm:block text-center font-bold">Surge of new deaths by country</div>
+                            <div class="m-2 my-4 p-2 bg-slab rounded-lg">
+                                <simplebar data-simplebar-auto-hide="true" class="h-84 w-full sm:w-80 pr-2">
+                                    <div v-if="rankingsDeathsSurge && rankingsDeathsSurge.length > 0">
+                                        <div v-for="(row,key) in rankingsDeathsSurge" class="flex items-center text-xs justify-between">
+                                            <div class="flex items-center">
+                                                <div class="w-12 text-right text-hoverslab font-bold p-2">{{key+1}}</div>
+
+                                                <div v-if="row.movement.deathsSurge == 'up'" class="p-2 arrow-up"></div>
+                                                <div v-else-if="row.movement.deathsSurge == 'down'" class="p-2 arrow-down"></div>
+                                                <div v-else class="p-2 equal"></div>
+
+                                                <div class="p-2">{{row.name}}</div>
+                                            </div>
+                                            <div class="p-2">{{row.deaths| numeralFormat}} ({{row.deathsSurge| numeralFormat('0.00%')}})</div>
                                         </div>
                                     </div>
                                 </simplebar>
@@ -334,14 +383,6 @@
                         <a href="#top">^ Back to top</a>
                     </div>
                 </div>
-            </div>
-        </div>
-
-
-        <div v-if="mode == 'trends'" class="flex items-center justify-center m-4 bg-slab rounded absolute top-0 right-0 bottom-0 left-0 text-center" style="bottom: 56px;">
-            <div class="p-4">
-                <h1>Massive graphs / trends on this section</h1>
-                <p>TO-DO</p>
             </div>
         </div>
     </div>
@@ -379,6 +420,12 @@
 
                 'global_options' : {
                     'table' : 'daily',
+                },
+
+                'ui': {
+                    'rankings': {
+                        'view' : 'confirmedDelta',
+                    }
                 },
                 ajax: {
                     rankings: [],
@@ -582,6 +629,8 @@
 
                 var data = _.cloneDeep(this.ajax.rankings);
                 data = data.sort(function (a, b) {
+                    if(field == 'confirmedSurge' || field == 'deathsSurge')
+                        return parseFloat(a[field]) < parseFloat(b[field]) ? 1 : -1;
                     return parseInt(a[field]) < parseInt(b[field]) ? 1 : -1;
                 });
 
@@ -596,6 +645,14 @@
             rankingsConfirmed()
             {
                 return this.rankings('confirmed');
+            },
+            rankingsDeathsSurge()
+            {
+                return this.rankings('deathsSurge');
+            },
+            rankingsConfirmedSurge()
+            {
+                return this.rankings('confirmedSurge');
             },
             loading()
             {
