@@ -174,8 +174,8 @@
                                 <div class="hidden sm:block text-center font-bold">New confirmed cases (total)</div>
                                 <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                     <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
-                                        <div v-if="rankings('confirmed') && rankings('confirmed').length > 0">
-                                            <div v-for="(row,key) in rankings('confirmed')" class="flex items-center justify-between">
+                                        <div v-if="ajax && ajax.rankings && ajax.rankings.length > 0">
+                                            <div v-for="(row,key) in sorted_countries.confirmed" class="flex items-center justify-between">
                                                 <div class="flex items-center">
                                                     <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
@@ -195,8 +195,8 @@
                                 <div class="hidden sm:block text-center font-bold">New deaths (total)</div>
                                 <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                     <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
-                                        <div v-if="rankings('deaths') && rankings('deaths').length > 0">
-                                            <div v-for="(row,key) in rankings('deaths')" class="flex items-center justify-between">
+                                        <div v-if="ajax && ajax.rankings && ajax.rankings.length > 0">
+                                            <div v-for="(row,key) in sorted_countries.deaths" class="flex items-center justify-between">
                                                 <div class="flex items-center">
                                                     <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
@@ -216,8 +216,8 @@
                                 <div class="hidden sm:block text-center font-bold">Surge of new cases (total)</div>
                                 <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                     <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
-                                        <div v-if="rankings('confirmedSurge') && rankings('confirmedSurge').length > 0">
-                                            <div v-for="(row,key) in rankings('confirmedSurge')" class="flex items-center justify-between">
+                                        <div v-if="ajax && ajax.rankings && ajax.rankings.length > 0">
+                                            <div v-for="(row,key) in sorted_countries.confirmedSurge" class="flex items-center justify-between">
                                                 <div class="flex items-center">
                                                     <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
@@ -237,8 +237,8 @@
                                 <div class="hidden sm:block text-center font-bold">Surge of new deaths (total)</div>
                                 <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                     <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
-                                        <div v-if="rankings('deathsSurge') && rankings('deathsSurge').length > 0">
-                                            <div v-for="(row,key) in rankings('deathsSurge')" class="flex items-center justify-between">
+                                        <div v-if="ajax && ajax.rankings && ajax.rankings.length > 0">
+                                            <div v-for="(row,key) in sorted_countries.deathsSurge" class="flex items-center justify-between">
                                                 <div class="flex items-center">
                                                     <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
@@ -332,6 +332,12 @@
                         recovered: 0,
                         active: 0
                     }
+                },
+                sorted_countries: {
+                    'confirmed' : [],
+                    'deaths' : [],
+                    'confirmedSurge' : [],
+                    'deathsSurge' : [],
                 }
             }
         },
@@ -340,6 +346,14 @@
             axios.get('/api/stats/rankings')
                 .then(res => {
                     this.ajax.rankings = res.data;
+
+                    this.sorted_countries.confirmed = _.clone(this.rankings('confirmed'));
+                    this.sorted_countries.deaths = _.clone(this.rankings('deaths'));
+                    this.sorted_countries.confirmedSurge = _.clone(this.rankings('confirmedSurge'));
+                    this.sorted_countries.deathsSurge = _.clone(this.rankings('deathsSurge'));
+
+                    console.log('test');
+                    console.log(this.sorted_countries);
                 })
                 .catch(error => {
 
