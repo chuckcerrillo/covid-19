@@ -50,7 +50,7 @@
                 new mapboxgl.Marker()
                     .setLngLat([country.long, country.lat])
                     .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-                        .setHTML('<h3 class="text-slab font-bold">' + country.name + '</h3><p class="text-xs text-base">Confirmed: ' + country.total.c + '</p>'))
+                        .setHTML('<h3 class="text-slab font-bold">' + country.name + '</h3><p class="text-xs text-base">Confirmed: ' + country.confirmed + '</p>'))
                     .addTo(map);
             }
         },
