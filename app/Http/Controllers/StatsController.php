@@ -3139,7 +3139,9 @@ class StatsController extends Controller
                     $data[] = [
                         'name' => $country_name,
                         'confirmed' => $today1['total']['c'] - ($today1['total']['c'] == $today['total']['c'] ? $yesterday['total']['c'] : $today['total']['c']),
+                        'confirmedTotal' => $today1['total']['c'],
                         'deaths' => $today1['total']['d'] - ($today1['total']['d'] == $today['total']['d'] ? $yesterday['total']['d'] : $today['total']['d']),
+                        'deathsTotal' => $today1['total']['d'],
                         'recovered' => $today1['total']['r'] - ($today1['total']['r'] == $today['total']['r'] ? $yesterday['total']['r'] : $today['total']['r']),
                         'confirmedSurge' => ($today['total']['c'] - $yesterday['total']['c'])/($yesterday['total']['c'] != 0 ? $yesterday['total']['c'] : 1),
                         'deathsSurge' => ($today['total']['d'] - $yesterday['total']['d'])/($yesterday['total']['d'] != 0 ? $yesterday['total']['d'] : 1),

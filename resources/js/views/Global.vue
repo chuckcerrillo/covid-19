@@ -42,7 +42,7 @@
                         <Map
                             class="w-full xl:rounded-lg overflow-hidden h-full"
                             id="world_map"
-                            :enable="false"
+                            :enable="true"
                             :data="countries_sorted"
                         />
                     </div>
@@ -113,177 +113,12 @@
                     </div>
                 </div>
 
-<!--                <div class="hidden bg-slab-primary xl:flex flex-1 pt-8 w-full items-center justify-center">-->
-<!--                    <div class="m-2 lg:m-0 lg:w-256 font-bold text-2xl tracking-tight">-->
-<!--                        Global cases graph-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="bg-slab-primary lg:flex flex-1 w-full items-center justify-center pb-8">-->
-<!--                    <div class="w-full xl:w-360">-->
-<!--                        <div v-if="loaded" class="w-full h-128 lg:h-220 relative rounded my-4">-->
-<!--                            <StatsChart class="absolute left-0 right-0 bottom-0 top-0 overflow-hidden"-->
-<!--                                        :data="globalDataset"-->
-<!--                                        full="true"-->
-<!--                                        :config="-->
-<!--                                            {-->
-<!--                                                controls:-->
-<!--                                                {-->
-<!--                                                    menu : false-->
-<!--                                                }-->
-<!--                                            }-->
-<!--                            " />-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div v-if="loaded" class="bg-slab flex flex-1 w-full items-center justify-center pt-8">-->
-<!--                    <div class="w-256">-->
-<!--                        <h2 class="mb-4 text-2xl font-bold tracking-tight">Global timeline</h2>-->
-<!--                        <div class="flex items-center justify-start mb-4">-->
-<!--                            <div @click="global_options.table = 'daily'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="global_options.table == 'daily' ? 'border border-heading bg-lightslab':''">Daily stats</div>-->
-<!--                            <div @click="global_options.table = 'countries'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="global_options.table == 'countries' ? 'border border-heading  bg-lightslab':''">Countries</div>-->
-<!--                        </div>-->
-
-<!--                        <div v-show="global_options.table == 'daily'" class="rounded overflow-hidden">-->
-<!--                            <div class="flex flex-1 items-center justify-start w-full text-xs bg-lightslab">-->
-<!--                                <div class="w-24 font-bold p-2 lg:w-76">Date</div>-->
-<!--                                <div class="lg:hidden font-bold p-2 w-full">Stats</div>-->
-<!--                                <div class="hidden lg:block font-bold p-2 w-36">Confirmed</div>-->
-<!--                                <div class="hidden lg:block font-bold p-2 w-36">Deaths</div>-->
-<!--                                <div class="hidden lg:block font-bold p-2 w-36">Recovered</div>-->
-<!--                                <div class="hidden lg:block font-bold p-2 w-36">Active</div>-->
-<!--                                <div class="hidden lg:block font-bold p-2 w-36">Growth Factor</div>-->
-<!--                            </div>-->
-<!--                            <simplebar data-simplebar-auto-hide="false" class="h-80 lg:h-160">-->
-<!--                                <div v-for="(row,key,index) in globalDaily.reverse()">-->
-<!--                                    <div v-if="getGlobalDayNotes(moment(row.date).format('YYYY-MM-DD')).length > 0">-->
-<!--                                        <div v-for="annotation in getGlobalDayNotes(moment(row.date).format('YYYY-MM-DD'))"-->
-<!--                                             class="p-1 my-4 mx-8 text-xs rounded bg-lightslab flex"-->
-<!--                                        >-->
-<!--                                            <div v-if="annotation.state.length > 0" class="font-bold mr-2">{{annotation.state}}</div>-->
-<!--                                            <div>-->
-<!--                                                <div>{{annotation.notes}}</div>-->
-<!--                                                <div v-if="annotation.url" class="flex items-center text-lightslab">-->
-<!--                                                    <div class="mr-1">Source:</div>-->
-<!--                                                    <a class="underline hover:text-white truncate ... inline-block w-64" :href="annotation.url">{{annotation.url}}</a>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="lg:hidden flex flex-1 items-start text-xs" :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'">-->
-<!--                                        <div class="p-2">{{moment(row.date).format('YYYY-MM-DD')}}</div>-->
-<!--                                        <div>-->
-<!--                                            <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2">-->
-<!--                                                <span class="font-bold">Confirmed</span>-->
-<!--                                                <span class="">{{row.confirmed|numeralFormat}}</span>-->
-<!--                                                <span class="text-red-400" v-if="row.confirmedDelta >= 0">(+{{row.confirmedDelta | numeralFormat}})</span>-->
-<!--                                                <span class="text-green-400" v-else>({{row.confirmedDelta | numeralFormat}})</span>-->
-<!--                                            </div>-->
-<!--                                            <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2">-->
-<!--                                                <span class="font-bold">Deaths</span>-->
-<!--                                                <span class="">{{row.deaths|numeralFormat}}</span>-->
-<!--                                                <span class="text-red-400" v-if="row.deathsDelta >= 0">(+{{row.deathsDelta | numeralFormat}})</span>-->
-<!--                                                <span class="text-green-400" v-else>({{row.deathsDelta| numeralFormat}})</span>-->
-<!--                                            </div>-->
-<!--                                            <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2">-->
-<!--                                                <span class="font-bold">Recovered</span>-->
-<!--                                                <span class="">{{row.recovered|numeralFormat}}</span>-->
-<!--                                                <span class="text-green-400" v-if="row.recoveredDelta.recovered >= 0">(+{{row.recoveredDelta| numeralFormat}})</span>-->
-<!--                                                <span class="text-red-400" v-else>({{row.recoveredDelta| numeralFormat}})</span>-->
-<!--                                            </div>-->
-<!--                                            <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2">-->
-<!--                                                <span class="font-bold">Active</span>-->
-<!--                                                <span class="">{{(row.confirmed - row.deaths - row.recovered) | numeralFormat}}</span>-->
-<!--                                                <span class="text-red-400" v-if="row.activeDelta  >= 0">(+{{row.activeDelta | numeralFormat}})</span>-->
-<!--                                                <span class="text-green-400" v-else>({{row.activeDelta | numeralFormat}})</span>-->
-<!--                                            </div>-->
-<!--                                            <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2">-->
-<!--                                                <span class="font-bold">Growth factor</span>-->
-<!--                                                <span class="text-red-400" v-if="row.growthFactor > 1">{{row.growthFactor}}</span>-->
-<!--                                                <span class="text-green-400" v-else>{{row.growthFactor}}</span>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-
-<!--                                    <div-->
-<!--                                        class="lg:flex flex-1 items-center justify-start w-full text-xs hidden"-->
-<!--                                    >-->
-<!--                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-76">{{moment(row.date).format('YYYY-MM-DD')}}</div>-->
-<!--                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.confirmed|numeralFormat}}-->
-<!--                                            <span class="text-red-400" v-if="row.confirmedDelta >= 0">(+{{row.confirmedDelta | numeralFormat}})</span>-->
-<!--                                            <span class="text-green-400" v-else>({{row.confirmedDelta | numeralFormat}})</span>-->
-<!--                                        </div>-->
-<!--                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.deaths|numeralFormat}}-->
-<!--                                            <span class="text-red-400" v-if="row.deathsDelta >= 0">(+{{row.deathsDelta | numeralFormat}})</span>-->
-<!--                                            <span class="text-green-400" v-else>({{row.deathsDelta| numeralFormat}})</span>-->
-<!--                                        </div>-->
-<!--                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.recovered|numeralFormat}}-->
-<!--                                            <span class="text-green-400" v-if="row.recoveredDelta.recovered >= 0">(+{{row.recoveredDelta| numeralFormat}})</span>-->
-<!--                                            <span class="text-red-400" v-else>({{row.recoveredDelta| numeralFormat}})</span>-->
-<!--                                        </div>-->
-<!--                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{(row.confirmed - row.deaths - row.recovered) | numeralFormat}}-->
-<!--                                            <span class="text-red-400" v-if="row.activeDelta  >= 0">(+{{row.activeDelta | numeralFormat}})</span>-->
-<!--                                            <span class="text-green-400" v-else>({{row.activeDelta | numeralFormat}})</span>-->
-<!--                                        </div>-->
-<!--                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">-->
-<!--                                            <span class="text-red-400" v-if="row.growthFactor > 1">{{row.growthFactor}}</span>-->
-<!--                                            <span class="text-green-400" v-else>{{row.growthFactor}}</span>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </simplebar>-->
-<!--                        </div>-->
-
-<!--                        <div v-if="loaded" v-show="global_options.table == 'countries'" class="bg-lightslab rounded overflow-hidden">-->
-<!--                            <div class="flex flex-1 items-center justify-start w-full text-xs">-->
-<!--                                <div class="w-32 font-bold p-2 lg:w-112">Name</div>-->
-<!--                                <div class="xl:hidden font-bold p-2 w-full">Stats</div>-->
-<!--                                <div class="hidden xl:block font-bold p-2 w-36">Confirmed</div>-->
-<!--                                <div class="hidden xl:block font-bold p-2 w-36">Deaths</div>-->
-<!--                                <div class="hidden xl:block font-bold p-2 w-36">Recovered</div>-->
-<!--                                <div class="hidden xl:block font-bold p-2 w-36">Active</div>-->
-<!--                            </div>-->
-<!--                            <simplebar data-simplebar-auto-hide="false" class="h-80 lg:h-160">-->
-<!--                                <div v-for="(row,key,index) in getSortedCountries('confirmed','desc')">-->
-<!--                                    <div class="lg:hidden flex flex-1 items-start text-xs" :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'">-->
-<!--                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-32">{{row.name}}</div>-->
-<!--                                        <div>-->
-<!--                                            <div class="p-2">-->
-<!--                                                <span class="font-bold">Confirmed</span>-->
-<!--                                                {{row.total.c|numeralFormat}}-->
-<!--                                            </div>-->
-<!--                                            <div class="p-2">-->
-<!--                                                <span class="font-bold">Deaths</span>-->
-<!--                                                {{row.total.d|numeralFormat}}-->
-<!--                                            </div>-->
-<!--                                            <div class="p-2">-->
-<!--                                                <span class="font-bold">Recovered</span>-->
-<!--                                                {{row.total.r|numeralFormat}}-->
-<!--                                            </div>-->
-<!--                                            <div class="p-2">-->
-<!--                                                <span class="font-bold">Active</span>-->
-<!--                                                {{(row.total.c - row.total.d - row.total.r) | numeralFormat}}-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div-->
-<!--                                        class="hidden lg:flex flex-1 items-center justify-start w-full text-xs"-->
-<!--                                    >-->
-<!--                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-112">{{row.name}}</div>-->
-<!--                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.total.c|numeralFormat}}</div>-->
-<!--                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.total.d|numeralFormat}}</div>-->
-<!--                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{row.total.r|numeralFormat}}</div>-->
-<!--                                        <div :class="key % 2 == 0 ? 'bg-slab-primary' : 'bg-slab-secondary'" class="p-2 w-36">{{(row.total.c - row.total.d - row.total.r) | numeralFormat}}</div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </simplebar>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
                 <div class="bg-slab-primary w-full flex justify-center">
                     <div class="sm:flex sm:flex-wrap items-start w-full sm:w-256 justify-center my-8">
-                        <div class="sm:w-full font-bold m-2 text-3xl tracking-tight mb-8">Daily movement</div>
+                        <div class="sm:w-full m-2 mb-8">
+                            <div class="font-bold text-3xl tracking-tight">Daily movement</div>
+                            <div class="text-lightlabel">The daily movement shows the changes in relative position of each country based on the chosen metric during the last 24 hours.</div>
+                        </div>
                         <div class="sm:hidden text-xs text-center rounded mx-2 border border-lightslab flex items-center justify-center bg-slab">
                             <div class="p-1 h-16" :class="ui.rankings.view == 'confirmedDelta' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'confirmedDelta'">New confirmed cases by country</div>
                             <div class="p-1 h-16" :class="ui.rankings.view == 'deathsDelta' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'deathsDelta'">New confirmed deaths by country</div>
@@ -293,19 +128,19 @@
                         <div class="sm:block" :class="ui.rankings.view != 'confirmedDelta' ? 'hidden' : ''">
                             <div class="hidden sm:block text-center font-bold">New confirmed cases by country</div>
                             <div class="m-2 my-4 p-2 bg-slab rounded-lg">
-                                <simplebar data-simplebar-auto-hide="true" class="h-84 w-full sm:w-80 pr-2">
+                                <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
                                     <div v-if="rankingsConfirmed && rankingsConfirmed.length > 0">
-                                        <div v-for="(row,key) in rankingsConfirmed" class="flex items-center text-xs justify-between">
+                                        <div v-for="(row,key) in rankingsConfirmed" class="flex items-center justify-between">
                                             <div class="flex items-center">
-                                                <div class="w-12 text-right text-hoverslab font-bold p-2">{{key+1}}</div>
+                                                <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
-                                                <div v-if="row.movement.confirmed == 'up'" class="p-2 arrow-up"></div>
-                                                <div v-else-if="row.movement.confirmed == 'down'" class="p-2 arrow-down"></div>
-                                                <div v-else class="p-2 equal"></div>
+                                                <div v-if="row.movement.confirmed == 'up'" class="p-2 pr-4 arrow-up"></div>
+                                                <div v-else-if="row.movement.confirmed == 'down'" class="p-2 pr-4 arrow-down"></div>
+                                                <div v-else class="p-2 pr-4 equal"></div>
 
-                                                <div class="p-2">{{row.name}}</div>
+                                                <div class="py-2 font-bold text-sm">{{row.name}}</div>
                                             </div>
-                                            <div class="p-2">{{row.confirmed | numeralFormat}}</div>
+                                            <div class="py-2"><span class="font-bold">+{{row.confirmed| numeralFormat}}</span> <span class="text-xs text-lightlabel">({{row.confirmedTotal| numeralFormat}})</span></div>
                                         </div>
                                     </div>
                                 </simplebar>
@@ -314,19 +149,19 @@
                         <div class="sm:block" :class="ui.rankings.view != 'deathsDelta' ? 'hidden' : ''">
                             <div class="hidden sm:block text-center font-bold">New deaths by country</div>
                             <div class="m-2 my-4 p-2 bg-slab rounded-lg">
-                                <simplebar data-simplebar-auto-hide="true" class="h-84 w-full sm:w-80 pr-2">
+                                <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
                                     <div v-if="rankingsDeaths && rankingsDeaths.length > 0">
-                                        <div v-for="(row,key) in rankingsDeaths" class="flex items-center text-xs justify-between">
+                                        <div v-for="(row,key) in rankingsDeaths" class="flex items-center justify-between">
                                             <div class="flex items-center">
-                                                <div class="w-12 text-right text-hoverslab font-bold p-2">{{key+1}}</div>
+                                                <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
-                                                <div v-if="row.movement.deaths == 'up'" class="p-2 arrow-up"></div>
-                                                <div v-else-if="row.movement.deaths == 'down'" class="p-2 arrow-down"></div>
-                                                <div v-else class="p-2 equal"></div>
+                                                <div v-if="row.movement.deaths == 'up'" class="p-2 pr-4 arrow-up"></div>
+                                                <div v-else-if="row.movement.deaths == 'down'" class="p-2 pr-4 arrow-down"></div>
+                                                <div v-else class="p-2 pr-4 equal"></div>
 
-                                                <div class="p-2  ">{{row.name}}</div>
+                                                <div class="py-2 font-bold text-sm">{{row.name}}</div>
                                             </div>
-                                            <div class="p-2 ">{{row.deaths| numeralFormat}}</div>
+                                            <div class="py-2"><span class="font-bold">+{{row.deaths| numeralFormat}}</span> <span class="text-xs text-lightlabel">({{row.deathsTotal| numeralFormat}})</span></div>
                                         </div>
                                     </div>
                                 </simplebar>
@@ -335,19 +170,19 @@
                         <div class="sm:block" :class="ui.rankings.view != 'confirmedSurge' ? 'hidden' : ''">
                             <div class="hidden sm:block text-center font-bold">Surge of new cases by country</div>
                             <div class="m-2 my-4 p-2 bg-slab rounded-lg">
-                                <simplebar data-simplebar-auto-hide="true" class="h-84 w-full sm:w-80 pr-2">
+                                <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
                                     <div v-if="rankingsConfirmedSurge && rankingsConfirmedSurge.length > 0">
-                                        <div v-for="(row,key) in rankingsConfirmedSurge" class="flex items-center text-xs justify-between">
+                                        <div v-for="(row,key) in rankingsConfirmedSurge" class="flex items-center justify-between">
                                             <div class="flex items-center">
-                                                <div class="w-12 text-right text-hoverslab font-bold p-2">{{key+1}}</div>
+                                                <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
-                                                <div v-if="row.movement.confirmedSurge == 'up'" class="p-2 arrow-up"></div>
-                                                <div v-else-if="row.movement.confirmedSurge == 'down'" class="p-2 arrow-down"></div>
-                                                <div v-else class="p-2 equal"></div>
+                                                <div v-if="row.movement.confirmedSurge == 'up'" class="p-2 pr-4 arrow-up"></div>
+                                                <div v-else-if="row.movement.confirmedSurge == 'down'" class="p-2 pr-4 arrow-down"></div>
+                                                <div v-else class="p-2 pr-4 equal"></div>
 
-                                                <div class="p-2 ">{{row.name}}</div>
+                                                <div class="py-2 font-bold text-sm">{{row.name}}</div>
                                             </div>
-                                            <div class="p-2 ">{{row.confirmed| numeralFormat}} ({{row.confirmedSurge| numeralFormat('0.00%')}})</div>
+                                            <div class="py-2"><span class="font-bold">+{{row.confirmedSurge| numeralFormat('0.00%')}}</span> <span class="text-xs text-lightlabel">({{row.confirmed| numeralFormat}})</span></div>
                                         </div>
                                     </div>
                                 </simplebar>
@@ -356,19 +191,19 @@
                         <div class="sm:block" :class="ui.rankings.view != 'deathsSurge' ? 'hidden' : ''">
                             <div class="hidden sm:block text-center font-bold">Surge of new deaths by country</div>
                             <div class="m-2 my-4 p-2 bg-slab rounded-lg">
-                                <simplebar data-simplebar-auto-hide="true" class="h-84 w-full sm:w-80 pr-2">
+                                <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
                                     <div v-if="rankingsDeathsSurge && rankingsDeathsSurge.length > 0">
-                                        <div v-for="(row,key) in rankingsDeathsSurge" class="flex items-center text-xs justify-between">
+                                        <div v-for="(row,key) in rankingsDeathsSurge" class="flex items-center justify-between">
                                             <div class="flex items-center">
-                                                <div class="w-12 text-right text-hoverslab font-bold p-2">{{key+1}}</div>
+                                                <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
-                                                <div v-if="row.movement.deathsSurge == 'up'" class="p-2 arrow-up"></div>
-                                                <div v-else-if="row.movement.deathsSurge == 'down'" class="p-2 arrow-down"></div>
-                                                <div v-else class="p-2 equal"></div>
+                                                <div v-if="row.movement.deathsSurge == 'up'" class="p-2 pr-4 arrow-up"></div>
+                                                <div v-else-if="row.movement.deathsSurge == 'down'" class="p-2 pr-4 arrow-down"></div>
+                                                <div v-else class="p-2 pr-4 equal"></div>
 
-                                                <div class="p-2">{{row.name}}</div>
+                                                <div class="py-2 font-bold text-sm">{{row.name}}</div>
                                             </div>
-                                            <div class="p-2">{{row.deaths| numeralFormat}} ({{row.deathsSurge| numeralFormat('0.00%')}})</div>
+                                            <div class="py-2"><span class="font-bold">+{{row.deathsSurge| numeralFormat('0.00%')}}</span> <span class="text-xs text-lightlabel">({{row.deaths| numeralFormat}})</span></div>
                                         </div>
                                     </div>
                                 </simplebar>
@@ -377,10 +212,25 @@
                     </div>
                 </div>
 
+                <div class="bg-slab-primary flex flex-1 pt-4 pb-8 w-full items-center justify-center">
+                    <div class="mx-4 w-256 lg:mx-0">
+                        <a href="#top">^ Back to top</a>
+                    </div>
+                </div>
+
                 <!-- footer -->
                 <div class="bg-slab flex flex-1 py-8 w-full items-center justify-center">
-                    <div class="w-256">
-                        <a href="#top">^ Back to top</a>
+                    <div class="mx-4 w-256 lg:mx-0">
+                        <div class="sm:flex items-start my-4 justify-between">
+                            <div>The COVID-19 Tracker is a project by <a class="font-bold underline hover:text-lightlabel" href="https://www.makeitsimpler.com.au">Simpler</a>. For feedback, suggestions, and bug reports, please contact feedback@makeitsimpler.com.au or get in touch with us on our socials.</div>
+                            <div class="flex w-32 items-end py-4">
+                                <a href="https://www.facebook.com/simplerau" class="mr-2"><img src="/img/facebook.png" class="h-8"></a>
+                                <a href="https://www.twitter.com/simplerau"><img src="/img/twitter.png" class="h-8"></a>
+                            </div>
+                        </div>
+                        <div class="text-xs text-lightlabel font-italic">The material and information contained on this website is for general information purposes only. You should not rely upon the material or information on the website as a basis for making any business, legal, or any other decisions.</div>
+                        <div class="text-xs text-lightlabel">Whilst we endeavour to keep the information up-to-date and correct, Simpler Solutions makes no representations or warranties of any kind, express or implied about the completeness, accuracy, reliability, suitability or availability with respect to the website or information, products, services or related graphics contained on the website for any purpose. Any reliance you place on such material is therefore strictly at your own risk.</div>
+                        <div class="mt-4">&copy; Simpler Solutions</div>
                     </div>
                 </div>
             </div>
@@ -627,7 +477,28 @@
             {
                 var data = [];
 
-                var data = _.cloneDeep(this.ajax.rankings);
+                for(var x in this.ajax.rankings)
+                {
+                   if(field == 'deaths' || field == 'confirmed')
+                   {
+                       data.push(_.clone(this.ajax.rankings[x]));
+                   }
+                   else if(field == 'confirmedSurge')
+                   {
+                       if(this.ajax.rankings[x].confirmedTotal >= 100)
+                       {
+                           data.push(_.clone(this.ajax.rankings[x]));
+                       }
+                   }
+                   else if(field == 'deathsSurge')
+                   {
+                       if(this.ajax.rankings[x].deathsTotal >= 20)
+                       {
+                           data.push(_.clone(this.ajax.rankings[x]));
+                       }
+                   }
+                }
+
                 data = data.sort(function (a, b) {
                     if(field == 'confirmedSurge' || field == 'deathsSurge')
                         return parseFloat(a[field]) < parseFloat(b[field]) ? 1 : -1;
