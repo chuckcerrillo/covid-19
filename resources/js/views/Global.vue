@@ -219,7 +219,7 @@
                 </div>
 
                 <div class="bg-slab-primary sm:flex pt-4 pb-8 w-full items-center justify-center">
-                    <div class="mx-4 w-256 lg:mx-0">
+                    <div class="mx-4 sm:w-256 lg:mx-0">
                         <a href="#top">^ Back to top</a>
                     </div>
                 </div>
