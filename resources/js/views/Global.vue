@@ -51,7 +51,7 @@
                     </div>
                 </div>
 
-                <div class="bg-slab flex flex-1 py-8 w-full med:w-auto items-center justify-center">
+                <div class="bg-slab flex sm:flex-1 py-8 w-full med:w-auto items-center justify-center">
                     <div class="w-full md:w-256">
                         <h2 class="m-2 xl:m-0 font-bold text-3xl tracking-tight mb-8">At a glance...</h2>
 
@@ -62,7 +62,7 @@
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('confirmed','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-center">
                                         <div class="mr-4 lg:mr-0 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
-                                        <div class="flex lg:block flex-1 lg:flex-none justify-start items-center ">
+                                        <div class="flex lg:block sm:flex-1 lg:flex-none justify-start items-center ">
                                             <div class="w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
                                             <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.c | numeralFormat}}</div>
                                             <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
@@ -80,7 +80,7 @@
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('deaths','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-center">
                                         <div class="mr-4 lg:mr-0 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
-                                        <div class="flex lg:block flex-1 lg:flex-none justify-start items-center ">
+                                        <div class="flex lg:block sm:flex-1 lg:flex-none justify-start items-center ">
                                             <div class="w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
                                             <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.d | numeralFormat}}</div>
                                             <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
@@ -97,7 +97,7 @@
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('recovered','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-center">
                                         <div class="mr-4 lg:mr-0 xl:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
-                                        <div class="flex lg:block flex-1 lg:flex-none justify-start items-center ">
+                                        <div class="flex lg:block sm:flex-1 lg:flex-none justify-start items-center ">
                                             <div class="w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
                                             <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.r | numeralFormat}}</div>
                                             <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
@@ -212,14 +212,14 @@
                     </div>
                 </div>
 
-                <div class="bg-slab-primary flex flex-1 pt-4 pb-8 w-full items-center justify-center">
+                <div class="bg-slab-primary flex pt-4 pb-8 w-full items-center justify-center">
                     <div class="mx-4 w-256 lg:mx-0">
                         <a href="#top">^ Back to top</a>
                     </div>
                 </div>
 
                 <!-- footer -->
-                <div class="bg-slab flex flex-1 py-8 w-full items-center justify-center">
+                <div class="bg-slab flex py-8 w-full items-center justify-center">
                     <div class="mx-4 w-256 lg:mx-0">
                         <div class="sm:flex items-start my-4 justify-between">
                             <div>The COVID-19 Tracker is a project by <a class="font-bold underline hover:text-lightlabel" href="https://www.makeitsimpler.com.au">Simpler</a>. For feedback, suggestions, and bug reports, please contact feedback@makeitsimpler.com.au or get in touch with us on our socials.</div>
