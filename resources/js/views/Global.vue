@@ -20,27 +20,23 @@
                     <div class="global_stats absolute z-20 text-shadow inset-0 sm:left-0 sm:inset-y-0 sm:w-1/2 flex items-center content-center justify-center">
                         <div>
                             <div class="p-4 xl:p-0 xl:flex items-center justify-center text-center">
-                                <div v-if="loading && loading.global" class="text-5xl xl:mr-4 xl:text-7xl font-bold text-white">{{global.total.active | numeralFormat}}</div>
-                                <div v-else class="text-5xl xl:mr-4 xl:text-7xl font-bold text-white"></div>
+                                <div class="text-5xl xl:mr-4 xl:text-7xl font-bold text-white">{{summary.active | numeralFormat}}</div>
                                 <div>
                                     <div class="text-2xl xl:text-3xl font-bold tracking-tight ">active cases</div>
-                                    <div class="text-xs">as of {{global.last_update}}</div>
+                                    <div class="text-xs">as of {{summary.last_update}}</div>
                                 </div>
                             </div>
                             <div class="flex items-start mt-4 xl:mt-0 flex-1 justify-center px-4 xl:px-0">
                                 <div class="w-1/3 xl:w-auto xl:mr-8 text-center">
-                                    <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-white">{{global.total.confirmed| numeralFormat}}</div>
-                                    <div v-else class="xl:text-3xl font-bold text-white"></div>
+                                    <div class="xl:text-3xl font-bold text-white">{{summary.confirmed| numeralFormat}}</div>
                                     <div class="font-bold">confirmed cases</div>
                                 </div>
                                 <div class="w-1/3 xl:w-auto xl:mr-8 text-center">
-                                    <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-red-400">{{global.total.deaths| numeralFormat}}</div>
-                                    <div v-else class="xl:text-3xl font-bold text-red-400"></div>
+                                    <div class="xl:text-3xl font-bold text-red-400">{{summary.deaths| numeralFormat}}</div>
                                     <div class="font-bold">deaths</div>
                                 </div>
                                 <div class="w-1/3 xl:w-auto text-center">
-                                    <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-green-400">{{global.total.recovered| numeralFormat}}</div>
-                                    <div v-else class="xl:text-3xl font-bold text-green-400"></div>
+                                    <div class="xl:text-3xl font-bold text-green-400">{{summary.recovered| numeralFormat}}</div>
                                     <div class="font-bold">recoveries</div>
                                 </div>
                             </div>
@@ -327,6 +323,13 @@
                 },
                 ajax: {
                     rankings: [],
+                    summary: {
+                        last_update: '',
+                        confirmed: 0,
+                        deaths: 0,
+                        recovered: 0,
+                        active: 0
+                    }
                 }
             }
         },
@@ -335,6 +338,13 @@
             axios.get('/api/stats/rankings')
                 .then(res => {
                     this.ajax.rankings = res.data;
+                })
+                .catch(error => {
+
+                });
+            axios.get('/api/stats/global_summary')
+                .then(res => {
+                    this.ajax.summary = res.data;
                 })
                 .catch(error => {
 
@@ -554,9 +564,28 @@
                 });
 
                 return data;
+            },
+            global_summary()
+            {
+                var data = {
+                    last_update : '',
+                    confirmed: 0,
+                    deaths: 0,
+                    recovered: 0,
+                    active: 0,
+                }
+                if(this.ajax && this.ajax.summary)
+                {
+                    console.log(this.ajax.summary);
+                    data = this.ajax.summary;
+                }
             }
         },
         computed: {
+            summary()
+            {
+                return this.ajax.summary;
+            },
             rankingsDeaths()
             {
                 return this.rankings('deaths');

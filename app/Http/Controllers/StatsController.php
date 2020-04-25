@@ -3225,4 +3225,21 @@ class StatsController extends Controller
 
         return response($data)->setStatusCode(Response::HTTP_OK);
     }
+
+
+    public function global_summary()
+    {
+        $filename = STATS . 'global.json';
+        $file = fopen($filename,'r');
+        $data = json_decode(fread($file,filesize($filename)),true);
+
+        $result = [
+            'last_update' => $data['total']['last_update'],
+            'confirmed' => (int)$data['total']['confirmed'],
+            'deaths' => (int)$data['total']['deaths'],
+            'recovered' => (int)$data['total']['recovered'],
+            'active' => (int)$data['total']['confirmed'] - (int)$data['total']['deaths'] - (int)$data['total']['recovered'],
+        ];
+        return response($result)->setStatusCode(Response::HTTP_OK);
+    }
 }
