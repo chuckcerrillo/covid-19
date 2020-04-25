@@ -38,7 +38,7 @@
                         <div class="text-2xl max-w-xl text-center text-yellow-400 m-4 mt-8 font-bold">For the full experience, including comparison views and charts, please view this website on a larger screen.</div>
                     </div>
 
-                    <div v-if="loaded" class="md:block mt-12 sm:my-12 h-64 md:h-120 xl:h-148">
+                    <div v-if="loaded" class="relative h-64 md:block mt-12 sm:my-12 md:h-120 xl:h-148">
                         <Map
                             class="w-full xl:rounded-lg overflow-hidden h-full"
                             id="world_map"
@@ -46,12 +46,12 @@
                             :data="countries_sorted"
                         />
                     </div>
-                    <div v-else class="hidden xl:block my-12 h-148">
+                    <div v-else class="relative hidden h-64 md:block mt-12 sm:my-12 md:h-120 xl:h-148">
                         <div class="bg-white rounded h-full">Loading map</div>
                     </div>
                 </div>
 
-                <div class="bg-slab flex sm:flex-1 py-8 w-full med:w-auto items-center justify-center">
+                <div class="bg-slab sm:flex sm:flex-1 py-8 w-full med:w-auto items-center justify-center">
                     <div class="w-full md:w-256">
                         <h2 class="m-2 xl:m-0 font-bold text-3xl tracking-tight mb-8">At a glance...</h2>
 
@@ -60,13 +60,15 @@
                                 <div class="font-bold tracking-tight mb-4">Countries with most cumulative cases</div>
                                 <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('confirmed','desc',6)"
-                                         class="p-2 lg:p-4 flex items-center justify-center">
+                                         class="p-2 lg:p-4 flex items-center justify-between">
                                         <div class="mr-4 lg:mr-0 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
-                                        <div class="flex lg:block sm:flex-1 lg:flex-none justify-start items-center ">
-                                            <div class="w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
-                                            <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.c | numeralFormat}}</div>
-                                            <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
-                                                +{{getLastDelta(row.name).confirmed|numeralFormat}} (+{{getLastDelta(row.name).confirmedpc |numeralFormat('0.0%')}})
+                                        <div class="flex lg:block sm:flex-1 lg:flex-none justify-between items-center w-full">
+                                            <div class="text-left w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
+                                            <div class="flex justify-end">
+                                                <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.c | numeralFormat}}</div>
+                                                <div v-if="getLastDelta(row.name)" class="w-28 px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
+                                                    +{{getLastDelta(row.name).confirmed|numeralFormat}} (+{{getLastDelta(row.name).confirmedpc |numeralFormat('0.0%')}})
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -78,13 +80,15 @@
                                 <div class="font-bold tracking-tight mb-4">Countries with most deaths</div>
                                 <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('deaths','desc',6)"
-                                         class="p-2 lg:p-4 flex items-center justify-center">
+                                         class="p-2 lg:p-4 flex items-center justify-between">
                                         <div class="mr-4 lg:mr-0 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
-                                        <div class="flex lg:block sm:flex-1 lg:flex-none justify-start items-center ">
-                                            <div class="w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
-                                            <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.d | numeralFormat}}</div>
-                                            <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
-                                                +{{getLastDelta(row.name).deaths|numeralFormat}} (+{{getLastDelta(row.name).deathspc |numeralFormat('0.0%')}})
+                                        <div class="flex lg:block sm:flex-1 lg:flex-none justify-between items-center w-full">
+                                            <div class="text-left w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
+                                            <div class="flex justify-end">
+                                                <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.d | numeralFormat}}</div>
+                                                <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
+                                                    +{{getLastDelta(row.name).deaths|numeralFormat}} (+{{getLastDelta(row.name).deathspc |numeralFormat('0.0%')}})
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -95,13 +99,15 @@
                                 <div class="font-bold tracking-tight mb-4">Countries with most recoveries</div>
                                 <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('recovered','desc',6)"
-                                         class="p-2 lg:p-4 flex items-center justify-center">
+                                         class="p-2 lg:p-4 flex items-center justify-between">
                                         <div class="mr-4 lg:mr-0 xl:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
-                                        <div class="flex lg:block sm:flex-1 lg:flex-none justify-start items-center ">
-                                            <div class="w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
-                                            <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.r | numeralFormat}}</div>
-                                            <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
-                                                +{{getLastDelta(row.name).recovered|numeralFormat}} (+{{getLastDelta(row.name).recoveredpc|numeralFormat('0.0%')}})
+                                        <div class="flex lg:block sm:flex-1 lg:flex-none justify-between items-center w-full ">
+                                            <div class="text-left w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
+                                            <div class="flex justify-end">
+                                                <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.r | numeralFormat}}</div>
+                                                <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
+                                                    +{{getLastDelta(row.name).recovered|numeralFormat}} (+{{getLastDelta(row.name).recoveredpc|numeralFormat('0.0%')}})
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -113,7 +119,7 @@
                     </div>
                 </div>
 
-                <div class="bg-slab-primary w-full flex justify-center">
+                <div class="bg-slab-primary w-full sm:flex justify-center">
                     <div class="sm:flex sm:flex-wrap items-start w-full sm:w-256 justify-center my-8">
                         <div class="sm:w-full m-2 mb-8">
                             <div class="font-bold text-3xl tracking-tight">Daily movement</div>
@@ -212,15 +218,15 @@
                     </div>
                 </div>
 
-                <div class="bg-slab-primary flex pt-4 pb-8 w-full items-center justify-center">
+                <div class="bg-slab-primary sm:flex pt-4 pb-8 w-full items-center justify-center">
                     <div class="mx-4 w-256 lg:mx-0">
                         <a href="#top">^ Back to top</a>
                     </div>
                 </div>
 
                 <!-- footer -->
-                <div class="bg-slab flex py-8 w-full items-center justify-center">
-                    <div class="mx-4 w-256 lg:mx-0">
+                <div class="bg-slab sm:flex py-8 w-full items-center justify-center">
+                    <div class="mx-4 sm:w-256 lg:mx-0">
                         <div class="sm:flex items-start my-4 justify-between">
                             <div>The COVID-19 Tracker is a project by <a class="font-bold underline hover:text-lightlabel" href="https://www.makeitsimpler.com.au">Simpler</a>. For feedback, suggestions, and bug reports, please contact feedback@makeitsimpler.com.au or get in touch with us on our socials.</div>
                             <div class="flex w-32 items-end py-4">
