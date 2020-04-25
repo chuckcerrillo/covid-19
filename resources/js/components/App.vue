@@ -3,6 +3,7 @@
         <Nav
             v-on:showAbout="showAbout"
             v-on:setMode="setMode"
+            v-show="inComparison()"
             :mode="mode"
         />
         <About
@@ -14,7 +15,7 @@
             v-on:updateCompare="updateCompare"
             v-on:updateSelected="updateSelected"
             v-on:saveProcessedData="saveProcessedData"
-            :mode="mode" :key="$route.fullPath" class="fixed top-0 left-0 right-0 bottom-0 fullhd:mt-14" :loading="database.loading" :database="database"></router-view>
+            :mode="mode" :key="$route.fullPath" class="fixed top-0 left-0 right-0 bottom-0" :class="inComparison()?'fullhd:mt-14':''" :loading="database.loading" :database="database"></router-view>
     </div>
 </template>
 
@@ -89,32 +90,32 @@
 
                 });
 
-            axios.get('/api/stats/states')
-                .then(res => {
-                    this.database.raw.raw_state_data = res.data;
-                    this.database.loading.states = true;
-                })
-                .catch(error => {
-
-                });
-
-            axios.get('/api/stats/annotations')
-                .then(res => {
-                    this.database.raw.raw_annotations = res.data;
-                    this.database.loading.annotations = true;
-                })
-                .catch(error => {
-
-                });
-
-            axios.get('/api/stats/oxford')
-                .then(res => {
-                    this.database.raw.raw_oxford = res.data;
-                    this.database.loading.oxford = true;
-                })
-                .catch(error => {
-
-                });
+            // axios.get('/api/stats/states')
+            //     .then(res => {
+            //         this.database.raw.raw_state_data = res.data;
+            //         this.database.loading.states = true;
+            //     })
+            //     .catch(error => {
+            //
+            //     });
+            //
+            // axios.get('/api/stats/annotations')
+            //     .then(res => {
+            //         this.database.raw.raw_annotations = res.data;
+            //         this.database.loading.annotations = true;
+            //     })
+            //     .catch(error => {
+            //
+            //     });
+            //
+            // axios.get('/api/stats/oxford')
+            //     .then(res => {
+            //         this.database.raw.raw_oxford = res.data;
+            //         this.database.loading.oxford = true;
+            //     })
+            //     .catch(error => {
+            //
+            //     });
 
             this.setPageTitle(this.$route.meta.title);
         },
@@ -147,6 +148,13 @@
             setPageTitle(title)
             {
                 document.title = title + ' | COVID19 Tracker';
+            },
+            inComparison()
+            {
+                if(this.$route.name != 'global')
+                {
+                    return true;
+                }
             }
         },
         computed:
