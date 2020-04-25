@@ -3121,25 +3121,34 @@ class StatsController extends Controller
                 $sort_3daysago['deaths'][] = $threedaysago['total']['d'];
                 $sort_3daysago['recovered'][] = $threedaysago['total']['r'];
 
+
                 if($delta)
                 {
                     $sort_yesterday['confirmed'][] = $yesterday['total']['c'] - $threedaysago['total']['c'];
                     $sort_yesterday['deaths'][] = $yesterday['total']['d'] - $threedaysago['total']['d'];
                     $sort_yesterday['recovered'][] = $yesterday['total']['r'] - $threedaysago['total']['r'];
+                    $sort_yesterday['confirmedSurge'][] = ($yesterday['total']['c'] - $threedaysago['total']['c'])/($threedaysago['total']['c'] != 0 ? $threedaysago['total']['c'] : 1);
+                    $sort_yesterday['deathsSurge'][] = ($yesterday['total']['d'] - $threedaysago['total']['d'])/($threedaysago['total']['d'] != 0 ? $threedaysago['total']['d'] : 1);
 
                     $sort_today['confirmed'][] = $today['total']['c'] - $yesterday['total']['c'];
                     $sort_today['deaths'][] = $today['total']['d'] - $yesterday['total']['d'];
                     $sort_today['recovered'][] = $today['total']['r'] - $yesterday['total']['r'];
+                    $sort_today['confirmedSurge'][] = ($today['total']['c'] - $yesterday['total']['c']) / ($yesterday['total']['c'] != 0 ? $yesterday['total']['c'] : 1);
+                    $sort_today['deathsSurge'][] = ($today['total']['d'] - $yesterday['total']['d']) / ($yesterday['total']['d'] != 0 ? $yesterday['total']['d'] : 1);
 
                     $data[] = [
                         'name' => $country_name,
                         'confirmed' => $today1['total']['c'] - ($today1['total']['c'] == $today['total']['c'] ? $yesterday['total']['c'] : $today['total']['c']),
                         'deaths' => $today1['total']['d'] - ($today1['total']['d'] == $today['total']['d'] ? $yesterday['total']['d'] : $today['total']['d']),
                         'recovered' => $today1['total']['r'] - ($today1['total']['r'] == $today['total']['r'] ? $yesterday['total']['r'] : $today['total']['r']),
+                        'confirmedSurge' => ($today['total']['c'] - $yesterday['total']['c'])/($yesterday['total']['c'] != 0 ? $yesterday['total']['c'] : 1),
+                        'deathsSurge' => ($today['total']['d'] - $yesterday['total']['d'])/($yesterday['total']['d'] != 0 ? $yesterday['total']['d'] : 1),
                         'movement' => [
                             'confirmed' => '',
                             'deaths' => '',
                             'recovered' => '',
+                            'confirmedSurge' => '',
+                            'deathsSurge' => '',
                         ]
                     ];
                 }
@@ -3175,7 +3184,7 @@ class StatsController extends Controller
         }
 
 
-        foreach(['confirmed','deaths','recovered'] AS $field)
+        foreach(['confirmed','deaths','recovered','confirmedSurge','deathsSurge'] AS $field)
         {
             $sorted_yesterday = $data;
             $sorted_today = $data;
