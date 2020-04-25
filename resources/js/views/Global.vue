@@ -55,18 +55,18 @@
                     <div class="w-full md:w-256">
                         <h2 class="m-2 xl:m-0 font-bold text-3xl tracking-tight mb-8">At a glance...</h2>
 
-                        <div class="lg:flex lg:flex-1">
-                            <div class="m-2 lg:m-0 lg:w-1/3">
-                                <div class="font-bold tracking-tight mb-4">Countries with most cumulative cases</div>
+                        <div class="lg:flex lg:flex-1 justify-center">
+                            <div class="m-2 lg:m-0 lg:w-72">
+                                <div class="font-bold tracking-tight my-4">Countries with most confirmed cases</div>
                                 <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('confirmed','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-between">
-                                        <div class="mr-4 lg:mr-0 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
+                                        <div class="mr-4 lg:ml-8 lg:mr-2 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
                                         <div class="flex lg:block sm:flex-1 lg:flex-none justify-between items-center w-full">
-                                            <div class="text-left w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
-                                            <div class="flex justify-end">
+                                            <div class="text-left w-40 text-primary font-bold text-2xl sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
+                                            <div class="text-right sm:text-left">
                                                 <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.c | numeralFormat}}</div>
-                                                <div v-if="getLastDelta(row.name)" class="w-28 px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
+                                                <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-sm text-lightlabel">
                                                     +{{getLastDelta(row.name).confirmed|numeralFormat}} (+{{getLastDelta(row.name).confirmedpc |numeralFormat('0.0%')}})
                                                 </div>
                                             </div>
@@ -76,17 +76,17 @@
                                 <div v-else class="p-8 bg-hoverslab rounded-lg">Loading...</div>
                             </div>
 
-                            <div class="m-2 lg:m-0 lg:w-1/3 lg:ml-2">
-                                <div class="font-bold tracking-tight mb-4">Countries with most deaths</div>
+                            <div class="m-2 lg:m-0 lg:w-72 lg:ml-2">
+                                <div class="font-bold tracking-tight my-4">Countries with most deaths</div>
                                 <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('deaths','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-between">
-                                        <div class="mr-4 lg:mr-0 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
+                                        <div class="mr-4 lg:ml-8 lg:mr-2 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
                                         <div class="flex lg:block sm:flex-1 lg:flex-none justify-between items-center w-full">
-                                            <div class="text-left w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
-                                            <div class="flex justify-end">
+                                            <div class="text-left w-40 text-primary font-bold text-2xl sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
+                                            <div class="text-right sm:text-left">
                                                 <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.d | numeralFormat}}</div>
-                                                <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
+                                                <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-sm text-lightlabel">
                                                     +{{getLastDelta(row.name).deaths|numeralFormat}} (+{{getLastDelta(row.name).deathspc |numeralFormat('0.0%')}})
                                                 </div>
                                             </div>
@@ -95,17 +95,17 @@
                                 </div>
                                 <div v-else class="p-8 bg-hoverslab rounded-lg">Loading...</div>
                             </div>
-                            <div class="m-2 lg:m-0 lg:w-1/3 lg:ml-2">
-                                <div class="font-bold tracking-tight mb-4">Countries with most recoveries</div>
+                            <div class="m-2 lg:m-0 lg:w-72 lg:ml-2">
+                                <div class="font-bold tracking-tight my-4">Countries with most recoveries</div>
                                 <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('recovered','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-between">
-                                        <div class="mr-4 lg:mr-0 xl:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
-                                        <div class="flex lg:block sm:flex-1 lg:flex-none justify-between items-center w-full ">
-                                            <div class="text-left w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
-                                            <div class="flex justify-end">
+                                        <div class="mr-4 lg:ml-8 lg:mr-2 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
+                                        <div class="flex lg:block sm:flex-1 lg:flex-none justify-between items-center w-full">
+                                            <div class="text-left w-40 text-primary font-bold text-2xl sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
+                                            <div class="text-right sm:text-left">
                                                 <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.r | numeralFormat}}</div>
-                                                <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
+                                                <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-sm text-lightlabel">
                                                     +{{getLastDelta(row.name).recovered|numeralFormat}} (+{{getLastDelta(row.name).recoveredpc|numeralFormat('0.0%')}})
                                                 </div>
                                             </div>
@@ -126,13 +126,13 @@
                             <div class="text-lightlabel">The daily movement shows the changes in relative position of each country based on the chosen metric during the last 24 hours.</div>
                         </div>
                         <div class="sm:hidden text-xs text-center rounded mx-2 border border-lightslab flex items-center justify-center bg-slab">
-                            <div class="p-1 h-16" :class="ui.rankings.view == 'confirmedDelta' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'confirmedDelta'">New confirmed cases by country</div>
-                            <div class="p-1 h-16" :class="ui.rankings.view == 'deathsDelta' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'deathsDelta'">New confirmed deaths by country</div>
-                            <div class="p-1 h-16" :class="ui.rankings.view == 'confirmedSurge' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'confirmedSurge'">Surge of new cases by country</div>
-                            <div class="p-1 h-16" :class="ui.rankings.view == 'deathsSurge' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'deathsSurge'">Surge of new deaths by country</div>
+                            <div class="p-1 h-16" :class="ui.rankings.view == 'confirmedDelta' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'confirmedDelta'">New confirmed cases (total)</div>
+                            <div class="p-1 h-16" :class="ui.rankings.view == 'deathsDelta' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'deathsDelta'">New confirmed deaths (total)</div>
+                            <div class="p-1 h-16" :class="ui.rankings.view == 'confirmedSurge' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'confirmedSurge'">Surge of new cases (total)</div>
+                            <div class="p-1 h-16" :class="ui.rankings.view == 'deathsSurge' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'deathsSurge'">Surge of new deaths (total)</div>
                         </div>
                         <div class="sm:block" :class="ui.rankings.view != 'confirmedDelta' ? 'hidden' : ''">
-                            <div class="hidden sm:block text-center font-bold">New confirmed cases by country</div>
+                            <div class="hidden sm:block text-center font-bold">New confirmed cases (total)</div>
                             <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                 <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
                                     <div v-if="rankingsConfirmed && rankingsConfirmed.length > 0">
@@ -153,7 +153,7 @@
                             </div>
                         </div>
                         <div class="sm:block" :class="ui.rankings.view != 'deathsDelta' ? 'hidden' : ''">
-                            <div class="hidden sm:block text-center font-bold">New deaths by country</div>
+                            <div class="hidden sm:block text-center font-bold">New deaths (total)</div>
                             <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                 <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
                                     <div v-if="rankingsDeaths && rankingsDeaths.length > 0">
@@ -174,7 +174,7 @@
                             </div>
                         </div>
                         <div class="sm:block" :class="ui.rankings.view != 'confirmedSurge' ? 'hidden' : ''">
-                            <div class="hidden sm:block text-center font-bold">Surge of new cases by country</div>
+                            <div class="hidden sm:block text-center font-bold">Surge of new cases (total)</div>
                             <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                 <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
                                     <div v-if="rankingsConfirmedSurge && rankingsConfirmedSurge.length > 0">
@@ -188,14 +188,14 @@
 
                                                 <div class="py-2 font-bold text-sm">{{row.name}}</div>
                                             </div>
-                                            <div class="py-2"><span class="font-bold">+{{row.confirmedSurge| numeralFormat('0.00%')}}</span> <span class="text-xs text-lightlabel">({{row.confirmed| numeralFormat}})</span></div>
+                                            <div class="py-2"><span class="font-bold">+{{row.confirmedSurge| numeralFormat('0.00%')}}</span> <span class="text-xs text-lightlabel">({{row.confirmedTotal| numeralFormat}})</span></div>
                                         </div>
                                     </div>
                                 </simplebar>
                             </div>
                         </div>
                         <div class="sm:block" :class="ui.rankings.view != 'deathsSurge' ? 'hidden' : ''">
-                            <div class="hidden sm:block text-center font-bold">Surge of new deaths by country</div>
+                            <div class="hidden sm:block text-center font-bold">Surge of new deaths (total)</div>
                             <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                 <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
                                     <div v-if="rankingsDeathsSurge && rankingsDeathsSurge.length > 0">
@@ -209,7 +209,7 @@
 
                                                 <div class="py-2 font-bold text-sm">{{row.name}}</div>
                                             </div>
-                                            <div class="py-2"><span class="font-bold">+{{row.deathsSurge| numeralFormat('0.00%')}}</span> <span class="text-xs text-lightlabel">({{row.deaths| numeralFormat}})</span></div>
+                                            <div class="py-2"><span class="font-bold">+{{row.deathsSurge| numeralFormat('0.00%')}}</span> <span class="text-xs text-lightlabel">({{row.deathsTotal| numeralFormat}})</span></div>
                                         </div>
                                     </div>
                                 </simplebar>
