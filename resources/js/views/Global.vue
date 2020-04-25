@@ -169,88 +169,90 @@
                             <div class="p-1 h-16" :class="ui.rankings.view == 'confirmedSurge' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'confirmedSurge'">Surge of new cases (total)</div>
                             <div class="p-1 h-16" :class="ui.rankings.view == 'deathsSurge' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'deathsSurge'">Surge of new deaths (total)</div>
                         </div>
-                        <div class="sm:block" :class="ui.rankings.view != 'confirmedDelta' ? 'hidden' : ''">
-                            <div class="hidden sm:block text-center font-bold">New confirmed cases (total)</div>
-                            <div class="m-2 my-4 p-2 bg-slab rounded-lg">
-                                <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
-                                    <div v-if="rankings('confirmed') && rankings('confirmed').length > 0">
-                                        <div v-for="(row,key) in rankings('confirmed')" class="flex items-center justify-between">
-                                            <div class="flex items-center">
-                                                <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
+                        <div class="relative h-100 sm:h-auto sm:flex flex-wrap justify-center">
+                            <div class="absolute inset-0 sm:relative sm:block sm:opacity-100" :class="ui.rankings.view != 'confirmedDelta' ? 'opacity-0' : 'opacity-100'">
+                                <div class="hidden sm:block text-center font-bold">New confirmed cases (total)</div>
+                                <div class="m-2 my-4 p-2 bg-slab rounded-lg">
+                                    <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
+                                        <div v-if="rankings('confirmed') && rankings('confirmed').length > 0">
+                                            <div v-for="(row,key) in rankings('confirmed')" class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
-                                                <div v-if="row.movement.confirmed == 'up'" class="p-2 pr-4 arrow-up"></div>
-                                                <div v-else-if="row.movement.confirmed == 'down'" class="p-2 pr-4 arrow-down"></div>
-                                                <div v-else class="p-2 pr-4 equal"></div>
+                                                    <div v-if="row.movement.confirmed == 'up'" class="p-2 pr-4 arrow-up"></div>
+                                                    <div v-else-if="row.movement.confirmed == 'down'" class="p-2 pr-4 arrow-down"></div>
+                                                    <div v-else class="p-2 pr-4 equal"></div>
 
-                                                <div class="py-2 font-bold text-sm">{{row.name}}</div>
+                                                    <div class="py-2 font-bold text-sm">{{row.name}}</div>
+                                                </div>
+                                                <div class="py-2"><span class="font-bold">+{{row.confirmed| numeralFormat}}</span> <span class="text-xs text-lightlabel">({{row.confirmedTotal| numeralFormat}})</span></div>
                                             </div>
-                                            <div class="py-2"><span class="font-bold">+{{row.confirmed| numeralFormat}}</span> <span class="text-xs text-lightlabel">({{row.confirmedTotal| numeralFormat}})</span></div>
                                         </div>
-                                    </div>
-                                </simplebar>
+                                    </simplebar>
+                                </div>
                             </div>
-                        </div>
-                        <div class="sm:block" :class="ui.rankings.view != 'deathsDelta' ? 'hidden' : ''">
-                            <div class="hidden sm:block text-center font-bold">New deaths (total)</div>
-                            <div class="m-2 my-4 p-2 bg-slab rounded-lg">
-                                <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
-                                    <div v-if="rankings('deaths') && rankings('deaths').length > 0">
-                                        <div v-for="(row,key) in rankings('deaths')" class="flex items-center justify-between">
-                                            <div class="flex items-center">
-                                                <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
+                            <div class="absolute inset-0 sm:relative sm:block sm:opacity-100" :class="ui.rankings.view != 'deathsDelta' ? 'opacity-0' : 'opacity-100'">
+                                <div class="hidden sm:block text-center font-bold">New deaths (total)</div>
+                                <div class="m-2 my-4 p-2 bg-slab rounded-lg">
+                                    <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
+                                        <div v-if="rankings('deaths') && rankings('deaths').length > 0">
+                                            <div v-for="(row,key) in rankings('deaths')" class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
-                                                <div v-if="row.movement.deaths == 'up'" class="p-2 pr-4 arrow-up"></div>
-                                                <div v-else-if="row.movement.deaths == 'down'" class="p-2 pr-4 arrow-down"></div>
-                                                <div v-else class="p-2 pr-4 equal"></div>
+                                                    <div v-if="row.movement.deaths == 'up'" class="p-2 pr-4 arrow-up"></div>
+                                                    <div v-else-if="row.movement.deaths == 'down'" class="p-2 pr-4 arrow-down"></div>
+                                                    <div v-else class="p-2 pr-4 equal"></div>
 
-                                                <div class="py-2 font-bold text-sm">{{row.name}}</div>
+                                                    <div class="py-2 font-bold text-sm">{{row.name}}</div>
+                                                </div>
+                                                <div class="py-2"><span class="font-bold">+{{row.deaths| numeralFormat}}</span> <span class="text-xs text-lightlabel">({{row.deathsTotal| numeralFormat}})</span></div>
                                             </div>
-                                            <div class="py-2"><span class="font-bold">+{{row.deaths| numeralFormat}}</span> <span class="text-xs text-lightlabel">({{row.deathsTotal| numeralFormat}})</span></div>
                                         </div>
-                                    </div>
-                                </simplebar>
+                                    </simplebar>
+                                </div>
                             </div>
-                        </div>
-                        <div class="sm:block" :class="ui.rankings.view != 'confirmedSurge' ? 'hidden' : ''">
-                            <div class="hidden sm:block text-center font-bold">Surge of new cases (total)</div>
-                            <div class="m-2 my-4 p-2 bg-slab rounded-lg">
-                                <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
-                                    <div v-if="rankings('confirmedSurge') && rankings('confirmedSurge').length > 0">
-                                        <div v-for="(row,key) in rankings('confirmedSurge')" class="flex items-center justify-between">
-                                            <div class="flex items-center">
-                                                <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
+                            <div class="absolute inset-0 sm:relative sm:block sm:opacity-100" :class="ui.rankings.view != 'confirmedSurge' ? 'opacity-0' : 'opacity-100'">
+                                <div class="hidden sm:block text-center font-bold">Surge of new cases (total)</div>
+                                <div class="m-2 my-4 p-2 bg-slab rounded-lg">
+                                    <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
+                                        <div v-if="rankings('confirmedSurge') && rankings('confirmedSurge').length > 0">
+                                            <div v-for="(row,key) in rankings('confirmedSurge')" class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
-                                                <div v-if="row.movement.confirmedSurge == 'up'" class="p-2 pr-4 arrow-up"></div>
-                                                <div v-else-if="row.movement.confirmedSurge == 'down'" class="p-2 pr-4 arrow-down"></div>
-                                                <div v-else class="p-2 pr-4 equal"></div>
+                                                    <div v-if="row.movement.confirmedSurge == 'up'" class="p-2 pr-4 arrow-up"></div>
+                                                    <div v-else-if="row.movement.confirmedSurge == 'down'" class="p-2 pr-4 arrow-down"></div>
+                                                    <div v-else class="p-2 pr-4 equal"></div>
 
-                                                <div class="py-2 font-bold text-sm">{{row.name}}</div>
+                                                    <div class="py-2 font-bold text-sm">{{row.name}}</div>
+                                                </div>
+                                                <div class="py-2"><span class="font-bold">+{{row.confirmedSurge| numeralFormat('0.00%')}}</span> <span class="text-xs text-lightlabel">({{row.confirmedTotal| numeralFormat}})</span></div>
                                             </div>
-                                            <div class="py-2"><span class="font-bold">+{{row.confirmedSurge| numeralFormat('0.00%')}}</span> <span class="text-xs text-lightlabel">({{row.confirmedTotal| numeralFormat}})</span></div>
                                         </div>
-                                    </div>
-                                </simplebar>
+                                    </simplebar>
+                                </div>
                             </div>
-                        </div>
-                        <div class="sm:block" :class="ui.rankings.view != 'deathsSurge' ? 'hidden' : ''">
-                            <div class="hidden sm:block text-center font-bold">Surge of new deaths (total)</div>
-                            <div class="m-2 my-4 p-2 bg-slab rounded-lg">
-                                <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
-                                    <div v-if="rankings('deathsSurge') && rankings('deathsSurge').length > 0">
-                                        <div v-for="(row,key) in rankings('deathsSurge')" class="flex items-center justify-between">
-                                            <div class="flex items-center">
-                                                <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
+                            <div class="absolute inset-0 sm:relative sm:block sm:opacity-100" :class="ui.rankings.view != 'deathsSurge' ? 'opacity-0' : 'opacity-100'">
+                                <div class="hidden sm:block text-center font-bold">Surge of new deaths (total)</div>
+                                <div class="m-2 my-4 p-2 bg-slab rounded-lg">
+                                    <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
+                                        <div v-if="rankings('deathsSurge') && rankings('deathsSurge').length > 0">
+                                            <div v-for="(row,key) in rankings('deathsSurge')" class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <div class="text-hoverslab font-bold py-2">{{key+1}}</div>
 
-                                                <div v-if="row.movement.deathsSurge == 'up'" class="p-2 pr-4 arrow-up"></div>
-                                                <div v-else-if="row.movement.deathsSurge == 'down'" class="p-2 pr-4 arrow-down"></div>
-                                                <div v-else class="p-2 pr-4 equal"></div>
+                                                    <div v-if="row.movement.deathsSurge == 'up'" class="p-2 pr-4 arrow-up"></div>
+                                                    <div v-else-if="row.movement.deathsSurge == 'down'" class="p-2 pr-4 arrow-down"></div>
+                                                    <div v-else class="p-2 pr-4 equal"></div>
 
-                                                <div class="py-2 font-bold text-sm">{{row.name}}</div>
+                                                    <div class="py-2 font-bold text-sm">{{row.name}}</div>
+                                                </div>
+                                                <div class="py-2"><span class="font-bold">+{{row.deathsSurge| numeralFormat('0.00%')}}</span> <span class="text-xs text-lightlabel">({{row.deathsTotal| numeralFormat}})</span></div>
                                             </div>
-                                            <div class="py-2"><span class="font-bold">+{{row.deathsSurge| numeralFormat('0.00%')}}</span> <span class="text-xs text-lightlabel">({{row.deathsTotal| numeralFormat}})</span></div>
                                         </div>
-                                    </div>
-                                </simplebar>
+                                    </simplebar>
+                                </div>
                             </div>
                         </div>
                     </div>
