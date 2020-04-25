@@ -42,7 +42,7 @@
                         <Map
                             class="w-full xl:rounded-lg overflow-hidden h-full"
                             id="world_map"
-                            :enable="false"
+                            :enable="true"
                             :data="countries_sorted"
                         />
                     </div>
@@ -283,7 +283,10 @@
 
                 <div class="bg-slab-primary w-full flex justify-center">
                     <div class="sm:flex sm:flex-wrap items-start w-full sm:w-256 justify-center my-8">
-                        <div class="sm:w-full font-bold m-2 text-3xl tracking-tight mb-8">Daily movement</div>
+                        <div class="sm:w-full m-2 mb-8">
+                            <div class="font-bold text-3xl tracking-tight">Daily movement</div>
+                            <div class="text-lightlabel">The daily movement shows the changes in relative position of each country based on the chosen metric during the last 24 hours.</div>
+                        </div>
                         <div class="sm:hidden text-xs text-center rounded mx-2 border border-lightslab flex items-center justify-center bg-slab">
                             <div class="p-1 h-16" :class="ui.rankings.view == 'confirmedDelta' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'confirmedDelta'">New confirmed cases by country</div>
                             <div class="p-1 h-16" :class="ui.rankings.view == 'deathsDelta' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'deathsDelta'">New confirmed deaths by country</div>
@@ -305,7 +308,7 @@
 
                                                 <div class="p-2">{{row.name}}</div>
                                             </div>
-                                            <div class="p-2">{{row.confirmed | numeralFormat}}</div>
+                                            <div class="p-2 ">+{{row.confirmed| numeralFormat}} <span class="text-lightlabel">({{row.confirmedTotal| numeralFormat}})</span></div>
                                         </div>
                                     </div>
                                 </simplebar>
@@ -326,7 +329,7 @@
 
                                                 <div class="p-2  ">{{row.name}}</div>
                                             </div>
-                                            <div class="p-2 ">{{row.deaths| numeralFormat}}</div>
+                                            <div class="p-2 ">+{{row.deaths| numeralFormat}} <span class="text-lightlabel">({{row.deathsTotal| numeralFormat}})</span></div>
                                         </div>
                                     </div>
                                 </simplebar>
@@ -347,7 +350,7 @@
 
                                                 <div class="p-2 ">{{row.name}}</div>
                                             </div>
-                                            <div class="p-2 ">{{row.confirmed| numeralFormat}} ({{row.confirmedSurge| numeralFormat('0.00%')}})</div>
+                                            <div class="p-2 ">{{row.confirmedSurge| numeralFormat('0.00%')}} <span class="text-lightlabel">({{row.confirmed| numeralFormat}})</span></div>
                                         </div>
                                     </div>
                                 </simplebar>
@@ -368,7 +371,7 @@
 
                                                 <div class="p-2">{{row.name}}</div>
                                             </div>
-                                            <div class="p-2">{{row.deaths| numeralFormat}} ({{row.deathsSurge| numeralFormat('0.00%')}})</div>
+                                            <div class="p-2">{{row.deathsSurge| numeralFormat('0.00%')}} <span class="text-lightlabel">({{row.deaths| numeralFormat}})</span></div>
                                         </div>
                                     </div>
                                 </simplebar>
@@ -377,10 +380,25 @@
                     </div>
                 </div>
 
+                <div class="bg-slab-primary flex flex-1 pt-4 pb-8 w-full items-center justify-center">
+                    <div class="mx-4 w-256 lg:mx-0">
+                        <a href="#top">^ Back to top</a>
+                    </div>
+                </div>
+
                 <!-- footer -->
                 <div class="bg-slab flex flex-1 py-8 w-full items-center justify-center">
-                    <div class="w-256">
-                        <a href="#top">^ Back to top</a>
+                    <div class="mx-4 w-256 lg:mx-0">
+                        <div class="sm:flex items-start my-4 justify-between">
+                            <div>The COVID-19 Tracker is a project by <a class="font-bold underline hover:text-lightlabel" href="https://www.makeitsimpler.com.au">Simpler</a>. For feedback, suggestions, and bug reports, please contact feedback@makeitsimpler.com.au or get in touch with us on our socials.</div>
+                            <div class="flex w-32 items-end py-4">
+                                <a href="https://www.facebook.com/simplerau" class="mr-2"><img src="/img/facebook.png" class="h-8"></a>
+                                <a href="https://www.twitter.com/simplerau"><img src="/img/twitter.png" class="h-8"></a>
+                            </div>
+                        </div>
+                        <div class="text-xs text-lightlabel font-italic">The material and information contained on this website is for general information purposes only. You should not rely upon the material or information on the website as a basis for making any business, legal, or any other decisions.</div>
+                        <div class="text-xs text-lightlabel">Whilst we endeavour to keep the information up-to-date and correct, Simpler Solutions makes no representations or warranties of any kind, express or implied about the completeness, accuracy, reliability, suitability or availability with respect to the website or information, products, services or related graphics contained on the website for any purpose. Any reliance you place on such material is therefore strictly at your own risk.</div>
+                        <div class="mt-4">&copy; Simpler Solutions</div>
                     </div>
                 </div>
             </div>
@@ -627,7 +645,28 @@
             {
                 var data = [];
 
-                var data = _.cloneDeep(this.ajax.rankings);
+                for(var x in this.ajax.rankings)
+                {
+                   if(field == 'deaths' || field == 'confirmed')
+                   {
+                       data.push(_.clone(this.ajax.rankings[x]));
+                   }
+                   else if(field == 'confirmedSurge')
+                   {
+                       if(this.ajax.rankings[x].confirmedTotal >= 100)
+                       {
+                           data.push(_.clone(this.ajax.rankings[x]));
+                       }
+                   }
+                   else if(field == 'deathsSurge')
+                   {
+                       if(this.ajax.rankings[x].deathsTotal >= 20)
+                       {
+                           data.push(_.clone(this.ajax.rankings[x]));
+                       }
+                   }
+                }
+
                 data = data.sort(function (a, b) {
                     if(field == 'confirmedSurge' || field == 'deathsSurge')
                         return parseFloat(a[field]) < parseFloat(b[field]) ? 1 : -1;
