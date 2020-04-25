@@ -151,6 +151,7 @@
                                                 id="world_map"
                                                 :enable="true"
                                                 :data="countries_sorted"
+                                                :settings="{interactive:true,zoom:1}"
                                             />
                                             <div class="mt-4 flex">
                                                 <div @click="ui.dashboard.table = 'daily'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="ui.dashboard.table == 'daily' ? 'border border-heading bg-lightslab':''">Daily stats</div>
@@ -254,7 +255,33 @@
             'database',
         ],
         created(){
-            this.compare = this.database.processed.compare;
+            // this.compare = this.database.processed.compare;
+            axios.get('/api/stats/states')
+                .then(res => {
+                    this.database.raw.raw_state_data = res.data;
+                    this.database.loading.states = true;
+                })
+                .catch(error => {
+
+                });
+
+            axios.get('/api/stats/annotations')
+                .then(res => {
+                    this.database.raw.raw_annotations = res.data;
+                    this.database.loading.annotations = true;
+                })
+                .catch(error => {
+
+                });
+
+            axios.get('/api/stats/oxford')
+                .then(res => {
+                    this.database.raw.raw_oxford = res.data;
+                    this.database.loading.oxford = true;
+                })
+                .catch(error => {
+
+                });
         },
         data()
         {

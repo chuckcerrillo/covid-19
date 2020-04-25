@@ -1962,7 +1962,7 @@ class StatsController extends Controller
             "population"=> $population,
             "states"=> [],
             "total"=> [
-                'l' => $global['total']['last_update'],
+                'l' => date('Y-m-d H:i:s'),
                 'c' => $global['total']['confirmed'],
                 'd' => $global['total']['deaths'],
                 'r' => $global['total']['recovered'],

@@ -12,11 +12,15 @@
             'id',
             'data',
             'enable',
+            'settings',
         ],
         data(){
             return {
-                zoom: 1,
                 map: {},
+                config: {
+                    interactive: false,
+                    zoom: 1,
+                }
             }
         },
         mounted(){
@@ -26,11 +30,20 @@
             var map = new mapboxgl.Map({
                 container: 'global_map',
                 style: 'mapbox://styles/mapbox/light-v10',
-                center: [6.679687499992383, 34.597041516152586]
+                center: [6.679687499992383, 34.597041516152586],
+                interactive: this.options.interactive,
             });
             this.map = map;
-            map.setZoom(this.zoom);
+            map.setZoom(this.options.zoom);
             map.setCenter([6.679687499992383, 34.597041516152586]);
+
+            // if(this.options.interactive === false)
+            // {
+            //     map.dragRotate.disable();
+            //     map.zoom.disable();
+            //     map.pan.disable();
+            // }
+
             for(var x in this.data)
             {
                 var country = this.data[x];
@@ -49,6 +62,32 @@
             }
         },
         computed: {
+            options()
+            {
+                var options = {};
+                if(this.settings)
+                {
+                    if(this.settings.interactive)
+                    {
+                        options.interactive = this.settings.interactive;
+                    }
+                    else
+                    {
+                        options.interactive = this.config.interactive;
+                    }
+
+                    if(this.settings.zoom)
+                    {
+                        options.zoom = this.settings.zoom;
+                    }
+                    else
+                    {
+                        options.zoom = this.config.zoom;
+                    }
+                }
+                console.log(options);
+                return options;
+            }
         },
         watch: {
             zoom(){
