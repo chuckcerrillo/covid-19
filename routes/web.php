@@ -19,6 +19,8 @@ Route::get('/statistics/oxford', 'StatsController@oxford');
 Route::get('/statistics/harvest_time_series', 'StatsController@harvest_time_series');
 Route::get('/statistics/rankings', 'StatsController@daily_ranking');
 Route::get('/statistics/global_summary', 'StatsController@global_summary');
+Route::get('/statistics/at_a_glance', 'StatsController@at_a_glance');
+Route::get('/statistics/countries_list_map', 'StatsController@countries_list_map');
 Route::get('{any}', 'AppController@index')
     ->where('any','.*')
     ->name('home');

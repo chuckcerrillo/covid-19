@@ -29,3 +29,5 @@ Route::get('/stats/global', 'StatsController@global');
 Route::get('/stats/oxford', 'StatsController@oxford');
 Route::get('/stats/rankings', 'StatsController@daily_ranking');
 Route::get('/stats/global_summary', 'StatsController@global_summary');
+Route::get('/stats/at_a_glance', 'StatsController@at_a_glance');
+Route::get('/stats/countries_list_map', 'StatsController@countries_list_map');

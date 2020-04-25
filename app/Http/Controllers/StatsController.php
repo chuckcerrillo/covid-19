@@ -3242,4 +3242,121 @@ class StatsController extends Controller
         ];
         return response($result)->setStatusCode(Response::HTTP_OK);
     }
+
+    public function countries_list_map()
+    {
+        $filename = STATS . 'master.json';
+        $file = fopen($filename,'r');
+        $data = json_decode(fread($file,filesize($filename)),true);
+        $result = [];
+        foreach($data AS $country_name => $row)
+        {
+            $result[$country_name] = [
+                'name' => $row['name'],
+                'lat' => $row['lat'],
+                'long' => $row['long'],
+                'confirmed' => $row['total']['c']
+            ];
+        }
+        return response($result)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function at_a_glance()
+    {
+        $filename = STATS . 'master.json';
+        $file = fopen($filename,'r');
+        $countries = json_decode(fread($file,filesize($filename)),true);
+        $sort = [
+            'confirmed' => [],
+            'deaths' => [],
+            'recovered' => [],
+        ];
+
+        foreach($countries AS $country_name => $country_row) {
+            if($country_name != 'Global'){
+                $sort['confirmed'][] = $country_row['total']['c'];
+                $sort['deaths'][] = $country_row['total']['d'];
+                $sort['recovered'][] = $country_row['total']['r'];
+            }
+        }
+
+        $sorted = [];
+        $sorted['confirmed'] = $countries;
+        $sorted['recovered'] = $countries;
+        $sorted['deaths'] = $countries;
+
+        $data = [
+            'confirmed' => [],
+            'deaths' => [],
+            'recovered' => [],
+        ];
+
+        foreach(['confirmed','deaths','recovered'] AS $field)
+        {
+            unset($sorted[$field]['Global']);
+            array_multisort($sort[$field], SORT_DESC,$sorted[$field]);
+            $sorted[$field] = array_slice($sorted[$field],0,5);
+
+            foreach($sorted[$field] AS $country_name => $country_row)
+            {
+                $row = [
+                    'name' => $country_name,
+                ];
+
+
+                $today = array_pop($country_row['daily']);
+                $yesterday = array_pop($country_row['daily']);
+                $two_days_ago = array_pop($country_row['daily']);
+
+                if($field == 'confirmed')
+                {
+                    $row['confirmed'] = $country_row['total']['c'];
+                    if($today['total']['c'] != $yesterday['total']['c'])
+                    {
+                        $row['delta'] = $today['total']['c'] - $yesterday['total']['c'];
+                        $row['percent'] = $row['delta'] / $yesterday['total']['c'];
+                    }
+                    else
+                    {
+                        $row['delta'] = $today['total']['c'] - $two_days_ago['total']['c'];
+                        $row['percent'] = $row['delta'] / $two_days_ago['total']['c'];
+                    }
+                }
+                else if($field == 'deaths')
+                {
+                    $row['deaths'] = $country_row['total']['d'];
+                    if($today['total']['d'] != $yesterday['total']['d'])
+                    {
+                        $row['delta'] = $today['total']['d'] - $yesterday['total']['d'];
+                        $row['percent'] = $row['delta'] / $yesterday['total']['d'];
+                    }
+                    else
+                    {
+                        $row['delta'] = $today['total']['d'] - $two_days_ago['total']['d'];
+                        $row['percent'] = $row['delta'] / $two_days_ago['total']['d'];
+                    }
+                }
+                else if($field == 'recovered')
+                {
+                    $row['recovered'] = $country_row['total']['r'];
+                    if($today['total']['r'] != $yesterday['total']['r'])
+                    {
+                        $row['delta'] = $today['total']['r'] - $yesterday['total']['r'];
+                        $row['percent'] = $row['delta'] / $yesterday['total']['r'];
+                    }
+                    else
+                    {
+                        $row['delta'] = $today['total']['r'] - $two_days_ago['total']['r'];
+                        $row['percent'] = $row['delta'] / $two_days_ago['total']['r'];
+                    }
+                }
+
+
+
+                $data[$field][] = $row;
+            }
+        }
+
+        return response($data)->setStatusCode(Response::HTTP_OK);
+    }
 }

@@ -4,12 +4,12 @@
             <div class="relative h-full w-full flex flex-col justify-start items-center overflow-y-scroll">
                 <a name="top"></a>
                 <div class="relative w-full bg-gray-200">
-                    <div v-if="loading.countries" class="h-full w-full">
+                    <div v-if="ajax && ajax.countries_list_map" class="h-full w-full">
                         <Map
                             class="w-full overflow-hidden h-screen"
                             id="world_map"
                             :enable="true"
-                            :data="countries_sorted()"
+                            :data="ajax.countries_list_map"
                             :settings="{interactive:false,zoom:2}"
                         />
                     </div>
@@ -96,16 +96,16 @@
                         <div class="lg:flex lg:flex-1 justify-center">
                             <div class="m-2 lg:m-0 lg:w-72">
                                 <div class="font-bold tracking-tight my-4">Countries with most confirmed cases</div>
-                                <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
-                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in glance.confirmed"
+                                <div v-if="ajax && ajax.glance && ajax.glance.confirmed" class="bg-hoverslab rounded-lg">
+                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in ajax.glance.confirmed"
                                          class="p-2 lg:p-4 flex items-center justify-between">
-                                        <div class="mr-4 lg:ml-8 lg:mr-2 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
+                                        <div class="mr-4 lg:ml-8 lg:mr-2 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
                                         <div class="flex lg:block sm:flex-1 lg:flex-none justify-between items-center w-full">
                                             <div class="text-left w-40 text-primary font-bold text-2xl sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
                                             <div class="text-right sm:text-left">
-                                                <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.c | numeralFormat}}</div>
-                                                <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-sm text-lightlabel">
-                                                    +{{getLastDelta(row.name).confirmed|numeralFormat}} (+{{getLastDelta(row.name).confirmedpc |numeralFormat('0.0%')}})
+                                                <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.confirmed | numeralFormat}}</div>
+                                                <div class="px-2 text-xs sm:text-2xl lg:text-sm text-lightlabel">
+                                                    +{{row.delta|numeralFormat}} (+{{row.percent|numeralFormat('0.0%')}})
                                                 </div>
                                             </div>
                                         </div>
@@ -116,16 +116,16 @@
 
                             <div class="m-2 lg:m-0 lg:w-72 lg:ml-2">
                                 <div class="font-bold tracking-tight my-4">Countries with most deaths</div>
-                                <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
-                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in glance.deaths"
+                                <div v-if="ajax && ajax.glance && ajax.glance.deaths" class="bg-hoverslab rounded-lg">
+                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in ajax.glance.deaths"
                                          class="p-2 lg:p-4 flex items-center justify-between">
-                                        <div class="mr-4 lg:ml-8 lg:mr-2 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
+                                        <div class="mr-4 lg:ml-8 lg:mr-2 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
                                         <div class="flex lg:block sm:flex-1 lg:flex-none justify-between items-center w-full">
                                             <div class="text-left w-40 text-primary font-bold text-2xl sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
                                             <div class="text-right sm:text-left">
-                                                <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.d | numeralFormat}}</div>
-                                                <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-sm text-lightlabel">
-                                                    +{{getLastDelta(row.name).deaths|numeralFormat}} (+{{getLastDelta(row.name).deathspc |numeralFormat('0.0%')}})
+                                                <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.deaths | numeralFormat}}</div>
+                                                <div class="px-2 text-xs sm:text-2xl lg:text-sm text-lightlabel">
+                                                    +{{row.delta|numeralFormat}} (+{{row.percent|numeralFormat('0.0%')}})
                                                 </div>
                                             </div>
                                         </div>
@@ -135,16 +135,16 @@
                             </div>
                             <div class="m-2 lg:m-0 lg:w-72 lg:ml-2">
                                 <div class="font-bold tracking-tight my-4">Countries with most recoveries</div>
-                                <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
-                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in glance.recovered"
+                                <div v-if="ajax && ajax.glance && ajax.glance.recovered" class="bg-hoverslab rounded-lg">
+                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in ajax.glance.recovered"
                                          class="p-2 lg:p-4 flex items-center justify-between">
-                                        <div class="mr-4 lg:ml-8 lg:mr-2 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
+                                        <div class="mr-4 lg:ml-8 lg:mr-2 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key+1)}}</div>
                                         <div class="flex lg:block sm:flex-1 lg:flex-none justify-between items-center w-full">
                                             <div class="text-left w-40 text-primary font-bold text-2xl sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
                                             <div class="text-right sm:text-left">
-                                                <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.r | numeralFormat}}</div>
-                                                <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-sm text-lightlabel">
-                                                    +{{getLastDelta(row.name).recovered|numeralFormat}} (+{{getLastDelta(row.name).recoveredpc|numeralFormat('0.0%')}})
+                                                <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.recovered | numeralFormat}}</div>
+                                                <div class="px-2 text-xs sm:text-2xl lg:text-sm text-lightlabel">
+                                                    +{{row.delta|numeralFormat}} (+{{row.percent|numeralFormat('0.0%')}})
                                                 </div>
                                             </div>
                                         </div>
@@ -343,31 +343,11 @@
                     'confirmed' : [],
                     'deaths' : [],
                     'recovered' : []
-                }
+                },
             }
         },
         mounted()
         {
-
-            axios.get('/api/stats/countries')
-                .then(res => {
-                    this.database.raw.raw_countries = res.data;
-                    // for(var x in res.data)
-                    // {
-                    //     this.processed.country_ids[res.data[x].name] = x;
-                    // }
-                    //
-                    // console.log('country ids');
-                    // console.log('this.processed.country_ids');
-                    this.glance.confirmed = this.getSortedCountries('confirmed','desc',6)
-                    this.glance.deaths = this.getSortedCountries('deaths','desc',6)
-                    this.glance.recovered = this.getSortedCountries('recovered','desc',6)
-
-                    this.database.loading.countries = true;
-                })
-                .catch(error => {
-
-                });
 
             axios.get('/api/stats/rankings')
                 .then(res => {
@@ -384,6 +364,22 @@
             axios.get('/api/stats/global_summary')
                 .then(res => {
                     this.ajax.summary = res.data;
+                })
+                .catch(error => {
+
+                });
+
+            axios.get('/api/stats/at_a_glance')
+                .then(res => {
+                    this.ajax.glance = res.data;
+                })
+                .catch(error => {
+
+                });
+
+            axios.get('/api/stats/countries_list_map')
+                .then(res => {
+                    this.ajax.countries_list_map = res.data;
                 })
                 .catch(error => {
 
