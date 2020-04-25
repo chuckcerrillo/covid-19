@@ -61,11 +61,11 @@
                                 <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('confirmed','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-center">
-                                        <div class="mr-4 lg:mr-0 lg:w-8 lg:text-3xl font-bold text-lightlabel">{{(key)}}</div>
+                                        <div class="mr-4 lg:mr-0 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
                                         <div class="flex lg:block flex-1 lg:flex-none justify-start items-center ">
-                                            <div class="w-40 text-primary font-bold text-sm lg:px-2 xl:w-64">{{row.name}}</div>
-                                            <div class="font-bold text-white lg:text-3xl lg:px-2">{{row.total.c | numeralFormat}}</div>
-                                            <div v-if="getLastDelta(row.name)" class="px-2 text-xs text-lightlabel">
+                                            <div class="w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
+                                            <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.c | numeralFormat}}</div>
+                                            <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
                                                 +{{getLastDelta(row.name).confirmed|numeralFormat}} (+{{getLastDelta(row.name).confirmedpc |numeralFormat('0.0%')}})
                                             </div>
                                         </div>
@@ -79,11 +79,11 @@
                                 <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('deaths','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-center">
-                                        <div class="mr-4 lg:mr-0 lg:w-8 lg:text-3xl font-bold text-lightlabel">{{(key)}}</div>
+                                        <div class="mr-4 lg:mr-0 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
                                         <div class="flex lg:block flex-1 lg:flex-none justify-start items-center ">
-                                            <div class="w-40 text-primary font-bold text-sm lg:px-2 xl:w-64">{{row.name}}</div>
-                                            <div class="font-bold text-white lg:text-3xl lg:px-2">{{row.total.d | numeralFormat}}</div>
-                                            <div v-if="getLastDelta(row.name)" class="px-2 text-xs text-lightlabel">
+                                            <div class="w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
+                                            <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.d | numeralFormat}}</div>
+                                            <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
                                                 +{{getLastDelta(row.name).deaths|numeralFormat}} (+{{getLastDelta(row.name).deathspc |numeralFormat('0.0%')}})
                                             </div>
                                         </div>
@@ -96,11 +96,11 @@
                                 <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
                                     <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('recovered','desc',6)"
                                          class="p-2 lg:p-4 flex items-center justify-center">
-                                        <div class="mr-4 lg:mr-0 xl:w-8 lg:text-3xl font-bold text-lightlabel">{{(key)}}</div>
+                                        <div class="mr-4 lg:mr-0 xl:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
                                         <div class="flex lg:block flex-1 lg:flex-none justify-start items-center ">
-                                            <div class="w-40 text-primary font-bold text-sm lg:px-2 lg:w-64">{{row.name}}</div>
-                                            <div class="font-bold text-white lg:text-3xl lg:px-2">{{row.total.r | numeralFormat}}</div>
-                                            <div v-if="getLastDelta(row.name)" class="px-2 text-xs text-lightlabel">
+                                            <div class="w-40 text-primary font-bold text-sm sm:text-3xl sm:w-96 lg:text-sm lg:px-2 lg:w-64">{{row.name}}</div>
+                                            <div class="font-bold text-white sm:text-3xl lg:px-2">{{row.total.r | numeralFormat}}</div>
+                                            <div v-if="getLastDelta(row.name)" class="px-2 text-xs sm:text-2xl lg:text-xs text-lightlabel">
                                                 +{{getLastDelta(row.name).recovered|numeralFormat}} (+{{getLastDelta(row.name).recoveredpc|numeralFormat('0.0%')}})
                                             </div>
                                         </div>
