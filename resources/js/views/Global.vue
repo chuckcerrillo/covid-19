@@ -97,7 +97,7 @@
                             <div class="m-2 lg:m-0 lg:w-72">
                                 <div class="font-bold tracking-tight my-4">Countries with most confirmed cases</div>
                                 <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
-                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('confirmed','desc',6)"
+                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in glance.confirmed"
                                          class="p-2 lg:p-4 flex items-center justify-between">
                                         <div class="mr-4 lg:ml-8 lg:mr-2 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
                                         <div class="flex lg:block sm:flex-1 lg:flex-none justify-between items-center w-full">
@@ -117,7 +117,7 @@
                             <div class="m-2 lg:m-0 lg:w-72 lg:ml-2">
                                 <div class="font-bold tracking-tight my-4">Countries with most deaths</div>
                                 <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
-                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('deaths','desc',6)"
+                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in glance.deaths"
                                          class="p-2 lg:p-4 flex items-center justify-between">
                                         <div class="mr-4 lg:ml-8 lg:mr-2 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
                                         <div class="flex lg:block sm:flex-1 lg:flex-none justify-between items-center w-full">
@@ -136,7 +136,7 @@
                             <div class="m-2 lg:m-0 lg:w-72 lg:ml-2">
                                 <div class="font-bold tracking-tight my-4">Countries with most recoveries</div>
                                 <div v-if="loading && loading.countries" class="bg-hoverslab rounded-lg">
-                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in getSortedCountries('recovered','desc',6)"
+                                    <div v-if="row.name != 'Global'" v-for="(row,key,index) in glance.recovered"
                                          class="p-2 lg:p-4 flex items-center justify-between">
                                         <div class="mr-4 lg:ml-8 lg:mr-2 lg:w-8 sm:text-3xl font-bold text-lightlabel">{{(key)}}</div>
                                         <div class="flex lg:block sm:flex-1 lg:flex-none justify-between items-center w-full">
@@ -169,8 +169,8 @@
                             <div class="p-1 h-16" :class="ui.rankings.view == 'confirmedSurge' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'confirmedSurge'">Surge of new cases (total)</div>
                             <div class="p-1 h-16" :class="ui.rankings.view == 'deathsSurge' ? 'bg-hoverslab' : ''" @click="ui.rankings.view = 'deathsSurge'">Surge of new deaths (total)</div>
                         </div>
-                        <div class="relative h-100 sm:h-auto sm:flex flex-wrap justify-center">
-                            <div class="absolute inset-0 sm:relative sm:block sm:opacity-100" :class="ui.rankings.view != 'confirmedDelta' ? 'opacity-0' : 'opacity-100'">
+                        <div class="sm:flex flex-wrap justify-center">
+                            <div class="sm:block" :class="ui.rankings.view != 'confirmedDelta' ? 'hidden' : ''">
                                 <div class="hidden sm:block text-center font-bold">New confirmed cases (total)</div>
                                 <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                     <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
@@ -191,7 +191,7 @@
                                     </simplebar>
                                 </div>
                             </div>
-                            <div class="absolute inset-0 sm:relative sm:block sm:opacity-100" :class="ui.rankings.view != 'deathsDelta' ? 'opacity-0' : 'opacity-100'">
+                            <div class="sm:block" :class="ui.rankings.view != 'deathsDelta' ? 'hidden' : ''">
                                 <div class="hidden sm:block text-center font-bold">New deaths (total)</div>
                                 <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                     <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
@@ -212,7 +212,7 @@
                                     </simplebar>
                                 </div>
                             </div>
-                            <div class="absolute inset-0 sm:relative sm:block sm:opacity-100" :class="ui.rankings.view != 'confirmedSurge' ? 'opacity-0' : 'opacity-100'">
+                            <div class="sm:block" :class="ui.rankings.view != 'confirmedSurge' ? 'hidden' : ''">
                                 <div class="hidden sm:block text-center font-bold">Surge of new cases (total)</div>
                                 <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                     <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
@@ -233,7 +233,7 @@
                                     </simplebar>
                                 </div>
                             </div>
-                            <div class="absolute inset-0 sm:relative sm:block sm:opacity-100" :class="ui.rankings.view != 'deathsSurge' ? 'opacity-0' : 'opacity-100'">
+                            <div class="sm:block" :class="ui.rankings.view != 'deathsSurge' ? 'hidden' : ''">
                                 <div class="hidden sm:block text-center font-bold">Surge of new deaths (total)</div>
                                 <div class="m-2 my-4 p-2 bg-slab rounded-lg">
                                     <simplebar data-simplebar-auto-hide="true" class="h-100 w-full sm:w-80 pr-2">
@@ -338,11 +338,37 @@
                     'deaths' : [],
                     'confirmedSurge' : [],
                     'deathsSurge' : [],
+                },
+                glance: {
+                    'confirmed' : [],
+                    'deaths' : [],
+                    'recovered' : []
                 }
             }
         },
         mounted()
         {
+
+            axios.get('/api/stats/countries')
+                .then(res => {
+                    this.database.raw.raw_countries = res.data;
+                    // for(var x in res.data)
+                    // {
+                    //     this.processed.country_ids[res.data[x].name] = x;
+                    // }
+                    //
+                    // console.log('country ids');
+                    // console.log('this.processed.country_ids');
+                    this.glance.confirmed = this.getSortedCountries('confirmed','desc',6)
+                    this.glance.deaths = this.getSortedCountries('deaths','desc',6)
+                    this.glance.recovered = this.getSortedCountries('recovered','desc',6)
+
+                    this.database.loading.countries = true;
+                })
+                .catch(error => {
+
+                });
+
             axios.get('/api/stats/rankings')
                 .then(res => {
                     this.ajax.rankings = res.data;
@@ -351,9 +377,6 @@
                     this.sorted_countries.deaths = _.clone(this.rankings('deaths'));
                     this.sorted_countries.confirmedSurge = _.clone(this.rankings('confirmedSurge'));
                     this.sorted_countries.deathsSurge = _.clone(this.rankings('deathsSurge'));
-
-                    console.log('test');
-                    console.log(this.sorted_countries);
                 })
                 .catch(error => {
 

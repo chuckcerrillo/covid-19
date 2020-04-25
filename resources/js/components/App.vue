@@ -66,22 +66,22 @@
         {
 
 
-            axios.get('/api/stats/countries')
-                .then(res => {
-                    this.database.raw.raw_countries = res.data;
-                    // for(var x in res.data)
-                    // {
-                    //     this.processed.country_ids[res.data[x].name] = x;
-                    // }
-                    //
-                    // console.log('country ids');
-                    // console.log('this.processed.country_ids');
-
-                    this.database.loading.countries = true;
-                })
-                .catch(error => {
-
-                });
+            // axios.get('/api/stats/countries')
+            //     .then(res => {
+            //         this.database.raw.raw_countries = res.data;
+            //         // for(var x in res.data)
+            //         // {
+            //         //     this.processed.country_ids[res.data[x].name] = x;
+            //         // }
+            //         //
+            //         // console.log('country ids');
+            //         // console.log('this.processed.country_ids');
+            //
+            //         this.database.loading.countries = true;
+            //     })
+            //     .catch(error => {
+            //
+            //     });
 
             // axios.get('/api/stats/states')
             //     .then(res => {
