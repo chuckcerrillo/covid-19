@@ -9,7 +9,7 @@
                             class="w-full overflow-hidden h-screen"
                             id="world_map"
                             :enable="true"
-                            :data="countries_sorted"
+                            :data="countries_sorted()"
                             :settings="{interactive:false,zoom:2}"
                         />
                     </div>
@@ -402,7 +402,7 @@
             getSortedCountries(field,order,limit)
             {
                 var sort = {key: field, order: order};
-                var data = _.cloneDeep(this.countries);
+                var data = _.cloneDeep(this.countries());
                 data = data.sort(function (a, b) {
                     if (sort.key == 'country')
                     {
@@ -579,7 +579,57 @@
                     console.log(this.ajax.summary);
                     data = this.ajax.summary;
                 }
-            }
+            },
+            raw_countries()
+            {
+                return this.database.raw.raw_countries;
+            },
+            countries(){
+                var data = [];
+
+                for(var x in this.raw_countries())
+                {
+                    var row = this.raw_countries()[x];
+                    data.push(row);
+                }
+                return data;
+            },
+            countries_sorted()
+            {
+                var sort = this.sort_stats;
+                var data = _.cloneDeep(this.countries());
+                return data.sort(function (a, b) {
+                    if (sort.key == 'country')
+                    {
+                        if (sort.order == 'asc')
+                            return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;
+                        else
+                            return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'confirmed') {
+                        if (sort.order == 'desc')
+                            return a.total.c < b.total.c ? 1 : -1;
+                        else
+                            return a.total.c > b.total.c ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'deaths') {
+                        if (sort.order == 'desc')
+                            return a.total.d < b.total.d ? 1 : -1;
+                        else
+                            return a.total.d > b.total.d ? 1 : -1;
+                    }
+
+                    else if (sort.key == 'recovered') {
+                        if (sort.order == 'desc')
+                            return a.total.r < b.total.r ? 1 : -1;
+                        else
+                            return a.total.r > b.total.r ? 1 : -1;
+                    }
+                });
+
+            },
         },
         computed: {
             summary()
@@ -614,68 +664,6 @@
                         'global' : false,
                     };
             },
-            raw_global()
-            {
-                return this.database.raw.raw_global;
-            },
-            raw_countries()
-            {
-                return this.database.raw.raw_countries;
-            },
-            raw_state_data()
-            {
-                return this.database.raw.raw_state_data;
-            },
-            raw_stats()
-            {
-                return this.database.raw.raw_stats;
-            },
-            countries(){
-                var data = [];
-
-                for(var x in this.raw_countries)
-                {
-                    var row = this.raw_countries[x];
-                    data.push(row);
-                }
-                return data;
-            },
-            countries_sorted()
-            {
-                var sort = this.sort_stats;
-                var data = _.cloneDeep(this.countries);
-                return data.sort(function (a, b) {
-                    if (sort.key == 'country')
-                    {
-                        if (sort.order == 'asc')
-                            return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;
-                        else
-                            return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
-                    }
-
-                    else if (sort.key == 'confirmed') {
-                        if (sort.order == 'desc')
-                            return a.total.c < b.total.c ? 1 : -1;
-                        else
-                            return a.total.c > b.total.c ? 1 : -1;
-                    }
-
-                    else if (sort.key == 'deaths') {
-                        if (sort.order == 'desc')
-                            return a.total.d < b.total.d ? 1 : -1;
-                        else
-                            return a.total.d > b.total.d ? 1 : -1;
-                    }
-
-                    else if (sort.key == 'recovered') {
-                        if (sort.order == 'desc')
-                            return a.total.r < b.total.r ? 1 : -1;
-                        else
-                            return a.total.r > b.total.r ? 1 : -1;
-                    }
-                });
-
-            },
             loaded()
             {
                 if (this.database && this.database.loading && this.database.loading.countries && this.database.loading.states && this.database.loading.annotations && this.database.loading.global)
@@ -684,76 +672,6 @@
                 }
                 return false;
             },
-            globalDaily()
-            {
-                var data = [];
-                for(var x in this.globalDataset[0].daily)
-                {
-                    var row = this.globalDataset[0].daily[x];
-
-                    data.push({
-                        date: moment(row.date).format('YYYY-MM-DD'),
-                        confirmed: row.confirmed,
-                        confirmedDelta: this.globalDataset[0].delta[x].confirmed,
-                        deaths: row.deaths,
-                        deathsDelta: this.globalDataset[0].delta[x].deaths,
-                        recovered: row.recovered,
-                        recoveredDelta: this.globalDataset[0].delta[x].recovered,
-                        active: parseInt(row.confirmed) - parseInt(row.deaths) - parseInt(row.recovered),
-                        activeDelta: parseInt(this.globalDataset[0].delta[x].confirmed) - parseInt(this.globalDataset[0].delta[x].deaths) - parseInt(this.globalDataset[0].delta[x].recovered),
-                        growthFactor: this.globalDataset[0].growthFactor[x],
-                    });
-                }
-                return data;
-            },
-            global(){
-                var data = {},
-                    last_update = '';
-
-                data = _.cloneDeep(this.raw_global);
-                if(data.total && data.total.last_update)
-                {
-                    data.last_update = data.total.last_update;
-                }
-                else
-                {
-                    data.last_update = '';
-                }
-
-                data.name = {
-                    full: 'Global',
-                    country: 'Global',
-                    state: false
-                }
-
-                if(data.total)
-                {
-                    data.total.active = data.total.confirmed - data.total.deaths - data.total.recovered;
-                }
-                return data;
-            },
-            globalDataset()
-            {
-                var data = [],
-                    daily = [];
-
-                for(var x in this.global.daily)
-                {
-                    var row = this.global.daily[x];
-                    daily.push({
-                        'date' : x,
-                        'confirmed' : row.confirmed,
-                        'deaths' : row.deaths,
-                        'recovered' : row.recovered
-                    });
-                }
-
-                daily.pop();
-
-
-                data.push(this.assembleDataset(this.global,daily,this.global.name));
-                return data;
-            }
         }
     }
 </script>
