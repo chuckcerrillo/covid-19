@@ -64,14 +64,7 @@
         },
         mounted()
         {
-            axios.get('/api/stats/global')
-                .then(res => {
-                    this.database.raw.raw_global = res.data;
-                    this.database.loading.global = true;
-                })
-                .catch(error => {
 
-                });
 
             axios.get('/api/stats/countries')
                 .then(res => {
