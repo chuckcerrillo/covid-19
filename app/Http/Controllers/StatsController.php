@@ -1566,9 +1566,6 @@ class StatsController extends Controller
                         {
                             $data[$country]['total']['r'] += $row['total']['r'];
                         }
-
-
-
                     }
                 }
             }
@@ -1589,6 +1586,58 @@ class StatsController extends Controller
                         $data[$country]['states'][$state]['total']['d'] = $last_daily_record['states'][$state]['d'];
                     if(isset($last_daily_record['states'][$state]['r']))
                         $data[$country]['states'][$state]['total']['r'] = $last_daily_record['states'][$state]['r'];
+                }
+            }
+
+
+
+            // Manual override country
+            foreach($country_row['daily'] AS $date => $daily_row)
+            {
+                $state = '(Unspecified)';
+                if (isset($manual_override[$country])) {
+                    if (isset($data[$country]['daily'][$date]['states'][$state]) && isset($manual_override[$country][$date][$state])) {
+                        $total = [
+                            'c' => 0,
+                            'd' => 0,
+                            'r' => 0,
+                        ];
+                        foreach($daily_row['states'] AS $s => $state_row)
+                        {
+                            if($s != $state)
+                            {
+                                $total['c'] += $state_row['c'];
+                                $total['d'] += $state_row['d'];
+                                $total['r'] += $state_row['r'];
+                            }
+                        }
+
+                        if (strlen($manual_override[$country][$date][$state]['confirmed']) > 0) {
+                            $data[$country]['daily'][$date]['total']['c'] = 0;
+                            $data[$country]['daily'][$date]['states'][$state]['c'] = (int)$manual_override[$country][$date][$state]['confirmed'] - $total['c'];
+
+                            $global['daily'][$date]['confirmed'] += intval($manual_override[$country][$date][$state]['confirmed']) - isset($data[$country]['daily'][$date]['total']['c']) ? $data[$country]['daily'][$date]['total']['c'] : 0;
+                            $data[$country]['daily'][$date]['total']['c'] = intval($manual_override[$country][$date][$state]['confirmed']);
+                        }
+                        if (strlen($manual_override[$country][$date][$state]['deaths']) > 0) {
+                            $data[$country]['daily'][$date]['total']['d'] = 0;
+
+                            $data[$country]['daily'][$date]['states'][$state]['d'] = (int)$manual_override[$country][$date][$state]['deaths'] - $total['d'];
+
+
+
+
+                            $global['daily'][$date]['deaths'] += intval($manual_override[$country][$date][$state]['deaths']) - isset($data[$country]['daily'][$date]['total']['d']) ? $data[$country]['daily'][$date]['total']['d'] : 0;
+                            $data[$country]['daily'][$date]['total']['d'] = intval($manual_override[$country][$date][$state]['deaths']);
+                        }
+                        if (strlen($manual_override[$country][$date][$state]['recovered']) > 0) {
+                            $data[$country]['daily'][$date]['total']['r'] = 0;
+                            $data[$country]['daily'][$date]['states'][$state]['r'] = (int)$manual_override[$country][$date][$state]['recovered'] - $total['r'];
+
+                            $global['daily'][$date]['recovered'] += intval($manual_override[$country][$date][$state]['recovered']) - isset($data[$country]['daily'][$date]['total']['r']) ? $data[$country]['daily'][$date]['total']['r'] : 0;
+                            $data[$country]['daily'][$date]['total'][$state]['r'] = intval($manual_override[$country][$date][$state]['recovered']);
+                        }
+                    }
                 }
             }
         }
@@ -2140,8 +2189,9 @@ class StatsController extends Controller
     protected function manual_override()
     {
 //        https://docs.google.com/spreadsheets/d/e/2PACX-1vThKLEaifDmgMxx4C1IgjXyRkJFIdr8rM5skPGo3frgrr775w1KWMlmor2a-0yIhuTfdqzwdMm50WX4/pubhtml
-        $url = 'https://spreadsheets.google.com/feeds/list/14fyCtf-iXm6uSupPCiRvzIF--2KA6W7k8Mr9G0SiKb0/1/public/values?alt=json';
+        $url = 'https://spreadsheets.google.com/feeds/list/14fyCtf-iXm6uSupPCiRvzIF--2KA6W7k8Mr9G0SiKb0/2/public/values?alt=json';
         $file= file_get_contents($url);
+
 
         $json = json_decode($file,true);
         $rows = $json['feed']['entry'];
