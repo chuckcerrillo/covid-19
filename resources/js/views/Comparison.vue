@@ -320,7 +320,7 @@
                 'show_countries': true,
                 'ui' : {
                     'content' : {
-                        'selectedTab' : 'dashboard'
+                        'selectedTab' : 'daily'
                     },
                     'dashboard' : {
                         'table' : 'daily',

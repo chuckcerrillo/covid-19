@@ -4,49 +4,62 @@
             <div class="relative h-full w-full flex flex-col justify-start items-center overflow-y-scroll">
                 <a name="top"></a>
                 <div class="relative w-full bg-gray-200">
-                    <div v-if="ajax && ajax.countries_list_map" class="h-full w-full">
-                        <Map
-                            class="w-full overflow-hidden h-screen"
-                            id="world_map"
-                            :enable="true"
-                            :data="ajax.countries_list_map"
-                            :settings="{interactive:false,zoom:2}"
-                        />
+<!--                    <div v-if="ajax && ajax.countries_list_map" class="h-full w-full">-->
+                    <div class="h-full w-full splash-bg">
+                        <img class="min-h-screen"
+                            src="/img/backgrounds/transparent.png">
+<!--                        <Map-->
+<!--                            class="w-full overflow-hidden h-screen"-->
+<!--                            id="world_map"-->
+<!--                            :enable="true"-->
+<!--                            :data="ajax.countries_list_map"-->
+<!--                            :settings="{interactive:false,zoom:2}"-->
+<!--                        />-->
                     </div>
-                    <div v-else class="bg-white rounded h-screen">Loading map</div>
+<!--                    <div v-else class="bg-white rounded h-screen">Loading map</div>-->
 
-                    <div class="absolute top-0 left-0 bottom-0 right-0 bg-base opacity-75 z-10"></div>
+<!--                    <div class="absolute top-0 left-0 bottom-0 w-1/2 bg-black opacity-50 z-10"></div>-->
 
-                    <div class="global_stats absolute z-20 text-shadow inset-0 sm:left-0 sm:inset-y-0 sm:w-1/2 flex items-center content-center justify-center">
+                    <div class="global_stats absolute z-20  inset-0 sm:left-0 sm:inset-y-0 sm:w-1/2 flex items-center content-center justify-center">
                         <div>
-                            <div class="p-4 xl:p-0 xl:flex items-center justify-center text-center">
-                                <div class="text-5xl xl:mr-4 xl:text-7xl font-bold text-white">{{summary.active | numeralFormat}}</div>
-                                <div>
-                                    <div class="text-2xl xl:text-3xl font-bold tracking-tight ">active cases</div>
-                                    <div class="text-xs">as of {{summary.last_update}}</div>
+                            <div class="text-shadow rounded-xl p-2 px-8 pb-8" style="background: rgba(0,0,0,0.5)">
+                                <div class="p-4 xl:p-0 xl:flex items-center justify-center text-center">
+                                    <div class="text-5xl xl:mr-4 xl:text-7xl fullhd:text-9xl font-bold text-white">{{summary.active | numeralFormat}}</div>
+                                    <div>
+                                        <div class="text-2xl xl:text-3xl font-bold tracking-tight ">active cases</div>
+                                        <div class="text-xs">as of {{summary.last_update}}</div>
+                                    </div>
                                 </div>
+                                <div class="flex items-start mt-4 xl:mt-0 flex-1 justify-center px-4 xl:px-0">
+                                    <div class="w-1/3 xl:w-auto xl:mr-8 text-center">
+                                        <div class="xl:text-3xl font-bold text-white">{{summary.confirmed| numeralFormat}}</div>
+                                        <div class="font-bold">confirmed cases</div>
+                                    </div>
+                                    <div class="w-1/3 xl:w-auto xl:mr-8 text-center">
+                                        <div class="xl:text-3xl font-bold text-red-400">{{summary.deaths| numeralFormat}}</div>
+                                        <div class="font-bold">deaths</div>
+                                    </div>
+                                    <div class="w-1/3 xl:w-auto text-center">
+                                        <div class="xl:text-3xl font-bold text-green-400">{{summary.recovered| numeralFormat}}</div>
+                                        <div class="font-bold">recoveries</div>
+                                    </div>
+                                </div>
+
+
                             </div>
-                            <div class="flex items-start mt-4 xl:mt-0 flex-1 justify-center px-4 xl:px-0">
-                                <div class="w-1/3 xl:w-auto xl:mr-8 text-center">
-                                    <div class="xl:text-3xl font-bold text-white">{{summary.confirmed| numeralFormat}}</div>
-                                    <div class="font-bold">confirmed cases</div>
-                                </div>
-                                <div class="w-1/3 xl:w-auto xl:mr-8 text-center">
-                                    <div class="xl:text-3xl font-bold text-red-400">{{summary.deaths| numeralFormat}}</div>
-                                    <div class="font-bold">deaths</div>
-                                </div>
-                                <div class="w-1/3 xl:w-auto text-center">
-                                    <div class="xl:text-3xl font-bold text-green-400">{{summary.recovered| numeralFormat}}</div>
-                                    <div class="font-bold">recoveries</div>
-                                </div>
+                            <div class="hidden fullhd:flex text-base items-center justify-start mt-2" style="">
+                                <router-link to="/comparison" class="flex text-lightlabel hover:text-white cursor-pointer rounded-lg p-2 px-4" style="background: rgba(0,0,0,0.8)">
+                                    <div class="text-3xl font-bold mr-4 mt-1">Go to the comparison panel</div>
+                                    <div class="text-4xl font-bold">&raquo;</div>
+                                </router-link>
                             </div>
                         </div>
                     </div>
-                    <div class="hidden sm:flex absolute inset-y-0 right-0 z-20 text-white text-shadow items-center justify-center mr-8">
-                        <router-link to="/comparison" class="flex hover:text-orange-400 cursor-pointer">
-                            <div class="text-3xl font-bold w-64 text-right mr-4">Go to the comparison panel</div>
-                            <div class="text-6xl font-bold">&raquo;</div>
-                        </router-link>
+                    <div class="text-shadow absolute inset-x-0 sm:inset-x-auto bottom-0 mb-24 sm:mb-0 sm:inset-y-0 sm:right-0 sm:flex items-center justify-center sm:w-128 text-center">
+                        <div class="text-center">
+                        <div class="pl-4 text-center"><img src="/img/logo/logo-140.png" class="w-16 inline sm:w-auto" /></div>
+                        <div class="ml-2 sm:ml-4 text-xs sm:text-sm font-normal text-headin"g>Presented by<br><a class="text-white font-bold hover:text-blue-400" href="https://www.makeitsimpler.com.au">Simpler Solutions</a></div>
+                        </div>
                     </div>
                     <div class="text-center absolute inset-x-0 bottom-0 mb-8 text-white text-shadow font-bold z-20">
                         Scroll down for more stats...
@@ -265,7 +278,7 @@
                 </div>
 
                 <!-- footer -->
-                <div class="bg-slab sm:flex py-8 w-full items-center justify-center">
+                <div class="bg-base sm:flex py-8 w-full items-center justify-center">
                     <div class="mx-4 sm:w-256 lg:mx-0">
                         <div class="sm:flex items-start my-4 justify-between">
                             <div>The COVID-19 Tracker is a project by <a class="font-bold underline hover:text-lightlabel" href="https://www.makeitsimpler.com.au">Simpler</a>. For feedback, suggestions, and bug reports, please contact feedback@makeitsimpler.com.au or get in touch with us on our socials.</div>
@@ -274,7 +287,7 @@
                                 <a href="https://www.twitter.com/simplerau"><img src="/img/twitter.png" class="h-8"></a>
                             </div>
                         </div>
-                        <div class="text-xs text-lightlabel font-italic">The material and information contained on this website is for general information purposes only. You should not rely upon the material or information on the website as a basis for making any business, legal, or any other decisions.</div>
+                        <div class="text-xs text-lightlabel pb-2 font-bold">The material and information contained on this website is for general information purposes only. You should not rely upon the material or information on the website as a basis for making any business, legal, or any other decisions.</div>
                         <div class="text-xs text-lightlabel">Whilst we endeavour to keep the information up-to-date and correct, Simpler Solutions makes no representations or warranties of any kind, express or implied about the completeness, accuracy, reliability, suitability or availability with respect to the website or information, products, services or related graphics contained on the website for any purpose. Any reliance you place on such material is therefore strictly at your own risk.</div>
                         <div class="mt-4">&copy; Simpler Solutions</div>
                     </div>
@@ -727,6 +740,29 @@
         color: #ecc94b;
     }
     .text-shadow {
-        text-shadow: 0.25em 0.25em 0.25em rgba(0,0,0,0.5);
+        text-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.5);
+    }
+
+    .splash-bg {
+        background-image: url("/img/backgrounds/twelve-apostles-1x.jpg");
+        background-size: cover;
+        background-position: center center;
+        box-shadow: 0px -50px 50px inset rgba(0,0,0,0.5);
+    }
+
+    @media
+    (-webkit-min-device-pixel-ratio: 2),
+    (min-width: 640px) {
+        .splash-bg {
+            background-image: url("/img/backgrounds/twelve-apostles-2x.jpg");
+        }
+    }
+
+    @media
+    (-webkit-min-device-pixel-ratio: 2),
+    (min-width: 1280px) {
+        .splash-bg {
+            background-image: url("/img/backgrounds/twelve-apostles-4x.jpg");
+        }
     }
 </style>

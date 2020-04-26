@@ -7,8 +7,17 @@ module.exports = {
               'wqhd' : '2560px',
               '4k' : '3840px',
           },
+          opacity: {
+              '12' : '0.125',
+          },
+          borderRadius : {
+              'xl' : '1rem',
+          },
           fontSize: {
               '7xl' : '5rem',
+              '8xl' : '6rem',
+              '9xl' : '7rem',
+              '10xl' : '8rem',
           },
           colors: {
               slab : '#116466',

@@ -2054,6 +2054,8 @@ class StatsController extends Controller
                 ];
             }
         }
+
+        $global['total']['last_update'] = date('Y-m-d');
         file_put_contents(STATS . 'annotations.json',json_encode($data));
         file_put_contents(STATS . 'global.json',json_encode($global));
 
