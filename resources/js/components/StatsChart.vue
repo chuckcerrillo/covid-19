@@ -421,7 +421,7 @@
                 {
                     var random1 = getRandomIntInclusive(1,this.options.colors.length)-1;
                     var random2 = getRandomIntInclusive(1,this.options.colors.length)-1;
-                    var scaleType = {primary:'logarithmic',secondary: 'logarithmic'};
+                    var scaleType = {primary:'linear',secondary: 'linear'};
 
                     if(data.length > 0)
                     {
@@ -874,14 +874,14 @@
                         if (y == 0)
                         {
                             position = 'left';
-                            chartType = 'line';
+                            chartType = 'bar';
                             metric = 'primary';
                             border = 'borderPrimary';
                         }
                         else
                         {
                             position = 'right';
-                            chartType = 'line';
+                            chartType = 'bar';
                             metric = 'secondary';
                             border = 'borderSecondary';
                         }
@@ -1421,14 +1421,14 @@
                         if (y == 0)
                         {
                             position = 'left';
-                            chartType = 'line';
+                            chartType = 'bar';
                             metric = 'primary';
                             border = 'borderPrimary';
                         }
                         else
                         {
                             position = 'right';
-                            chartType = 'line';
+                            chartType = 'bar';
                             metric = 'secondary';
                             border = 'borderSecondary';
                         }
