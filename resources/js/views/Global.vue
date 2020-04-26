@@ -55,7 +55,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="text-shadow absolute inset-x-0 sm:inset-x-auto bottom-0 mb-52 sm:mb-0 sm:inset-y-0 sm:right-0 sm:flex items-center justify-center sm:w-128 text-center">
+                    <div class="text-shadow absolute inset-x-0 sm:inset-x-auto bottom-0 mb-44 sm:mb-0 sm:inset-y-0 sm:right-0 sm:flex items-center justify-center sm:w-128 text-center">
                         <div class="text-center">
                         <div class="text-center"><img src="/img/logo/logo-140.png" class="w-16 inline sm:w-auto" /></div>
                             <div class="ml-2 sm:ml-4 text-xs sm:text-sm font-normal text-headin"g>Presented by<br><a class="text-white font-bold hover:text-blue-400" href="https://www.makeitsimpler.com.au">Simpler Solutions</a></div>
