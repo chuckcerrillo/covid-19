@@ -439,7 +439,7 @@
                         secondary: {
                             color: this.options.colors[random2].bg,
                             border: this.options.colors[random2].border,
-                            type: 'bar',
+                            type: 'line',
                             scale: scaleType.secondary,
                         },
                     })
