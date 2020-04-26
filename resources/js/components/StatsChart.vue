@@ -881,7 +881,7 @@
                         else
                         {
                             position = 'right';
-                            chartType = 'bar';
+                            chartType = 'line';
                             metric = 'secondary';
                             border = 'borderSecondary';
                         }
@@ -1428,7 +1428,7 @@
                         else
                         {
                             position = 'right';
-                            chartType = 'bar';
+                            chartType = 'line';
                             metric = 'secondary';
                             border = 'borderSecondary';
                         }
