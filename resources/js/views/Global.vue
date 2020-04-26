@@ -98,7 +98,7 @@
 <!--                    </div>-->
 
                     <div class="fullhd:hidden flex justify-center">
-                        <div class="text-2xl max-w-xl text-center text-yellow-400 m-4 my-8 font-bold">For the full experience, including comparison views and charts, please view this website on a larger screen.</div>
+                        <div class="text-2xl max-w-xl text-center text-yellow-400 m-4 my-8 font-bold">For the full features, including comparison views and charts, please view this website on a larger screen.</div>
                     </div>
                 </div>
 
