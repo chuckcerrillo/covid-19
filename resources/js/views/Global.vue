@@ -59,11 +59,11 @@
                         <div class="text-center">
                         <div class="text-center"><img src="/img/logo/logo-140.png" class="w-16 inline sm:w-auto" /></div>
                             <div class="ml-2 sm:ml-4 text-xs sm:text-sm font-normal text-headin"g>Presented by<br><a class="text-white font-bold hover:text-blue-400" href="https://www.makeitsimpler.com.au">Simpler Solutions</a></div>
-                            <div class="mt-4 sm:hidden text-white text-shadow font-bold">Scroll down for more stats...</div>
+                            <div class="mt-8 sm:hidden text-white text-shadow font-bold"><img class="inline" src="/img/arrow-down-1.png" /></div>
                         </div>
                     </div>
                     <div class="text-center absolute inset-x-0 bottom-0 mb-8 text-white text-shadow font-bold z-20 hidden sm:block">
-                        Scroll down for more stats...
+                        <img class="inline" src="/img/arrow-down-1.png" />
                     </div>
                 </div>
 
