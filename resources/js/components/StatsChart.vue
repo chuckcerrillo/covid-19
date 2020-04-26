@@ -433,13 +433,13 @@
                         primary: {
                             color: this.options.colors[random1].bg,
                             border: this.options.colors[random1].border,
-                            type: 'line',
+                            type: 'bar',
                             scale: scaleType.primary,
                         },
                         secondary: {
                             color: this.options.colors[random2].bg,
                             border: this.options.colors[random2].border,
-                            type: 'line',
+                            type: 'bar',
                             scale: scaleType.secondary,
                         },
                     })
