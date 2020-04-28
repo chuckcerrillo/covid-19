@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Ward as WardResource;
+use App\Cases;
+use App\Country;
+use App\Http\Resources\CasesCollection;
+use App\Http\Resources\LogCollection as LogCollectionResource;
+use App\State;
 use Goutte\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\AbstractList;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
@@ -3410,5 +3415,669 @@ class StatsController extends Controller
         }
 
         return response($data)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function get_countries_and_states()
+    {
+        // Generate master country list
+        $csv = array_map('str_getcsv', file(MASTER_LIST));
+        array_walk($csv, function(&$a) use ($csv) {
+            $a = array_combine($csv[0], $a);
+        });
+        array_shift($csv); # remove column header
+
+        $states = [];
+        $data = [];
+        $global = [
+            'daily' => [],
+            'total' => [
+                'confirmed' => 0,
+                'deaths' => 0,
+                'recovered' => 0,
+            ],
+        ];
+
+        foreach($csv AS $row)
+        {
+            if(isset($this->rename[$row['Country_Region']]))
+            {
+//                dump('Found ' . $row['Country_Region'] . ' rename to ' . $this->rename[$row['Country_Region']]);
+                $row['Country_Region'] = $this->rename[$row['Country_Region']];
+
+            }
+            // Get a list of countries
+            if(strlen($row['Province_State']) == 0 )
+            {
+                if(!isset($data[ $row['Country_Region'] ]))
+                {
+                    $data[$row['Country_Region']] = [
+                        'name' => $row['Country_Region'],
+                        'uid' => $row['UID'],
+                        'iso2' => $row['iso2'],
+                        'iso3' => $row['iso3'],
+                        'code3' => $row['code3'],
+                        'fips' => $row['FIPS'],
+                        'admin2' => $row['Admin2'],
+                        'lat' => $row['Lat'],
+                        'long' => $row['Long_'],
+                        'population' => $row['Population'],
+                        'states' => [],
+                        'daily' => [],
+                        'total' => [
+                            'l' => '',
+                            'c' => '0',
+                            'd' => '0',
+                            'r' => '0',
+                        ]
+                    ];
+
+
+                }
+
+                // Create country record
+
+                $record = [
+                    'lat' => $row['Lat'],
+                    'lng' => $row['Long_'],
+                    'population' => $row['Population'] > 0 ? $row['Population'] : 0
+                ];
+
+                $country = Country::where('name',$row['Country_Region'])->first();
+                if(!$country)
+                {
+                    $country = Country::create(array_merge($record,['name'=>$row['Country_Region']]));
+                }
+                else
+                {
+                    $country->update($record);
+                }
+
+                // Create unspecified state inside country
+
+                $state = State::where(['country_id'=>$country->id,'name'=>'(Unspecified)'])->first();
+                if(!$state)
+                {
+                    State::create([
+                        'country_id' => $country->id,
+                        'name' => '(Unspecified)',
+                        'lat' => $country->lat,
+                        'lng' => $country->lng,
+                        'population' => $country->population,
+                    ]);
+                }
+                else
+                {
+                    $state->update($record);
+                }
+            }
+
+            // Get a list of states inside countries
+            else
+            {
+                if(isset($data[$row['Country_Region']]) && strlen($row['Admin2']) == 0 && strlen($row['Province_State']) > 0) {
+                    if(!isset($data[$row['Country_Region']]['states'][$row['Province_State']]))
+                    {
+                        $data[$row['Country_Region']]['states'][$row['Province_State']] = [
+                            'uid' => $row['UID'],
+                            'name' => $row['Province_State'],
+                            'lat' => $row['Lat'],
+                            'long' => $row['Long_'],
+                            'population' => $row['Population'],
+                            'total' => [
+                                'l' => '',
+                                'c' => '0',
+                                'd' => '0',
+                                'r' => '0',
+                            ]
+                        ];
+
+                        // Create state record
+
+                        $record = [
+                            'country_id' => Country::where('name',$row['Country_Region'])->value('id'),
+                            'lat' => strlen($row['Lat']) > 0 ? $row['Lat'] : 0,
+                            'lng' => strlen($row['Long_']) > 0 ? $row['Long_'] : 0,
+                            'population' => $row['Population'] > 0 ? $row['Population'] : 0,
+                        ];
+
+                        $state = State::where('name',$row['Province_State'])->first();
+                        if(!$state)
+                        {
+                            $state = State::create(array_merge($record,['name'=>$row['Province_State']]));
+                        }
+                        else
+                        {
+                            $state->update($record);
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+
+        $population = DB::table('countries')
+            ->selectRaw('sum(population) as total_population')
+            ->where('name','!=','Global')
+            ->get()->first();
+
+        $global = DB::table('countries')->updateOrInsert([
+                'name' => 'Global',
+            ],
+            [
+                'lat' => 0,
+                'lng' => 0,
+                'population' => $population->total_population,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]
+        );
+
+        $global = Country::where('name','Global')->first();
+
+        DB::table('states')->updateOrInsert([
+            'country_id' => $global->id,
+            'name' => '(Unspecified)',
+        ],
+            [
+                'lat' => 0,
+                'lng' => 0,
+                'population' => $population->total_population,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]
+        );
+    }
+
+    public function get_cases_from_jh_timeline_global(Request $request)
+    {
+        $first_date = '2020-01-22';
+
+        $files = COVID_DATA_TIME_SERIES;
+
+        unset($files['confirmedUS']);
+        unset($files['deathsUS']);
+
+        $time_series = [
+        ];
+        foreach($files AS $type => $file)
+        {
+            $csv = array_map('str_getcsv', file($file));
+
+            foreach($csv AS $key=>$row)
+            {
+
+                if($key == 0)
+                {
+                    // Remove the non-date columns
+                    array_splice($row,0,4);
+                    continue;
+                }
+                /*
+                 * Global
+                 * 0 => "Province/State"
+                 * 1 => "Country/Region"
+                 * 2 => "Lat"
+                 * 3 => "Long"
+                */
+
+                $state = strlen($row[0]) == 0 ? '(Unspecified)' : $row[0];
+                $country = strlen($row[1]) == 0 ? '(Unspecified)' : $row[1];
+
+                // Remove the non-date columns
+                array_splice($row,0,4);
+
+                $new_date = new \DateTime($first_date);
+
+                // Further trim to grab last 3 days
+                if($request->full) {
+                    dump('We are doing a full rebuild.');
+                }
+                else
+                {
+                    $total = count($row) - 3;
+                    array_splice($row,0, $total);
+                    $new_date = $new_date->add(new \DateInterval('P' . $total . 'D'));
+                }
+
+                foreach ($this->combine AS $key => $combine) {
+                    if (in_array($country, $combine)) {
+                        $country = $key;
+                        break;
+                    }
+                }
+
+                // Move countries into states
+                if (in_array($country, array_keys($this->transfer))) {
+                    $state = $country;
+                    $country = $this->transfer[$country];
+                }
+
+                // Skip things that we do not know where to put
+                if (in_array($country, $this->skip)) {
+                    break;
+                }
+
+
+                // We have already done United States separately...
+                if($country == 'United States' && ($type == 'confirmed' || $type == 'deaths'))
+                {
+                    continue;
+                }
+
+
+
+                if($type == 'confirmed')
+                {
+                    $current_date = new \DateTime($new_date->format('Y-m-d'));
+                    for($x = 0; $x < count($row); $x++) {
+                        $date = $current_date->format('Y-m-d');
+                        if(isset($time_series[$country][$state][$date]['confirmed']))
+                        {
+                            $time_series[$country][$state][$date]['confirmed'] += $row[$x];
+                        }
+                        else
+                        {
+                            $time_series[$country][$state][$date]['confirmed'] = $row[$x];
+                        }
+                        $current_date->add(new \DateInterval('P1D'))->format('Y-m-d');
+                    }
+                }
+                else if($type == 'deaths')
+                {
+                    $current_date = new \DateTime($new_date->format('Y-m-d'));
+                    for($x = 0; $x < count($row); $x++) {
+                        $date = $current_date->format('Y-m-d');
+                        if(isset($time_series[$country][$state][$date]['deaths']))
+                        {
+                            $time_series[$country][$state][$date]['deaths'] += $row[$x];
+                        }
+                        else
+                        {
+                            $time_series[$country][$state][$date]['deaths'] = $row[$x];
+                        }
+                        $current_date->add(new \DateInterval('P1D'))->format('Y-m-d');
+                    }
+                }
+                else if($type == 'recovered')
+                {
+                    $current_date = new \DateTime($new_date->format('Y-m-d'));
+                    for($x = 0; $x < count($row); $x++) {
+                        $date = $current_date->format('Y-m-d');
+                        if(isset($time_series[$country][$state][$date]['recovered']))
+                        {
+                            $time_series[$country][$state][$date]['recovered'] += $row[$x];
+                        }
+                        else
+                        {
+                            $time_series[$country][$state][$date]['recovered'] = $row[$x];
+                        }
+                        $current_date->add(new \DateInterval('P1D'))->format('Y-m-d');
+                    }
+                }
+            }
+        }
+
+
+        foreach($time_series AS $country_name => $state_data)
+        {
+            $country = Country::where('name',$country_name)->first();
+            if($country)
+            {
+                foreach($state_data AS $state_name => $dates)
+                {
+                    foreach($dates AS $date => $values)
+                    {
+                        $state = State::where([
+                            'name' => $state_name,
+                            'country_id' => $country->id,
+                        ])->first();
+                        if($state) {
+
+                            $input = [];
+                            if(isset($values['confirmed']))
+                            {
+                                $input['confirmed'] = $values['confirmed'];
+                            }
+                            if(isset($values['deaths']))
+                            {
+                                $input['deaths'] = $values['deaths'];
+                            }
+                            if(isset($values['recovered']))
+                            {
+                                $input['recovered'] = $values['recovered'];
+                            }
+                            DB::table('cases')->updateOrInsert(
+                                [
+                                    'state_id' => $state->id,
+                                    'date' => $date,
+                                ],
+                                $input
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        dump("done");
+    }
+
+    public function get_cases_from_jh_timeline_us(Request $request)
+    {
+        $first_date = '2020-01-22';
+
+         // Special preparation for the US time series data...
+        $files = COVID_DATA_TIME_SERIES;
+
+        unset($files['confirmed']);
+        unset($files['deaths']);
+        unset($files['recovered']);
+
+        $country = Country::where('name','United States')->first();
+
+        $time_series = [
+        ];
+        foreach($files AS $type => $file)
+        {
+            $csv = array_map('str_getcsv', file($file));
+
+            foreach($csv AS $key=>$row)
+            {
+
+                if($key == 0)
+                {
+                    continue;
+                }
+                /*
+                 * Global
+                 * 0 => "Province/State"
+                 * 1 => "Country/Region"
+                 * 2 => "Lat"
+                 * 3 => "Long"
+                 *
+                 * US
+                 * 0 => UID
+                 * 1 => iso2
+                 * 2 => iso3
+                 * 3 => code3
+                 * 4 => FIPS
+                 * 5 => Admin2
+                 * 6 => Province/State
+                 * 7 => Country/Region
+                 * 8 => Lat
+                 * 9 => Long
+                 * 10 => Combined
+                */
+
+                $state = strlen($row[6]) == 0 ? '(Unspecified)' : $row[6];
+
+                if($type == 'confirmedUS')
+                {
+                    array_splice($row,0,11);
+                }
+                else if($type == 'deathsUS')
+                {
+                    array_splice($row,0,12);
+                }
+
+                $new_date = new \DateTime($first_date);
+
+                // Further trim to grab last 3 days
+                if($request->full) {
+                    dump('We are doing a full rebuild.');
+                }
+                else
+                {
+                    $total = count($row) - 3;
+                    array_splice($row,0, $total);
+                    $new_date = $new_date->add(new \DateInterval('P' . $total . 'D'));
+                }
+
+
+                if($type == 'confirmedUS')
+                {
+                    $current_date = new \DateTime($new_date->format('Y-m-d'));
+                    for($x = 0; $x < count($row); $x++) {
+                        $date = $current_date->format('Y-m-d');
+                        if(isset($time_series[$state][$date]['confirmed']))
+                        {
+                            $time_series[$state][$date]['confirmed'] += $row[$x];
+                        }
+                        else
+                        {
+                            $time_series[$state][$date]['confirmed'] = $row[$x];
+                        }
+                        $current_date->add(new \DateInterval('P1D'))->format('Y-m-d');
+                    }
+                }
+                else if($type == 'deathsUS')
+                {
+                    $current_date = new \DateTime($new_date->format('Y-m-d'));
+                    for($x = 0; $x < count($row); $x++) {
+                        $date = $current_date->format('Y-m-d');
+                        if(isset($time_series[$state][$date]['deaths']))
+                        {
+                            $time_series[$state][$date]['deaths'] += $row[$x];
+                        }
+                        else
+                        {
+                            $time_series[$state][$date]['deaths'] = $row[$x];
+                        }
+                        $current_date->add(new \DateInterval('P1D'))->format('Y-m-d');
+                    }
+                }
+            }
+        }
+
+        $country = Country::where('name','United States')->first();
+
+
+        foreach($time_series AS $state_name => $dates)
+        {
+            foreach($dates AS $date => $values)
+            {
+                $state = State::where([
+                    'name' => $state_name,
+                    'country_id' => $country->id,
+                ])->first();
+                if($state) {
+                    DB::table('cases')->updateOrInsert([
+                        'state_id' => $state->id,
+                        'date' => $date,
+                    ],
+                        [
+                            'confirmed' => $values['confirmed'],
+                            'deaths' => $values['deaths'],
+                        ]
+                    );
+                }
+            }
+        }
+
+        dump('done');
+    }
+
+    public function recalculate_global()
+    {
+        $country = Country::where('name','Global')->first();
+        $state = State::where('country_id',$country->id)->first();
+
+
+        $days = DB::table('cases')
+            ->selectRaw('date, SUM(confirmed) AS total_confirmed, SUM(deaths) AS total_deaths, SUM(recovered) AS total_recovered')
+            ->join('states','states.id','cases.state_id')
+            ->join('countries','countries.id','states.country_id')
+            ->where('countries.name','!=','Global')
+            ->groupBy('date')
+            ->orderBy('cases.date')
+            ->get();
+
+        foreach($days AS $day)
+        {
+            DB::table('cases')->updateOrInsert(
+                [
+                    'state_id' => $state->id,
+                    'date' => $day->date,
+                ],
+                [
+                    'confirmed' => $day->total_confirmed,
+                    'deaths' => $day->total_deaths,
+                    'recovered' => $day->total_recovered,
+                ]
+            );
+        }
+
+        return $this->compute_daily(Country::where('name','Global')->first());
+    }
+
+    public function get_daily(Request $request)
+    {
+        $country_name = $request->country_name ? $request->country_name : 'Global';
+        $state_name = $request->state_name ? $request->state_name : false;
+
+        $country = Country::where('name',$country_name)->first();
+        $state = State::where('name',$state_name)->first();
+        if(!$state)
+        {
+            $state = false;
+        }
+
+        if(!$country || (strlen($state_name)>0 && !$state))
+        {
+            return response('Not found', Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        return $this->compute_daily($country,$state);
+    }
+    private function compute_daily($country, $state = false)
+    {
+        $population = $country->population;
+
+        if($state)
+        {
+            $data = DB::table('cases')
+//                ->select('cases.*')
+                ->selectRaw('date, SUM(confirmed) AS confirmed, SUM(deaths) AS deaths, SUM(recovered) AS recovered')
+                ->join('states','states.id','=','cases.state_id')
+                ->join('countries','countries.id','=','states.country_id')
+                ->where('countries.name','=',$country->name)
+                ->where('states.name','=',$state->name)
+                ->groupBy('date')
+                ->orderBy('cases.date')
+                ->get();
+        }
+        else
+        {
+            $data = DB::table('cases')
+//                ->select('cases.*')
+                ->selectRaw('date, SUM(confirmed) AS confirmed, SUM(deaths) AS deaths, SUM(recovered) AS recovered')
+                ->join('states','states.id','=','cases.state_id')
+                ->join('countries','countries.id','=','states.country_id')
+                ->where('countries.name',$country->name)
+                ->groupBy('date')
+                ->orderBy('cases.date')
+                ->get();
+        }
+
+        // Double check that the days are complete
+        $first = $data[0];
+        $last = $data[count($data)-1];
+
+
+        $datetime1 = date_create($first->date);
+        $datetime2 = date_create($last->date);
+
+        $interval = date_diff($datetime1, $datetime2)->format('%a');
+
+        $temp = [];
+        $current_date = new \DateTime($first->date);
+
+        $result = [];
+        $yesterday = [];
+
+        // Fill up gaps in days using the previous day's numbers
+        foreach($data AS $index => $row){
+//            $data[$index]->active = $row->confirmed - $row->deaths - $row->recovered;
+            if($row->date != $current_date->format('Y-m-d'))
+            {
+                $yesterday->date = $current_date->format('Y-m-d');
+                $result[] = $yesterday;
+            }
+            $result[] = $row;
+            $current_date->add(new \DateInterval('P1D'));
+            $yesterday = clone $row;
+        }
+
+        // Compute everything else
+        $x = 0;
+        $yesterday = new \stdClass();
+        $yesterday->confirmed = 0;
+        $yesterday->deaths = 0;
+        $yesterday->recovered = 0;
+
+        $five_days_average = [
+            'confirmed' => [],
+            'deaths' => [],
+            'recovered' => [],
+        ];
+        foreach($result AS $index=>$row)
+        {
+
+
+            // All computations here
+            $result[$index]->active = $row->confirmed - $row->deaths - $row->recovered;
+            $result[$index]->delta = [];
+            $result[$index]->delta['confirmed'] = $row->confirmed - $yesterday->confirmed;
+            $result[$index]->delta['deaths'] = $row->deaths - $yesterday->deaths;
+            $result[$index]->delta['recovered'] = $row->recovered - $yesterday->recovered;
+            $result[$index]->capita = [];
+            $result[$index]->capita['confirmed'] = $row->confirmed / ($population > 0 ? $population : 1) * 1000000;
+            $result[$index]->capita['deaths'] = $row->deaths / ($population > 0 ? $population : 1) * 1000000;
+            $result[$index]->capita['recovered'] = $row->recovered / ($population > 0 ? $population : 1) * 1000000;
+
+            // 5D average and growth factor
+            if(count($five_days_average['confirmed']) > 5)
+            {
+                array_shift($five_days_average['confirmed']);
+            }
+            $five_days_average['confirmed'][] = $result[$index]->delta['confirmed'];
+
+            if(count($five_days_average['deaths']) > 5)
+            {
+                array_shift($five_days_average['deaths']);
+            }
+            $five_days_average['deaths'][] = $result[$index]->delta['deaths'];
+
+            if(count($five_days_average['recovered']) > 5)
+            {
+                array_shift($five_days_average['recovered']);
+            }
+            $five_days_average['recovered'][] = $result[$index]->delta['recovered'];
+
+            $result[$index]->average = [];
+            $result[$index]->average['confirmed'] = array_sum($five_days_average['confirmed']) / count($five_days_average['confirmed']);
+            $result[$index]->average['deaths'] = array_sum($five_days_average['deaths']) / count($five_days_average['deaths']);
+            $result[$index]->average['recovered'] = array_sum($five_days_average['recovered']) / count($five_days_average['recovered']);
+
+            $result[$index]->growthfactor = [
+                'confirmed' => 0,
+                'deaths' => 0,
+                'recovered' => 0,
+            ];
+            if(isset($yesterday->average))
+            {
+                $result[$index]->growthfactor['confirmed'] = $result[$index]->average['confirmed'] / ($yesterday->average['confirmed'] > 0 ? $yesterday->average['confirmed'] : 1);
+                $result[$index]->growthfactor['deaths'] = $result[$index]->average['deaths'] / ($yesterday->average['deaths'] > 0 ? $yesterday->average['deaths'] : 1);
+                $result[$index]->growthfactor['recovered'] = $result[$index]->average['recovered'] / ($yesterday->average['recovered'] > 0 ? $yesterday->average['recovered'] : 1);
+            }
+
+
+            // Prepare for next loop
+            $yesterday = clone $result[$index];
+            $x++;
+        }
+
+        return new CasesCollection($result);
     }
 }
