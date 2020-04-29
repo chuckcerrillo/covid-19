@@ -3946,7 +3946,7 @@ class StatsController extends Controller
 
         if(!$country || (strlen($state_name)>0 && !$state))
         {
-            return response('Not found', Response::HTTP_UNPROCESSABLE_ENTITY);
+            return response('false', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         return $this->compute_daily($country,$state);
     }
