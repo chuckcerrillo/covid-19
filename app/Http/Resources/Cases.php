@@ -26,19 +26,19 @@ class Cases extends JsonResource
                 'r' => $this->delta['recovered'],
             ],
             'capita' => [
-                'c' => $this->capita['confirmed'],
-                'd' => $this->capita['deaths'],
-                'r' => $this->capita['recovered'],
+                'c' => round($this->capita['confirmed'],4),
+                'd' => round($this->capita['deaths']),
+                'r' => round($this->capita['recovered']),
             ],
             'average' => [
-                'c' => $this->average['confirmed'],
-                'd' => $this->average['deaths'],
-                'r' => $this->average['recovered'],
+                'c' => round($this->average['confirmed'],4),
+                'd' => round($this->average['deaths'],4),
+                'r' => round($this->average['recovered'],4),
             ],
             'growth' => [
-                'c' => $this->growthfactor['confirmed'],
-                'd' => $this->growthfactor['deaths'],
-                'r' => $this->growthfactor['recovered'],
+                'c' => round($this->growthfactor['confirmed'],4),
+                'd' => round($this->growthfactor['deaths'],4),
+                'r' => round($this->growthfactor['recovered'],4),
             ],
         ];
     }

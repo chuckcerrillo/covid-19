@@ -18,38 +18,40 @@ const getters = {
 
 const actions = {
     fetchCountries({commit,state}){
-        commit('setWardsStatus','loading');
+        commit('setCountriesStatus','loading');
         axios.get('/api/stats/get_all_countries')
             .then(res => {
+                console.log('got countries');
                 commit('setCountries',res.data);
                 commit('setCountriesStatus','success');
             })
             .catch(error => {
                 console.log('Unable to fetch all countries');
-                commit('countriesStatus','error');
+                commit('setCountriesStatus','error');
             });
     },
-    setCountry({commit,state},ward){
-        commit('setCountry',ward);
+    setCountry({commit,state},country){
+        commit('setCountry',country);
     },
 };
 
 const mutations = {
     setCountry(state, country) {
-        if(state.countriesIndex.indexOf(country.data.id) === -1){
-            state.countriesIndex.push(country.data.id);
+        if(state.countriesIndex.indexOf(country.name) === -1){
+            state.countriesIndex.push(country.name);
         }
-        state.countries[country.data.id] = country;
+        state.countries[country.id] = country;
     },
     setCountries(state, countries) {
-        countries.data.forEach((country,index) => {
-            if(country.data.id > 0){
-                if(!state.countriesIndex.includes(country.data.id)){
-                    state.countriesIndex.push(country.data.id);
+        countries.forEach((country,index) => {
+            if(country.id > 0){
+                if(!state.countriesIndex.includes(country.name)){
+                    state.countriesIndex.push(country.name);
                 }
-                state.countries[country.data.id] = country;
+                state.countries[country.id] = country;
             }
         });
+        state.countries = countries;
     },
     setCountriesStatus(state, status) {
         state.countriesStatus = status;

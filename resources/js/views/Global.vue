@@ -6,15 +6,16 @@
                 <div class="relative w-full bg-gray-200">
 <!--                    <div v-if="ajax && ajax.countries_list_map" class="h-full w-full">-->
                     <div class="h-full w-full splash-bg">
-                        <img class="min-h-screen"
-                            src="/img/backgrounds/transparent.png">
-<!--                        <Map-->
-<!--                            class="w-full overflow-hidden h-screen"-->
-<!--                            id="world_map"-->
-<!--                            :enable="true"-->
-<!--                            :data="ajax.countries_list_map"-->
-<!--                            :settings="{interactive:false,zoom:2}"-->
-<!--                        />-->
+<!--                        <img class="min-h-screen"-->
+<!--                            src="/img/backgrounds/transparent.png">-->
+                        <Map
+                            class="w-full overflow-hidden h-screen"
+                            id="world_map"
+                            :enable="true"
+                            :data="[]"
+                            :settings="{interactive:false,zoom:2}"
+                        />
+                        <!--                            :data="ajax.countries_list_map"-->
                     </div>
 <!--                    <div v-else class="bg-white rounded h-screen">Loading map</div>-->
 

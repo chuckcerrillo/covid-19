@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Cases;
 use App\Country;
 use App\Http\Resources\CasesCollection;
+use App\Http\Resources\CountryCollection;
 use App\Http\Resources\LogCollection as LogCollectionResource;
+use App\Http\Resources\StateCollection;
 use App\State;
 use Goutte\Client;
 use Illuminate\Http\Request;
@@ -3417,7 +3419,7 @@ class StatsController extends Controller
         return response($data)->setStatusCode(Response::HTTP_OK);
     }
 
-    public function get_countries_and_states()
+    public function harvest_countries_and_states()
     {
         // Generate master country list
         $csv = array_map('str_getcsv', file(MASTER_LIST));
@@ -3591,7 +3593,7 @@ class StatsController extends Controller
         );
     }
 
-    public function get_cases_from_jh_timeline_global(Request $request)
+    public function harvest_cases_from_jh_timeline_global(Request $request)
     {
         $first_date = '2020-01-22';
 
@@ -3764,7 +3766,7 @@ class StatsController extends Controller
         dump("done");
     }
 
-    public function get_cases_from_jh_timeline_us(Request $request)
+    public function harvest_cases_from_jh_timeline_us(Request $request)
     {
         $first_date = '2020-01-22';
 
@@ -3932,6 +3934,75 @@ class StatsController extends Controller
         return $this->compute_daily(Country::where('name','Global')->first());
     }
 
+    public function generate_all_countries_daily()
+    {
+        $data = [];
+
+        $countries = Country::all();
+        foreach($countries AS $country)
+        {
+            $data[$country->id] = $this->compute_daily($country);
+        }
+
+        file_put_contents(STATS . 'countries_daily.json',json_encode($data));
+        return response($data)->setStatusCode(Response::HTTP_OK);
+
+    }
+
+    public function generate_all_states_daily()
+    {
+        $data = [];
+
+        $states = State::all();
+
+        $countries = DB::table('countries')
+            ->selectRaw('countries.id, countries.name, count(states.id) AS total_states')
+            ->join('states','states.country_id','countries.id')
+            ->groupBy('countries.id')
+            ->groupBy('countries.name')
+            ->having('total_states','>',1)
+            ->get();
+
+
+        foreach($countries AS $country)
+        {
+
+            $states = State::where('country_id',$country->id)->get();
+            foreach($states AS $state)
+            {
+                $data[$state->id] = $this->compute_daily($state->country,$state);
+            }
+        }
+
+        file_put_contents(STATS . 'states_daily.json',json_encode($data));
+        return response($data)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function generate_all_daily()
+    {
+        $data = [];
+
+        $countries = Country::all();
+        foreach($countries AS $country)
+        {
+            $data[$country->name] = $this->compute_daily($country);
+        }
+
+        file_put_contents(STATS . 'countries_daily.json',json_encode($data));
+
+        $data = [];
+
+        $states = State::all();
+        foreach($states AS $state)
+        {
+            $data[$state->name] = $this->compute_daily($state->country,$state);
+        }
+
+        file_put_contents(STATS . 'states_daily.json',json_encode($data));
+        return response($data)->setStatusCode(Response::HTTP_OK);
+
+    }
+
     public function get_daily(Request $request)
     {
         $country_name = $request->country_name ? $request->country_name : 'Global';
@@ -3950,6 +4021,7 @@ class StatsController extends Controller
         }
         return $this->compute_daily($country,$state);
     }
+
     private function compute_daily($country, $state = false)
     {
         $population = $country->population;
@@ -3978,6 +4050,11 @@ class StatsController extends Controller
                 ->groupBy('date')
                 ->orderBy('cases.date')
                 ->get();
+        }
+        if(count($data) == 0)
+        {
+            dump($state);
+            return [];
         }
 
         // Double check that the days are complete
@@ -4079,5 +4156,57 @@ class StatsController extends Controller
         }
 
         return new CasesCollection($result);
+    }
+
+    public function get_all_countries_and_states()
+    {
+        $countries = new CountryCollection(Country::with('state')->get());
+        $states = new  StateCollection(State::get());
+
+        $data = [
+            'countries' => $countries,
+            'states' => $states,
+        ];
+
+        return $data;
+    }
+
+    public function generate_all_countries()
+    {
+
+        $data = new CountryCollection(Country::with('state')->get());
+
+        file_put_contents(STATS . 'countries_summary.json',json_encode($data));
+        return response($data)->setStatusCode(Response::HTTP_OK);
+
+    }
+
+    public function get_all_countries()
+    {
+        $filename = STATS . 'countries_summary.json';
+        $file = fopen($filename,'r');
+        $data = json_decode(fread($file,filesize($filename)),true);
+        return response($data)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function get_states_daily()
+    {
+        $filename = STATS . 'states_daily.json';
+        $file = fopen($filename,'r');
+        $data = json_decode(fread($file,filesize($filename)),true);
+        return response($data)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function get_countries_daily()
+    {
+        $filename = STATS . 'countries_daily.json';
+        $file = fopen($filename,'r');
+        $data = json_decode(fread($file,filesize($filename)),true);
+        return response($data)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function get_all_states()
+    {
+        return new  StateCollection(State::get());
     }
 }
