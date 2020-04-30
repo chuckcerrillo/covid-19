@@ -113,8 +113,8 @@
                             {{row.average.c | numeralFormat('0,000.0')}}
                         </div>
                         <div class="w-16 p-2">
-                            <span class="text-red-400" v-if="row.growthFactor > 1">{{row.growthFactor}}</span>
-                            <span class="text-green-400" v-else>{{row.growthFactor}}</span>
+                            <span class="text-red-400" v-if="row.growth.c > 1">{{row.growth.c | numeralFormat('0.00')}}</span>
+                            <span class="text-green-400" v-else>{{row.growth.c | numeralFormat('0.00')}}</span>
                         </div>
                     </div>
                     <div v-if="key==0" class="w-full text-lightlabel flex justify-center">
@@ -197,54 +197,6 @@
             remove(item){
                 this.$emit('removeCompare',item);
             },
-            recomputeGrowth()
-            {
-                const arrAvg = arr => arr.reduce((a,b) => a + b, 0) / arr.length;
-
-                this.recomputed_data = this.data;
-                this.recomputed_data.growth = [];
-                this.recomputed_data.average = [];
-                this.recomputed_data.growthFactor = [];
-
-                for(var x in this.recomputed_data.delta)
-                {
-                    this.recomputed_data.growth.push(
-                        this.recomputed_data.delta[x].confirmed
-                    )
-                }
-
-                for(var x = 0; x < this.recomputed_data.growth.length; x++)
-                {
-                    var avg = 0;
-                    if(x < 5)
-                    {
-                        avg = arrAvg(this.recomputed_data.growth.slice(0,x+1));
-                    }
-                    else
-                    {
-                        avg = arrAvg(this.recomputed_data.growth.slice(x-5,x+1));
-                    }
-                    this.recomputed_data.average.push(avg.toFixed(1));
-                }
-
-                for(var x = 0; x < this.recomputed_data.average.length; x++)
-                {
-                    var gf = 0;
-                    if(x == 1 || this.recomputed_data.average[x-1] == 0)
-                    {
-                        gf = (this.recomputed_data.average[x]/1).toFixed(2);
-                    }
-                    else
-                    {
-                        gf = (this.recomputed_data.average[x]/this.recomputed_data.average[x-1]).toFixed(2);
-                    }
-                    if(isNaN(gf))
-                    {
-                        gf = 0;
-                    }
-                    this.recomputed_data.growthFactor.push(gf);
-                }
-            }
         },
         computed: {
 
@@ -257,6 +209,8 @@
             annotations()
             {
                 var data = [];
+                console.log('annotations for ' + this.data.name.country);
+                console.log(this.data.annotations)
                 for(var x in this.data.annotations)
                 {
                     if(this.data.annotations[x].country == 'All')
@@ -277,22 +231,12 @@
                 }
                 return data;
             },
-            recomputed()
-            {
-                this.recomputeGrowth();
-                return this.recomputed_data;
-            },
             daily()
             {
                 var result = _.clone(this.data.daily);
                 return result.reverse();
             }
         },
-        watch: {
-            data: function() {
-                this.recomputeGrowth();
-            }
-        }
     }
 </script>
 
