@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Ward as WardResource;
+use App\Cases;
+use App\Country;
+use App\Http\Resources\CasesCollection;
+use App\Http\Resources\CountryCollection;
+use App\Http\Resources\LogCollection as LogCollectionResource;
+use App\Http\Resources\StateCollection;
+use App\State;
 use Goutte\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\AbstractList;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
@@ -190,7 +197,7 @@ class StatsController extends Controller
         'Jordan' => 'Jordan',
         'Kazakhstan' => 'Kazakhstan',
         'Kenya' => 'Kenya',
-        'S. Korea' => 'South Korea',
+        'South Korea' => 'South Korea',
         'Kuwait' => 'Kuwait',
         'Kyrgyzstan' => 'Kyrgyzstan',
         'Laos' => 'Laos',
@@ -272,7 +279,7 @@ class StatsController extends Controller
         'Turkey' => 'Turkey',
         'UAE' => 'United Arab Emirates',
         'Uganda' => 'Uganda',
-        'UK' => 'United Kingdom',
+        'United Kingdom' => 'United Kingdom',
         'Ukraine' => 'Ukraine',
         'Uruguay' => 'Uruguay',
         'USA' => 'United States',
@@ -287,25 +294,25 @@ class StatsController extends Controller
 
     protected $oxford_jh_map = [
         'Afghanistan' => 'Afghanistan',
-//        'Albania' => 'Albania',
+        'Albania' => 'Albania',
         'Algeria' => 'Algeria',
         'Andorra' => 'Andorra',
         'Angola' => 'Angola',
-//        'Antigua and Barbuda' => 'Antigua and Barbuda',
+        'Antigua and Barbuda' => 'Antigua and Barbuda',
         'Argentina' => 'Argentina',
-//        'Armenia' => 'Armenia',
+        'Armenia' => 'Armenia',
         'Australia' => 'Australia',
         'Austria' => 'Austria',
         'Azerbaijan' => 'Azerbaijan',
-//        'Bahamas' => 'Bahamas',
-//        'Bahrain' => 'Bahrain',
+        'Bahamas' => 'Bahamas',
+        'Bahrain' => 'Bahrain',
         'Bangladesh' => 'Bangladesh',
         'Barbados' => 'Barbados',
-//        'Belarus' => 'Belarus',
+        'Belarus' => 'Belarus',
         'Belgium' => 'Belgium',
         'Belize' => 'Belize',
-//        'Benin' => 'Benin',
-//        'Bhutan' => 'Bhutan',
+        'Benin' => 'Benin',
+        'Bhutan' => 'Bhutan',
         'Bolivia' => 'Bolivia',
         'Bosnia and Herzegovina' => 'Bosnia and Herzegovina', // 22
         'Botswana' => 'Botswana',
@@ -315,54 +322,54 @@ class StatsController extends Controller
         'Burkina Faso' => 'Burkina Faso',
         'Myanmar' => 'Burma',
         'Burundi' => 'Burundi',
-//        'Cabo Verde' => 'Cabo Verde', // 30
-//        'Cambodia' => 'Cambodia',
+        'Cape Verde' => 'Cabo Verde', // 30
+        'Cambodia' => 'Cambodia',
         'Cameroon' => 'Cameroon',
         'Canada' => 'Canada',
-//        'CAR' => 'Central African Republic',
+        'CAR' => 'Central African Republic',
         'Chad' => 'Chad',
         'Chile' => 'Chile',
         'China' => 'China',
         'Colombia' => 'Colombia',
-//        'Congo (Brazzaville)' => 'Congo (Brazzaville)',
+        'Congo (Brazzaville)' => 'Congo (Brazzaville)',
         'Democratic Republic of Congo' => 'Congo (Kinshasa)',
         'Costa Rica' => 'Costa Rica',
-//        'Ivory Coast' => 'Cote d\'Ivoire',
+        'Ivory Coast' => 'Cote d\'Ivoire',
         'Croatia' => 'Croatia',
         'Cuba' => 'Cuba',
         'Cyprus' => 'Cyprus',
         'Czech Republic' => 'Czechia',
         'Denmark' => 'Denmark',
-//        'Diamond Princess' => 'Diamond Princess',
+        'Diamond Princess' => 'Diamond Princess',
         'Djibouti' => 'Djibouti',
-//        'Dominica' => 'Dominica',
+        'Dominica' => 'Dominica',
         'Dominican Republic' => 'Dominican Republic',
         'Ecuador' => 'Ecuador',
         'Egypt' => 'Egypt',
         'El Salvador' => 'El Salvador',
-//        'Equatorial Guinea' => 'Equatorial Guinea',
-//        'Eritrea' => 'Eritrea',
+        'Equatorial Guinea' => 'Equatorial Guinea',
+        'Eritrea' => 'Eritrea',
         'Estonia' => 'Estonia',
         'Eswatini' => 'Eswatini',
-//        'Ethiopia' => 'Ethiopia',
-//        'Fiji' => 'Fiji',
+        'Ethiopia' => 'Ethiopia',
+        'Fiji' => 'Fiji',
         'Finland' => 'Finland',
         'France' => 'France',
         'Gabon' => 'Gabon',
         'Gambia' => 'Gambia',
-//        'Georgia' => 'Georgia',
+        'Georgia' => 'Georgia',
         'Germany' => 'Germany',
         'Ghana' => 'Ghana',
         'Greece' => 'Greece',
-//        'Grenada' => 'Grenada',
+        'Grenada' => 'Grenada',
         'Guatemala' => 'Guatemala',
-//        'Guinea' => 'Guinea',
-//        'Guinea-Bissau' => 'Guinea-Bissau',
+        'Guinea' => 'Guinea',
+        'Guinea-Bissau' => 'Guinea-Bissau',
         'Guyana' => 'Guyana',
-//        'Haiti' => 'Haiti',
-//        'Vatican City' => 'Holy See',
+        'Haiti' => 'Haiti',
+        'Vatican City' => 'Holy See',
         'Honduras' => 'Honduras',
-//        'Hungary' => 'Hungary',
+        'Hungary' => 'Hungary',
         'Iceland' => 'Iceland',
         'India' => 'India',
         'Indonesia' => 'Indonesia',
@@ -376,42 +383,42 @@ class StatsController extends Controller
         'Jordan' => 'Jordan',
         'Kazakhstan' => 'Kazakhstan',
         'Kenya' => 'Kenya',
-        'South Korea' => 'Korea, South',
+        'South Korea' => 'South Korea',
         'Kosovo' => 'Kosovo',
         'Kuwait' => 'Kuwait',
         'Kyrgyz Republic' => 'Kyrgyzstan',
         'Laos' => 'Laos',
-//        'Latvia' => 'Latvia',
+        'Latvia' => 'Latvia',
         'Lebanon' => 'Lebanon',
-//        'Liberia' => 'Liberia',
+        'Liberia' => 'Liberia',
         'Libya' => 'Libya',
-//        'Liechtenstein' => 'Liechtenstein',
-//        'Lithuania' => 'Lithuania',
+        'Liechtenstein' => 'Liechtenstein',
+        'Lithuania' => 'Lithuania',
         'Luxembourg' => 'Luxembourg',
         'Madagascar' => 'Madagascar',
         'Malawi' => 'Malawi',
         'Malaysia' => 'Malaysia',
-//        'Maldives' => 'Maldives',
+        'Maldives' => 'Maldives',
         'Mali' => 'Mali',
-//        'Malta' => 'Malta',
+        'Malta' => 'Malta',
         'Mauritania' => 'Mauritania',
         'Mauritius' => 'Mauritius',
         'Mexico' => 'Mexico',
         'Moldova' => 'Moldova',
-//        'Monaco' => 'Monaco',
+        'Monaco' => 'Monaco',
         'Mongolia' => 'Mongolia',
-//        'Montenegro' => 'Montenegro',
+        'Montenegro' => 'Montenegro',
         'Morocco' => 'Morocco',
         'Mozambique' => 'Mozambique',
 //        'MS Zaandam' => 'MS Zaandam',
         'Namibia' => 'Namibia',
-//        'Nepal' => 'Nepal',
+        'Nepal' => 'Nepal',
         'Netherlands' => 'Netherlands',
         'New Zealand' => 'New Zealand',
         'Nicaragua' => 'Nicaragua',
         'Niger' => 'Niger',
         'Nigeria' => 'Nigeria',
-//        'North Macedonia' => 'North Macedonia',
+        'North Macedonia' => 'North Macedonia',
         'Norway' => 'Norway',
         'Oman' => 'Oman',
         'Pakistan' => 'Pakistan',
@@ -426,34 +433,34 @@ class StatsController extends Controller
         'Romania' => 'Romania',
         'Russia' => 'Russia',
         'Rwanda' => 'Rwanda',
-//        'Saint Kitts and Nevis' => 'Saint Kitts and Nevis',
-//        'Saint Lucia' => 'Saint Lucia',
-//        'St. Vincent Grenadines' => 'Saint Vincent and the Grenadines',
+        'Saint Kitts and Nevis' => 'Saint Kitts and Nevis',
+        'Saint Lucia' => 'Saint Lucia',
+        'St. Vincent Grenadines' => 'Saint Vincent and the Grenadines',
         'San Marino' => 'San Marino',
-//        'Sao Tome and Principe' => 'Sao Tome and Principe',
+        'Sao Tome and Principe' => 'Sao Tome and Principe',
         'Saudi Arabia' => 'Saudi Arabia',
-//        'Senegal' => 'Senegal',
+        'Senegal' => 'Senegal',
         'Serbia' => 'Serbia',
         'Seychelles' => 'Seychelles',
         'Sierra Leone' => 'Sierra Leone',
         'Singapore' => 'Singapore',
         'Slovak Republic' => 'Slovakia',
         'Slovenia' => 'Slovenia',
-//        'Somalia' => 'Somalia',
+        'Somalia' => 'Somalia',
         'South Africa' => 'South Africa',
         'South Sudan' => 'South Sudan',
         'Spain' => 'Spain',
         'Sri Lanka' => 'Sri Lanka',
         'Sudan' => 'Sudan',
-//        'Suriname' => 'Suriname',
+        'Suriname' => 'Suriname',
         'Sweden' => 'Sweden',
         'Switzerland' => 'Switzerland',
         'Syria' => 'Syria',
-        'Taiwan' => 'Taiwan*',
+        'Taiwan' => 'Taiwan',
         'Tanzania' => 'Tanzania',
         'Thailand' => 'Thailand',
-//        'Timor-Leste' => 'Timor-Leste',
-//        'Togo' => 'Togo',
+        'Timor-Leste' => 'Timor-Leste',
+        'Togo' => 'Togo',
         'Trinidad and Tobago' => 'Trinidad and Tobago',
         'Tunisia' => 'Tunisia',
         'Turkey' => 'Turkey',
@@ -466,9 +473,9 @@ class StatsController extends Controller
         'Uzbekistan' => 'Uzbekistan',
         'Venezuela' => 'Venezuela',
         'Vietnam' => 'Vietnam',
-//        'West Bank and Gaza' => 'West Bank and Gaza',
-//        'Western Sahara' => 'Western Sahara',
-//        'Yemen' => 'Yemen',
+        'Palestine' => 'West Bank and Gaza',
+        'Western Sahara' => 'Western Sahara',
+        'Yemen' => 'Yemen',
         'Zambia' => 'Zambia',
         'Zimbabwe' => 'Zimbabwe',
     ];
@@ -674,7 +681,7 @@ class StatsController extends Controller
 
         define('COVID_DATA','../covid-data-clean/COVID-19_CLEAN/csse_covid_19_daily_reports_cleaned/');
         define('OXFORD_DATA','../oxford/data/timeseries/');
-        define('OXFORD_LATEST','../oxford/data/OxCGRT_latest.csv');
+        define('OXFORD_LATEST','../oxford/data/OxCGRT_latest_withnotes.csv');
         define('STATS','./stats/');
 
 
@@ -2152,6 +2159,27 @@ class StatsController extends Controller
 
     public function harvest_wikipedia()
     {
+
+//        $wikipedia_override = $this->harvest_wikipedia();
+//        // Wikipedia
+//        foreach($wikipedia_override AS $override)
+//        {
+////                array:4 [▼
+////                    "country" => "North America"
+////                    "confirmed" => "696,905"
+////                    "deaths" => "35,276"
+////                    "recovered" => "61,446"
+////                ]
+//            $override['confirmed'] = (int) str_replace(',','',$override['confirmed']);
+//            $override['deaths'] = (int) str_replace(',','',$override['deaths']);
+//            $override['recovered'] = (int) str_replace(',','',$override['recovered']);
+//
+//            if(isset($this->wikipedia_jh_map[$override['country']]))
+//            {
+//                $country = $this->wikipedia_jh_map[$override['country']];
+
+
+
         $data = [];
         $client = new Client();
         $crawler = $client->request('GET', 'https://en.m.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_pandemic');
@@ -2165,14 +2193,20 @@ class StatsController extends Controller
             });
             if(count($col_headers) == 2)
             {
-                return [
-                'country' => preg_replace('/\[.*?\]/','',$col_headers[1]),
-                'confirmed' => str_replace(',','',$col_body[0]),
-                'deaths' => str_replace(',','',$col_body[1]),
-                'recovered' => str_replace(',','',$col_body[2]),
-                ];
+                $country = preg_replace('/\[.*?\]/','',$col_headers[1]);
+                if(isset($this->wikipedia_jh_map[$country]))
+                {
+                    return [
+                    'country' => $this->wikipedia_jh_map[$country],
+                    'confirmed' => str_replace(',','',$col_body[0]),
+                    'deaths' => str_replace(',','',$col_body[1]),
+                    'recovered' => str_replace(',','',$col_body[2]),
+                    ];
+                }
             }
         });
+
+
 
 
 
@@ -2183,7 +2217,258 @@ class StatsController extends Controller
                 $data[] = $row;
             }
         }
+
         return $data;
+    }
+
+    public function harvest_annotations()
+    {
+        // Annotations
+        // https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1Pov2AbAscAXUNphDrjd3ZmzlbuvMy_Pd195bXlylwgdDnu1OQ0CBKXfMeDAHBZWbtLL9t5McfIcD/pubhtml
+        $url = 'https://spreadsheets.google.com/feeds/list/1XfndFdJ0VSJnLqY83s8ITmuRVgsUSWPhCm-Fvd_rNb4/oejzle4/public/values?alt=json';
+        $file= file_get_contents($url);
+
+        $json = json_decode($file,true);
+        $rows = $json['feed']['entry'];
+        $data = [];
+        foreach($rows AS $row)
+        {
+            if($row['gsx$publish']['$t'] == 'Y')
+            {
+                $data[$row['gsx$country']['$t']][] = [
+                    'country' => $row['gsx$country']['$t'],
+                    'state' => $row['gsx$state']['$t'],
+                    'date' => $row['gsx$date']['$t'],
+                    'notes' => $row['gsx$notes']['$t'],
+                    'url' => $row['gsx$url']['$t'],
+                ];
+            }
+        }
+        file_put_contents(STATS . 'annotations.json',json_encode($data));
+        return response('Done harvesting data')->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function data_overrides()
+    {
+        $result = Country::all();
+        $countries = [];
+        foreach($result AS $row)
+        {
+            $countries[$row->name] = $row->id;
+        }
+
+        $result = State::all();
+        $states = [];
+        foreach($result AS $row)
+        {
+            $states[$row->name] = $row->id;
+        }
+
+        $date = date('Y-m-d');
+        $yesterday = new \DateTime($date);
+        $yesterday = $yesterday->sub(new \DateInterval('P1D'));
+
+        $records = [];
+        $yesterday_cases = DB::table('cases')
+            ->where('cases.date','=',$yesterday->format('Y-m-d'))
+            ->get();
+        foreach($yesterday_cases AS $row)
+        {
+            $records['yesterday'][$row->state_id] = $row;
+        }
+        $today_cases = DB::table('cases')
+            ->where('cases.date','=',$date)
+            ->get();
+
+        foreach($today_cases AS $row)
+        {
+            $records['today'][$row->state_id] = $row;
+        }
+
+        foreach($records['yesterday'] AS $state_id => $row)
+        {
+            if(!isset($records['today'][$state_id]))
+            {
+                dump($state_id . ' -- ' . $date . ' does not exist');
+                // Create new records for today based on yesterday's data
+                DB::table('cases')->insert(
+                    [
+                        'date' => $date,
+                        'state_id' => $state_id,
+                        'confirmed' => $row->confirmed,
+                        'deaths' => $row->deaths,
+                        'recovered' => $row->recovered,
+                    ]
+                );
+            }
+        }
+
+        // Do worldometers
+
+        // Do wikipedia
+        $data = $this->harvest_wikipedia();
+
+
+
+
+
+
+        foreach($data AS $row)
+        {
+//            0 => array:4 [▼
+//                "country" => "United States"
+//                "confirmed" => "1064353"
+//                "deaths" => "61504"
+//                "recovered" => "126325"
+//            ]
+            if(array_key_exists($row['country'],$countries))
+            {
+                $states = State::where('country_id',$countries[$row['country']])->get()->all();
+                if(count($states) > 1)
+                {
+                    $state = null;
+                    foreach($states AS $index => $row)
+                    {
+                        if($row->name == '(Unspecified)')
+                        {
+                            $state = $row;
+                            break;
+                        }
+                    }
+                    if($state)
+                    {
+                        // If this is a multiple-state country, we need to take them into account and subtract them from the (Unspecified) number
+                        $current_states = DB::table('cases')
+                            ->selectRaw('sum(cases.confirmed) as confirmed, sum(cases.deaths) as deaths, sum(cases.recovered) as recovered')
+                            ->join('states','states.id','cases.state_id')
+                            ->join('countries','countries.id','states.country_id')
+                            ->where('date','=',$date)
+                            ->where('countries.id','=',$state->country_id)
+                            ->where('states.id','!=','(Unspecified)')
+                            ->get()->first();
+                        if(isset($current_states->confirmed))
+                        {
+                            // There's an existing record so we only adjust the (Unspecified) state for this country
+                            $input = [];
+                            if(is_numeric($row['confirmed']))
+                            {
+                                $input['confirmed'] = $row['confirmed'] - $current_states->confirmed;
+                            }
+                            if(is_numeric($row['deaths']))
+                            {
+                                $input['deaths'] = $row['deaths'] - $current_states->deaths;
+                            }
+                            if(is_numeric($row['recovered']))
+                            {
+                                $input['recovered'] = $row['recovered'] - $current_states->recovered;
+                            }
+                            DB::table('cases')->updateOrInsert(
+                                [
+                                    'state_id' => $state->id,
+                                    'date' => $date,
+                                ],
+                                $input
+                            );
+                        }
+                        else
+                        {
+                            // Create a new record because this is empty
+                            $input = [];
+                            if(is_numeric($row['confirmed']))
+                            {
+                                $input['confirmed'] = $row['confirmed'];
+                            }
+                            if(is_numeric($row['deaths']))
+                            {
+                                $input['deaths'] = $row['deaths'];
+                            }
+                            if(is_numeric($row['recovered']))
+                            {
+                                $input['recovered'] = $row['recovered'];
+                            }
+                            DB::table('cases')->updateOrInsert(
+                                [
+                                    'state_id' => $state->id,
+                                    'date' => $date,
+                                ],
+                                $input
+                            );
+                        }
+                    }
+                }
+                else if(count($states) == 1)
+                {
+                    // If this is a single-state country, we just insert or update the (Unspecified) record
+                    $state = $states[0];
+                    $input = [];
+                    if(is_numeric($row['confirmed']))
+                    {
+                        $input['confirmed'] = $row['confirmed'];
+                    }
+                    if(is_numeric($row['deaths']))
+                    {
+                        $input['deaths'] = $row['deaths'];
+                    }
+                    if(is_numeric($row['recovered']))
+                    {
+                        $input['recovered'] = $row['recovered'];
+                    }
+
+                    $case = Cases::where('state_id',$state->id)
+                                    ->where('date',$date)
+                                    ->get()->first();
+                    if(isset($case->confirmed) && $case->confirmed > 0)
+                    {
+                        if(!isset($input['confirmed']) || $case->confirmed >= $input['confirmed'])
+                        {
+                            unset($input['confirmed']);
+                        }
+                        if(!isset($input['deaths']) || $case->deaths > $input['deaths'])
+                        {
+                            unset($input['deaths']);
+                        }
+                        if(!isset($input['recovered']) || $case->recovered > $input['recovered'])
+                        {
+                            unset($input['recovered']);
+                        }
+                        DB::table('cases')->updateOrInsert(
+                            [
+                                'state_id' => $state->id,
+                                'date' => $date,
+                            ],
+                            $input
+                        );
+                    }
+                    else
+                    {
+                        if(!isset($input['confirmed']))
+                        {
+                            unset($input['confirmed']);
+                        }
+                        if(!isset($input['deaths']))
+                        {
+                            unset($input['deaths']);
+                        }
+                        if(!isset($input['recovered']))
+                        {
+                            unset($input['recovered']);
+                        }
+                        if(count($input)>0)
+                        {
+                            DB::table('cases')->updateOrInsert(
+                                [
+                                    'state_id' => $state->id,
+                                    'date' => $date,
+                                ],
+                                $input
+                            );
+                        }
+                    }
+                }
+            }
+        }
+
+        // Do manual override
     }
 
     protected function manual_override()
@@ -2314,63 +2599,89 @@ class StatsController extends Controller
         $filename = str_replace('.csv','',$filename);
 //        $key[$file_id] = $filename;
         $header = array_shift($csv); # remove column header
-
+        //dd($csv[0]);
 //        [
 //            0 => "CountryName"
 //            1 => "CountryCode"
 //            2 => "Date"
-//            3 => "S1_School closing"
-//            4 => "S1_IsGeneral"
-//            5 => "S2_Workplace closing"
-//            6 => "S2_IsGeneral"
-//            7 => "S3_Cancel public events"
-//            8 => "S3_IsGeneral"
-//            9 => "S4_Close public transport"
-//            10 => "S4_IsGeneral"
-//            11 => "S5_Public information campaigns"
-//            12 => "S5_IsGeneral"
-//            13 => "S6_Restrictions on internal movement"
-//            14 => "S6_IsGeneral"
-//            15 => "S7_International travel controls"
-//            16 => "S8_Fiscal measures"
-//            17 => "S9_Monetary measures"
-//            18 => "S10_Emergency investment in health care"
-//            19 => "S11_Investment in Vaccines"
-//            20 => "S12_Testing framework"
-//            21 => "S13_Contact tracing"
-//            22 => "ConfirmedCases"
-//            23 => "ConfirmedDeaths"
-//            24 => "StringencyIndex"
-//            25 => "StringencyIndexForDisplay"
-//            26 => ""
+//            3 => "C1_School closing"
+//            4 => "C1_Flag"
+//            5 => "C1_Notes"
+//            6 => "C2_Workplace closing"
+//            7 => "C2_Flag"
+//            8 => "C2_Notes"
+//            9 => "C3_Cancel public events"
+//            10 => "C3_Flag"
+//            11 => "C3_Notes"
+//            12 => "C4_Restrictions on gatherings"
+//            13 => "C4_Flag"
+//            14 => "C4_Notes"
+//            15 => "C5_Close public transport"
+//            16 => "C5_Flag"
+//            17 => "C5_Notes"
+//            18 => "C6_Stay at home requirements"
+//            19 => "C6_Flag"
+//            20 => "C6_Notes"
+//            21 => "C7_Restrictions on internal movement"
+//            22 => "C7_Flag"
+//            23 => "C7_Notes"
+//            24 => "C8_International travel controls"
+//            25 => "C8_Notes"
+//            26 => "E1_Income support"
+//            27 => "E1_Flag"
+//            28 => "E1_Notes"
+//            29 => "E2_Debt/contract relief"
+//            30 => "E2_Notes"
+//            31 => "E3_Fiscal measures"
+//            32 => "E3_Notes"
+//            33 => "E4_International support"
+//            34 => "E4_Notes"
+//            35 => "H1_Public information campaigns"
+//            36 => "H1_Flag"
+//            37 => "H1_Notes"
+//            38 => "H2_Testing policy"
+//            39 => "H2_Notes"
+//            40 => "H3_Contact tracing"
+//            41 => "H3_Notes"
+//            42 => "H4_Emergency investment in healthcare"
+//            43 => "H4_Notes"
+//            44 => "H5_Investment in vaccines"
+//            45 => "H5_Notes"
+//            46 => "M1_Wildcard"
+//            47 => "M1_Notes"
+//            48 => "ConfirmedCases"
+//            49 => "ConfirmedDeaths"
+//            50 => "StringencyIndex"
+//            51 => "StringencyIndexForDisplay"
+//            52 => "LegacyStringencyIndex"
+//            53 => "LegacyStringencyIndexForDisplay"
 //        ]
 
         $key = [
-            's1' => [
+            'C1' => [
                 'name' => 'School closing',
-                'description' => 'Record closings of schools and universities',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
                     'Recommend closing',
-                    'Require closing',
+                    'Require closing (only some levels or categories)',
+                    'Require closing all levels',
                 ],
                 'hasTarget' => true
             ],
-            's2' => [
+            'C2' => [
                 'name' => 'Workplace closing',
-                'description' => 'Record closings of workplaces',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
-                    'Recommend closing',
-                    'Require closing',
+                    'Recommend closing (or work from home)',
+                    'Require closing (or work from home) for some sectors or categories of workers',
+                    'Require closing (or work from home) all but essential workplaces'
                 ],
                 'hasTarget' => true
             ],
-            's3' => [
+            'C3' => [
                 'name' => 'Cancel public events',
-                'description' => 'Record cancelling public events',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
@@ -2379,51 +2690,74 @@ class StatsController extends Controller
                 ],
                 'hasTarget' => true
             ],
-            's4' => [
+            'C4' => [
+                'name' => 'Restrictions on gatherings',
+                'type' => 'lookup',
+                'values' => [
+                    'No restrictions',
+                    'Restrictions on very large gatherings (over 1000 people)',
+                    'Restrictions on gatherings between 100-1000 people',
+                    'Restrictions on gatherings between 10-100 people',
+                    'Restrictions on gatherings of less than 10 people',
+                ],
+                'hasTarget' => true
+            ],
+            'C5' => [
                 'name' => 'Close public transport',
-                'description' => 'Record closing of public transport',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
-                    'Recommend closing',
-                    'Require closing',
+                    'Recommend closing (or significantly reduce volume/route/means of transport available)',
+                    'Require closing (or prohibit most citizens from using it)',
                 ],
                 'hasTarget' => true
             ],
-            's5' => [
-                'name' => 'Public info campaigns',
-                'description' => 'Record presence of public info campaigns',
-                'type' => 'lookup',
-                'values' => [
-                    'No COVID-19 public information campaign',
-                    'COVID-19 public information campaign',
-                ],
-                'hasTarget' => true
-            ],
-            's6' => [
-                'name' => 'Restrictions on internal movement',
-                'description' => 'Record restrictions on internal movement',
+            'C6' => [
+                'name' => 'Stay at home',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
-                    'Recommend movement restriction',
-                    'Restrict movement',
+                    'Recommend not leaving house',
+                    'Require not leaving house with exceptions for daily exercise, grocery shopping, and "essential trips"',
+                    'Require not leaving house with minimal exceptions (e.g. allowing to leave only once every few days, or only one person can leave at a time, etc.)'
                 ],
                 'hasTarget' => true
             ],
-            's7' => [
+            'C7' => [
+                'name' => 'Restrictions on internam movement',
+                'type' => 'lookup',
+                'values' => [
+                    'No measures',
+                    'Recommend closing (or significantly reduce volume/route/means of transport available)',
+                    'Require closing (or prohibit most citizens from using it)',
+                ],
+                'hasTarget' => true
+            ],
+            'C8' => [
                 'name' => 'International travel controls',
-                'description' => 'Record restrictions on international travel',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
                     'Screening',
                     'Quarantine on high-risk regions',
                     'Ban on high-risk regions',
+                    'Total border closure',
                 ],
                 'hasTarget' => false
             ],
-            's8' => [
+            'H1' => [
+                'name' => 'Public info campaigns',
+                'type' => 'lookup',
+                'values' => [
+                    'No COVID-19 public information campaign',
+                    'Public officials urging caution about COVID-19',
+                    'Coordinated public information campaign (e.g. across traditional and social media)'
+                ],
+                'hasTarget' => true
+            ],
+
+
+            'E3' => [
                 'name' => 'Fiscal measures',
                 'description' => 'What economic stimulus policies are adopted',
                 'type' => 'custom',
@@ -3012,74 +3346,6 @@ class StatsController extends Controller
             'daily' => $daily,
             'latest' => $latest,
         ];
-//
-//
-//
-//        $result = array_diff(scandir(OXFORD_DATA), array('..', '.','README.md','.gitignore'));
-//
-//
-//        $daily = [];
-//        $key = [];
-//        foreach($result AS $file_id => $file) {
-//            if(substr($file,0,1) == 's')
-//            {
-//                $filename = OXFORD_DATA . $file;
-//                $csv = array_map('str_getcsv', file($filename));
-//                $filename = str_replace(OXFORD_DATA,'',$filename);
-//                $filename = str_replace('.csv','',$filename);
-//                $key[$file_id] = $filename;
-//                $header = array_shift($csv); # remove column header
-//                $csv = array_slice($csv,0,count($csv) - 3);
-//
-//                foreach ($csv AS $row) {
-//                    foreach($row AS $index=>$value)
-//                    {
-//
-//                        if($value > 0)
-//                        {
-//                            // Data - filename - country name - date = value
-////                            $daily[$filename][$row[0]][$header[$index]] = $value;
-//
-//                            // data:  [country] [date] [stringencyindex]              = value
-//                            // data:  [country] [date] [policynumber]    [policyname] = value
-//                            $date = date('Y-m-d',strtotime($header[$index]));
-//                            if($filename == 'stringencyindex')
-//                            {
-//                                $daily[$row[0]][$date]['stringencyindex'] = $value;
-//                            }
-//                            else
-//                            {
-//                                $policy = explode('_',$filename);
-//                                $daily[$row[0]][$date]['policy'][$policy[0]][$policy[1]] = $value;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        $latest = [];
-//        foreach($daily AS $country=>$country_row)
-//        {
-//            $last_date = array_slice($country_row,-1,1);
-//            foreach($last_date AS $date => $date_row)
-//            {
-//                foreach($date_row['policy'] AS $policy_number=>$policy_row)
-//                {
-//                    foreach($policy_row AS $policy => $value)
-//                    {
-//                        $latest[$country]['policy'][$policy_number][$policy] = $value;
-//                    }
-//
-//                }
-//                if(isset($date_row['stringencyindex']))
-//                {
-//                    $latest[$country]['stringencyindex'] =
-//                        $date_row['stringencyindex'];
-//                }
-//            }
-//        }
-
 
         $data = [
             'key' => $key,
@@ -3150,149 +3416,307 @@ class StatsController extends Controller
         return response($country_index)->setStatusCode(Response::HTTP_OK);
     }
 
+    public function generate_daily_ranking()
+    {
+        $current_date = date('Y-m-d');
+        $dates = DB::table('cases')
+            ->select('date')
+            ->groupBy('date')
+            ->where('date','!=',$current_date)
+            ->orderBy('date','desc')
+            ->limit(4)
+            ->get();
+
+        $date1 = $dates[0]->date;
+        $date2 = $dates[1]->date;
+        $date3 = $dates[2]->date;
+        $date4 = $dates[3]->date;
+
+//SELECT co.id, co.name, SUM(c.confirmed) AS confirmed,SUM(c.deaths) AS deaths, SUM(c.recovered) AS recovered
+//FROM cases c
+//INNER JOIN states s
+//ON s.id = c.state_id
+//INNER JOIN countries co
+//ON co.id = s.country_id
+//WHERE c.date = '2020-04-29'
+//GROUP BY co.id
+//ORDER BY co.name
+
+        $records = DB::table('cases')
+            ->selectRaw('countries.id, countries.name, sum(cases.confirmed) as confirmed, sum(cases.deaths) as deaths, sum(cases.recovered) as recovered')
+            ->join('states','states.id','cases.state_id')
+            ->join('countries','countries.id','states.country_id')
+            ->where('cases.date','=',$date1)
+            ->where('countries.name','!=','Global')
+            ->groupBy('countries.id')
+            ->groupBy('countries.name')
+            ->orderBy('countries.name')
+            ->get()->all();
+
+        $records = (array) $records;
+        $display = [];
+        foreach($records AS $row)
+        {
+            $display[$row->name] = $row;
+        }
+
+        $records = DB::table('cases')
+            ->selectRaw('countries.id, countries.name, sum(cases.confirmed) as confirmed, sum(cases.deaths) as deaths, sum(cases.recovered) as recovered')
+            ->join('states','states.id','cases.state_id')
+            ->join('countries','countries.id','states.country_id')
+            ->where('cases.date','=',$date2)
+            ->where('countries.name','!=','Global')
+            ->groupBy('countries.id')
+            ->groupBy('countries.name')
+            ->orderBy('countries.name')
+            ->get()->all();
+        $records = (array) $records;
+        $today = [];
+        foreach($records AS $row)
+        {
+            $today[$row->name] = $row;
+        }
+
+        $yesterday = [];
+
+        $records = DB::table('cases')
+            ->selectRaw('countries.id, countries.name, sum(cases.confirmed) as confirmed, sum(cases.deaths) as deaths, sum(cases.recovered) as recovered')
+            ->join('states','states.id','cases.state_id')
+            ->join('countries','countries.id','states.country_id')
+            ->where('cases.date','=',$date3)
+            ->where('countries.name','!=','Global')
+            ->groupBy('countries.id')
+            ->groupBy('countries.name')
+            ->orderBy('countries.name')
+            ->get()->all();
+        $records = (array) $records;
+        foreach($records AS $row)
+        {
+            $yesterday[$row->name] = $row;
+        }
+
+        $two_days_ago = [];
+        $records = DB::table('cases')
+            ->selectRaw('countries.id, countries.name, sum(cases.confirmed) as confirmed, sum(cases.deaths) as deaths, sum(cases.recovered) as recovered')
+            ->join('states','states.id','cases.state_id')
+            ->join('countries','countries.id','states.country_id')
+            ->where('cases.date','=',$date4)
+            ->where('countries.name','!=','Global')
+            ->groupBy('countries.id')
+            ->groupBy('countries.name')
+            ->orderBy('countries.name')
+            ->get()->all();
+        $records = (array) $records;
+        foreach($records AS $row)
+        {
+            $two_days_ago[$row->name] = $row;
+        }
+
+        $today_sorted = [];
+        foreach($today AS $index=>$row)
+        {
+            $data = [
+                'id' => $row->id,
+                'name' => $row->name
+            ];
+
+            $data['confirmed'] = $row->confirmed;
+            $data['deaths'] = $row->deaths;
+            $data['recovered'] = $row->recovered;
+            $data['confirmedYesterday'] = $yesterday[$index]->confirmed;
+            $data['deathsYesterday'] = $yesterday[$index]->deaths;
+            $data['recoveredYesterday'] = $yesterday[$index]->recovered;
+            $data['confirmedDelta'] = $row->confirmed - $yesterday[$index]->confirmed;
+            $data['deathsDelta'] = $row->deaths - $yesterday[$index]->deaths;
+            $data['recoveredDelta'] = $row->recovered - $yesterday[$index]->recovered;
+            $data['confirmedSurge'] = $data['confirmedDelta'] / ($yesterday[$index]->confirmed > 0 ? $yesterday[$index]->confirmed : 1);
+            $data['deathsSurge'] = $data['deathsDelta'] / ($yesterday[$index]->deaths > 0 ? $yesterday[$index]->deaths : 1);
+            $data['recoveredSurge'] = $data['recoveredDelta'] / ($yesterday[$index]->recovered > 0 ? $yesterday[$index]->recovered : 1);
+            $today_sorted[] = $data;
+        }
+
+        $yesterday_sorted = [];
+        foreach($yesterday AS $index=>$row)
+        {
+            $data = [
+                'id' => $row->id,
+                'name' => $row->name
+            ];
+
+            $data['confirmed'] = $row->confirmed;
+            $data['deaths'] = $row->deaths;
+            $data['recovered'] = $row->recovered;
+            $data['confirmedYesterday'] = $two_days_ago[$index]->confirmed;
+            $data['deathsYesterday'] = $two_days_ago[$index]->deaths;
+            $data['recoveredYesterday'] = $two_days_ago[$index]->recovered;
+            $data['confirmedDelta'] = $row->confirmed - $two_days_ago[$index]->confirmed;
+            $data['deathsDelta'] = $row->deaths - $two_days_ago[$index]->deaths;
+            $data['recoveredDelta'] = $row->recovered - $two_days_ago[$index]->recovered;
+            $data['confirmedSurge'] = $data['confirmedDelta'] / ($two_days_ago[$index]->confirmed >0 ? $two_days_ago[$index]->confirmed : 1);
+            $data['deathsSurge'] = $data['deathsDelta'] / ($two_days_ago[$index]->deaths > 0 ? $two_days_ago[$index]->deaths : 1);
+            $data['recoveredSurge'] = $data['recoveredDelta'] / ($two_days_ago[$index]->recovered > 0 ? $two_days_ago[$index]->recovered : 1);
+            $yesterday_sorted[] = $data;
+        }
+
+        $sorted = [];
+
+
+        $sorted['today'] = [
+            'confirmedDelta' => $today_sorted,
+            'deathsDelta' => $today_sorted,
+            'recoveredDelta' => $today_sorted,
+            'confirmedSurge' => $today_sorted,
+            'deathsSurge' => $today_sorted,
+        ];
+
+        $sorted['yesterday'] = [
+            'confirmedDelta' => $yesterday_sorted,
+            'deathsDelta' => $yesterday_sorted,
+            'recoveredDelta' => $yesterday_sorted,
+            'confirmedSurge' => $yesterday_sorted,
+            'deathsSurge' => $yesterday_sorted,
+        ];
+
+
+
+        // Sort today's records
+        $confirmed = array_column($sorted['today']['confirmedDelta'],'confirmedDelta');
+        $deaths = array_column($sorted['today']['deathsDelta'],'deathsDelta');
+        $recovered = array_column($sorted['today']['recoveredDelta'],'recoveredDelta');
+        $confirmedSurge = array_column($sorted['today']['confirmedSurge'],'confirmedSurge');
+        $deathsSurge = array_column($sorted['today']['deathsSurge'],'deathsSurge');
+
+        array_multisort($confirmed,SORT_DESC,$sorted['today']['confirmedDelta']);
+        array_multisort($deaths,SORT_DESC,$sorted['today']['deathsDelta']);
+        array_multisort($recovered,SORT_DESC,$sorted['today']['recoveredDelta']);
+        array_multisort($confirmedSurge,SORT_DESC,$sorted['today']['confirmedSurge']);
+        array_multisort($deathsSurge,SORT_DESC,$sorted['today']['deathsSurge']);
+
+
+        // Sort yesterday's records
+        $confirmed = array_column($sorted['yesterday']['confirmedDelta'],'confirmedDelta');
+        $deaths = array_column($sorted['yesterday']['deathsDelta'],'deathsDelta');
+        $recovered = array_column($sorted['yesterday']['recoveredDelta'],'recoveredDelta');
+        $confirmedSurge = array_column($sorted['yesterday']['confirmedSurge'],'confirmedSurge');
+        $deathsSurge = array_column($sorted['yesterday']['deathsSurge'],'deathsSurge');
+
+        array_multisort($confirmed,SORT_DESC,$sorted['yesterday']['confirmedDelta']);
+        array_multisort($deaths,SORT_DESC,$sorted['yesterday']['deathsDelta']);
+        array_multisort($recovered,SORT_DESC,$sorted['yesterday']['recoveredDelta']);
+        array_multisort($confirmedSurge,SORT_DESC,$sorted['yesterday']['confirmedSurge']);
+        array_multisort($deathsSurge,SORT_DESC,$sorted['yesterday']['deathsSurge']);
+
+
+        // Add rank to each record
+        foreach($sorted AS $day => $sorted_row)
+        {
+            foreach(['confirmedDelta','deathsDelta','recoveredDelta','confirmedSurge','deathsSurge'] AS $field)
+            {
+                foreach($sorted[$day][$field] AS $index => $row)
+                {
+                    $sorted[$day][$field][$index]['rank'] = $index;
+                }
+            }
+        }
+
+        // Remove countries with less than 100 confirmed cases and less than 20 deaths
+        foreach($sorted['today']['confirmedSurge'] AS $index => $row)
+        {
+            if($row['confirmed'] < 100)
+            {
+                unset($sorted['today']['confirmedSurge'][$index]);
+            }
+        }
+
+        foreach($sorted['today']['deathsSurge'] AS $index => $row)
+        {
+            if($row['deaths'] < 20)
+            {
+                unset($sorted['today']['deathsSurge'][$index]);
+            }
+        }
+
+        $result = [];
+        foreach(['confirmedDelta','deathsDelta','recoveredDelta','confirmedSurge','deathsSurge'] AS $field)
+        {
+            foreach(array_slice($sorted['today'][$field],0,10) AS $record)
+            {
+                $result[$field][] = $record;
+            }
+
+            foreach($result[$field] AS $index => $row)
+            {
+                $result[$field][$index]['movement'] = '';
+                $yesterday_rank = $row['rank'];
+                foreach($sorted['yesterday'][$field] AS $y_index => $y_row)
+                {
+                    if($y_row['id'] == $row['id'])
+                    {
+                        $yesterday_rank = $y_row['rank'];
+                        break;
+                    }
+                }
+                if($yesterday_rank < $row['rank'])
+                {
+                    $result[$field][$index]['movement'] = 'down';
+                }
+                else if($yesterday_rank > $row['rank'])
+                {
+                    $result[$field][$index]['movement'] = 'up';
+                }
+                else
+                {
+                    $result[$field][$index]['movement'] = 'eq';
+                }
+            }
+        }
+
+        file_put_contents(STATS . 'daily_ranking.json',json_encode($result));
+        return response($result)->setStatusCode(Response::HTTP_OK);
+
+    }
+
     public function daily_ranking()
     {
-        $filename = STATS . 'master.json';
+        $filename = STATS . 'daily_ranking.json';
         $file = fopen($filename,'r');
-        $countries = json_decode(fread($file,filesize($filename)),true);
-        $sort_yesterday = [];
-        $sort_today = [];
-
-        $data = [];
-        $delta = true;
-        foreach($countries AS $country_name => $country_row)
-        {
-            $today1 = array_pop($country_row['daily']);
-            $today = array_pop($country_row['daily']);
-            $yesterday = array_pop($country_row['daily']);
-            $threedaysago = array_pop($country_row['daily']);
-
-            if($country_name != 'Global')
-            {
-                $sort_3daysago['confirmed'][] = $threedaysago['total']['c'];
-                $sort_3daysago['deaths'][] = $threedaysago['total']['d'];
-                $sort_3daysago['recovered'][] = $threedaysago['total']['r'];
-
-
-                if($delta)
-                {
-                    $sort_yesterday['confirmed'][] = $yesterday['total']['c'] - $threedaysago['total']['c'];
-                    $sort_yesterday['deaths'][] = $yesterday['total']['d'] - $threedaysago['total']['d'];
-                    $sort_yesterday['recovered'][] = $yesterday['total']['r'] - $threedaysago['total']['r'];
-                    $sort_yesterday['confirmedSurge'][] = ($yesterday['total']['c'] - $threedaysago['total']['c'])/($threedaysago['total']['c'] != 0 ? $threedaysago['total']['c'] : 1);
-                    $sort_yesterday['deathsSurge'][] = ($yesterday['total']['d'] - $threedaysago['total']['d'])/($threedaysago['total']['d'] != 0 ? $threedaysago['total']['d'] : 1);
-
-                    $sort_today['confirmed'][] = $today['total']['c'] - $yesterday['total']['c'];
-                    $sort_today['deaths'][] = $today['total']['d'] - $yesterday['total']['d'];
-                    $sort_today['recovered'][] = $today['total']['r'] - $yesterday['total']['r'];
-                    $sort_today['confirmedSurge'][] = ($today['total']['c'] - $yesterday['total']['c']) / ($yesterday['total']['c'] != 0 ? $yesterday['total']['c'] : 1);
-                    $sort_today['deathsSurge'][] = ($today['total']['d'] - $yesterday['total']['d']) / ($yesterday['total']['d'] != 0 ? $yesterday['total']['d'] : 1);
-
-                    $data[] = [
-                        'name' => $country_name,
-                        'confirmed' => $today1['total']['c'] - ($today1['total']['c'] == $today['total']['c'] ? $yesterday['total']['c'] : $today['total']['c']),
-                        'confirmedTotal' => $today1['total']['c'],
-                        'deaths' => $today1['total']['d'] - ($today1['total']['d'] == $today['total']['d'] ? $yesterday['total']['d'] : $today['total']['d']),
-                        'deathsTotal' => $today1['total']['d'],
-                        'recovered' => $today1['total']['r'] - ($today1['total']['r'] == $today['total']['r'] ? $yesterday['total']['r'] : $today['total']['r']),
-                        'confirmedSurge' => ($today['total']['c'] - $yesterday['total']['c'])/($yesterday['total']['c'] != 0 ? $yesterday['total']['c'] : 1),
-                        'deathsSurge' => ($today['total']['d'] - $yesterday['total']['d'])/($yesterday['total']['d'] != 0 ? $yesterday['total']['d'] : 1),
-                        'movement' => [
-                            'confirmed' => '',
-                            'deaths' => '',
-                            'recovered' => '',
-                            'confirmedSurge' => '',
-                            'deathsSurge' => '',
-                        ]
-                    ];
-                }
-                else
-                {
-                    $sort_yesterday['confirmed'][] = $yesterday['total']['c'];
-                    $sort_yesterday['deaths'][] = $yesterday['total']['d'];
-                    $sort_yesterday['recovered'][] = $yesterday['total']['r'];
-
-                    $sort_today['confirmed'][] = $today['total']['c'];
-                    $sort_today['deaths'][] = $today['total']['d'];
-                    $sort_today['recovered'][] = $today['total']['r'];
-
-                    $data[] = [
-                        'name' => $country_name,
-                        'confirmed' => $today['total']['c'],
-                        'deaths' => $today['total']['d'],
-                        'recovered' => $today['total']['r'],
-                        'movement' => [
-                            'confirmed' => '',
-                            'deaths' => '',
-                            'recovered' => '',
-                        ]
-                    ];
-                }
-
-
-
-
-
-
-            }
-        }
-
-
-        foreach(['confirmed','deaths','recovered','confirmedSurge','deathsSurge'] AS $field)
-        {
-            $sorted_yesterday = $data;
-            $sorted_today = $data;
-
-            // sorting magic
-            array_multisort($sort_yesterday[$field], SORT_DESC,$sorted_yesterday);
-            array_multisort($sort_today[$field], SORT_DESC,$sorted_today);
-
-
-
-            foreach($data AS $index=>$row)
-            {
-                $key1 = array_search($row['name'],array_column($sorted_yesterday,'name'));
-
-                $key2 = array_search($row['name'],array_column($sorted_today,'name'));
-
-                // Yesterday is greater than today, i.e. went up in rank
-                if($key1 > $key2)
-                {
-                    $data[$index]['movement'][$field] = 'up';
-                }
-                // Yesterday is less than today, i.e. went down in rank
-                else if($key1 < $key2)
-                {
-                    $data[$index]['movement'][$field] = 'down';
-                }
-                // No movement
-                else
-                {
-                    $data[$index]['movement'][$field] = 'equal';
-                }
-            }
-        }
-
-
-
+        $data = json_decode(fread($file,filesize($filename)),true);
         return response($data)->setStatusCode(Response::HTTP_OK);
     }
 
 
-    public function global_summary()
+    public function generate_global_summary()
     {
-        $filename = STATS . 'global.json';
-        $file = fopen($filename,'r');
-        $data = json_decode(fread($file,filesize($filename)),true);
+//        $filename = STATS . 'global.json';
+//        $file = fopen($filename,'r');
+//        $data = json_decode(fread($file,filesize($filename)),true);
+
+        $data = DB::table('cases')
+            ->join('states','states.id','cases.state_id')
+            ->join('countries','countries.id','states.country_id')
+            ->where('countries.name','=','Global')
+            ->where('states.name','=','(Unspecified)')
+            ->orderBy('cases.date','desc')
+            ->get()->first();
 
         $result = [
-            'last_update' => $data['total']['last_update'],
-            'confirmed' => (int)$data['total']['confirmed'],
-            'deaths' => (int)$data['total']['deaths'],
-            'recovered' => (int)$data['total']['recovered'],
-            'active' => (int)$data['total']['confirmed'] - (int)$data['total']['deaths'] - (int)$data['total']['recovered'],
+            'last_update' => $data->date,
+            'confirmed' => (int)$data->confirmed,
+            'deaths' => (int)$data->deaths,
+            'recovered' => (int)$data->recovered,
+            'active' => (int)$data->confirmed - (int)$data->deaths - (int)$data->recovered,
         ];
+
+        file_put_contents(STATS . 'global_summary.json',json_encode($result));
         return response($result)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function global_summary()
+    {
+        $filename = STATS . 'global_summary.json';
+        $file = fopen($filename,'r');
+        $data = json_decode(fread($file,filesize($filename)),true);
+        return response($data)->setStatusCode(Response::HTTP_OK);
     }
 
     public function countries_list_map()
@@ -3313,102 +3737,942 @@ class StatsController extends Controller
         return response($result)->setStatusCode(Response::HTTP_OK);
     }
 
+    public function generate_at_a_glance()
+    {
+        $result = [];
+        $date = DB::table('cases')
+            ->select('date')
+            ->groupBy('date')
+            ->orderBy('date','desc')
+            ->limit(2)
+            ->get();
+
+        $date1 = $date[0]->date;
+        $date2 = $date[1]->date;
+
+        $result['confirmed'] = DB::table('cases')
+            ->selectRaw('countries.id, countries.name, sum(cases.confirmed) AS confirmed')
+            ->join('states','states.id','cases.state_id')
+            ->join('countries','countries.id','states.country_id')
+            ->where('countries.name','!=','Global')
+            ->where('cases.date','=',$date1)
+            ->groupBy('countries.id')
+            ->groupBy('countries.name')
+            ->orderBy('confirmed','desc')
+            ->limit(5)
+            ->get();
+
+
+        foreach($result['confirmed'] AS $key => $row)
+        {
+            $temp = DB::table('cases')
+                ->selectRaw('sum(cases.confirmed) AS confirmed')
+                ->join('states','states.id','cases.state_id')
+                ->join('countries','countries.id','states.country_id')
+                ->where('countries.name','!=','Global')
+                ->where('cases.date','=',$date2)
+                ->where('countries.id','=',$row->id)
+                ->groupBy('countries.id')
+                ->groupBy('countries.name')
+                ->orderBy('confirmed','desc')
+                ->get()->first();
+
+
+
+            $result['confirmed'][$key]->confirmed = intval($row->confirmed);
+            $temp->confirmed = intval($temp->confirmed);
+
+            $result['confirmed'][$key]->delta = $row->confirmed - $temp->confirmed;
+            $result['confirmed'][$key]->percent = $result['confirmed'][$key]->delta / $temp->confirmed;
+        }
+
+        $result['deaths'] = DB::table('cases')
+            ->selectRaw('countries.id, countries.name, sum(cases.deaths) AS deaths')
+            ->join('states','states.id','cases.state_id')
+            ->join('countries','countries.id','states.country_id')
+            ->where('countries.name','!=','Global')
+            ->where('cases.date','=',$date1)
+            ->groupBy('countries.id')
+            ->groupBy('countries.name')
+            ->orderBy('deaths','desc')
+            ->limit(5)
+            ->get();
+
+        foreach($result['deaths'] AS $key => $row)
+        {
+            $temp = DB::table('cases')
+                ->selectRaw('sum(cases.deaths) AS deaths')
+                ->join('states','states.id','cases.state_id')
+                ->join('countries','countries.id','states.country_id')
+                ->where('countries.name','!=','Global')
+                ->where('cases.date','=',$date2)
+                ->where('countries.id','=',$row->id)
+                ->groupBy('countries.id')
+                ->groupBy('countries.name')
+                ->orderBy('deaths','desc')
+                ->get()->first();
+
+
+
+            $result['deaths'][$key]->deaths = intval($row->deaths);
+            $temp->deaths = intval($temp->deaths);
+
+            $result['deaths'][$key]->delta = $row->deaths - $temp->deaths;
+            $result['deaths'][$key]->percent = $result['deaths'][$key]->delta / $temp->deaths;
+        }
+
+        $result['recovered'] = DB::table('cases')
+            ->selectRaw('countries.id, countries.name, sum(cases.recovered) AS recovered')
+            ->join('states','states.id','cases.state_id')
+            ->join('countries','countries.id','states.country_id')
+            ->where('countries.name','!=','Global')
+            ->where('cases.date','=',$date1)
+            ->groupBy('countries.id')
+            ->groupBy('countries.name')
+            ->orderBy('recovered','desc')
+            ->limit(5)
+            ->get();
+
+        foreach($result['recovered'] AS $key => $row)
+        {
+            $temp = DB::table('cases')
+                ->selectRaw('sum(cases.recovered) AS recovered')
+                ->join('states','states.id','cases.state_id')
+                ->join('countries','countries.id','states.country_id')
+                ->where('countries.name','!=','Global')
+                ->where('cases.date','=',$date2)
+                ->where('countries.id','=',$row->id)
+                ->groupBy('countries.id')
+                ->groupBy('countries.name')
+                ->orderBy('recovered','desc')
+                ->get()->first();
+
+
+
+            $result['recovered'][$key]->recovered = intval($row->recovered);
+            $temp->recovered = intval($temp->recovered);
+
+            $result['recovered'][$key]->delta = $row->recovered - $temp->recovered;
+            $result['recovered'][$key]->percent = $result['recovered'][$key]->delta / $temp->recovered;
+        }
+
+
+        file_put_contents(STATS . 'at_a_glance.json',json_encode($result));
+        return response($result)->setStatusCode(Response::HTTP_OK);
+    }
+
     public function at_a_glance()
     {
-        $filename = STATS . 'master.json';
+        $filename = STATS . 'at_a_glance.json';
         $file = fopen($filename,'r');
-        $countries = json_decode(fread($file,filesize($filename)),true);
-        $sort = [
-            'confirmed' => [],
-            'deaths' => [],
-            'recovered' => [],
+        $data = json_decode(fread($file,filesize($filename)),true);
+        return response($data)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function harvest_countries_and_states()
+    {
+        // Generate master country list
+        $csv = array_map('str_getcsv', file(MASTER_LIST));
+        array_walk($csv, function(&$a) use ($csv) {
+            $a = array_combine($csv[0], $a);
+        });
+        array_shift($csv); # remove column header
+
+        $states = [];
+        $data = [];
+        $global = [
+            'daily' => [],
+            'total' => [
+                'confirmed' => 0,
+                'deaths' => 0,
+                'recovered' => 0,
+            ],
         ];
 
-        foreach($countries AS $country_name => $country_row) {
-            if($country_name != 'Global'){
-                $sort['confirmed'][] = $country_row['total']['c'];
-                $sort['deaths'][] = $country_row['total']['d'];
-                $sort['recovered'][] = $country_row['total']['r'];
-            }
-        }
-
-        $sorted = [];
-        $sorted['confirmed'] = $countries;
-        $sorted['recovered'] = $countries;
-        $sorted['deaths'] = $countries;
-
-        $data = [
-            'confirmed' => [],
-            'deaths' => [],
-            'recovered' => [],
-        ];
-
-        foreach(['confirmed','deaths','recovered'] AS $field)
+        foreach($csv AS $row)
         {
-            unset($sorted[$field]['Global']);
-            array_multisort($sort[$field], SORT_DESC,$sorted[$field]);
-            $sorted[$field] = array_slice($sorted[$field],0,5);
-
-            foreach($sorted[$field] AS $country_name => $country_row)
+            if(isset($this->rename[$row['Country_Region']]))
             {
-                $row = [
-                    'name' => $country_name,
+//                dump('Found ' . $row['Country_Region'] . ' rename to ' . $this->rename[$row['Country_Region']]);
+                $row['Country_Region'] = $this->rename[$row['Country_Region']];
+
+            }
+            // Get a list of countries
+            if(strlen($row['Province_State']) == 0 )
+            {
+                if(!isset($data[ $row['Country_Region'] ]))
+                {
+                    $data[$row['Country_Region']] = [
+                        'name' => $row['Country_Region'],
+                        'uid' => $row['UID'],
+                        'iso2' => $row['iso2'],
+                        'iso3' => $row['iso3'],
+                        'code3' => $row['code3'],
+                        'fips' => $row['FIPS'],
+                        'admin2' => $row['Admin2'],
+                        'lat' => $row['Lat'],
+                        'long' => $row['Long_'],
+                        'population' => $row['Population'],
+                        'states' => [],
+                        'daily' => [],
+                        'total' => [
+                            'l' => '',
+                            'c' => '0',
+                            'd' => '0',
+                            'r' => '0',
+                        ]
+                    ];
+
+
+                }
+
+                // Create country record
+
+                $record = [
+                    'lat' => $row['Lat'],
+                    'lng' => $row['Long_'],
+                    'population' => $row['Population'] > 0 ? $row['Population'] : 0
                 ];
 
-
-                $today = array_pop($country_row['daily']);
-                $yesterday = array_pop($country_row['daily']);
-                $two_days_ago = array_pop($country_row['daily']);
-
-                if($field == 'confirmed')
+                $country = Country::where('name',$row['Country_Region'])->first();
+                if(!$country)
                 {
-                    $row['confirmed'] = $country_row['total']['c'];
-                    if($today['total']['c'] != $yesterday['total']['c'])
-                    {
-                        $row['delta'] = $today['total']['c'] - $yesterday['total']['c'];
-                        $row['percent'] = $row['delta'] / $yesterday['total']['c'];
-                    }
-                    else
-                    {
-                        $row['delta'] = $today['total']['c'] - $two_days_ago['total']['c'];
-                        $row['percent'] = $row['delta'] / $two_days_ago['total']['c'];
-                    }
+                    $country = Country::create(array_merge($record,['name'=>$row['Country_Region']]));
                 }
-                else if($field == 'deaths')
+                else
                 {
-                    $row['deaths'] = $country_row['total']['d'];
-                    if($today['total']['d'] != $yesterday['total']['d'])
-                    {
-                        $row['delta'] = $today['total']['d'] - $yesterday['total']['d'];
-                        $row['percent'] = $row['delta'] / $yesterday['total']['d'];
-                    }
-                    else
-                    {
-                        $row['delta'] = $today['total']['d'] - $two_days_ago['total']['d'];
-                        $row['percent'] = $row['delta'] / $two_days_ago['total']['d'];
-                    }
-                }
-                else if($field == 'recovered')
-                {
-                    $row['recovered'] = $country_row['total']['r'];
-                    if($today['total']['r'] != $yesterday['total']['r'])
-                    {
-                        $row['delta'] = $today['total']['r'] - $yesterday['total']['r'];
-                        $row['percent'] = $row['delta'] / $yesterday['total']['r'];
-                    }
-                    else
-                    {
-                        $row['delta'] = $today['total']['r'] - $two_days_ago['total']['r'];
-                        $row['percent'] = $row['delta'] / $two_days_ago['total']['r'];
-                    }
+                    $country->update($record);
                 }
 
+                // Create unspecified state inside country
 
+                $state = State::where(['country_id'=>$country->id,'name'=>'(Unspecified)'])->first();
+                if(!$state)
+                {
+                    State::create([
+                        'country_id' => $country->id,
+                        'name' => '(Unspecified)',
+                        'lat' => $country->lat,
+                        'lng' => $country->lng,
+                        'population' => $country->population,
+                    ]);
+                }
+                else
+                {
+                    $state->update($record);
+                }
+            }
 
-                $data[$field][] = $row;
+            // Get a list of states inside countries
+            else
+            {
+                if(isset($data[$row['Country_Region']]) && strlen($row['Admin2']) == 0 && strlen($row['Province_State']) > 0) {
+                    if(!isset($data[$row['Country_Region']]['states'][$row['Province_State']]))
+                    {
+                        $data[$row['Country_Region']]['states'][$row['Province_State']] = [
+                            'uid' => $row['UID'],
+                            'name' => $row['Province_State'],
+                            'lat' => $row['Lat'],
+                            'long' => $row['Long_'],
+                            'population' => $row['Population'],
+                            'total' => [
+                                'l' => '',
+                                'c' => '0',
+                                'd' => '0',
+                                'r' => '0',
+                            ]
+                        ];
+
+                        // Create state record
+
+                        $record = [
+                            'country_id' => Country::where('name',$row['Country_Region'])->value('id'),
+                            'lat' => strlen($row['Lat']) > 0 ? $row['Lat'] : 0,
+                            'lng' => strlen($row['Long_']) > 0 ? $row['Long_'] : 0,
+                            'population' => $row['Population'] > 0 ? $row['Population'] : 0,
+                        ];
+
+                        $state = State::where('name',$row['Province_State'])->first();
+                        if(!$state)
+                        {
+                            $state = State::create(array_merge($record,['name'=>$row['Province_State']]));
+                        }
+                        else
+                        {
+                            $state->update($record);
+                        }
+                    }
+                }
             }
         }
 
+
+
+
+
+        $population = DB::table('countries')
+            ->selectRaw('sum(population) as total_population')
+            ->where('name','!=','Global')
+            ->get()->first();
+
+        $global = DB::table('countries')->updateOrInsert([
+                'name' => 'Global',
+            ],
+            [
+                'lat' => 0,
+                'lng' => 0,
+                'population' => $population->total_population,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]
+        );
+
+        $global = Country::where('name','Global')->first();
+
+        DB::table('states')->updateOrInsert([
+            'country_id' => $global->id,
+            'name' => '(Unspecified)',
+        ],
+            [
+                'lat' => 0,
+                'lng' => 0,
+                'population' => $population->total_population,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]
+        );
+    }
+
+    public function harvest_cases_from_jh_timeline_global(Request $request)
+    {
+        $first_date = '2020-01-22';
+
+        $files = COVID_DATA_TIME_SERIES;
+
+        unset($files['confirmedUS']);
+        unset($files['deathsUS']);
+
+        $time_series = [
+        ];
+        foreach($files AS $type => $file)
+        {
+            if($request->full) {
+                echo '<h1>Partially rebuilding ' . $type . '</h1>';
+            }
+            else
+            {
+                echo '<h1>Fully rebuilding ' . $type . '</h1>';
+            }
+            $csv = array_map('str_getcsv', file($file));
+
+            foreach($csv AS $key=>$row)
+            {
+
+                if($key == 0)
+                {
+                    // Remove the non-date columns
+                    array_splice($row,0,4);
+                    continue;
+                }
+                /*
+                 * Global
+                 * 0 => "Province/State"
+                 * 1 => "Country/Region"
+                 * 2 => "Lat"
+                 * 3 => "Long"
+                */
+
+                $state = strlen($row[0]) == 0 ? '(Unspecified)' : $row[0];
+                $country = strlen($row[1]) == 0 ? '(Unspecified)' : $row[1];
+
+                // Remove the non-date columns
+                array_splice($row,0,4);
+
+                $new_date = new \DateTime($first_date);
+
+                // Further trim to grab last 3 days
+//                dump('Country: ' . $country . ' State: ' . $state);
+                if($request->full) {
+                }
+                else
+                {
+                    $total = count($row) - 3;
+                    array_splice($row,0, $total);
+                    $new_date = $new_date->add(new \DateInterval('P' . $total . 'D'));
+                }
+
+                foreach ($this->combine AS $key => $combine) {
+                    if (in_array($country, $combine)) {
+                        $country = $key;
+                        break;
+                    }
+                }
+
+                // Move countries into states
+                if (in_array($country, array_keys($this->transfer))) {
+                    $state = $country;
+                    $country = $this->transfer[$country];
+                }
+
+                // Skip things that we do not know where to put
+                if (in_array($country, $this->skip)) {
+                    break;
+                }
+
+
+                // We have already done United States separately...
+                if($country == 'United States' && ($type == 'confirmed' || $type == 'deaths'))
+                {
+                    continue;
+                }
+
+
+
+                if($type == 'confirmed')
+                {
+                    $current_date = new \DateTime($new_date->format('Y-m-d'));
+                    for($x = 0; $x < count($row); $x++) {
+                        $date = $current_date->format('Y-m-d');
+                        if(isset($time_series[$country][$state][$date]['confirmed']))
+                        {
+                            $time_series[$country][$state][$date]['confirmed'] += $row[$x];
+                        }
+                        else
+                        {
+                            $time_series[$country][$state][$date]['confirmed'] = $row[$x];
+                        }
+                        $current_date->add(new \DateInterval('P1D'))->format('Y-m-d');
+                    }
+                }
+                else if($type == 'deaths')
+                {
+                    $current_date = new \DateTime($new_date->format('Y-m-d'));
+                    for($x = 0; $x < count($row); $x++) {
+                        $date = $current_date->format('Y-m-d');
+                        if(isset($time_series[$country][$state][$date]['deaths']))
+                        {
+                            $time_series[$country][$state][$date]['deaths'] += $row[$x];
+                        }
+                        else
+                        {
+                            $time_series[$country][$state][$date]['deaths'] = $row[$x];
+                        }
+                        $current_date->add(new \DateInterval('P1D'))->format('Y-m-d');
+                    }
+                }
+                else if($type == 'recovered')
+                {
+                    $current_date = new \DateTime($new_date->format('Y-m-d'));
+                    for($x = 0; $x < count($row); $x++) {
+                        $date = $current_date->format('Y-m-d');
+                        if(isset($time_series[$country][$state][$date]['recovered']))
+                        {
+                            $time_series[$country][$state][$date]['recovered'] += $row[$x];
+                        }
+                        else
+                        {
+                            $time_series[$country][$state][$date]['recovered'] = $row[$x];
+                        }
+                        $current_date->add(new \DateInterval('P1D'))->format('Y-m-d');
+                    }
+                }
+            }
+        }
+
+
+        foreach($time_series AS $country_name => $state_data)
+        {
+            echo 'Rebuilding: ' . $country_name . '<br />';
+            $country = Country::where('name',$country_name)->first();
+            if($country)
+            {
+                foreach($state_data AS $state_name => $dates)
+                {
+                    foreach($dates AS $date => $values)
+                    {
+                        $state = State::where([
+                            'name' => $state_name,
+                            'country_id' => $country->id,
+                        ])->first();
+                        if($state) {
+
+                            $input = [];
+                            if(isset($values['confirmed']))
+                            {
+                                $input['confirmed'] = $values['confirmed'];
+                            }
+                            if(isset($values['deaths']))
+                            {
+                                $input['deaths'] = $values['deaths'];
+                            }
+                            if(isset($values['recovered']))
+                            {
+                                $input['recovered'] = $values['recovered'];
+                            }
+                            DB::table('cases')->updateOrInsert(
+                                [
+                                    'state_id' => $state->id,
+                                    'date' => $date,
+                                ],
+                                $input
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        dump("done");
+    }
+
+    public function harvest_cases_from_jh_timeline_us(Request $request)
+    {
+        $first_date = '2020-01-22';
+
+         // Special preparation for the US time series data...
+        $files = COVID_DATA_TIME_SERIES;
+
+        unset($files['confirmed']);
+        unset($files['deaths']);
+        unset($files['recovered']);
+
+        $country = Country::where('name','United States')->first();
+
+        $time_series = [
+        ];
+        foreach($files AS $type => $file)
+        {
+
+            $csv = array_map('str_getcsv', file($file));
+
+            if($request->full) {
+                echo '<h1>Fully rebuilding ' . $type . '</h1>';
+            }
+            else
+            {
+                echo '<h1>Partially rebuilding ' . $type . '</h1>';
+            }
+
+            foreach($csv AS $key=>$row)
+            {
+
+                if($key == 0)
+                {
+                    continue;
+                }
+                /*
+                 * Global
+                 * 0 => "Province/State"
+                 * 1 => "Country/Region"
+                 * 2 => "Lat"
+                 * 3 => "Long"
+                 *
+                 * US
+                 * 0 => UID
+                 * 1 => iso2
+                 * 2 => iso3
+                 * 3 => code3
+                 * 4 => FIPS
+                 * 5 => Admin2
+                 * 6 => Province/State
+                 * 7 => Country/Region
+                 * 8 => Lat
+                 * 9 => Long
+                 * 10 => Combined
+                */
+
+                $state = strlen($row[6]) == 0 ? '(Unspecified)' : $row[6];
+
+                if($type == 'confirmedUS')
+                {
+                    array_splice($row,0,11);
+                }
+                else if($type == 'deathsUS')
+                {
+                    array_splice($row,0,12);
+                }
+
+                $new_date = new \DateTime($first_date);
+
+                // Further trim to grab last 3 days
+                if($request->full) {
+                }
+                else
+                {
+                    $total = count($row) - 3;
+                    array_splice($row,0, $total);
+                    $new_date = $new_date->add(new \DateInterval('P' . $total . 'D'));
+                }
+
+
+                if($type == 'confirmedUS')
+                {
+                    $current_date = new \DateTime($new_date->format('Y-m-d'));
+                    for($x = 0; $x < count($row); $x++) {
+                        $date = $current_date->format('Y-m-d');
+                        if(isset($time_series[$state][$date]['confirmed']))
+                        {
+                            $time_series[$state][$date]['confirmed'] += $row[$x];
+                        }
+                        else
+                        {
+                            $time_series[$state][$date]['confirmed'] = $row[$x];
+                        }
+                        $current_date->add(new \DateInterval('P1D'))->format('Y-m-d');
+                    }
+                }
+                else if($type == 'deathsUS')
+                {
+                    $current_date = new \DateTime($new_date->format('Y-m-d'));
+                    for($x = 0; $x < count($row); $x++) {
+                        $date = $current_date->format('Y-m-d');
+                        if(isset($time_series[$state][$date]['deaths']))
+                        {
+                            $time_series[$state][$date]['deaths'] += $row[$x];
+                        }
+                        else
+                        {
+                            $time_series[$state][$date]['deaths'] = $row[$x];
+                        }
+                        $current_date->add(new \DateInterval('P1D'))->format('Y-m-d');
+                    }
+                }
+            }
+        }
+
+        $country = Country::where('name','United States')->first();
+
+        foreach($time_series AS $state_name => $dates)
+        {
+            echo 'Rebuilding: ' . $state_name . '<br />';
+            foreach($dates AS $date => $values)
+            {
+                $state = State::where([
+                    'name' => $state_name,
+                    'country_id' => $country->id,
+                ])->first();
+                if($state) {
+                    DB::table('cases')->updateOrInsert([
+                        'state_id' => $state->id,
+                        'date' => $date,
+                    ],
+                        [
+                            'confirmed' => $values['confirmed'],
+                            'deaths' => $values['deaths'],
+                        ]
+                    );
+                }
+            }
+        }
+
+        dump('done');
+    }
+
+    public function recalculate_global()
+    {
+        $country = Country::where('name','Global')->first();
+        $state = State::where('country_id',$country->id)->first();
+
+
+        $days = DB::table('cases')
+            ->selectRaw('date, SUM(confirmed) AS total_confirmed, SUM(deaths) AS total_deaths, SUM(recovered) AS total_recovered')
+            ->join('states','states.id','cases.state_id')
+            ->join('countries','countries.id','states.country_id')
+            ->where('countries.name','!=','Global')
+            ->groupBy('date')
+            ->orderBy('cases.date')
+            ->get();
+
+        foreach($days AS $day)
+        {
+            DB::table('cases')->updateOrInsert(
+                [
+                    'state_id' => $state->id,
+                    'date' => $day->date,
+                ],
+                [
+                    'confirmed' => $day->total_confirmed,
+                    'deaths' => $day->total_deaths,
+                    'recovered' => $day->total_recovered,
+                ]
+            );
+        }
+
+        return $this->compute_daily(Country::where('name','Global')->first());
+    }
+
+    public function generate_all_countries_daily()
+    {
+        $data = [];
+
+        $countries = Country::all();
+        foreach($countries AS $country)
+        {
+            $data[$country->id] = $this->compute_daily($country);
+        }
+
+        file_put_contents(STATS . 'countries_daily.json',json_encode($data));
         return response($data)->setStatusCode(Response::HTTP_OK);
+
+    }
+
+    public function generate_all_states_daily()
+    {
+        $data = [];
+
+        $states = State::all();
+
+        $countries = DB::table('countries')
+            ->selectRaw('countries.id, countries.name, count(states.id) AS total_states')
+            ->join('states','states.country_id','countries.id')
+            ->where('countries.name','!=','Global')
+            ->groupBy('countries.id')
+            ->groupBy('countries.name')
+            ->having('total_states','>',1)
+            ->get();
+
+
+        foreach($countries AS $country)
+        {
+
+            $states = State::where('country_id',$country->id)->get();
+            foreach($states AS $state)
+            {
+                $data[$state->id] = $this->compute_daily($state->country,$state);
+            }
+        }
+
+        file_put_contents(STATS . 'states_daily.json',json_encode($data));
+        return response($data)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function generate_all_daily()
+    {
+        $data = [];
+
+        $countries = Country::all();
+        foreach($countries AS $country)
+        {
+            $data[$country->name] = $this->compute_daily($country);
+        }
+
+        file_put_contents(STATS . 'countries_daily.json',json_encode($data));
+
+        $data = [];
+
+        $states = State::all();
+        foreach($states AS $state)
+        {
+            $data[$state->name] = $this->compute_daily($state->country,$state);
+        }
+
+        file_put_contents(STATS . 'states_daily.json',json_encode($data));
+        return response($data)->setStatusCode(Response::HTTP_OK);
+
+    }
+
+    public function get_daily(Request $request)
+    {
+        $country_name = $request->country_name ? $request->country_name : 'Global';
+        $state_name = $request->state_name ? $request->state_name : false;
+
+        $country = Country::where('name',$country_name)->first();
+        $state = State::where('name',$state_name)->first();
+        if(!$state)
+        {
+            $state = false;
+        }
+
+        if(!$country || (strlen($state_name)>0 && !$state))
+        {
+            return response('false', Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        return $this->compute_daily($country,$state);
+    }
+
+    private function compute_daily($country, $state = false)
+    {
+        $population = $country->population;
+
+        if($state)
+        {
+            $data = DB::table('cases')
+//                ->select('cases.*')
+                ->selectRaw('date, SUM(confirmed) AS confirmed, SUM(deaths) AS deaths, SUM(recovered) AS recovered')
+                ->join('states','states.id','=','cases.state_id')
+                ->join('countries','countries.id','=','states.country_id')
+                ->where('countries.name','=',$country->name)
+                ->where('states.name','=',$state->name)
+                ->groupBy('date')
+                ->orderBy('cases.date')
+                ->get();
+        }
+        else
+        {
+            $data = DB::table('cases')
+//                ->select('cases.*')
+                ->selectRaw('date, SUM(confirmed) AS confirmed, SUM(deaths) AS deaths, SUM(recovered) AS recovered')
+                ->join('states','states.id','=','cases.state_id')
+                ->join('countries','countries.id','=','states.country_id')
+                ->where('countries.name',$country->name)
+                ->groupBy('date')
+                ->orderBy('cases.date')
+                ->get();
+        }
+        if(count($data) == 0)
+        {
+            return [];
+        }
+
+        // Double check that the days are complete
+        $first = $data[0];
+        $last = $data[count($data)-1];
+
+
+        $datetime1 = date_create($first->date);
+        $datetime2 = date_create($last->date);
+
+        $interval = date_diff($datetime1, $datetime2)->format('%a');
+
+        $temp = [];
+        $current_date = new \DateTime($first->date);
+
+        $result = [];
+        $yesterday = [];
+
+        // Fill up gaps in days using the previous day's numbers
+        foreach($data AS $index => $row){
+//            $data[$index]->active = $row->confirmed - $row->deaths - $row->recovered;
+            if($row->date != $current_date->format('Y-m-d'))
+            {
+                $yesterday->date = $current_date->format('Y-m-d');
+                $result[] = $yesterday;
+            }
+            $result[] = $row;
+            $current_date->add(new \DateInterval('P1D'));
+            $yesterday = clone $row;
+        }
+
+        // Compute everything else
+        $x = 0;
+        $yesterday = new \stdClass();
+        $yesterday->confirmed = 0;
+        $yesterday->deaths = 0;
+        $yesterday->recovered = 0;
+
+        $five_days_average = [
+            'confirmed' => [],
+            'deaths' => [],
+            'recovered' => [],
+        ];
+        foreach($result AS $index=>$row)
+        {
+
+
+            // All computations here
+            $result[$index]->active = $row->confirmed - $row->deaths - $row->recovered;
+            $result[$index]->delta = [];
+            $result[$index]->delta['confirmed'] = $row->confirmed - $yesterday->confirmed;
+            $result[$index]->delta['deaths'] = $row->deaths - $yesterday->deaths;
+            $result[$index]->delta['recovered'] = $row->recovered - $yesterday->recovered;
+            $result[$index]->capita = [];
+            $result[$index]->capita['confirmed'] = $row->confirmed / ($population > 0 ? $population : 1) * 1000000;
+            $result[$index]->capita['deaths'] = $row->deaths / ($population > 0 ? $population : 1) * 1000000;
+            $result[$index]->capita['recovered'] = $row->recovered / ($population > 0 ? $population : 1) * 1000000;
+
+            // 5D average and growth factor
+            if(count($five_days_average['confirmed']) > 5)
+            {
+                array_shift($five_days_average['confirmed']);
+            }
+            $five_days_average['confirmed'][] = $result[$index]->delta['confirmed'];
+
+            if(count($five_days_average['deaths']) > 5)
+            {
+                array_shift($five_days_average['deaths']);
+            }
+            $five_days_average['deaths'][] = $result[$index]->delta['deaths'];
+
+            if(count($five_days_average['recovered']) > 5)
+            {
+                array_shift($five_days_average['recovered']);
+            }
+            $five_days_average['recovered'][] = $result[$index]->delta['recovered'];
+
+            $result[$index]->average = [];
+            $result[$index]->average['confirmed'] = array_sum($five_days_average['confirmed']) / count($five_days_average['confirmed']);
+            $result[$index]->average['deaths'] = array_sum($five_days_average['deaths']) / count($five_days_average['deaths']);
+            $result[$index]->average['recovered'] = array_sum($five_days_average['recovered']) / count($five_days_average['recovered']);
+
+            $result[$index]->growthfactor = [
+                'confirmed' => 0,
+                'deaths' => 0,
+                'recovered' => 0,
+            ];
+            if(isset($yesterday->average))
+            {
+                $result[$index]->growthfactor['confirmed'] = $result[$index]->average['confirmed'] / ($yesterday->average['confirmed'] > 0 ? $yesterday->average['confirmed'] : 1);
+                $result[$index]->growthfactor['deaths'] = $result[$index]->average['deaths'] / ($yesterday->average['deaths'] > 0 ? $yesterday->average['deaths'] : 1);
+                $result[$index]->growthfactor['recovered'] = $result[$index]->average['recovered'] / ($yesterday->average['recovered'] > 0 ? $yesterday->average['recovered'] : 1);
+            }
+
+
+            // Prepare for next loop
+            $yesterday = clone $result[$index];
+            $x++;
+        }
+
+        return new CasesCollection($result);
+    }
+
+    public function get_all_countries_and_states()
+    {
+        $countries = new CountryCollection(Country::with('state')->get());
+        $states = new  StateCollection(State::get());
+
+        $data = [
+            'countries' => $countries,
+            'states' => $states,
+        ];
+
+        return $data;
+    }
+
+    public function generate_all_countries()
+    {
+
+        $data = new CountryCollection(Country::with('state')->get());
+
+        file_put_contents(STATS . 'countries_summary.json',json_encode($data));
+        return response($data)->setStatusCode(Response::HTTP_OK);
+
+    }
+
+    public function get_all_countries()
+    {
+        $filename = STATS . 'countries_summary.json';
+        $file = fopen($filename,'r');
+        $data = json_decode(fread($file,filesize($filename)),true);
+        return response($data)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function get_states_daily()
+    {
+        $filename = STATS . 'states_daily.json';
+        $file = fopen($filename,'r');
+        $data = json_decode(fread($file,filesize($filename)),true);
+        return response($data)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function get_countries_daily()
+    {
+        $filename = STATS . 'countries_daily.json';
+        $file = fopen($filename,'r');
+        $data = json_decode(fread($file,filesize($filename)),true);
+        return response($data)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function get_all_states()
+    {
+        return new  StateCollection(State::get());
     }
 }
