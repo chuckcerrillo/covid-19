@@ -294,25 +294,25 @@ class StatsController extends Controller
 
     protected $oxford_jh_map = [
         'Afghanistan' => 'Afghanistan',
-//        'Albania' => 'Albania',
+        'Albania' => 'Albania',
         'Algeria' => 'Algeria',
         'Andorra' => 'Andorra',
         'Angola' => 'Angola',
-//        'Antigua and Barbuda' => 'Antigua and Barbuda',
+        'Antigua and Barbuda' => 'Antigua and Barbuda',
         'Argentina' => 'Argentina',
-//        'Armenia' => 'Armenia',
+        'Armenia' => 'Armenia',
         'Australia' => 'Australia',
         'Austria' => 'Austria',
         'Azerbaijan' => 'Azerbaijan',
-//        'Bahamas' => 'Bahamas',
-//        'Bahrain' => 'Bahrain',
+        'Bahamas' => 'Bahamas',
+        'Bahrain' => 'Bahrain',
         'Bangladesh' => 'Bangladesh',
         'Barbados' => 'Barbados',
-//        'Belarus' => 'Belarus',
+        'Belarus' => 'Belarus',
         'Belgium' => 'Belgium',
         'Belize' => 'Belize',
-//        'Benin' => 'Benin',
-//        'Bhutan' => 'Bhutan',
+        'Benin' => 'Benin',
+        'Bhutan' => 'Bhutan',
         'Bolivia' => 'Bolivia',
         'Bosnia and Herzegovina' => 'Bosnia and Herzegovina', // 22
         'Botswana' => 'Botswana',
@@ -322,54 +322,54 @@ class StatsController extends Controller
         'Burkina Faso' => 'Burkina Faso',
         'Myanmar' => 'Burma',
         'Burundi' => 'Burundi',
-//        'Cabo Verde' => 'Cabo Verde', // 30
-//        'Cambodia' => 'Cambodia',
+        'Cape Verde' => 'Cabo Verde', // 30
+        'Cambodia' => 'Cambodia',
         'Cameroon' => 'Cameroon',
         'Canada' => 'Canada',
-//        'CAR' => 'Central African Republic',
+        'CAR' => 'Central African Republic',
         'Chad' => 'Chad',
         'Chile' => 'Chile',
         'China' => 'China',
         'Colombia' => 'Colombia',
-//        'Congo (Brazzaville)' => 'Congo (Brazzaville)',
+        'Congo (Brazzaville)' => 'Congo (Brazzaville)',
         'Democratic Republic of Congo' => 'Congo (Kinshasa)',
         'Costa Rica' => 'Costa Rica',
-//        'Ivory Coast' => 'Cote d\'Ivoire',
+        'Ivory Coast' => 'Cote d\'Ivoire',
         'Croatia' => 'Croatia',
         'Cuba' => 'Cuba',
         'Cyprus' => 'Cyprus',
         'Czech Republic' => 'Czechia',
         'Denmark' => 'Denmark',
-//        'Diamond Princess' => 'Diamond Princess',
+        'Diamond Princess' => 'Diamond Princess',
         'Djibouti' => 'Djibouti',
-//        'Dominica' => 'Dominica',
+        'Dominica' => 'Dominica',
         'Dominican Republic' => 'Dominican Republic',
         'Ecuador' => 'Ecuador',
         'Egypt' => 'Egypt',
         'El Salvador' => 'El Salvador',
-//        'Equatorial Guinea' => 'Equatorial Guinea',
-//        'Eritrea' => 'Eritrea',
+        'Equatorial Guinea' => 'Equatorial Guinea',
+        'Eritrea' => 'Eritrea',
         'Estonia' => 'Estonia',
         'Eswatini' => 'Eswatini',
-//        'Ethiopia' => 'Ethiopia',
-//        'Fiji' => 'Fiji',
+        'Ethiopia' => 'Ethiopia',
+        'Fiji' => 'Fiji',
         'Finland' => 'Finland',
         'France' => 'France',
         'Gabon' => 'Gabon',
         'Gambia' => 'Gambia',
-//        'Georgia' => 'Georgia',
+        'Georgia' => 'Georgia',
         'Germany' => 'Germany',
         'Ghana' => 'Ghana',
         'Greece' => 'Greece',
-//        'Grenada' => 'Grenada',
+        'Grenada' => 'Grenada',
         'Guatemala' => 'Guatemala',
-//        'Guinea' => 'Guinea',
-//        'Guinea-Bissau' => 'Guinea-Bissau',
+        'Guinea' => 'Guinea',
+        'Guinea-Bissau' => 'Guinea-Bissau',
         'Guyana' => 'Guyana',
-//        'Haiti' => 'Haiti',
-//        'Vatican City' => 'Holy See',
+        'Haiti' => 'Haiti',
+        'Vatican City' => 'Holy See',
         'Honduras' => 'Honduras',
-//        'Hungary' => 'Hungary',
+        'Hungary' => 'Hungary',
         'Iceland' => 'Iceland',
         'India' => 'India',
         'Indonesia' => 'Indonesia',
@@ -383,42 +383,42 @@ class StatsController extends Controller
         'Jordan' => 'Jordan',
         'Kazakhstan' => 'Kazakhstan',
         'Kenya' => 'Kenya',
-        'South Korea' => 'Korea, South',
+        'South Korea' => 'South Korea',
         'Kosovo' => 'Kosovo',
         'Kuwait' => 'Kuwait',
         'Kyrgyz Republic' => 'Kyrgyzstan',
         'Laos' => 'Laos',
-//        'Latvia' => 'Latvia',
+        'Latvia' => 'Latvia',
         'Lebanon' => 'Lebanon',
-//        'Liberia' => 'Liberia',
+        'Liberia' => 'Liberia',
         'Libya' => 'Libya',
-//        'Liechtenstein' => 'Liechtenstein',
-//        'Lithuania' => 'Lithuania',
+        'Liechtenstein' => 'Liechtenstein',
+        'Lithuania' => 'Lithuania',
         'Luxembourg' => 'Luxembourg',
         'Madagascar' => 'Madagascar',
         'Malawi' => 'Malawi',
         'Malaysia' => 'Malaysia',
-//        'Maldives' => 'Maldives',
+        'Maldives' => 'Maldives',
         'Mali' => 'Mali',
-//        'Malta' => 'Malta',
+        'Malta' => 'Malta',
         'Mauritania' => 'Mauritania',
         'Mauritius' => 'Mauritius',
         'Mexico' => 'Mexico',
         'Moldova' => 'Moldova',
-//        'Monaco' => 'Monaco',
+        'Monaco' => 'Monaco',
         'Mongolia' => 'Mongolia',
-//        'Montenegro' => 'Montenegro',
+        'Montenegro' => 'Montenegro',
         'Morocco' => 'Morocco',
         'Mozambique' => 'Mozambique',
 //        'MS Zaandam' => 'MS Zaandam',
         'Namibia' => 'Namibia',
-//        'Nepal' => 'Nepal',
+        'Nepal' => 'Nepal',
         'Netherlands' => 'Netherlands',
         'New Zealand' => 'New Zealand',
         'Nicaragua' => 'Nicaragua',
         'Niger' => 'Niger',
         'Nigeria' => 'Nigeria',
-//        'North Macedonia' => 'North Macedonia',
+        'North Macedonia' => 'North Macedonia',
         'Norway' => 'Norway',
         'Oman' => 'Oman',
         'Pakistan' => 'Pakistan',
@@ -433,34 +433,34 @@ class StatsController extends Controller
         'Romania' => 'Romania',
         'Russia' => 'Russia',
         'Rwanda' => 'Rwanda',
-//        'Saint Kitts and Nevis' => 'Saint Kitts and Nevis',
-//        'Saint Lucia' => 'Saint Lucia',
-//        'St. Vincent Grenadines' => 'Saint Vincent and the Grenadines',
+        'Saint Kitts and Nevis' => 'Saint Kitts and Nevis',
+        'Saint Lucia' => 'Saint Lucia',
+        'St. Vincent Grenadines' => 'Saint Vincent and the Grenadines',
         'San Marino' => 'San Marino',
-//        'Sao Tome and Principe' => 'Sao Tome and Principe',
+        'Sao Tome and Principe' => 'Sao Tome and Principe',
         'Saudi Arabia' => 'Saudi Arabia',
-//        'Senegal' => 'Senegal',
+        'Senegal' => 'Senegal',
         'Serbia' => 'Serbia',
         'Seychelles' => 'Seychelles',
         'Sierra Leone' => 'Sierra Leone',
         'Singapore' => 'Singapore',
         'Slovak Republic' => 'Slovakia',
         'Slovenia' => 'Slovenia',
-//        'Somalia' => 'Somalia',
+        'Somalia' => 'Somalia',
         'South Africa' => 'South Africa',
         'South Sudan' => 'South Sudan',
         'Spain' => 'Spain',
         'Sri Lanka' => 'Sri Lanka',
         'Sudan' => 'Sudan',
-//        'Suriname' => 'Suriname',
+        'Suriname' => 'Suriname',
         'Sweden' => 'Sweden',
         'Switzerland' => 'Switzerland',
         'Syria' => 'Syria',
-        'Taiwan' => 'Taiwan*',
+        'Taiwan' => 'Taiwan',
         'Tanzania' => 'Tanzania',
         'Thailand' => 'Thailand',
-//        'Timor-Leste' => 'Timor-Leste',
-//        'Togo' => 'Togo',
+        'Timor-Leste' => 'Timor-Leste',
+        'Togo' => 'Togo',
         'Trinidad and Tobago' => 'Trinidad and Tobago',
         'Tunisia' => 'Tunisia',
         'Turkey' => 'Turkey',
@@ -473,9 +473,9 @@ class StatsController extends Controller
         'Uzbekistan' => 'Uzbekistan',
         'Venezuela' => 'Venezuela',
         'Vietnam' => 'Vietnam',
-//        'West Bank and Gaza' => 'West Bank and Gaza',
-//        'Western Sahara' => 'Western Sahara',
-//        'Yemen' => 'Yemen',
+        'Palestine' => 'West Bank and Gaza',
+        'Western Sahara' => 'Western Sahara',
+        'Yemen' => 'Yemen',
         'Zambia' => 'Zambia',
         'Zimbabwe' => 'Zimbabwe',
     ];
@@ -681,7 +681,7 @@ class StatsController extends Controller
 
         define('COVID_DATA','../covid-data-clean/COVID-19_CLEAN/csse_covid_19_daily_reports_cleaned/');
         define('OXFORD_DATA','../oxford/data/timeseries/');
-        define('OXFORD_LATEST','../oxford/data/OxCGRT_latest.csv');
+        define('OXFORD_LATEST','../oxford/data/OxCGRT_latest_withnotes.csv');
         define('STATS','./stats/');
 
 
@@ -2221,6 +2221,33 @@ class StatsController extends Controller
         return $data;
     }
 
+    public function harvest_annotations()
+    {
+        // Annotations
+        // https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1Pov2AbAscAXUNphDrjd3ZmzlbuvMy_Pd195bXlylwgdDnu1OQ0CBKXfMeDAHBZWbtLL9t5McfIcD/pubhtml
+        $url = 'https://spreadsheets.google.com/feeds/list/1XfndFdJ0VSJnLqY83s8ITmuRVgsUSWPhCm-Fvd_rNb4/oejzle4/public/values?alt=json';
+        $file= file_get_contents($url);
+
+        $json = json_decode($file,true);
+        $rows = $json['feed']['entry'];
+        $data = [];
+        foreach($rows AS $row)
+        {
+            if($row['gsx$publish']['$t'] == 'Y')
+            {
+                $data[$row['gsx$country']['$t']][] = [
+                    'country' => $row['gsx$country']['$t'],
+                    'state' => $row['gsx$state']['$t'],
+                    'date' => $row['gsx$date']['$t'],
+                    'notes' => $row['gsx$notes']['$t'],
+                    'url' => $row['gsx$url']['$t'],
+                ];
+            }
+        }
+        file_put_contents(STATS . 'annotations.json',json_encode($data));
+        return response('Done harvesting data')->setStatusCode(Response::HTTP_OK);
+    }
+
     public function data_overrides()
     {
         $result = Country::all();
@@ -2572,63 +2599,89 @@ class StatsController extends Controller
         $filename = str_replace('.csv','',$filename);
 //        $key[$file_id] = $filename;
         $header = array_shift($csv); # remove column header
-
+        //dd($csv[0]);
 //        [
 //            0 => "CountryName"
 //            1 => "CountryCode"
 //            2 => "Date"
-//            3 => "S1_School closing"
-//            4 => "S1_IsGeneral"
-//            5 => "S2_Workplace closing"
-//            6 => "S2_IsGeneral"
-//            7 => "S3_Cancel public events"
-//            8 => "S3_IsGeneral"
-//            9 => "S4_Close public transport"
-//            10 => "S4_IsGeneral"
-//            11 => "S5_Public information campaigns"
-//            12 => "S5_IsGeneral"
-//            13 => "S6_Restrictions on internal movement"
-//            14 => "S6_IsGeneral"
-//            15 => "S7_International travel controls"
-//            16 => "S8_Fiscal measures"
-//            17 => "S9_Monetary measures"
-//            18 => "S10_Emergency investment in health care"
-//            19 => "S11_Investment in Vaccines"
-//            20 => "S12_Testing framework"
-//            21 => "S13_Contact tracing"
-//            22 => "ConfirmedCases"
-//            23 => "ConfirmedDeaths"
-//            24 => "StringencyIndex"
-//            25 => "StringencyIndexForDisplay"
-//            26 => ""
+//            3 => "C1_School closing"
+//            4 => "C1_Flag"
+//            5 => "C1_Notes"
+//            6 => "C2_Workplace closing"
+//            7 => "C2_Flag"
+//            8 => "C2_Notes"
+//            9 => "C3_Cancel public events"
+//            10 => "C3_Flag"
+//            11 => "C3_Notes"
+//            12 => "C4_Restrictions on gatherings"
+//            13 => "C4_Flag"
+//            14 => "C4_Notes"
+//            15 => "C5_Close public transport"
+//            16 => "C5_Flag"
+//            17 => "C5_Notes"
+//            18 => "C6_Stay at home requirements"
+//            19 => "C6_Flag"
+//            20 => "C6_Notes"
+//            21 => "C7_Restrictions on internal movement"
+//            22 => "C7_Flag"
+//            23 => "C7_Notes"
+//            24 => "C8_International travel controls"
+//            25 => "C8_Notes"
+//            26 => "E1_Income support"
+//            27 => "E1_Flag"
+//            28 => "E1_Notes"
+//            29 => "E2_Debt/contract relief"
+//            30 => "E2_Notes"
+//            31 => "E3_Fiscal measures"
+//            32 => "E3_Notes"
+//            33 => "E4_International support"
+//            34 => "E4_Notes"
+//            35 => "H1_Public information campaigns"
+//            36 => "H1_Flag"
+//            37 => "H1_Notes"
+//            38 => "H2_Testing policy"
+//            39 => "H2_Notes"
+//            40 => "H3_Contact tracing"
+//            41 => "H3_Notes"
+//            42 => "H4_Emergency investment in healthcare"
+//            43 => "H4_Notes"
+//            44 => "H5_Investment in vaccines"
+//            45 => "H5_Notes"
+//            46 => "M1_Wildcard"
+//            47 => "M1_Notes"
+//            48 => "ConfirmedCases"
+//            49 => "ConfirmedDeaths"
+//            50 => "StringencyIndex"
+//            51 => "StringencyIndexForDisplay"
+//            52 => "LegacyStringencyIndex"
+//            53 => "LegacyStringencyIndexForDisplay"
 //        ]
 
         $key = [
-            's1' => [
+            'C1' => [
                 'name' => 'School closing',
-                'description' => 'Record closings of schools and universities',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
                     'Recommend closing',
-                    'Require closing',
+                    'Require closing (only some levels or categories)',
+                    'Require closing all levels',
                 ],
                 'hasTarget' => true
             ],
-            's2' => [
+            'C2' => [
                 'name' => 'Workplace closing',
-                'description' => 'Record closings of workplaces',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
-                    'Recommend closing',
-                    'Require closing',
+                    'Recommend closing (or work from home)',
+                    'Require closing (or work from home) for some sectors or categories of workers',
+                    'Require closing (or work from home) all but essential workplaces'
                 ],
                 'hasTarget' => true
             ],
-            's3' => [
+            'C3' => [
                 'name' => 'Cancel public events',
-                'description' => 'Record cancelling public events',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
@@ -2637,51 +2690,74 @@ class StatsController extends Controller
                 ],
                 'hasTarget' => true
             ],
-            's4' => [
+            'C4' => [
+                'name' => 'Restrictions on gatherings',
+                'type' => 'lookup',
+                'values' => [
+                    'No restrictions',
+                    'Restrictions on very large gatherings (over 1000 people)',
+                    'Restrictions on gatherings between 100-1000 people',
+                    'Restrictions on gatherings between 10-100 people',
+                    'Restrictions on gatherings of less than 10 people',
+                ],
+                'hasTarget' => true
+            ],
+            'C5' => [
                 'name' => 'Close public transport',
-                'description' => 'Record closing of public transport',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
-                    'Recommend closing',
-                    'Require closing',
+                    'Recommend closing (or significantly reduce volume/route/means of transport available)',
+                    'Require closing (or prohibit most citizens from using it)',
                 ],
                 'hasTarget' => true
             ],
-            's5' => [
-                'name' => 'Public info campaigns',
-                'description' => 'Record presence of public info campaigns',
-                'type' => 'lookup',
-                'values' => [
-                    'No COVID-19 public information campaign',
-                    'COVID-19 public information campaign',
-                ],
-                'hasTarget' => true
-            ],
-            's6' => [
-                'name' => 'Restrictions on internal movement',
-                'description' => 'Record restrictions on internal movement',
+            'C6' => [
+                'name' => 'Stay at home',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
-                    'Recommend movement restriction',
-                    'Restrict movement',
+                    'Recommend not leaving house',
+                    'Require not leaving house with exceptions for daily exercise, grocery shopping, and "essential trips"',
+                    'Require not leaving house with minimal exceptions (e.g. allowing to leave only once every few days, or only one person can leave at a time, etc.)'
                 ],
                 'hasTarget' => true
             ],
-            's7' => [
+            'C7' => [
+                'name' => 'Restrictions on internam movement',
+                'type' => 'lookup',
+                'values' => [
+                    'No measures',
+                    'Recommend closing (or significantly reduce volume/route/means of transport available)',
+                    'Require closing (or prohibit most citizens from using it)',
+                ],
+                'hasTarget' => true
+            ],
+            'C8' => [
                 'name' => 'International travel controls',
-                'description' => 'Record restrictions on international travel',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
                     'Screening',
                     'Quarantine on high-risk regions',
                     'Ban on high-risk regions',
+                    'Total border closure',
                 ],
                 'hasTarget' => false
             ],
-            's8' => [
+            'H1' => [
+                'name' => 'Public info campaigns',
+                'type' => 'lookup',
+                'values' => [
+                    'No COVID-19 public information campaign',
+                    'Public officials urging caution about COVID-19',
+                    'Coordinated public information campaign (e.g. across traditional and social media)'
+                ],
+                'hasTarget' => true
+            ],
+
+
+            'E3' => [
                 'name' => 'Fiscal measures',
                 'description' => 'What economic stimulus policies are adopted',
                 'type' => 'custom',
