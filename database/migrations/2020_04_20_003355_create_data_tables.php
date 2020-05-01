@@ -43,6 +43,7 @@ class CreateDataTables extends Migration
         });
 
         Schema::create('manual_override', function (Blueprint $table) {
+            $table->id();
             $table->unsignedInteger('state_id')->nullable();
             $table->date('date')->nullable();
             $table->bigInteger('confirmed')->default(0);

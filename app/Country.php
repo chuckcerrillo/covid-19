@@ -17,28 +17,44 @@ class Country extends Model
     {
         $date = DB::table('cases')
             ->selectRaw('distinct (date) as date')
+            ->join('states','states.id','cases.state_id')
+            ->join('countries','countries.id','states.country_id')
+            ->where('countries.id','=',$this->id)
+            ->where('cases.confirmed','>',0)
             ->orderBy('date','desc')
             ->limit(1)
             ->get()->first();
 
-        $date = $date->date;
-
-        $result = DB::table('cases')
-            ->selectRaw('date, SUM(confirmed) AS confirmed, SUM(deaths) AS deaths, SUM(recovered) AS recovered')
-            ->join('states','states.id','cases.state_id')
-            ->join('countries','countries.id','states.country_id')
-            ->where('countries.id','=',$this->id)
-            ->where('cases.date','=',$date)
-            ->groupBy('date')
-            ->orderBy('cases.date','desc')
-            ->get()->first();
-
-        if($result)
+        if($date)
         {
-            $result->confirmed = intval($result->confirmed);
-            $result->deaths = intval($result->deaths);
-            $result->recovered = intval($result->recovered);
+            $date = $date->date;
+
+
+            $result = DB::table('cases')
+                ->selectRaw('date, SUM(confirmed) AS confirmed, SUM(deaths) AS deaths, SUM(recovered) AS recovered')
+                ->join('states','states.id','cases.state_id')
+                ->join('countries','countries.id','states.country_id')
+                ->where('countries.id','=',$this->id)
+                ->where('cases.date','=',$date)
+                ->groupBy('date')
+                ->orderBy('cases.date','desc')
+                ->get()->first();
+
+            if($result)
+            {
+                $result->confirmed = intval($result->confirmed);
+                $result->deaths = intval($result->deaths);
+                $result->recovered = intval($result->recovered);
+            }
         }
+        else
+        {
+            $result = (object) [];
+            $result->confirmed = 0;
+            $result->deaths = 0;
+            $result->recovered = 0;
+        }
+
         return $result;
     }
 }

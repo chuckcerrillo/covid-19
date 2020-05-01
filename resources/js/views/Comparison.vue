@@ -97,15 +97,16 @@
                                             <div class="flex flex-wrap">
                                                 <div v-if="getGovtResponse(row.country)" v-for="(policy,key,index) in getLatestGovtResponse(row.country)"
                                                      class="py-1 w-100">
-                                                    <div class="flex items-start justify-start rounded bg-slab-primary mr-4 h-40">
-                                                        <div class="w-72 h-full p-2 pb-4">
+                                                    <div class="rounded bg-slab-primary mr-4 h-52">
+                                                        <div class="w-full h-full p-2">
                                                             <div class="font-bold"><span class="uppercase">{{policy.id}}</span> - {{policy.name}}</div>
-                                                            <div class="text-lightlabel text-xs">{{policy.description}}</div>
-                                                        </div>
-                                                        <div class="p-2 w-full">
-                                                            <div v-if="policy.value > 1000">US${{policy.value | numeralFormat}}</div>
-                                                            <div v-else-if="policy.id == 's9'">{{policy.value}}%</div>
-                                                            <div v-else class="">{{policy.value}}</div>
+                                                            <div class="text-lightlabel text-xs mb-4">{{policy.description}}</div>
+<!--                                                        </div>-->
+<!--                                                        <div class="p-2 w-full">-->
+                                                            <div v-if="policy.value > 1000" class="text-2xl font-bold">US${{policy.value | numeralFormat}}</div>
+                                                            <div v-else-if="policy.id == 's9'" class="text-2xl font-bold">{{policy.value}}%</div>
+                                                            <div v-else-if="policy.id == 's12'" class="font-bold text-sm">{{policy.value}}</div>
+                                                            <div v-else class="text-2xl font-bold">{{policy.value}}</div>
                                                             <div class="text-xs">{{policy.target}}</div>
                                                             <div class="text-xs">since {{policy.since}}</div>
                                                             <div v-if="policy.help.length == 1" class="text-lightlabel text-xs">{{policy.help[0]}}</div>
@@ -542,6 +543,9 @@
                 }
                 row.total = row.daily[row.daily.length - 1];
 
+                console.log('total');
+                console.log(row.total);
+
                 if(this.database.raw.raw_annotations)
                 {
                     if (this.database.raw.raw_annotations['All'] && this.database.raw.raw_annotations['All'].length > 0)
@@ -800,33 +804,9 @@
             },
             countries_and_stats()
             {
+                console.log('countries');
+                console.log(this.countries);
                 return _.clone(this.countries);
-            },
-            countries_old(){
-                var data = [];
-
-                for(var x in this.raw_countries)
-                {
-                    var row = _.clone(this.raw_countries[x]);
-                    row.total.active = row.total.c - row.total.d - row.total.r;
-                    row.total.confirmedpc = row.total.c / row.population * 1000000;
-                    row.total.deathspc = row.total.d / row.population * 1000000;
-                    row.total.recoveredpc = row.total.r / row.population * 1000000;
-                    var si = this.getGovtResponse(row.name);
-
-                    if(si && si.latest && si.latest.si)
-                    {
-                        si = si.latest.si;
-                    }
-                    else
-                    {
-                        si = 0;
-                    }
-                    row.total.stringencyindex = si;
-
-                    data.push(row);
-                }
-                return data;
             },
             updateSelected(key)
             {
