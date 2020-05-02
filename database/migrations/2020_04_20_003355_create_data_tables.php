@@ -49,6 +49,9 @@ class CreateDataTables extends Migration
             $table->bigInteger('confirmed')->default(0);
             $table->bigInteger('deaths')->default(0);
             $table->bigInteger('recovered')->default(0);
+            $table->string('confirmed_source',50);
+            $table->string('deaths_source',50);
+            $table->string('recovered_source',50);
             $table->timestamps();
             $table->primary(['state_id', 'date']);
         });
