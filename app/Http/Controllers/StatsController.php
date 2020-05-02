@@ -4043,6 +4043,23 @@ class StatsController extends Controller
             'deathsSurge' => $yesterday_sorted,
         ];
 
+        // Remove countries with less than 100 confirmed cases and less than 20 deaths
+        foreach($sorted['today']['confirmedSurge'] AS $index => $row)
+        {
+            if($row['confirmed'] < 100)
+            {
+                unset($sorted['today']['confirmedSurge'][$index]);
+            }
+        }
+
+        foreach($sorted['today']['deathsSurge'] AS $index => $row)
+        {
+            if($row['deaths'] < 20)
+            {
+                unset($sorted['today']['deathsSurge'][$index]);
+            }
+        }
+
 
 
         // Sort today's records
@@ -4085,22 +4102,7 @@ class StatsController extends Controller
             }
         }
 
-        // Remove countries with less than 100 confirmed cases and less than 20 deaths
-        foreach($sorted['today']['confirmedSurge'] AS $index => $row)
-        {
-            if($row['confirmed'] < 100)
-            {
-                unset($sorted['today']['confirmedSurge'][$index]);
-            }
-        }
 
-        foreach($sorted['today']['deathsSurge'] AS $index => $row)
-        {
-            if($row['deaths'] < 20)
-            {
-                unset($sorted['today']['deathsSurge'][$index]);
-            }
-        }
 
         $result = [];
         foreach(['confirmedDelta','deathsDelta','recoveredDelta','confirmedSurge','deathsSurge'] AS $field)
@@ -4210,11 +4212,12 @@ class StatsController extends Controller
             ->select('date')
             ->groupBy('date')
             ->orderBy('date','desc')
-            ->limit(2)
+            ->limit(3)
             ->get();
 
         $date1 = $date[0]->date;
         $date2 = $date[1]->date;
+        $date3 = $date[2]->date;
 
         $result['confirmed'] = DB::table('cases')
             ->selectRaw('countries.id, countries.name, sum(cases.confirmed) AS confirmed')
@@ -4250,6 +4253,27 @@ class StatsController extends Controller
 
             $result['confirmed'][$key]->delta = $row->confirmed - $temp->confirmed;
             $result['confirmed'][$key]->percent = $result['confirmed'][$key]->delta / $temp->confirmed;
+
+            if($result['confirmed'][$key]->delta == 0)
+            {
+                $temp = DB::table('cases')
+                    ->selectRaw('sum(cases.confirmed) AS confirmed')
+                    ->join('states','states.id','cases.state_id')
+                    ->join('countries','countries.id','states.country_id')
+                    ->where('countries.name','!=','Global')
+                    ->where('cases.date','=',$date3)
+                    ->where('countries.id','=',$row->id)
+                    ->groupBy('countries.id')
+                    ->groupBy('countries.name')
+                    ->orderBy('confirmed','desc')
+                    ->get()->first();
+
+                $result['confirmed'][$key]->confirmed = intval($row->confirmed);
+                $temp->confirmed = intval($temp->confirmed);
+
+                $result['confirmed'][$key]->delta = $row->confirmed - $temp->confirmed;
+                $result['confirmed'][$key]->percent = $result['confirmed'][$key]->delta / $temp->confirmed;
+            }
         }
 
         $result['deaths'] = DB::table('cases')
@@ -4285,6 +4309,27 @@ class StatsController extends Controller
 
             $result['deaths'][$key]->delta = $row->deaths - $temp->deaths;
             $result['deaths'][$key]->percent = $result['deaths'][$key]->delta / $temp->deaths;
+
+            if($result['deaths'][$key]->delta == 0)
+            {
+                $temp = DB::table('cases')
+                    ->selectRaw('sum(cases.deaths) AS deaths')
+                    ->join('states','states.id','cases.state_id')
+                    ->join('countries','countries.id','states.country_id')
+                    ->where('countries.name','!=','Global')
+                    ->where('cases.date','=',$date3)
+                    ->where('countries.id','=',$row->id)
+                    ->groupBy('countries.id')
+                    ->groupBy('countries.name')
+                    ->orderBy('deaths','desc')
+                    ->get()->first();
+
+                $result['deaths'][$key]->deaths = intval($row->deaths);
+                $temp->deaths = intval($temp->deaths);
+
+                $result['deaths'][$key]->delta = $row->deaths - $temp->deaths;
+                $result['deaths'][$key]->percent = $result['deaths'][$key]->delta / $temp->deaths;
+            }
         }
 
         $result['recovered'] = DB::table('cases')
@@ -4320,6 +4365,29 @@ class StatsController extends Controller
 
             $result['recovered'][$key]->delta = $row->recovered - $temp->recovered;
             $result['recovered'][$key]->percent = $result['recovered'][$key]->delta / $temp->recovered;
+
+            if($result['recovered'][$key]->delta == 0)
+            {
+                $temp = DB::table('cases')
+                    ->selectRaw('sum(cases.recovered) AS recovered')
+                    ->join('states','states.id','cases.state_id')
+                    ->join('countries','countries.id','states.country_id')
+                    ->where('countries.name','!=','Global')
+                    ->where('cases.date','=',$date3)
+                    ->where('countries.id','=',$row->id)
+                    ->groupBy('countries.id')
+                    ->groupBy('countries.name')
+                    ->orderBy('recovered','desc')
+                    ->get()->first();
+
+
+
+                $result['recovered'][$key]->recovered = intval($row->recovered);
+                $temp->recovered = intval($temp->recovered);
+
+                $result['recovered'][$key]->delta = $row->recovered - $temp->recovered;
+                $result['recovered'][$key]->percent = $result['recovered'][$key]->delta / $temp->recovered;
+            }
         }
 
 

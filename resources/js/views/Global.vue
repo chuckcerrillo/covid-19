@@ -6,16 +6,15 @@
                 <div class="relative w-full bg-gray-200">
 <!--                    <div v-if="ajax && ajax.countries_list_map" class="h-full w-full">-->
                     <div class="h-full w-full splash-bg">
-<!--                        <img class="min-h-screen"-->
-<!--                            src="/img/backgrounds/transparent.png">-->
-                        <Map
-                            class="w-full overflow-hidden h-256"
-                            id="world_map"
-                            :enable="true"
-                            :data="[]"
-                            :settings="{interactive:false,zoom:2}"
-                        />
-                        <!--                            :data="ajax.countries_list_map"-->
+                        <img class="min-h-screen"
+                            src="/img/backgrounds/transparent.png">
+<!--                        <Map-->
+<!--                            class="w-full overflow-hidden h-256"-->
+<!--                            id="world_map"-->
+<!--                            :enable="true"-->
+<!--                            :data="map_countries"-->
+<!--                            :settings="{interactive:false,zoom:2}"-->
+<!--                        />-->
                     </div>
 <!--                    <div v-else class="bg-white rounded h-screen">Loading map</div>-->
 
@@ -355,7 +354,8 @@
                         recovered: 0,
                         active: 0
                     },
-                    glance: {}
+                    glance: {},
+                    countries_list_map: [],
                 },
                 sorted_countries: {
                     'confirmed' : [],
@@ -446,6 +446,10 @@
                 }
                 return false;
             },
+            map_countries()
+            {
+                return _.clone(this.ajax.countries_list_map);
+            }
         }
     }
 </script>

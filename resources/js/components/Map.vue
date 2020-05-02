@@ -20,7 +20,8 @@
                 config: {
                     interactive: false,
                     zoom: 1,
-                }
+                },
+                countries: false,
             }
         },
         mounted(){
@@ -44,21 +45,35 @@
             //     map.pan.disable();
             // }
 
-            for(var x in this.data)
-            {
-                var country = this.data[x];
-                new mapboxgl.Marker()
-                    .setLngLat([country.long, country.lat])
-                    .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-                        .setHTML('<h3 class="text-slab font-bold">' + country.name + '</h3><p class="text-xs text-base">Confirmed: ' + country.confirmed + '</p>'))
-                    .addTo(map);
-            }
+            // for(var x in this.data)
+            // {
+            //     var country = this.data[x];
+            //     new mapboxgl.Marker()
+            //         .setLngLat([country.long, country.lat])
+            //         .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+            //             .setHTML('<h3 class="text-slab font-bold">' + country.name + '</h3><p class="text-xs text-base">Confirmed: ' + country.confirmed + '</p>'))
+            //         .addTo(map);
+            // }
         },
         methods:
         {
+            geoJson()
+            {
+                var data = [];
+                for(var x in this.data)
+                {
+                    var row = _.clone(this.data[x]);
+                }
+            },
             getCenter()
             {
                 console.log(this.map.getCenter());
+            },
+            addHeatmap()
+            {
+                this.map.addSource('confirmed',{
+
+                });
             }
         },
         computed: {
@@ -92,6 +107,10 @@
         watch: {
             zoom(){
                 this.map.setZoom(this.zoom)
+            },
+            data(){
+                this.countries = this.data;
+                console.log(this.countries);
             }
         }
     }
