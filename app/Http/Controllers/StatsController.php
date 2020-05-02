@@ -2660,6 +2660,7 @@ class StatsController extends Controller
         $key = [
             'C1' => [
                 'name' => 'School closing',
+                'description' => 'Record closing of schools and universitiies',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
@@ -2671,6 +2672,7 @@ class StatsController extends Controller
             ],
             'C2' => [
                 'name' => 'Workplace closing',
+                'description' => 'Record closing of workplaces',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
@@ -2682,6 +2684,7 @@ class StatsController extends Controller
             ],
             'C3' => [
                 'name' => 'Cancel public events',
+                'description' => 'Record cancelling public events',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
@@ -2692,6 +2695,7 @@ class StatsController extends Controller
             ],
             'C4' => [
                 'name' => 'Restrictions on gatherings',
+                'description' => 'Record the cut-off size for bans on private gatherings',
                 'type' => 'lookup',
                 'values' => [
                     'No restrictions',
@@ -2704,6 +2708,7 @@ class StatsController extends Controller
             ],
             'C5' => [
                 'name' => 'Close public transport',
+                'description' => 'Record closing of public transport',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
@@ -2714,6 +2719,7 @@ class StatsController extends Controller
             ],
             'C6' => [
                 'name' => 'Stay at home',
+                'description' => 'Record orders to "shelter-in-place" and otherwise confine to home',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
@@ -2724,7 +2730,8 @@ class StatsController extends Controller
                 'hasTarget' => true
             ],
             'C7' => [
-                'name' => 'Restrictions on internam movement',
+                'name' => 'Restrictions on internal movement',
+                'description' => 'Record restrictions on internal movement',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
@@ -2735,6 +2742,7 @@ class StatsController extends Controller
             ],
             'C8' => [
                 'name' => 'International travel controls',
+                'description' => 'Record restrictions on international travel',
                 'type' => 'lookup',
                 'values' => [
                     'No measures',
@@ -2745,8 +2753,50 @@ class StatsController extends Controller
                 ],
                 'hasTarget' => false
             ],
+            'E1' => [
+                'name' => 'Income support',
+                'description' => 'Is the government covering the salaries or providing direct cash payments, universal basic income, or similar, of people who lose their jobs or cannot work. (Includes payments to firms if explicitly linked to payroll/salaries)',
+                'type' => 'lookup',
+                'values' => [
+                    'No income support',
+                    'Government is replacing less than 50% of lost salary (or if a flat sum, it is less than 50% median salary)',
+                    'Government is replacing more than 50% of lost salary (or if a flat sum, it is greater than 50% median salary)',
+                ],
+                'hasTarget' => true,
+                'targets' => [
+                    'Formal sector workers only',
+                    'Transfers to informal sector workers too',
+                ]
+            ],
+            'E2' => [
+                'name' => 'Debt / contract relief for households',
+                'description' => 'Record if government is freezing financial obligations (e.g. stopping loan repayments, preventing services like water from stopping, or banning evictions)',
+                'type' => 'lookup',
+                'values' => [
+                    'No',
+                    'Narrow relief, specific to one kind of contract',
+                    'Broad debt/contract relief',
+                ],
+                'hasTarget' => false,
+            ],
+            'E3' => [
+                'name' => 'Fiscal measures',
+                'description' => 'Record monetary value of USD of fiscal stimuli, including spending or tax cuts NOT included in H4',
+                'type' => 'custom',
+                'values' => ['Value of fiscal stimuli, including spending or tax cuts'],
+                'hasTarget' => false
+            ],
+            'E4' => [
+                'name' => 'Providing support to other countries',
+                'description' => 'Announced offers of COVID-19 related aid spending to other countries',
+                'type' => 'custom',
+                'values' => ['Monetary value announced if additional to previously announced spending'],
+                'hasTarget' => false
+            ],
+
             'H1' => [
                 'name' => 'Public info campaigns',
+                'description' => 'Record presence of public info campaigns',
                 'type' => 'lookup',
                 'values' => [
                     'No COVID-19 public information campaign',
@@ -2755,38 +2805,7 @@ class StatsController extends Controller
                 ],
                 'hasTarget' => true
             ],
-
-
-            'E3' => [
-                'name' => 'Fiscal measures',
-                'description' => 'What economic stimulus policies are adopted',
-                'type' => 'custom',
-                'values' => ['Value of fiscal stimuli, including spending or tax cuts'],
-                'hasTarget' => false
-            ],
-            's9' => [
-                'name' => 'Monetary measures',
-                'description' => 'What monetary policy interventions?',
-                'type' => 'custom',
-                'values' => ['Value of interest rate'],
-                'hasTarget' => false
-            ],
-            's10' => [
-
-                'name' => 'Emergency investment in health care',
-                'description' => 'Short-term spending on, e.g. hospitals, masks, etc',
-                'type' => 'custom',
-                'values' => ['Value of new short-term spending on health'],
-                'hasTarget' => false
-            ],
-            's11' => [
-                'name' => 'Investment in vaccines',
-                'description' => 'Announced public spending on vaccine development',
-                'type' => 'custom',
-                'values' => ['Value of investment'],
-                'hasTarget' => false
-            ],
-            's12' => [
+            'H2' => [
                 'name' => 'Testing policy',
                 'description' => 'Who can get tested?',
                 'type' => 'lookup',
@@ -2798,7 +2817,7 @@ class StatsController extends Controller
                 ],
                 'hasTarget' => false
             ],
-            's13' => [
+            'H3' => [
                 'name' => 'Contact tracing',
                 'description' => 'Are governments doing contact tracing?',
                 'type' => 'lookup',
@@ -2809,6 +2828,35 @@ class StatsController extends Controller
                 ],
                 'hasTarget' => false
             ],
+            'H4' => [
+
+                'name' => 'Emergency investment in health care',
+                'description' => 'Short-term spending on, e.g. hospitals, masks, etc',
+                'type' => 'custom',
+                'values' => ['Record value in USD of new short-term spending on health'],
+                'hasTarget' => false
+            ],
+            'H5' => [
+                'name' => 'Investment in vaccines',
+                'description' => 'Announced public spending on vaccine development',
+                'type' => 'custom',
+                'values' => ['Record monetary value announced if additional to previously announced spending'],
+                'hasTarget' => false
+            ],
+
+
+
+            'M1' => [
+                'name' => 'Miscellaneous wild card',
+                'description' => 'Record policy announcements that do not fit anywhere else',
+                'type' => 'custom',
+                'values' => ['Unusual or interesting interventions worth flagging.'],
+                'hasTarget' => false
+            ],
+
+
+
+
         ];
 
 
@@ -2842,114 +2890,84 @@ class StatsController extends Controller
 
                 if(strlen($row[3]) > 0)
                 {
-                    $daily[$country][$date]['policies']['s1'] = [
+                    $daily[$country][$date]['policies']['C1'] = [
                         'v' => $row[3],
                         't' => $row[4],
+                        'n' => $row[5],
                     ];
 
-                    if(isset($latest[$country]['policies']['s1']))
+                    if(isset($latest[$country]['policies']['C1']))
                     {
                         if(
-                            $latest[$country]['policies']['s1']['v'] != $daily[$country][$date]['policies']['s1']['v']
-                            || $latest[$country]['policies']['s1']['t'] != $daily[$country][$date]['policies']['s1']['t']
+                            $latest[$country]['policies']['C1']['v'] != $daily[$country][$date]['policies']['C1']['v']
+                            || $latest[$country]['policies']['C1']['t'] != $daily[$country][$date]['policies']['C1']['t']
                         )
                         {
-                            $latest[$country]['policies']['s1'] = [
-                                'v' => $daily[$country][$date]['policies']['s1']['v'],
-                                't' => $daily[$country][$date]['policies']['s1']['t'],
+                            $latest[$country]['policies']['C1'] = [
+                                'v' => $daily[$country][$date]['policies']['C1']['v'],
+                                't' => $daily[$country][$date]['policies']['C1']['t'],
+                                'n' => $daily[$country][$date]['policies']['C1']['n'],
                                 's' => $date,
                             ];
                         }
                         else {
-                            $latest[$country]['policies']['s1'] = [
-                                'v' => $daily[$country][$date]['policies']['s1']['v'],
-                                't' => $daily[$country][$date]['policies']['s1']['t'],
-                                's' => $latest[$country]['policies']['s1']['s'],
+                            $latest[$country]['policies']['C1'] = [
+                                'v' => $daily[$country][$date]['policies']['C1']['v'],
+                                't' => $daily[$country][$date]['policies']['C1']['t'],
+                                'n' => $daily[$country][$date]['policies']['C1']['n'],
+                                's' => $latest[$country]['policies']['C1']['s'],
                             ];
                         }
                     }
                     else
                     {
-                        $latest[$country]['policies']['s1'] = [
-                            'v' => $daily[$country][$date]['policies']['s1']['v'],
-                            't' => $daily[$country][$date]['policies']['s1']['t'],
+                        $latest[$country]['policies']['C1'] = [
+                            'v' => $daily[$country][$date]['policies']['C1']['v'],
+                            't' => $daily[$country][$date]['policies']['C1']['t'],
+                            'n' => $daily[$country][$date]['policies']['C1']['n'],
                             's' => $date,
                         ];
                     }
 
                 }
 
-                if(strlen($row[5]) > 0)
+                if(strlen($row[6]) > 0)
                 {
-                    $daily[$country][$date]['policies']['s2'] = [
-                            'v' => $row[5],
-                            't' => $row[6],
+                    $daily[$country][$date]['policies']['C2'] = [
+                            'v' => $row[6],
+                            't' => $row[7],
+                            'n' => $row[8],
                     ];
 
-                    if(isset($latest[$country]['policies']['s2']))
+                    if(isset($latest[$country]['policies']['C2']))
                     {
                         if(
-                            $latest[$country]['policies']['s2']['v'] != $daily[$country][$date]['policies']['s2']['v']
-                            || $latest[$country]['policies']['s2']['t'] != $daily[$country][$date]['policies']['s2']['t']
+                            $latest[$country]['policies']['C2']['v'] != $daily[$country][$date]['policies']['C2']['v']
+                            || $latest[$country]['policies']['C2']['t'] != $daily[$country][$date]['policies']['C2']['t']
                         )
                         {
-                            $latest[$country]['policies']['s2'] = [
-                                'v' => $daily[$country][$date]['policies']['s2']['v'],
-                                't' => $daily[$country][$date]['policies']['s2']['t'],
+                            $latest[$country]['policies']['C2'] = [
+                                'v' => $daily[$country][$date]['policies']['C2']['v'],
+                                't' => $daily[$country][$date]['policies']['C2']['t'],
+                                'n' => $daily[$country][$date]['policies']['C2']['n'],
                                 's' => $date,
                             ];
                         }
                         else {
-                            $latest[$country]['policies']['s2'] = [
-                                'v' => $daily[$country][$date]['policies']['s2']['v'],
-                                't' => $daily[$country][$date]['policies']['s2']['t'],
-                                's' => $latest[$country]['policies']['s2']['s'],
+                            $latest[$country]['policies']['C2'] = [
+                                'v' => $daily[$country][$date]['policies']['C2']['v'],
+                                't' => $daily[$country][$date]['policies']['C2']['t'],
+                                'n' => $daily[$country][$date]['policies']['C2']['n'],
+                                's' => $latest[$country]['policies']['C2']['s'],
                             ];
                         }
                     }
                     else
                     {
-                        $latest[$country]['policies']['s2'] = [
-                            'v' => $daily[$country][$date]['policies']['s2']['v'],
-                            't' => $daily[$country][$date]['policies']['s2']['t'],
-                            's' => $date,
-                        ];
-                    }
-                }
-
-                if(strlen($row[7]) > 0)
-                {
-                    $daily[$country][$date]['policies']['s3'] = [
-                            'v' => $row[7],
-                            't' => $row[8],
-                    ];
-
-                    if(isset($latest[$country]['policies']['s3']))
-                    {
-                        if(
-                            $latest[$country]['policies']['s3']['v'] != $daily[$country][$date]['policies']['s3']['v']
-                            || $latest[$country]['policies']['s3']['t'] != $daily[$country][$date]['policies']['s3']['t']
-                        )
-                        {
-                            $latest[$country]['policies']['s3'] = [
-                                'v' => $daily[$country][$date]['policies']['s3']['v'],
-                                't' => $daily[$country][$date]['policies']['s3']['t'],
-                                's' => $date,
-                            ];
-                        }
-                        else {
-                            $latest[$country]['policies']['s3'] = [
-                                'v' => $daily[$country][$date]['policies']['s3']['v'],
-                                't' => $daily[$country][$date]['policies']['s3']['t'],
-                                's' => $latest[$country]['policies']['s3']['s'],
-                            ];
-                        }
-                    }
-                    else
-                    {
-                        $latest[$country]['policies']['s3'] = [
-                            'v' => $daily[$country][$date]['policies']['s3']['v'],
-                            't' => $daily[$country][$date]['policies']['s3']['t'],
+                        $latest[$country]['policies']['C2'] = [
+                            'v' => $daily[$country][$date]['policies']['C2']['v'],
+                            't' => $daily[$country][$date]['policies']['C2']['t'],
+                            'n' => $daily[$country][$date]['policies']['C2']['n'],
                             's' => $date,
                         ];
                     }
@@ -2957,114 +2975,83 @@ class StatsController extends Controller
 
                 if(strlen($row[9]) > 0)
                 {
-                    $daily[$country][$date]['policies']['s4'] = [
+                    $daily[$country][$date]['policies']['C3'] = [
                             'v' => $row[9],
                             't' => $row[10],
+                            'n' => $row[11],
                     ];
 
-                    if(isset($latest[$country]['policies']['s4']))
+                    if(isset($latest[$country]['policies']['C3']))
                     {
                         if(
-                            $latest[$country]['policies']['s4']['v'] != $daily[$country][$date]['policies']['s4']['v']
-                            || $latest[$country]['policies']['s4']['t'] != $daily[$country][$date]['policies']['s4']['t']
+                            $latest[$country]['policies']['C3']['v'] != $daily[$country][$date]['policies']['C3']['v']
+                            || $latest[$country]['policies']['C3']['t'] != $daily[$country][$date]['policies']['C3']['t']
                         )
                         {
-                            $latest[$country]['policies']['s4'] = [
-                                'v' => $daily[$country][$date]['policies']['s4']['v'],
-                                't' => $daily[$country][$date]['policies']['s4']['t'],
+                            $latest[$country]['policies']['C3'] = [
+                                'v' => $daily[$country][$date]['policies']['C3']['v'],
+                                't' => $daily[$country][$date]['policies']['C3']['t'],
+                                'n' => $daily[$country][$date]['policies']['C3']['n'],
                                 's' => $date,
                             ];
                         }
                         else {
-                            $latest[$country]['policies']['s4'] = [
-                                'v' => $daily[$country][$date]['policies']['s4']['v'],
-                                't' => $daily[$country][$date]['policies']['s4']['t'],
-                                's' => $latest[$country]['policies']['s4']['s'],
+                            $latest[$country]['policies']['C3'] = [
+                                'v' => $daily[$country][$date]['policies']['C3']['v'],
+                                't' => $daily[$country][$date]['policies']['C3']['t'],
+                                'n' => $daily[$country][$date]['policies']['C3']['n'],
+                                's' => $latest[$country]['policies']['C3']['s'],
                             ];
                         }
                     }
                     else
                     {
-                        $latest[$country]['policies']['s4'] = [
-                            'v' => $daily[$country][$date]['policies']['s4']['v'],
-                            't' => $daily[$country][$date]['policies']['s4']['t'],
+                        $latest[$country]['policies']['C3'] = [
+                            'v' => $daily[$country][$date]['policies']['C3']['v'],
+                            't' => $daily[$country][$date]['policies']['C3']['t'],
+                            'n' => $daily[$country][$date]['policies']['C3']['n'],
                             's' => $date,
                         ];
                     }
                 }
 
-                if(strlen($row[11]) > 0)
+                if(strlen($row[12]) > 0)
                 {
-                    $daily[$country][$date]['policies']['s5'] = [
-                            'v' => $row[11],
-                            't' => $row[12],
+                    $daily[$country][$date]['policies']['C4'] = [
+                            'v' => $row[12],
+                            't' => $row[13],
+                            'n' => $row[14],
                     ];
 
-
-                    if(isset($latest[$country]['policies']['s5']))
+                    if(isset($latest[$country]['policies']['C4']))
                     {
                         if(
-                            $latest[$country]['policies']['s5']['v'] != $daily[$country][$date]['policies']['s5']['v']
-                            || $latest[$country]['policies']['s5']['t'] != $daily[$country][$date]['policies']['s5']['t']
+                            $latest[$country]['policies']['C4']['v'] != $daily[$country][$date]['policies']['C4']['v']
+                            || $latest[$country]['policies']['C4']['t'] != $daily[$country][$date]['policies']['C4']['t']
                         )
                         {
-                            $latest[$country]['policies']['s5'] = [
-                                'v' => $daily[$country][$date]['policies']['s5']['v'],
-                                't' => $daily[$country][$date]['policies']['s5']['t'],
+                            $latest[$country]['policies']['C4'] = [
+                                'v' => $daily[$country][$date]['policies']['C4']['v'],
+                                't' => $daily[$country][$date]['policies']['C4']['t'],
+                                'n' => $daily[$country][$date]['policies']['C4']['n'],
                                 's' => $date,
                             ];
                         }
                         else {
-                            $latest[$country]['policies']['s5'] = [
-                                'v' => $daily[$country][$date]['policies']['s5']['v'],
-                                't' => $daily[$country][$date]['policies']['s5']['t'],
-                                's' => $latest[$country]['policies']['s5']['s'],
+                            $latest[$country]['policies']['C4'] = [
+                                'v' => $daily[$country][$date]['policies']['C4']['v'],
+                                't' => $daily[$country][$date]['policies']['C4']['t'],
+                                'n' => $daily[$country][$date]['policies']['C4']['n'],
+                                's' => $latest[$country]['policies']['C4']['s'],
                             ];
                         }
                     }
                     else
                     {
-                        $latest[$country]['policies']['s5'] = [
-                            'v' => $daily[$country][$date]['policies']['s5']['v'],
-                            't' => $daily[$country][$date]['policies']['s5']['t'],
-                            's' => $date,
-                        ];
-                    }
-                }
-
-                if(strlen($row[13]) > 0)
-                {
-                    $daily[$country][$date]['policies']['s6'] = [
-                            'v' => $row[13],
-                            't' => $row[14],
-                    ];
-
-                    if(isset($latest[$country]['policies']['s6']))
-                    {
-                        if(
-                            $latest[$country]['policies']['s6']['v'] != $daily[$country][$date]['policies']['s6']['v']
-                            || $latest[$country]['policies']['s6']['t'] != $daily[$country][$date]['policies']['s6']['t']
-                        )
-                        {
-                            $latest[$country]['policies']['s6'] = [
-                                'v' => $daily[$country][$date]['policies']['s6']['v'],
-                                't' => $daily[$country][$date]['policies']['s6']['t'],
-                                's' => $date,
-                            ];
-                        }
-                        else {
-                            $latest[$country]['policies']['s6'] = [
-                                'v' => $daily[$country][$date]['policies']['s6']['v'],
-                                't' => $daily[$country][$date]['policies']['s6']['t'],
-                                's' => $latest[$country]['policies']['s6']['s'],
-                            ];
-                        }
-                    }
-                    else
-                    {
-                        $latest[$country]['policies']['s6'] = [
-                            'v' => $daily[$country][$date]['policies']['s6']['v'],
-                            't' => $daily[$country][$date]['policies']['s6']['t'],
+                        $latest[$country]['policies']['C4'] = [
+                            'v' => $daily[$country][$date]['policies']['C4']['v'],
+                            't' => $daily[$country][$date]['policies']['C4']['t'],
+                            'n' => $daily[$country][$date]['policies']['C4']['n'],
                             's' => $date,
                         ];
                     }
@@ -3072,227 +3059,84 @@ class StatsController extends Controller
 
                 if(strlen($row[15]) > 0)
                 {
-                    $daily[$country][$date]['policies']['s7'] = [
+                    $daily[$country][$date]['policies']['C5'] = [
                             'v' => $row[15],
-                            't' => '',
+                            't' => $row[16],
+                            'n' => $row[17],
                     ];
 
-                    if(isset($latest[$country]['policies']['s7']))
+
+                    if(isset($latest[$country]['policies']['C5']))
                     {
                         if(
-                            $latest[$country]['policies']['s7']['v'] != $daily[$country][$date]['policies']['s7']['v']
-                            || $latest[$country]['policies']['s7']['t'] != $daily[$country][$date]['policies']['s7']['t']
+                            $latest[$country]['policies']['C5']['v'] != $daily[$country][$date]['policies']['C5']['v']
+                            || $latest[$country]['policies']['C5']['t'] != $daily[$country][$date]['policies']['C5']['t']
                         )
                         {
-                            $latest[$country]['policies']['s7'] = [
-                                'v' => $daily[$country][$date]['policies']['s7']['v'],
-                                't' => $daily[$country][$date]['policies']['s7']['t'],
+                            $latest[$country]['policies']['C5'] = [
+                                'v' => $daily[$country][$date]['policies']['C5']['v'],
+                                't' => $daily[$country][$date]['policies']['C5']['t'],
+                                'n' => $daily[$country][$date]['policies']['C5']['n'],
                                 's' => $date,
                             ];
                         }
                         else {
-                            $latest[$country]['policies']['s7'] = [
-                                'v' => $daily[$country][$date]['policies']['s7']['v'],
-                                't' => $daily[$country][$date]['policies']['s7']['t'],
-                                's' => $latest[$country]['policies']['s7']['s'],
+                            $latest[$country]['policies']['C5'] = [
+                                'v' => $daily[$country][$date]['policies']['C5']['v'],
+                                't' => $daily[$country][$date]['policies']['C5']['t'],
+                                'n' => $daily[$country][$date]['policies']['C5']['n'],
+                                's' => $latest[$country]['policies']['C5']['s'],
                             ];
                         }
                     }
                     else
                     {
-                        $latest[$country]['policies']['s7'] = [
-                            'v' => $daily[$country][$date]['policies']['s7']['v'],
-                            't' => $daily[$country][$date]['policies']['s7']['t'],
+                        $latest[$country]['policies']['C5'] = [
+                            'v' => $daily[$country][$date]['policies']['C5']['v'],
+                            't' => $daily[$country][$date]['policies']['C5']['t'],
+                            'n' => $daily[$country][$date]['policies']['C5']['n'],
                             's' => $date,
                         ];
                     }
                 }
 
-                if($row[16] > 0)
+                if(strlen($row[18]) > 0)
                 {
-                    $daily[$country][$date]['policies']['s8'] = [
-                            'v' => $row[16],
-                            't' => '',
-                    ];
-
-                    if(isset($latest[$country]['policies']['s8']))
-                    {
-                        if(
-                            $latest[$country]['policies']['s8']['v'] != $daily[$country][$date]['policies']['s8']['v']
-                            || $latest[$country]['policies']['s8']['t'] != $daily[$country][$date]['policies']['s8']['t']
-                        )
-                        {
-                            $latest[$country]['policies']['s8'] = [
-                                'v' => $daily[$country][$date]['policies']['s8']['v'],
-                                't' => $daily[$country][$date]['policies']['s8']['t'],
-                                's' => $date,
-                            ];
-                        }
-                        else {
-                            $latest[$country]['policies']['s8'] = [
-                                'v' => $daily[$country][$date]['policies']['s8']['v'],
-                                't' => $daily[$country][$date]['policies']['s8']['t'],
-                                's' => $latest[$country]['policies']['s8']['s'],
-                            ];
-                        }
-                    }
-                    else
-                    {
-                        $latest[$country]['policies']['s8'] = [
-                            'v' => $daily[$country][$date]['policies']['s8']['v'],
-                            't' => $daily[$country][$date]['policies']['s8']['t'],
-                            's' => $date,
-                        ];
-                    }
-                }
-
-                if($row[17] > 0)
-                {
-                    $daily[$country][$date]['policies']['s9'] = [
-                            'v' => $row[17],
-                            't' => '',
-                    ];
-
-                    if(isset($latest[$country]['policies']['s9']))
-                    {
-                        if(
-                            $latest[$country]['policies']['s9']['v'] != $daily[$country][$date]['policies']['s9']['v']
-                            || $latest[$country]['policies']['s9']['t'] != $daily[$country][$date]['policies']['s9']['t']
-                        )
-                        {
-                            $latest[$country]['policies']['s9'] = [
-                                'v' => $daily[$country][$date]['policies']['s9']['v'],
-                                't' => $daily[$country][$date]['policies']['s9']['t'],
-                                's' => $date,
-                            ];
-                        }
-                        else {
-                            $latest[$country]['policies']['s9'] = [
-                                'v' => $daily[$country][$date]['policies']['s9']['v'],
-                                't' => $daily[$country][$date]['policies']['s9']['t'],
-                                's' => $latest[$country]['policies']['s9']['s'],
-                            ];
-                        }
-                    }
-                    else
-                    {
-                        $latest[$country]['policies']['s9'] = [
-                            'v' => $daily[$country][$date]['policies']['s9']['v'],
-                            't' => $daily[$country][$date]['policies']['s9']['t'],
-                            's' => $date,
-                        ];
-                    }
-                }
-
-                if($row[18] > 0)
-                {
-                    $daily[$country][$date]['policies']['s10'] = [
+                    $daily[$country][$date]['policies']['C6'] = [
                             'v' => $row[18],
-                            't' => '',
+                            't' => $row[19],
+                            'n' => $row[20],
                     ];
 
-                    if(isset($latest[$country]['policies']['s10']))
+                    if(isset($latest[$country]['policies']['C6']))
                     {
                         if(
-                            $latest[$country]['policies']['s10']['v'] != $daily[$country][$date]['policies']['s10']['v']
-                            || $latest[$country]['policies']['s10']['t'] != $daily[$country][$date]['policies']['s10']['t']
+                            $latest[$country]['policies']['C6']['v'] != $daily[$country][$date]['policies']['C6']['v']
+                            || $latest[$country]['policies']['C6']['t'] != $daily[$country][$date]['policies']['C6']['t']
                         )
                         {
-                            $latest[$country]['policies']['s10'] = [
-                                'v' => $daily[$country][$date]['policies']['s10']['v'],
-                                't' => $daily[$country][$date]['policies']['s10']['t'],
+                            $latest[$country]['policies']['C6'] = [
+                                'v' => $daily[$country][$date]['policies']['C6']['v'],
+                                't' => $daily[$country][$date]['policies']['C6']['t'],
+                                'n' => $daily[$country][$date]['policies']['C6']['n'],
                                 's' => $date,
                             ];
                         }
                         else {
-                            $latest[$country]['policies']['s10'] = [
-                                'v' => $daily[$country][$date]['policies']['s10']['v'],
-                                't' => $daily[$country][$date]['policies']['s10']['t'],
-                                's' => $latest[$country]['policies']['s10']['s'],
+                            $latest[$country]['policies']['C6'] = [
+                                'v' => $daily[$country][$date]['policies']['C6']['v'],
+                                't' => $daily[$country][$date]['policies']['C6']['t'],
+                                'n' => $daily[$country][$date]['policies']['C6']['n'],
+                                's' => $latest[$country]['policies']['C6']['s'],
                             ];
                         }
                     }
                     else
                     {
-                        $latest[$country]['policies']['s10'] = [
-                            'v' => $daily[$country][$date]['policies']['s10']['v'],
-                            't' => $daily[$country][$date]['policies']['s10']['t'],
-                            's' => $date,
-                        ];
-                    }
-                }
-
-                if($row[19] > 0)
-                {
-                    $daily[$country][$date]['policies']['s11'] = [
-                            'v' => $row[19],
-                            't' => '',
-                    ];
-
-                    if(isset($latest[$country]['policies']['s11']))
-                    {
-                        if(
-                            $latest[$country]['policies']['s11']['v'] != $daily[$country][$date]['policies']['s11']['v']
-                            || $latest[$country]['policies']['s11']['t'] != $daily[$country][$date]['policies']['s11']['t']
-                        )
-                        {
-                            $latest[$country]['policies']['s11'] = [
-                                'v' => $daily[$country][$date]['policies']['s11']['v'],
-                                't' => $daily[$country][$date]['policies']['s11']['t'],
-                                's' => $date,
-                            ];
-                        }
-                        else {
-                            $latest[$country]['policies']['s11'] = [
-                                'v' => $daily[$country][$date]['policies']['s11']['v'],
-                                't' => $daily[$country][$date]['policies']['s11']['t'],
-                                's' => $latest[$country]['policies']['s11']['s'],
-                            ];
-                        }
-                    }
-                    else
-                    {
-                        $latest[$country]['policies']['s11'] = [
-                            'v' => $daily[$country][$date]['policies']['s11']['v'],
-                            't' => $daily[$country][$date]['policies']['s11']['t'],
-                            's' => $date,
-                        ];
-                    }
-                }
-
-                if(strlen($row[20]) > 0)
-                {
-                    $daily[$country][$date]['policies']['s12'] = [
-                            'v' => $row[20],
-                            't' => '',
-                    ];
-
-                    if(isset($latest[$country]['policies']['s12']))
-                    {
-                        if(
-                            $latest[$country]['policies']['s12']['v'] != $daily[$country][$date]['policies']['s12']['v']
-                            || $latest[$country]['policies']['s12']['t'] != $daily[$country][$date]['policies']['s12']['t']
-                        )
-                        {
-                            $latest[$country]['policies']['s12'] = [
-                                'v' => $daily[$country][$date]['policies']['s12']['v'],
-                                't' => $daily[$country][$date]['policies']['s12']['t'],
-                                's' => $date,
-                            ];
-                        }
-                        else {
-                            $latest[$country]['policies']['s12'] = [
-                                'v' => $daily[$country][$date]['policies']['s12']['v'],
-                                't' => $daily[$country][$date]['policies']['s12']['t'],
-                                's' => $latest[$country]['policies']['s12']['s'],
-                            ];
-                        }
-                    }
-                    else
-                    {
-                        $latest[$country]['policies']['s12'] = [
-                            'v' => $daily[$country][$date]['policies']['s12']['v'],
-                            't' => $daily[$country][$date]['policies']['s12']['t'],
+                        $latest[$country]['policies']['C6'] = [
+                            'v' => $daily[$country][$date]['policies']['C6']['v'],
+                            't' => $daily[$country][$date]['policies']['C6']['t'],
+                            'n' => $daily[$country][$date]['policies']['C6']['n'],
                             's' => $date,
                         ];
                     }
@@ -3300,44 +3144,507 @@ class StatsController extends Controller
 
                 if(strlen($row[21]) > 0)
                 {
-                    $daily[$country][$date]['policies']['s13'] = [
+                    $daily[$country][$date]['policies']['C7'] = [
                             'v' => $row[21],
-                            't' => '',
+                            't' => $row[22],
+                            'n' => $row[23],
                     ];
 
-                    if(isset($latest[$country]['policies']['s13']))
+                    if(isset($latest[$country]['policies']['C7']))
                     {
                         if(
-                            $latest[$country]['policies']['s13']['v'] != $daily[$country][$date]['policies']['s13']['v']
-                            || $latest[$country]['policies']['s13']['t'] != $daily[$country][$date]['policies']['s13']['t']
+                            $latest[$country]['policies']['C7']['v'] != $daily[$country][$date]['policies']['C7']['v']
+                            || $latest[$country]['policies']['C7']['t'] != $daily[$country][$date]['policies']['C7']['t']
                         )
                         {
-                            $latest[$country]['policies']['s13'] = [
-                                'v' => $daily[$country][$date]['policies']['s13']['v'],
-                                't' => $daily[$country][$date]['policies']['s13']['t'],
+                            $latest[$country]['policies']['C7'] = [
+                                'v' => $daily[$country][$date]['policies']['C7']['v'],
+                                't' => $daily[$country][$date]['policies']['C7']['t'],
+                                'n' => $daily[$country][$date]['policies']['C7']['n'],
                                 's' => $date,
                             ];
                         }
                         else {
-                            $latest[$country]['policies']['s13'] = [
-                                'v' => $daily[$country][$date]['policies']['s13']['v'],
-                                't' => $daily[$country][$date]['policies']['s13']['t'],
-                                's' => $latest[$country]['policies']['s13']['s'],
+                            $latest[$country]['policies']['C7'] = [
+                                'v' => $daily[$country][$date]['policies']['C7']['v'],
+                                't' => $daily[$country][$date]['policies']['C7']['t'],
+                                'n' => $daily[$country][$date]['policies']['C7']['n'],
+                                's' => $latest[$country]['policies']['C7']['s'],
                             ];
                         }
                     }
                     else
                     {
-                        $latest[$country]['policies']['s13'] = [
-                            'v' => $daily[$country][$date]['policies']['s13']['v'],
-                            't' => $daily[$country][$date]['policies']['s13']['t'],
+                        $latest[$country]['policies']['C7'] = [
+                            'v' => $daily[$country][$date]['policies']['C7']['v'],
+                            't' => $daily[$country][$date]['policies']['C7']['t'],
+                            'n' => $daily[$country][$date]['policies']['C7']['n'],
                             's' => $date,
                         ];
                     }
                 }
 
-                $daily[$country][$date]['si'] = $row[25];
-                $latest[$country]['si'] = $row[25];
+                if($row[24] > 0)
+                {
+                    $daily[$country][$date]['policies']['C8'] = [
+                            'v' => $row[24],
+                            't' => '',
+                            'n' => $row[25],
+                    ];
+
+                    if(isset($latest[$country]['policies']['C8']))
+                    {
+                        if(
+                            $latest[$country]['policies']['C8']['v'] != $daily[$country][$date]['policies']['C8']['v']
+                            || $latest[$country]['policies']['C8']['t'] != $daily[$country][$date]['policies']['C8']['t']
+                        )
+                        {
+                            $latest[$country]['policies']['C8'] = [
+                                'v' => $daily[$country][$date]['policies']['C8']['v'],
+                                't' => $daily[$country][$date]['policies']['C8']['t'],
+                                's' => $date,
+                            ];
+                        }
+                        else {
+                            $latest[$country]['policies']['C8'] = [
+                                'v' => $daily[$country][$date]['policies']['C8']['v'],
+                                't' => $daily[$country][$date]['policies']['C8']['t'],
+                                's' => $latest[$country]['policies']['C8']['s'],
+                            ];
+                        }
+                    }
+                    else
+                    {
+                        $latest[$country]['policies']['C8'] = [
+                            'v' => $daily[$country][$date]['policies']['C8']['v'],
+                            't' => $daily[$country][$date]['policies']['C8']['t'],
+                            's' => $date,
+                        ];
+                    }
+                }
+
+                if($row[26] > 0)
+                {
+                    $daily[$country][$date]['policies']['E1'] = [
+                            'v' => $row[26],
+                            't' => $row[27],
+                            'n' => $row[28],
+                    ];
+
+                    if(isset($latest[$country]['policies']['E1']))
+                    {
+                        if(
+                            $latest[$country]['policies']['E1']['v'] != $daily[$country][$date]['policies']['E1']['v']
+                            || $latest[$country]['policies']['E1']['t'] != $daily[$country][$date]['policies']['E1']['t']
+                        )
+                        {
+                            $latest[$country]['policies']['E1'] = [
+                                'v' => $daily[$country][$date]['policies']['E1']['v'],
+                                't' => $daily[$country][$date]['policies']['E1']['t'],
+                                'n' => $daily[$country][$date]['policies']['E1']['n'],
+                                's' => $date,
+                            ];
+                        }
+                        else {
+                            $latest[$country]['policies']['E1'] = [
+                                'v' => $daily[$country][$date]['policies']['E1']['v'],
+                                't' => $daily[$country][$date]['policies']['E1']['t'],
+                                'n' => $daily[$country][$date]['policies']['E1']['n'],
+                                's' => $latest[$country]['policies']['E1']['s'],
+                            ];
+                        }
+                    }
+                    else
+                    {
+                        $latest[$country]['policies']['E1'] = [
+                            'v' => $daily[$country][$date]['policies']['E1']['v'],
+                            't' => $daily[$country][$date]['policies']['E1']['t'],
+                            'n' => $daily[$country][$date]['policies']['E1']['n'],
+                            's' => $date,
+                        ];
+                    }
+                }
+
+                if($row[29] > 0)
+                {
+                    $daily[$country][$date]['policies']['E2'] = [
+                            'v' => $row[29],
+                            't' => '',
+                            'n' => $row[30],
+                    ];
+
+                    if(isset($latest[$country]['policies']['E2']))
+                    {
+                        if(
+                            $latest[$country]['policies']['E2']['v'] != $daily[$country][$date]['policies']['E2']['v']
+                            || $latest[$country]['policies']['E2']['t'] != $daily[$country][$date]['policies']['E2']['t']
+                        )
+                        {
+                            $latest[$country]['policies']['E2'] = [
+                                'v' => $daily[$country][$date]['policies']['E2']['v'],
+                                't' => $daily[$country][$date]['policies']['E2']['t'],
+                                'n' => $daily[$country][$date]['policies']['E2']['n'],
+                                's' => $date,
+                            ];
+                        }
+                        else {
+                            $latest[$country]['policies']['E2'] = [
+                                'v' => $daily[$country][$date]['policies']['E2']['v'],
+                                't' => $daily[$country][$date]['policies']['E2']['t'],
+                                'n' => $daily[$country][$date]['policies']['E2']['n'],
+                                's' => $latest[$country]['policies']['E2']['s'],
+                            ];
+                        }
+                    }
+                    else
+                    {
+                        $latest[$country]['policies']['E2'] = [
+                            'v' => $daily[$country][$date]['policies']['E2']['v'],
+                            't' => $daily[$country][$date]['policies']['E2']['t'],
+                            'n' => $daily[$country][$date]['policies']['E2']['n'],
+                            's' => $date,
+                        ];
+                    }
+                }
+
+                if($row[31] > 0)
+                {
+                    $daily[$country][$date]['policies']['E3'] = [
+                            'v' => $row[31],
+                            't' => '',
+                            'n' => $row[32],
+                    ];
+
+                    if(isset($latest[$country]['policies']['E3']))
+                    {
+                        if(
+                            $latest[$country]['policies']['E3']['v'] != $daily[$country][$date]['policies']['E3']['v']
+                            || $latest[$country]['policies']['E3']['t'] != $daily[$country][$date]['policies']['E3']['t']
+                        )
+                        {
+                            $latest[$country]['policies']['E3'] = [
+                                'v' => $daily[$country][$date]['policies']['E3']['v'],
+                                't' => $daily[$country][$date]['policies']['E3']['t'],
+                                'n' => $daily[$country][$date]['policies']['E3']['n'],
+                                's' => $date,
+                            ];
+                        }
+                        else {
+                            $latest[$country]['policies']['E3'] = [
+                                'v' => $daily[$country][$date]['policies']['E3']['v'],
+                                't' => $daily[$country][$date]['policies']['E3']['t'],
+                                'n' => $daily[$country][$date]['policies']['E3']['n'],
+                                's' => $latest[$country]['policies']['E3']['s'],
+                            ];
+                        }
+                    }
+                    else
+                    {
+                        $latest[$country]['policies']['E3'] = [
+                            'v' => $daily[$country][$date]['policies']['E3']['v'],
+                            't' => $daily[$country][$date]['policies']['E3']['t'],
+                            'n' => $daily[$country][$date]['policies']['E3']['n'],
+                            's' => $date,
+                        ];
+                    }
+                }
+
+                if(strlen($row[33]) > 0)
+                {
+                    $daily[$country][$date]['policies']['E4'] = [
+                            'v' => $row[33],
+                            't' => '',
+                            'n' => $row[34],
+                    ];
+
+                    if(isset($latest[$country]['policies']['E4']))
+                    {
+                        if(
+                            $latest[$country]['policies']['E4']['v'] != $daily[$country][$date]['policies']['E4']['v']
+                            || $latest[$country]['policies']['E4']['t'] != $daily[$country][$date]['policies']['E4']['t']
+                        )
+                        {
+                            $latest[$country]['policies']['E4'] = [
+                                'v' => $daily[$country][$date]['policies']['E4']['v'],
+                                't' => $daily[$country][$date]['policies']['E4']['t'],
+                                'n' => $daily[$country][$date]['policies']['E4']['n'],
+                                's' => $date,
+                            ];
+                        }
+                        else {
+                            $latest[$country]['policies']['E4'] = [
+                                'v' => $daily[$country][$date]['policies']['E4']['v'],
+                                't' => $daily[$country][$date]['policies']['E4']['t'],
+                                'n' => $daily[$country][$date]['policies']['E4']['n'],
+                                's' => $latest[$country]['policies']['E4']['s'],
+                            ];
+                        }
+                    }
+                    else
+                    {
+                        $latest[$country]['policies']['E4'] = [
+                            'v' => $daily[$country][$date]['policies']['E4']['v'],
+                            't' => $daily[$country][$date]['policies']['E4']['t'],
+                            'n' => $daily[$country][$date]['policies']['E4']['n'],
+                            's' => $date,
+                        ];
+                    }
+                }
+
+                if(strlen($row[35]) > 0)
+                {
+                    $daily[$country][$date]['policies']['H1'] = [
+                            'v' => $row[35],
+                            't' => $row[36],
+                            'n' => $row[37],
+                    ];
+
+                    if(isset($latest[$country]['policies']['H1']))
+                    {
+                        if(
+                            $latest[$country]['policies']['H1']['v'] != $daily[$country][$date]['policies']['H1']['v']
+                            || $latest[$country]['policies']['H1']['t'] != $daily[$country][$date]['policies']['H1']['t']
+                        )
+                        {
+                            $latest[$country]['policies']['H1'] = [
+                                'v' => $daily[$country][$date]['policies']['H1']['v'],
+                                't' => $daily[$country][$date]['policies']['H1']['t'],
+                                'n' => $daily[$country][$date]['policies']['H1']['n'],
+                                's' => $date,
+                            ];
+                        }
+                        else {
+                            $latest[$country]['policies']['H1'] = [
+                                'v' => $daily[$country][$date]['policies']['H1']['v'],
+                                't' => $daily[$country][$date]['policies']['H1']['t'],
+                                'n' => $daily[$country][$date]['policies']['H1']['n'],
+                                's' => $latest[$country]['policies']['H1']['s'],
+                            ];
+                        }
+                    }
+                    else
+                    {
+                        $latest[$country]['policies']['H1'] = [
+                            'v' => $daily[$country][$date]['policies']['H1']['v'],
+                            't' => $daily[$country][$date]['policies']['H1']['t'],
+                            'n' => $daily[$country][$date]['policies']['H1']['n'],
+                            's' => $date,
+                        ];
+                    }
+                }
+
+                if(strlen($row[38]) > 0)
+                {
+                    $daily[$country][$date]['policies']['H2'] = [
+                        'v' => $row[38],
+                        't' => '',
+                        'n' => $row[39],
+                    ];
+
+                    if(isset($latest[$country]['policies']['H2']))
+                    {
+                        if(
+                            $latest[$country]['policies']['H2']['v'] != $daily[$country][$date]['policies']['H2']['v']
+                            || $latest[$country]['policies']['H2']['t'] != $daily[$country][$date]['policies']['H2']['t']
+                        )
+                        {
+                            $latest[$country]['policies']['H2'] = [
+                                'v' => $daily[$country][$date]['policies']['H2']['v'],
+                                't' => $daily[$country][$date]['policies']['H2']['t'],
+                                'n' => $daily[$country][$date]['policies']['H2']['n'],
+                                's' => $date,
+                            ];
+                        }
+                        else {
+                            $latest[$country]['policies']['H2'] = [
+                                'v' => $daily[$country][$date]['policies']['H2']['v'],
+                                't' => $daily[$country][$date]['policies']['H2']['t'],
+                                'n' => $daily[$country][$date]['policies']['H2']['n'],
+                                's' => $latest[$country]['policies']['H2']['s'],
+                            ];
+                        }
+                    }
+                    else
+                    {
+                        $latest[$country]['policies']['H2'] = [
+                            'v' => $daily[$country][$date]['policies']['H2']['v'],
+                            't' => $daily[$country][$date]['policies']['H2']['t'],
+                            'n' => $daily[$country][$date]['policies']['H2']['n'],
+                            's' => $date,
+                        ];
+                    }
+                }
+
+                if(strlen($row[40]) > 0)
+                {
+                    $daily[$country][$date]['policies']['H3'] = [
+                        'v' => $row[40],
+                        't' => '',
+                        'n' => $row[41],
+                    ];
+
+                    if(isset($latest[$country]['policies']['H3']))
+                    {
+                        if(
+                            $latest[$country]['policies']['H3']['v'] != $daily[$country][$date]['policies']['H3']['v']
+                            || $latest[$country]['policies']['H3']['t'] != $daily[$country][$date]['policies']['H3']['t']
+                        )
+                        {
+                            $latest[$country]['policies']['H3'] = [
+                                'v' => $daily[$country][$date]['policies']['H3']['v'],
+                                't' => $daily[$country][$date]['policies']['H3']['t'],
+                                'n' => $daily[$country][$date]['policies']['H3']['n'],
+                                's' => $date,
+                            ];
+                        }
+                        else {
+                            $latest[$country]['policies']['H3'] = [
+                                'v' => $daily[$country][$date]['policies']['H3']['v'],
+                                't' => $daily[$country][$date]['policies']['H3']['t'],
+                                'n' => $daily[$country][$date]['policies']['H3']['n'],
+                                's' => $latest[$country]['policies']['H3']['s'],
+                            ];
+                        }
+                    }
+                    else
+                    {
+                        $latest[$country]['policies']['H3'] = [
+                            'v' => $daily[$country][$date]['policies']['H3']['v'],
+                            't' => $daily[$country][$date]['policies']['H3']['t'],
+                            'n' => $daily[$country][$date]['policies']['H3']['n'],
+                            's' => $date,
+                        ];
+                    }
+                }
+
+                if(strlen($row[42]) > 0)
+                {
+                    $daily[$country][$date]['policies']['H4'] = [
+                        'v' => $row[42],
+                        't' => '',
+                        'n' => $row[43],
+                    ];
+
+                    if(isset($latest[$country]['policies']['H4']))
+                    {
+                        if(
+                            $latest[$country]['policies']['H4']['v'] != $daily[$country][$date]['policies']['H4']['v']
+                            || $latest[$country]['policies']['H4']['t'] != $daily[$country][$date]['policies']['H4']['t']
+                        )
+                        {
+                            $latest[$country]['policies']['H4'] = [
+                                'v' => $daily[$country][$date]['policies']['H4']['v'],
+                                't' => $daily[$country][$date]['policies']['H4']['t'],
+                                'n' => $daily[$country][$date]['policies']['H4']['n'],
+                                's' => $date,
+                            ];
+                        }
+                        else {
+                            $latest[$country]['policies']['H4'] = [
+                                'v' => $daily[$country][$date]['policies']['H4']['v'],
+                                't' => $daily[$country][$date]['policies']['H4']['t'],
+                                'n' => $daily[$country][$date]['policies']['H4']['n'],
+                                's' => $latest[$country]['policies']['H4']['s'],
+                            ];
+                        }
+                    }
+                    else
+                    {
+                        $latest[$country]['policies']['H4'] = [
+                            'v' => $daily[$country][$date]['policies']['H4']['v'],
+                            't' => $daily[$country][$date]['policies']['H4']['t'],
+                            'n' => $daily[$country][$date]['policies']['H4']['n'],
+                            's' => $date,
+                        ];
+                    }
+                }
+
+                if(strlen($row[44]) > 0)
+                {
+                    $daily[$country][$date]['policies']['H5'] = [
+                        'v' => $row[44],
+                        't' => '',
+                        'n' => $row[45],
+                    ];
+
+                    if(isset($latest[$country]['policies']['H5']))
+                    {
+                        if(
+                            $latest[$country]['policies']['H5']['v'] != $daily[$country][$date]['policies']['H5']['v']
+                            || $latest[$country]['policies']['H5']['t'] != $daily[$country][$date]['policies']['H5']['t']
+                        )
+                        {
+                            $latest[$country]['policies']['H5'] = [
+                                'v' => $daily[$country][$date]['policies']['H5']['v'],
+                                't' => $daily[$country][$date]['policies']['H5']['t'],
+                                'n' => $daily[$country][$date]['policies']['H5']['n'],
+                                's' => $date,
+                            ];
+                        }
+                        else {
+                            $latest[$country]['policies']['H5'] = [
+                                'v' => $daily[$country][$date]['policies']['H5']['v'],
+                                't' => $daily[$country][$date]['policies']['H5']['t'],
+                                'n' => $daily[$country][$date]['policies']['H5']['n'],
+                                's' => $latest[$country]['policies']['H5']['s'],
+                            ];
+                        }
+                    }
+                    else
+                    {
+                        $latest[$country]['policies']['H5'] = [
+                            'v' => $daily[$country][$date]['policies']['H5']['v'],
+                            't' => $daily[$country][$date]['policies']['H5']['t'],
+                            'n' => $daily[$country][$date]['policies']['H5']['n'],
+                            's' => $date,
+                        ];
+                    }
+                }
+
+                if(strlen($row[46]) > 0)
+                {
+                    $daily[$country][$date]['policies']['M1'] = [
+                        'v' => $row[46],
+                        't' => '',
+                        'n' => $row[47],
+                    ];
+
+                    if(isset($latest[$country]['policies']['M1']))
+                    {
+                        if(
+                            $latest[$country]['policies']['M1']['v'] != $daily[$country][$date]['policies']['M1']['v']
+                            || $latest[$country]['policies']['M1']['t'] != $daily[$country][$date]['policies']['M1']['t']
+                        )
+                        {
+                            $latest[$country]['policies']['M1'] = [
+                                'v' => $daily[$country][$date]['policies']['M1']['v'],
+                                't' => $daily[$country][$date]['policies']['M1']['t'],
+                                'n' => $daily[$country][$date]['policies']['M1']['n'],
+                                's' => $date,
+                            ];
+                        }
+                        else {
+                            $latest[$country]['policies']['M1'] = [
+                                'v' => $daily[$country][$date]['policies']['M1']['v'],
+                                't' => $daily[$country][$date]['policies']['M1']['t'],
+                                'n' => $daily[$country][$date]['policies']['M1']['n'],
+                                's' => $latest[$country]['policies']['M1']['s'],
+                            ];
+                        }
+                    }
+                    else
+                    {
+                        $latest[$country]['policies']['M1'] = [
+                            'v' => $daily[$country][$date]['policies']['M1']['v'],
+                            't' => $daily[$country][$date]['policies']['M1']['t'],
+                            'n' => $daily[$country][$date]['policies']['M1']['n'],
+                            's' => $date,
+                        ];
+                    }
+                }
+
+                $daily[$country][$date]['si'] = $row[51];
+                $latest[$country]['si'] = $row[51];
             }
         }
 
