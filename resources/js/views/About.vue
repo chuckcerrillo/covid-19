@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-start justify-center h-full">
+    <div class="flex flex-1 items-start justify-center h-full">
 <!--    <div class="w-full h-full">-->
 <!--        <div class="bg-black opacity-50 absolute top-0 right-0 bottom-0 left-0 z-0" @click="close()"></div>-->
         <div class="bg-slab rounded z-10 p-4 text-sm relative">
@@ -28,25 +28,39 @@
                  </div>
             </div>
         </div>
-        <div class="pt-8">
-            <div class="text-2xl font-bold">Changelog:</div>
-            <div class="font-bold">2020-05-03</div>
-            <ul class="list-disc ml-8 mr-4">
-                <li>Overhauled data structure, which should result in better performance and overall responsiveness of the UI.</li>
-                <li>Layout is slightly more fluid. Now supporting 1280px wide screens. (We'll eventually get down to mobile support!)</li>
-                <li>Government response section has been updated to use the new data provided by the Oxford COVID-19 Government Response Tracker (OxCGRT).</li>
-                <li>Added "Active" as selectable metric in the charts.</li>
-                <li>Revised "About" page. (Hello!)</li>
-                <li>Bugfix: The up/down arrows in the rankings section on the home page were indicating changes in values instead of changes in rank.</li>
-            </ul>
+        <div class="pt-8 w-220 relative h-full">
+            <div class="m-2 text-2xl font-bold">Changelog:</div>
+            <simplebar class="p-2 rounded bg-slab-primary h-128 absolute inset-x-0" style="position:absolute; bottom: 1rem; top: 5rem;">
+                <div class="m2 text-sm">
+                    <div class="font-bold">2020-05-03</div>
+                    <ul class="list-disc ml-8 mr-4">
+                        <li>Overhauled data structure, which should result in better performance and overall responsiveness of the UI.</li>
+                        <li>Layout is slightly more fluid. Now supporting 1280px wide screens. (We'll eventually get down to mobile support!)</li>
+                        <li>Government response section has been updated to use the new data provided by the Oxford COVID-19 Government Response Tracker (OxCGRT).</li>
+                        <li>Added "Active" as selectable metric in the charts.</li>
+                        <li>Revised "About" page. (Hello!)</li>
+                        <li>Bugfix: The up/down arrows in the rankings section on the home page were indicating changes in values instead of changes in rank.</li>
+                    </ul>
+
+                    <div class="font-bold mt-2">2020-04-26</div>
+                    <ul class="list-disc ml-8 mr-4">
+                        <li>Launched COVID-19 tracker!</li>
+                    </ul>
+                </div>
+            </simplebar>
         </div>
 
     </div>
 </template>
 
 <script>
+    import simplebar from 'simplebar-vue';
+    import 'simplebar/dist/simplebar.min.css';
     export default {
         name: "About",
+        components:{
+            simplebar,
+        },
         methods: {
             close()
             {
