@@ -4916,9 +4916,25 @@ class StatsController extends Controller
         $data = [];
 
         $states = State::all();
-        foreach($states AS $state)
+
+        $countries = DB::table('countries')
+            ->selectRaw('countries.id, countries.name, count(states.id) AS total_states')
+            ->join('states','states.country_id','countries.id')
+            ->where('countries.name','!=','Global')
+            ->groupBy('countries.id')
+            ->groupBy('countries.name')
+            ->having('total_states','>',1)
+            ->get();
+
+
+        foreach($countries AS $country)
         {
-            $data[$state->name] = $this->compute_daily($state->country,$state);
+
+            $states = State::where('country_id',$country->id)->get();
+            foreach($states AS $state)
+            {
+                $data[$state->id] = $this->compute_daily($state->country,$state);
+            }
         }
 
         file_put_contents(STATS . 'states_daily.json',json_encode($data));
