@@ -30,20 +30,4 @@ Route::get('/stats/oxford', 'StatsController@oxford');
 Route::get('/stats/rankings', 'StatsController@daily_ranking');
 Route::get('/stats/global_summary', 'StatsController@global_summary');
 Route::get('/stats/at_a_glance', 'StatsController@at_a_glance');
-Route::get('/stats/countries_list_map', 'StatsController@get_all_countries');
-
-
-Route::get('/stats/get_daily', 'StatsController@get_daily');
-Route::get('/stats/get_daily/{country_name}', 'StatsController@get_daily');
-Route::get('/stats/get_daily/{country_name}/{state_name}', 'StatsController@get_daily');
-Route::get('/stats/recalculate_global', 'StatsController@recalculate_global');
-Route::get('/stats/get_all_countries_and_states', 'StatsController@get_all_countries_and_states');
-Route::get('/stats/get_all_countries', 'StatsController@get_all_countries');
-Route::get('/stats/get_countries_daily', 'StatsController@get_countries_daily');
-Route::get('/stats/get_states_daily', 'StatsController@get_states_daily');
-
-Route::get('/stats/generate_global_summary', 'StatsController@generate_global_summary');
-Route::get('/stats/generate_all_countries', 'StatsController@generate_all_countries');
-Route::get('/stats/generate_all_countries_daily', 'StatsController@generate_all_countries_daily');
-Route::get('/stats/generate_all_states_daily', 'StatsController@generate_all_states_daily');
-Route::get('/stats/generate_all_daily', 'StatsController@generate_all_daily');
+Route::get('/stats/countries_list_map', 'StatsController@countries_list_map');

@@ -3,7 +3,6 @@
         <div class="" :class="config.absolute ? 'absolute top-0 left-0 right-0': ''">
             <div v-if="config.solo == false" class="mx-4 pt-4 relative flex items-center justify-between">
                 <h2 class="font-bold text-3xl">{{data.name.full}}</h2>
-
                 <div class="flex">
                     <div
                         class="mr-4 mb-4 text-xs px-4 py-2 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab"
@@ -23,22 +22,22 @@
                     </div>
                     <div class="pr-4 border-r border-lightslab mr-4">
                         <div class="text-xs font-bold">Confirmed</div>
-                        <div class="text-3xl font-bold">{{data.total.c| numeralFormat}}</div>
+                        <div class="text-3xl font-bold">{{data.total.confirmed| numeralFormat}}</div>
                     </div>
                     <div class="pr-4 border-r border-lightslab mr-4">
                         <div class="text-xs font-bold">Deaths</div>
-                        <div class="text-3xl font-bold">{{data.total.d| numeralFormat}}</div>
+                        <div class="text-3xl font-bold">{{data.total.deaths| numeralFormat}}</div>
                     </div>
                     <div class="pr-4 border-r border-lightslab mr-4">
                         <div class="text-xs font-bold">Recovered</div>
-                        <div class="text-3xl font-bold">{{data.total.r| numeralFormat}}</div>
+                        <div class="text-3xl font-bold">{{data.total.recovered| numeralFormat}}</div>
                     </div>
                     <div class="">
                         <div class="text-xs border-lightslab font-bold">Active</div>
-                        <div class="text-3xl font-bold">{{data.total.a| numeralFormat}}</div>
+                        <div class="text-3xl font-bold">{{data.total.confirmed - data.total.deaths - data.total.recovered| numeralFormat}}</div>
                     </div>
                 </div>
-                <div class="text-xs mb-4">As of {{data.total.date}}</div>
+                <div class="text-xs mb-4">As of {{moment(data.total.date).format('YYYY-MM-DD')}}</div>
             </div>
             <div class="mx-4 flex text-xs font-bold justify-between bg-slab-primary rounded-t z-10 relative">
                 <div class="justify-center flex w-full items-end border-b border-lightslab">
@@ -69,52 +68,52 @@
                     <div class="w-full flex justify-center" :class="key == 0 ? 'font-bold' : ''">
                         <div class="w-24 p-2">{{moment(row['date']).format('YYYY-MM-DD')}}</div>
                         <div class="w-24 p-2 border-l border-lightslab">
-                            {{ isNaN(row.c) ? 0 : row.c | numeralFormat}}<br />
-                            <span class="text-red-400" v-if="row.percent.c > 0">(+{{row.percent.c| numeralFormat('0.0%')}})</span>
-                            <span class="text-green-400" v-else>({{row.percent.c | numeralFormat('0.0%')}})</span>
+                            {{ isNaN(row.confirmed) ? 0 : row.confirmed | numeralFormat}}<br />
+                            <span class="text-red-400" v-if="row.confirmedpc > 0">(+{{row.confirmedpc| numeralFormat('0.0%')}})</span>
+                            <span class="text-green-400" v-else>({{row.confirmedpc| numeralFormat('0.0%')}})</span>
                         </div>
                         <div class="w-24 p-2">
-                            {{ isNaN(row.d) ? 0 : row.d | numeralFormat}}<br />
-                            <span class="text-red-400" v-if="row.percent.d > 0">(+{{row.percent.d| numeralFormat('0.0%')}})</span>
-                            <span class="text-green-400" v-else>({{row.percent.d | numeralFormat('0.0%')}})</span>
+                            {{ isNaN(row.deaths) ? 0 : row.deaths | numeralFormat}}<br />
+                            <span class="text-red-400" v-if="row.deathspc > 0">(+{{row.deathspc| numeralFormat('0.0%')}})</span>
+                            <span class="text-green-400" v-else>({{row.deathspc| numeralFormat('0.0%')}})</span>
                         </div>
                         <div class="w-24 p-2">
-                            {{ isNaN(row.r) ? 0 : row.r | numeralFormat}}<br />
-                            <span class="text-green-400" v-if="row.percent.r > 0">(+{{row.percent.r | numeralFormat('0.0%')}})</span>
-                            <span class="text-green-400" v-else-if="row.percent.r == 0">({{row.percent.r | numeralFormat('0.0%')}})</span>
-                            <span class="text-red-400" v-else>({{row.percent.r | numeralFormat('0.0%')}})</span>
+                            {{ isNaN(row.recovered) ? 0 : row.recovered | numeralFormat}}<br />
+                            <span class="text-green-400" v-if="row.recoveredpc > 0">(+{{row.recoveredpc| numeralFormat('0.0%')}})</span>
+                            <span class="text-green-400" v-else-if="row.recoveredpc == 0">({{row.recoveredpc| numeralFormat('0.0%')}})</span>
+                            <span class="text-red-400" v-else>({{row.recoveredpc| numeralFormat('0.0%')}})</span>
                         </div>
                         <div class="w-24 p-2">
-                            {{ (isNaN(row.a) ? 0 : row.a) | numeralFormat}}<br />
-                            <span class="text-green-400" v-if="row.delta.a < 0">({{row.delta.a| numeralFormat}})</span>
-                            <span class="text-green-400" v-else-if="row.delta.a == 0">({{row.delta.a| numeralFormat}})</span>
-                            <span class="text-red-400" v-else>(+{{row.delta.a| numeralFormat}})</span><br />
-                            <span class="text-blue-400">{{row.a / row.population | numeralFormat('0.000%')}} of total population</span>
+                            {{ (isNaN(row.active) ? 0 : row.active) | numeralFormat}}<br />
+                            <span class="text-green-400" v-if="row.activeDelta < 0">({{row.activeDelta| numeralFormat}})</span>
+                            <span class="text-green-400" v-else-if="row.activeDelta == 0">({{row.activeDelta| numeralFormat}})</span>
+                            <span class="text-red-400" v-else>(+{{row.activeDelta| numeralFormat}})</span><br />
+                            <span class="text-blue-400">{{row.activepoppc | numeralFormat('0.000%')}} of total population</span>
                         </div>
                         <div class="w-20 p-2 border-l border-slab">
-                            {{row.delta.c| numeralFormat}}
+                            {{row.deltaConfirmed| numeralFormat}}
                         </div>
                         <div class="w-20 p-2">
-                            {{row.delta.d| numeralFormat}}
+                            {{row.deltaDeaths| numeralFormat}}
                         </div>
                         <div class="w-20 p-2">
-                            {{row.delta.r| numeralFormat}}
+                            {{row.deltaRecovered| numeralFormat}}
                         </div>
                         <div class="w-24 p-2 border-l border-slab">
-                            {{row.capita.c | numeralFormat('0,000.00')}}
+                            {{row.confirmedcap | numeralFormat('0,000.00')}}
                         </div>
                         <div class="w-24 p-2 border-l border-slab">
-                            {{row.capita.d | numeralFormat('0,000.00')}}
+                            {{row.deathscap | numeralFormat('0,000.00')}}
                         </div>
                         <div class="w-24 p-2 border-l border-slab">
-                            {{row.capita.r | numeralFormat('0,000.00')}}
+                            {{row.recoveredcap | numeralFormat('0,000.00')}}
                         </div>
                         <div class="w-24 p-2">
-                            {{row.average.c | numeralFormat('0,000.0')}}
+                            {{row.average | numeralFormat('0,000.0')}}
                         </div>
                         <div class="w-16 p-2">
-                            <span class="text-red-400" v-if="row.growth.c > 1">{{row.growth.c | numeralFormat('0.00')}}</span>
-                            <span class="text-green-400" v-else>{{row.growth.c | numeralFormat('0.00')}}</span>
+                            <span class="text-red-400" v-if="row.growthFactor > 1">{{row.growthFactor}}</span>
+                            <span class="text-green-400" v-else>{{row.growthFactor}}</span>
                         </div>
                     </div>
                     <div v-if="key==0" class="w-full text-lightlabel flex justify-center">
@@ -148,10 +147,10 @@
         </simplebar>
 
 
-<!--        <FullCountry v-if="expanded"-->
-<!--                     :data="recomputed"-->
-<!--                    v-on:close="toggleExpand"-->
-<!--        />-->
+        <FullCountry v-if="expanded"
+                     :data="recomputed"
+                    v-on:close="toggleExpand"
+        />
     </div>
 </template>
 
@@ -197,6 +196,54 @@
             remove(item){
                 this.$emit('removeCompare',item);
             },
+            recomputeGrowth()
+            {
+                const arrAvg = arr => arr.reduce((a,b) => a + b, 0) / arr.length;
+
+                this.recomputed_data = this.data;
+                this.recomputed_data.growth = [];
+                this.recomputed_data.average = [];
+                this.recomputed_data.growthFactor = [];
+
+                for(var x in this.recomputed_data.delta)
+                {
+                    this.recomputed_data.growth.push(
+                        this.recomputed_data.delta[x].confirmed
+                    )
+                }
+
+                for(var x = 0; x < this.recomputed_data.growth.length; x++)
+                {
+                    var avg = 0;
+                    if(x < 5)
+                    {
+                        avg = arrAvg(this.recomputed_data.growth.slice(0,x+1));
+                    }
+                    else
+                    {
+                        avg = arrAvg(this.recomputed_data.growth.slice(x-5,x+1));
+                    }
+                    this.recomputed_data.average.push(avg.toFixed(1));
+                }
+
+                for(var x = 0; x < this.recomputed_data.average.length; x++)
+                {
+                    var gf = 0;
+                    if(x == 1 || this.recomputed_data.average[x-1] == 0)
+                    {
+                        gf = (this.recomputed_data.average[x]/1).toFixed(2);
+                    }
+                    else
+                    {
+                        gf = (this.recomputed_data.average[x]/this.recomputed_data.average[x-1]).toFixed(2);
+                    }
+                    if(isNaN(gf))
+                    {
+                        gf = 0;
+                    }
+                    this.recomputed_data.growthFactor.push(gf);
+                }
+            }
         },
         computed: {
 
@@ -209,8 +256,6 @@
             annotations()
             {
                 var data = [];
-                console.log('annotations for ' + this.data.name.country);
-                console.log(this.data.annotations)
                 for(var x in this.data.annotations)
                 {
                     if(this.data.annotations[x].country == 'All')
@@ -231,12 +276,48 @@
                 }
                 return data;
             },
+            recomputed()
+            {
+                this.recomputeGrowth();
+                return this.recomputed_data;
+            },
             daily()
             {
-                var result = _.clone(this.data.daily);
-                return result.reverse();
+                var data = [];
+                for(var x in this.recomputed.daily)
+                {
+                    var row = _.cloneDeep(this.recomputed.daily[x]);
+
+                    data.push({
+                        date: moment(row['date']).format('YYYY-MM-DD'),
+                        active: this.recomputed.delta[x].active,
+                        activeDelta: this.recomputed.delta[x].activeDelta,
+                        activepoppc: this.recomputed.delta[x].activepoppc,
+                        confirmed: row.confirmed,
+                        deltaConfirmed: this.recomputed.delta[x].confirmed,
+                        confirmedpc: this.recomputed.delta[x].confirmedpc,
+                        confirmedcap: this.recomputed.delta[x].confirmedcap,
+                        deaths: row.deaths,
+                        deltaDeaths: this.recomputed.delta[x].deaths,
+                        deathspc: this.recomputed.delta[x].deathspc,
+                        deathscap: this.recomputed.delta[x].deathscap,
+                        recovered: row.recovered,
+                        deltaRecovered: this.recomputed.delta[x].recovered,
+                        recoveredpc: this.recomputed.delta[x].recoveredpc,
+                        recoveredcap: this.recomputed.delta[x].recoveredcap,
+                        growth: this.recomputed.growth[x],
+                        average: this.recomputed.average[x],
+                        growthFactor: this.recomputed.growthFactor[x],
+                    });
+                }
+                return data.reverse();
             }
         },
+        watch: {
+            data: function() {
+                this.recomputeGrowth();
+            }
+        }
     }
 </script>
 
