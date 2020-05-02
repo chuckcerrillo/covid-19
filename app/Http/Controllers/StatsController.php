@@ -695,6 +695,40 @@ class StatsController extends Controller
         return response($countries)->setStatusCode(Response::HTTP_OK);
     }
 
+    public function all_scripts_index()
+    {
+        return view('layouts/update');
+    }
+
+    public function update_database(Request $request)
+    {
+        $this->harvest_cases_from_jh_timeline_global($request);
+        $this->harvest_cases_from_jh_timeline_us($request);
+        $this->harvest_oxford();
+        $this->harvest_annotations();
+        $this->data_overrides();
+        $this->recalculate_global();
+
+        return response('Done updating database')->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function update_json()
+    {
+        $this->generate_global_summary();
+        $this->generate_at_a_glance();
+        $this->generate_daily_ranking();
+        $this->generate_all_countries();
+        $this->generate_all_daily();
+        return response('Done updating JSON files')->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function update_all(Request $request)
+    {
+        $this->update_database($request);
+        $this->update_json();
+        return response('Done updating everything')->setStatusCode(Response::HTTP_OK);
+    }
+
     public function full()
     {
         $filename = STATS . 'cases.json';
@@ -2469,6 +2503,7 @@ class StatsController extends Controller
         }
 
         // Do manual override
+        return response('Done overriding data')->setStatusCode(Response::HTTP_OK);
     }
 
     protected function manual_override()
@@ -4363,13 +4398,7 @@ class StatsController extends Controller
         ];
         foreach($files AS $type => $file)
         {
-            if($request->full) {
-                echo '<h1>Partially rebuilding ' . $type . '</h1>';
-            }
-            else
-            {
-                echo '<h1>Fully rebuilding ' . $type . '</h1>';
-            }
+
             $csv = array_map('str_getcsv', file($file));
 
             foreach($csv AS $key=>$row)
@@ -4489,7 +4518,6 @@ class StatsController extends Controller
 
         foreach($time_series AS $country_name => $state_data)
         {
-            echo 'Rebuilding: ' . $country_name . '<br />';
             $country = Country::where('name',$country_name)->first();
             if($country)
             {
@@ -4528,7 +4556,7 @@ class StatsController extends Controller
                 }
             }
         }
-        dump("done");
+        return response('Done harvesting from JH global data')->setStatusCode(Response::HTTP_OK);
     }
 
     public function harvest_cases_from_jh_timeline_us(Request $request)
@@ -4670,8 +4698,7 @@ class StatsController extends Controller
                 }
             }
         }
-
-        dump('done');
+        return response('Done harvesting from JH US data')->setStatusCode(Response::HTTP_OK);
     }
 
     public function recalculate_global()
