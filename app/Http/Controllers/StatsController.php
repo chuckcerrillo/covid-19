@@ -695,6 +695,40 @@ class StatsController extends Controller
         return response($countries)->setStatusCode(Response::HTTP_OK);
     }
 
+    public function all_scripts_index()
+    {
+        return view('layouts/update');
+    }
+
+    public function update_database(Request $request)
+    {
+        $this->harvest_cases_from_jh_timeline_global($request);
+        $this->harvest_cases_from_jh_timeline_us($request);
+        $this->harvest_oxford();
+        $this->harvest_annotations();
+        $this->data_overrides();
+        $this->recalculate_global();
+
+        return response('Done updating database')->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function update_json()
+    {
+        $this->generate_global_summary();
+        $this->generate_at_a_glance();
+        $this->generate_daily_ranking();
+        $this->generate_all_countries();
+        $this->generate_all_daily();
+        return response('Done updating JSON files')->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function update_all(Request $request)
+    {
+        $this->update_database($request);
+        $this->update_json();
+        return response('Done updating everything')->setStatusCode(Response::HTTP_OK);
+    }
+
     public function full()
     {
         $filename = STATS . 'cases.json';
@@ -2289,7 +2323,6 @@ class StatsController extends Controller
         {
             if(!isset($records['today'][$state_id]))
             {
-                dump($state_id . ' -- ' . $date . ' does not exist');
                 // Create new records for today based on yesterday's data
                 DB::table('cases')->insert(
                     [
@@ -2307,11 +2340,6 @@ class StatsController extends Controller
 
         // Do wikipedia
         $data = $this->harvest_wikipedia();
-
-
-
-
-
 
         foreach($data AS $row)
         {
@@ -2469,6 +2497,93 @@ class StatsController extends Controller
         }
 
         // Do manual override
+        $data = $this->manual_override();
+//        dd($data['United States']);
+        foreach($data AS $country_name => $rows)
+        {
+            foreach($rows AS $date => $states)
+            {
+                foreach($states AS $state_name => $row)
+                {
+                    $state = DB::table('states')
+                        ->where('country_id','=',$countries[$country_name])
+                        ->where('name','=',$state_name)
+                        ->get()
+                        ->first();
+                    if($state)
+                    {
+                        $update = [];
+
+                        // If unspecified, this means we are updating the country's stats, so we subtract from existing states
+                        if($state_name == '(Unspecified)')
+                        {
+                            $total = DB::table('cases')
+                                ->selectRaw('sum(confirmed) AS confirmed, sum(deaths) AS deaths, sum(recovered) AS recovered')
+                                ->join('states','states.id','cases.state_id')
+                                ->join('countries','countries.id','states.country_id')
+                                ->where('cases.state_id','!=',$state->id)
+                                ->where('countries.id','=',$countries[$country_name])
+                                ->where('date','=',$date)
+                                ->get()->first();
+                            if($total)
+                            {
+                                if(isset($row['confirmed']) && strlen($row['confirmed']) > 0)
+                                {
+                                    $update['confirmed'] = intval($row['confirmed']) - $total->confirmed;
+                                }
+                                if(isset($row['deaths']) && strlen($row['deaths']) > 0)
+                                {
+                                    $update['deaths'] = intval($row['deaths']) - $total->deaths;
+                                }
+                                if(isset($row['recovered']) && strlen($row['recovered']) > 0)
+                                {
+                                    $update['recovered'] = intval($row['recovered']) - $total->recovered;
+                                }
+                            }
+                            else
+                            {
+                                if(isset($row['confirmed']) && strlen($row['confirmed']) > 0)
+                                {
+                                    $update['confirmed'] = intval($row['confirmed']);
+                                }
+                                if(isset($row['deaths']) && strlen($row['deaths']) > 0)
+                                {
+                                    $update['deaths'] = intval($row['deaths']);
+                                }
+                                if(isset($row['recovered']) && strlen($row['recovered']) > 0)
+                                {
+                                    $update['recovered'] = intval($row['recovered']);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if(isset($row['confirmed']) && strlen($row['confirmed']) > 0)
+                            {
+                                $update['confirmed'] = intval($row['confirmed']);
+                            }
+                            if(isset($row['deaths']) && strlen($row['deaths']) > 0)
+                            {
+                                $update['deaths'] = intval($row['deaths']);
+                            }
+                            if(isset($row['recovered']) && strlen($row['recovered']) > 0)
+                            {
+                                $update['recovered'] = intval($row['recovered']);
+                            }
+                        }
+
+                        if(count($update)>0)
+                        {
+                            DB::table('cases')
+                                ->where('date','=',$date)
+                                ->where('state_id','=',$state->id)
+                                ->update($update);
+                        }
+                    }
+                }
+            }
+        }
+        return response('Done overriding data')->setStatusCode(Response::HTTP_OK);
     }
 
     protected function manual_override()
@@ -4363,13 +4478,7 @@ class StatsController extends Controller
         ];
         foreach($files AS $type => $file)
         {
-            if($request->full) {
-                echo '<h1>Partially rebuilding ' . $type . '</h1>';
-            }
-            else
-            {
-                echo '<h1>Fully rebuilding ' . $type . '</h1>';
-            }
+
             $csv = array_map('str_getcsv', file($file));
 
             foreach($csv AS $key=>$row)
@@ -4489,7 +4598,6 @@ class StatsController extends Controller
 
         foreach($time_series AS $country_name => $state_data)
         {
-            echo 'Rebuilding: ' . $country_name . '<br />';
             $country = Country::where('name',$country_name)->first();
             if($country)
             {
@@ -4528,7 +4636,7 @@ class StatsController extends Controller
                 }
             }
         }
-        dump("done");
+        return response('Done harvesting from JH global data')->setStatusCode(Response::HTTP_OK);
     }
 
     public function harvest_cases_from_jh_timeline_us(Request $request)
@@ -4670,8 +4778,7 @@ class StatsController extends Controller
                 }
             }
         }
-
-        dump('done');
+        return response('Done harvesting from JH US data')->setStatusCode(Response::HTTP_OK);
     }
 
     public function recalculate_global()
