@@ -484,11 +484,11 @@ class StatsController extends Controller
         'Afghanistan' => 'Afghanistan',
         'Algeria' => 'Algeria',
         'Albania' => 'Albania',
-        'Argentina' => 'Argentina',
-        'Armenia' => 'Armenia',
         'Andorra' => 'Andorra',
         'Angola' => 'Angola',
         'Antigua & Barbuda' => 'Antigua and Barbuda',
+        'Argentina' => 'Argentina',
+        'Armenia' => 'Armenia',
         'Austria' => 'Austria',
         'Australia' => 'Australia',
         'Azerbaijan' => 'Azerbaijan',
@@ -520,7 +520,7 @@ class StatsController extends Controller
         'China' => 'China',
         'Colombia' => 'Colombia',
         'DR Congo' => 'Congo (Kinshasa)',
-        'Reupblic of the Congo' => 'Congo (Brazzaville)',
+        'Republic of the Congo' => 'Congo (Brazzaville)',
         'Costa Rica' => 'Costa Rica',
         'Ivory Coast' => 'Cote d\'Ivoire',
         'Croatia' => 'Croatia',
@@ -653,7 +653,7 @@ class StatsController extends Controller
         'Turkey' => 'Turkey',
         'United Arab Emirates' => 'United Arab Emirates',
         'Uganda' => 'Uganda',
-        'UK' => 'United Kingdom',
+        'United Kingdom' => 'United Kingdom',
         'Ukraine' => 'Ukraine',
         'Uruguay' => 'Uruguay',
         'United States' => 'United States',
@@ -2340,6 +2340,7 @@ class StatsController extends Controller
 
         // Do wikipedia
         $data = $this->harvest_wikipedia();
+        dump($data);
 
         foreach($data AS $row)
         {
@@ -2366,6 +2367,7 @@ class StatsController extends Controller
 
                     if($state)
                     {
+
                         // If this is a multiple-state country, we need to take them into account and subtract them from the (Unspecified) number
                         $current_states = DB::table('cases')
                             ->selectRaw('sum(cases.confirmed) as confirmed, sum(cases.deaths) as deaths, sum(cases.recovered) as recovered')
@@ -2375,6 +2377,14 @@ class StatsController extends Controller
                             ->where('countries.id','=',$state->country_id)
                             ->where('states.id','!=','(Unspecified)')
                             ->get()->first();
+
+                        if($row['country'] == 'United Kingdom')
+                        {
+                            dump('current');
+                            dump($current_states);
+                            dump('wikipedia');
+                            dump($row);
+                        }
 
                         if(isset($current_states->confirmed))
                         {
@@ -2514,8 +2524,9 @@ class StatsController extends Controller
         }
 
         // Do manual override
-        $data = $this->manual_override();
+//        $data = $this->manual_override();
 //        dd($data['United States']);
+        $data = [];
         foreach($data AS $country_name => $rows)
         {
             foreach($rows AS $date => $states)
@@ -4887,7 +4898,7 @@ class StatsController extends Controller
         }
 
         file_put_contents(STATS . 'states_daily.json',json_encode($data));
-        return response($data)->setStatusCode(Response::HTTP_OK);
+        return response('Done generating all countries and states data')->setStatusCode(Response::HTTP_OK);
     }
 
     public function generate_all_daily()
