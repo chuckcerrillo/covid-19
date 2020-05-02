@@ -6,11 +6,11 @@
             v-if="inComparison()"
             :mode="mode"
         />
-        <About
-            v-show="about"
-            v-on:showAbout="showAbout"
-            class="fixed top-0 right-0 bottom-0 left-0 z-20"
-        />
+<!--        <About-->
+<!--            v-show="about"-->
+<!--            v-on:showAbout="showAbout"-->
+<!--            class="fixed top-0 right-0 bottom-0 left-0 z-20"-->
+<!--        />-->
         <router-view
             v-on:updateCompare="updateCompare"
             v-on:updateSelected="updateSelected"

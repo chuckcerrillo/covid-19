@@ -24,7 +24,7 @@
                         <div>
                             <div class="text-shadow rounded-xl p-2 px-8 pb-8 mb-64 sm:mb-0" style="background: rgba(0,0,0,0.5)">
                                 <div class="p-4 xl:p-0 xl:flex items-center justify-center text-center">
-                                    <div class="text-5xl xl:mr-4 xl:text-7xl fullhd:text-9xl font-bold text-white">{{summary.active | numeralFormat}}</div>
+                                    <div class="text-5xl xl:mr-4 xl:text-7xl xl:text-9xl font-bold text-white">{{summary.active | numeralFormat}}</div>
                                     <div>
                                         <div class="text-2xl xl:text-3xl font-bold tracking-tight ">active cases</div>
                                         <div class="text-xs">as of {{summary.last_update}}</div>
@@ -47,7 +47,7 @@
 
 
                             </div>
-                            <div class="hidden fullhd:flex text-base items-center justify-start mt-2" style="">
+                            <div class="hidden xl:flex text-base items-center justify-start mt-2" style="">
                                 <router-link to="/comparison" class="flex text-lightlabel hover:text-white cursor-pointer rounded-lg p-2 px-4" style="background: rgba(0,0,0,0.8)">
                                     <div class="text-3xl font-bold mr-4 mt-1">Go to the comparison panel</div>
                                     <div class="text-4xl font-bold">&raquo;</div>
@@ -98,7 +98,7 @@
 
 <!--                    </div>-->
 
-                    <div class="fullhd:hidden flex justify-center">
+                    <div class="xl:hidden flex justify-center">
                         <div class="text-2xl max-w-xl text-center text-yellow-400 m-4 my-8 font-bold">For the full features, including comparison views and charts, please view this website on a larger screen.</div>
                     </div>
                 </div>

@@ -39,6 +39,11 @@ export default new VueRouter({
         {
             path: '/glossary', name: 'glossary', component: Glossary,
             meta: {title: 'Glossary'}
-        }
+        },
+        {
+            // About
+            path: '/about', name: 'about', component: Comparison,
+            meta: {title: 'About'}
+        },
     ]
 });

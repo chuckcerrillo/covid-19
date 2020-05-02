@@ -13,7 +13,8 @@
             <router-link to="/comparison/charts" @click="setMode('trends')" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive('comparisonCharts','bg-hoverslab')">Charts</router-link>
 <!--            <div @click="setMode('trends')" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive(mode,'trends','bg-hoverslab')">Trends (coming soon...)</div>-->
 <!--            <div class="p-2 px-4 cursor-pointer text-lightslab" :class="isActive('Trends','bg-hoverslab')">Trends (coming soon...)</div>-->
-            <div @click="showAbout()" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive(mode,'about','bg-hoverslab')">About</div>
+<!--            <div @click="showAbout()" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive(mode,'about','bg-hoverslab')">About</div>-->
+            <router-link to="/about" @click="setMode('about')" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive('about','bg-hoverslab')">About</router-link>
         </div>
     </div>
 </template>

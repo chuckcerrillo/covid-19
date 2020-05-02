@@ -6,7 +6,7 @@
         <div class="hidden xl:block" v-if="!loaded">Loading data</div>
         <div v-else class="h-full overflow-hidden relative">
             <div class="hidden relative h-full xl:flex flex-1">
-                <div class="flex flex-col" :class="view == 'dashboard' ? 'hidden' : ''">
+                <div class="flex flex-col" :class="view == 'dashboard' || view == 'about' ? 'hidden' : ''">
                     <div class="m-4 mb-0 overflow-hidden bg-lightslab rounded h-56 p-4">
                         <div class="text-2xl tracking-tight font-bold">Global tally</div>
                         <div class="text-xs mb-4">as of {{global().last_update}}</div>
@@ -57,10 +57,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="m-4 ml-0 w-full overflow-hidden relative" :class="view == 'dashboard' ? 'ml-4': ''">
+                <div class="m-4 ml-0 w-full overflow-hidden relative" :class="view == 'dashboard' || view == 'about' ? 'ml-4': ''">
                     <div class="bg-slab rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col p-4">
                         <div class="absolute top-0 right-0 bottom-0 left-0 p-4">
-                            <simplebar v-if="view != 'charts' && view != 'dashboard'" class="text-xs w-full">
+                            <simplebar v-if="view != 'charts' && view != 'dashboard' && view != 'about'" class="text-xs w-full">
                                 <div class="w-full flex items-center justify-start">
                                     <div v-for="(row,key,index) in compare">
                                         <div @click="updateSelected(key)" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
@@ -128,7 +128,9 @@
                                 <StatsChart :data="getComparisonData()" :full="true" />
                             </div>
 
-
+                            <div class="h-full relative flex flex-1" v-show="view == 'about'">
+                                <About />
+                            </div>
 
 <!--                            <div class="h-full relative flex flex-1" v-show="view == 'dashboard'">-->
 <!--                                <simplebar data-simplebar-auto-hide="true" class="h-full w-full">-->
@@ -228,10 +230,12 @@
     import Map from '../components/Map';
     import {mapGetters} from 'vuex';
     import GovtResponse from "../components/GovtResponse";
+    import About from "./About";
 
     export default {
         name: "Comparison",
         components:{
+            About,
             simplebar,
             LineChart,
             Daily,
@@ -967,6 +971,10 @@
                 else if(this.$route.name == 'comparisonResponse')
                 {
                     this.ui.content.selectedTab = 'response';
+                }
+                else if(this.$route.name == 'about')
+                {
+                    this.ui.content.selectedTab = 'about';
                 }
                 else
                 {
