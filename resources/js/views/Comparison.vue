@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div class="fullhd:hidden">
+        <div class="xl:hidden">
             <p class="text-sm text-yellow-400 m-4">For the full experience, including comparison views and charts, please view this website on a larger screen (at least 1920x1080). We are currently working on making this tool available on smaller screens.</p>
         </div>
-        <div class="hidden fullhd:block" v-if="!loaded">Loading data</div>
+        <div class="hidden xl:block" v-if="!loaded">Loading data</div>
         <div v-else class="h-full overflow-hidden relative">
-            <div class="hidden relative h-full fullhd:flex flex-1">
+            <div class="hidden relative h-full xl:flex flex-1">
                 <div class="flex flex-col" :class="view == 'dashboard' ? 'hidden' : ''">
                     <div class="m-4 mb-0 overflow-hidden bg-lightslab rounded h-56 p-4">
                         <div class="text-2xl tracking-tight font-bold">Global tally</div>
@@ -60,15 +60,17 @@
                 <div class="m-4 ml-0 w-full overflow-hidden relative" :class="view == 'dashboard' ? 'ml-4': ''">
                     <div class="bg-slab rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col p-4">
                         <div class="absolute top-0 right-0 bottom-0 left-0 p-4">
-                            <div v-if="view != 'charts' && view != 'dashboard'" class="text-xs flex items-center justify-start">
-                                <div v-for="(row,key,index) in compare">
-                                    <div @click="updateSelected(key)" class="w-48 cursor-pointer relative rounded rounded-b-none py-2 px-4 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'">
-                                        {{getCompareLength() > 0 && row.state ? row.state + ' - ' : ''}}
-                                        {{getCompareLength() > 0 ? row.country : '(none)'}}
-                                        <div v-on:click.stop="removeCompare({country: row.country,state: row.state})" class="text-lightlabel text-xs absolute top-0 right-0 m-2 px-2 pb-1 rounded hover:text-heading hover:bg-lightlabel">x</div>
+                            <simplebar v-if="view != 'charts' && view != 'dashboard'" class="text-xs w-full">
+                                <div class="w-full flex items-center justify-start">
+                                    <div v-for="(row,key,index) in compare">
+                                        <div @click="updateSelected(key)" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
+                                            {{getCompareLength() > 0 && row.state ? row.state + ' - ' : ''}}
+                                            {{getCompareLength() > 0 ? row.country : '(none)'}}
+                                            <div v-on:click.stop="removeCompare({country: row.country,state: row.state})" class="text-lightlabel text-xs absolute top-0 right-0 m-2 px-2 pb-1 rounded hover:text-heading hover:bg-lightlabel">x</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </simplebar>
                             <div class="h-full relative" v-if="view == 'response'">
                                 <div v-if="getCompareLength() == 0">
                                     <h1 class="text-3xl font-bold">Government Response Tracker</h1>
