@@ -2355,14 +2355,15 @@ class StatsController extends Controller
                 if(count($states) > 1)
                 {
                     $state = null;
-                    foreach($states AS $index => $row)
+                    foreach($states AS $index => $item)
                     {
-                        if($row->name == '(Unspecified)')
+                        if($item->name == '(Unspecified)')
                         {
-                            $state = $row;
+                            $state = $item;
                             break;
                         }
                     }
+
                     if($state)
                     {
                         // If this is a multiple-state country, we need to take them into account and subtract them from the (Unspecified) number
@@ -2374,21 +2375,25 @@ class StatsController extends Controller
                             ->where('countries.id','=',$state->country_id)
                             ->where('states.id','!=','(Unspecified)')
                             ->get()->first();
+
                         if(isset($current_states->confirmed))
                         {
                             // There's an existing record so we only adjust the (Unspecified) state for this country
                             $input = [];
-                            if(is_numeric($row['confirmed']))
+                            if(strlen($row['confirmed'])>0 && $current_states->confirmed < $row['confirmed'])
                             {
-                                $input['confirmed'] = $row['confirmed'] - $current_states->confirmed;
+                                $input['confirmed'] = intval($row['confirmed']) - $current_states->confirmed;
+                                $input['confirmed_source'] = 'wikipedia';
                             }
-                            if(is_numeric($row['deaths']))
+                            if(strlen($row['deaths'])>0 && $current_states->deaths < $row['deaths'])
                             {
-                                $input['deaths'] = $row['deaths'] - $current_states->deaths;
+                                $input['deaths'] = intval($row['deaths']) - $current_states->deaths;
+                                $input['deaths_source'] = 'wikipedia';
                             }
-                            if(is_numeric($row['recovered']))
+                            if(strlen($row['recovered'])>0 && $current_states->recovered < $row['recovered'])
                             {
-                                $input['recovered'] = $row['recovered'] - $current_states->recovered;
+                                $input['recovered'] = intval($row['recovered']) - $current_states->recovered;
+                                $input['recovered_source'] = 'wikipedia';
                             }
                             DB::table('cases')->updateOrInsert(
                                 [
@@ -2402,17 +2407,20 @@ class StatsController extends Controller
                         {
                             // Create a new record because this is empty
                             $input = [];
-                            if(is_numeric($row['confirmed']))
+                            if(strlen($row['confirmed'])>0)
                             {
-                                $input['confirmed'] = $row['confirmed'];
+                                $input['confirmed'] = intval($row['confirmed']);
+                                $input['confirmed_source'] = 'wikipedia';
                             }
-                            if(is_numeric($row['deaths']))
+                            if(strlen($row['deaths'])>0)
                             {
-                                $input['deaths'] = $row['deaths'];
+                                $input['deaths'] = intval($row['deaths']);
+                                $input['deaths_source'] = 'wikipedia';
                             }
-                            if(is_numeric($row['recovered']))
+                            if(strlen($row['recovered'])>0)
                             {
-                                $input['recovered'] = $row['recovered'];
+                                $input['recovered'] = intval($row['recovered']);
+                                $input['recovered_source'] = 'wikipedia';
                             }
                             DB::table('cases')->updateOrInsert(
                                 [
@@ -2429,17 +2437,20 @@ class StatsController extends Controller
                     // If this is a single-state country, we just insert or update the (Unspecified) record
                     $state = $states[0];
                     $input = [];
-                    if(is_numeric($row['confirmed']))
+                    if(strlen($row['confirmed'])>0)
                     {
-                        $input['confirmed'] = $row['confirmed'];
+                        $input['confirmed'] = intval($row['confirmed']);
+                        $input['confirmed_source'] = 'wikipedia';
                     }
-                    if(is_numeric($row['deaths']))
+                    if(strlen($row['deaths'])>0)
                     {
-                        $input['deaths'] = $row['deaths'];
+                        $input['deaths'] = intval($row['deaths']);
+                        $input['deaths_source'] = 'wikipedia';
                     }
-                    if(is_numeric($row['recovered']))
+                    if(strlen($row['recovered'])>0)
                     {
-                        $input['recovered'] = $row['recovered'];
+                        $input['recovered'] = intval($row['recovered']);
+                        $input['recovered_source'] = 'wikipedia';
                     }
 
                     $case = Cases::where('state_id',$state->id)
@@ -2450,14 +2461,17 @@ class StatsController extends Controller
                         if(!isset($input['confirmed']) || $case->confirmed >= $input['confirmed'])
                         {
                             unset($input['confirmed']);
+                            unset($input['confirmed_source']);
                         }
                         if(!isset($input['deaths']) || $case->deaths > $input['deaths'])
                         {
                             unset($input['deaths']);
+                            unset($input['deaths_source']);
                         }
                         if(!isset($input['recovered']) || $case->recovered > $input['recovered'])
                         {
                             unset($input['recovered']);
+                            unset($input['recovered_source']);
                         }
                         DB::table('cases')->updateOrInsert(
                             [
@@ -2472,14 +2486,17 @@ class StatsController extends Controller
                         if(!isset($input['confirmed']))
                         {
                             unset($input['confirmed']);
+                            unset($input['confirmed_source']);
                         }
                         if(!isset($input['deaths']))
                         {
                             unset($input['deaths']);
+                            unset($input['deaths_source']);
                         }
                         if(!isset($input['recovered']))
                         {
                             unset($input['recovered']);
+                            unset($input['recovered_source']);
                         }
                         if(count($input)>0)
                         {
@@ -2530,14 +2547,17 @@ class StatsController extends Controller
                                 if(isset($row['confirmed']) && strlen($row['confirmed']) > 0)
                                 {
                                     $update['confirmed'] = intval($row['confirmed']) - $total->confirmed;
+                                    $update['confirmed_source'] = 'manual';
                                 }
                                 if(isset($row['deaths']) && strlen($row['deaths']) > 0)
                                 {
                                     $update['deaths'] = intval($row['deaths']) - $total->deaths;
+                                    $update['deaths_source'] = 'manual';
                                 }
                                 if(isset($row['recovered']) && strlen($row['recovered']) > 0)
                                 {
                                     $update['recovered'] = intval($row['recovered']) - $total->recovered;
+                                    $update['recovered_source'] = 'manual';
                                 }
                             }
                             else
@@ -2545,14 +2565,17 @@ class StatsController extends Controller
                                 if(isset($row['confirmed']) && strlen($row['confirmed']) > 0)
                                 {
                                     $update['confirmed'] = intval($row['confirmed']);
+                                    $update['confirmed_source'] = 'manual';
                                 }
                                 if(isset($row['deaths']) && strlen($row['deaths']) > 0)
                                 {
                                     $update['deaths'] = intval($row['deaths']);
+                                    $update['deaths_source'] = 'manual';
                                 }
                                 if(isset($row['recovered']) && strlen($row['recovered']) > 0)
                                 {
                                     $update['recovered'] = intval($row['recovered']);
+                                    $update['recovered_source'] = 'manual';
                                 }
                             }
                         }
@@ -2561,14 +2584,17 @@ class StatsController extends Controller
                             if(isset($row['confirmed']) && strlen($row['confirmed']) > 0)
                             {
                                 $update['confirmed'] = intval($row['confirmed']);
+                                $update['confirmed_source'] = 'manual';
                             }
                             if(isset($row['deaths']) && strlen($row['deaths']) > 0)
                             {
                                 $update['deaths'] = intval($row['deaths']);
+                                $update['deaths_source'] = 'manual';
                             }
                             if(isset($row['recovered']) && strlen($row['recovered']) > 0)
                             {
                                 $update['recovered'] = intval($row['recovered']);
+                                $update['recovered_source'] = 'manual';
                             }
                         }
 
@@ -4615,14 +4641,17 @@ class StatsController extends Controller
                             if(isset($values['confirmed']))
                             {
                                 $input['confirmed'] = $values['confirmed'];
+                                $input['confirmed_source'] = 'JH';
                             }
                             if(isset($values['deaths']))
                             {
                                 $input['deaths'] = $values['deaths'];
+                                $input['deaths_source'] = 'JH';
                             }
                             if(isset($values['recovered']))
                             {
                                 $input['recovered'] = $values['recovered'];
+                                $input['recovered_source'] = 'JH';
                             }
                             DB::table('cases')->updateOrInsert(
                                 [
@@ -4659,13 +4688,13 @@ class StatsController extends Controller
 
             $csv = array_map('str_getcsv', file($file));
 
-            if($request->full) {
-                echo '<h1>Fully rebuilding ' . $type . '</h1>';
-            }
-            else
-            {
-                echo '<h1>Partially rebuilding ' . $type . '</h1>';
-            }
+//            if($request->full) {
+//                echo '<h1>Fully rebuilding ' . $type . '</h1>';
+//            }
+//            else
+//            {
+//                echo '<h1>Partially rebuilding ' . $type . '</h1>';
+//            }
 
             foreach($csv AS $key=>$row)
             {
@@ -4758,7 +4787,7 @@ class StatsController extends Controller
 
         foreach($time_series AS $state_name => $dates)
         {
-            echo 'Rebuilding: ' . $state_name . '<br />';
+//            echo 'Rebuilding: ' . $state_name . '<br />';
             foreach($dates AS $date => $values)
             {
                 $state = State::where([
@@ -4772,7 +4801,9 @@ class StatsController extends Controller
                     ],
                         [
                             'confirmed' => $values['confirmed'],
+                            'confirmed_source' => 'JH',
                             'deaths' => $values['deaths'],
+                            'deaths_source' => 'JH',
                         ]
                     );
                 }
