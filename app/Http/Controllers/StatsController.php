@@ -4898,7 +4898,7 @@ class StatsController extends Controller
         }
 
         file_put_contents(STATS . 'states_daily.json',json_encode($data));
-        return response('Done generating all countries and states data')->setStatusCode(Response::HTTP_OK);
+        return response('Done generating all states data')->setStatusCode(Response::HTTP_OK);
     }
 
     public function generate_all_daily()
@@ -4922,7 +4922,7 @@ class StatsController extends Controller
         }
 
         file_put_contents(STATS . 'states_daily.json',json_encode($data));
-        return response($data)->setStatusCode(Response::HTTP_OK);
+        return response('Done generating all states data')->setStatusCode(Response::HTTP_OK);
 
     }
 
