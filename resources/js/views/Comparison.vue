@@ -7,7 +7,7 @@
         <div v-else class="h-full overflow-hidden relative">
             <div class="hidden relative h-full fullhd:flex flex-1">
                 <div class="flex flex-col" :class="view == 'dashboard' ? 'hidden' : ''">
-                    <div class="m-4 mb-0 overflow-hidden bg-lightslab rounded h-56 z-10 p-4">
+                    <div class="m-4 mb-0 overflow-hidden bg-lightslab rounded h-56 p-4">
                         <div class="text-2xl tracking-tight font-bold">Global tally</div>
                         <div class="text-xs mb-4">as of {{global().last_update}}</div>
 
@@ -95,26 +95,10 @@
                                                 <div class="py-2 text-sm">A higher position in the Stringency Index does not necessarily mean that a country's response is ‘better’ than others lower on the index.</div>
                                             </div>
                                             <div class="flex flex-wrap">
-                                                <div v-if="getGovtResponse(row.country)" v-for="(policy,key,index) in getLatestGovtResponse(row.country)"
-                                                     class="py-1 w-100">
-                                                    <div class="rounded bg-slab-primary mr-4 h-52">
-                                                        <div class="w-full h-full p-2">
-                                                            <div class="font-bold"><span class="uppercase">{{policy.id}}</span> - {{policy.name}}</div>
-                                                            <div class="text-lightlabel text-xs mb-4">{{policy.description}}</div>
-<!--                                                        </div>-->
-<!--                                                        <div class="p-2 w-full">-->
-                                                            <div v-if="policy.value > 1000" class="text-2xl font-bold">US${{policy.value | numeralFormat}}</div>
-                                                            <div v-else-if="policy.id == 's9'" class="text-2xl font-bold">{{policy.value}}%</div>
-                                                            <div v-else-if="policy.id == 's12'" class="font-bold text-sm">{{policy.value}}</div>
-                                                            <div v-else class="text-2xl font-bold">{{policy.value}}</div>
-                                                            <div class="text-xs">{{policy.target}}</div>
-                                                            <div class="text-xs">since {{policy.since}}</div>
-                                                            <div v-if="policy.help.length == 1" class="text-lightlabel text-xs">{{policy.help[0]}}</div>
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
+                                                <GovtResponse
+                                                    v-if="getGovtResponse(row.country)"
+                                                    v-for="(policy,key,index) in getLatestGovtResponse(row.country)"
+                                                    :policy="policy" />
                                             </div>
                                         </div>
                                     </simplebar>
@@ -240,6 +224,7 @@
     import Single from "./Single";
     import Map from '../components/Map';
     import {mapGetters} from 'vuex';
+    import GovtResponse from "../components/GovtResponse";
 
     export default {
         name: "Comparison",
@@ -252,6 +237,7 @@
             Single,
             StatsChart,
             Map,
+            GovtResponse,
         },
         props: [
             'database',
@@ -358,13 +344,20 @@
 
                         if(key.hasTarget)
                         {
-                            if(row.t == 1)
+                            if(key.targets && key.targets.length > 0)
                             {
-                                target = 'Scope: Targeted';
+                                target = 'Scope: ' + key.targets[row.t];
                             }
                             else
                             {
-                                target = 'Scope: General';
+                                if(row.t == 1)
+                                {
+                                    target = 'Scope: Targeted';
+                                }
+                                else
+                                {
+                                    target = 'Scope: General';
+                                }
                             }
                         }
                         if(row.v.length == 0)
@@ -374,7 +367,7 @@
                         }
                         else if(key.type == 'lookup')
                         {
-                            value = key.values[row.v];
+                            value = key.values[parseInt(row.v)];
                         }
                         else
                         {
@@ -389,11 +382,11 @@
                             target: target,
                             since: row.s,
                             help: help,
+                            notes: row.n,
                         })
 
                         data = data.sort(function (a, b) {
-
-                            return parseInt(a.id.substr(1)) > parseInt(b.id.substr(1)) ? 1 : -1;
+                            return a.id > b.id ? 1 : -1;
                         });
                     }
                 }
