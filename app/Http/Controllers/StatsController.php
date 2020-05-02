@@ -4918,12 +4918,12 @@ class StatsController extends Controller
         $states = State::all();
 
         $countries = DB::table('countries')
-            ->selectRaw('countries.id, countries.name, count(states.id) AS total_states')
+            ->selectRaw('countries.id, countries.name, count(states.id) AS states')
             ->join('states','states.country_id','countries.id')
             ->where('countries.name','!=','Global')
             ->groupBy('countries.id')
             ->groupBy('countries.name')
-            ->having('total_states','>',1)
+            ->having('states','>',1)
             ->get();
 
 
