@@ -2282,66 +2282,8 @@ class StatsController extends Controller
         return response('Done harvesting data')->setStatusCode(Response::HTTP_OK);
     }
 
-    public function data_overrides()
+    protected function apply_overrides($countries,$data,$date,$source)
     {
-        $result = Country::all();
-        $countries = [];
-        foreach($result AS $row)
-        {
-            $countries[$row->name] = $row->id;
-        }
-
-        $result = State::all();
-        $states = [];
-        foreach($result AS $row)
-        {
-            $states[$row->name] = $row->id;
-        }
-
-        $date = date('Y-m-d');
-        $yesterday = new \DateTime($date);
-        $yesterday = $yesterday->sub(new \DateInterval('P1D'));
-
-        $records = [];
-        $yesterday_cases = DB::table('cases')
-            ->where('cases.date','=',$yesterday->format('Y-m-d'))
-            ->get();
-        foreach($yesterday_cases AS $row)
-        {
-            $records['yesterday'][$row->state_id] = $row;
-        }
-        $today_cases = DB::table('cases')
-            ->where('cases.date','=',$date)
-            ->get();
-
-        foreach($today_cases AS $row)
-        {
-            $records['today'][$row->state_id] = $row;
-        }
-
-        foreach($records['yesterday'] AS $state_id => $row)
-        {
-            if(!isset($records['today'][$state_id]))
-            {
-                // Create new records for today based on yesterday's data
-                DB::table('cases')->insert(
-                    [
-                        'date' => $date,
-                        'state_id' => $state_id,
-                        'confirmed' => $row->confirmed,
-                        'deaths' => $row->deaths,
-                        'recovered' => $row->recovered,
-                    ]
-                );
-            }
-        }
-
-        // Do worldometers
-
-        // Do wikipedia
-        $data = $this->harvest_wikipedia();
-        dump($data);
-
         foreach($data AS $row)
         {
 //            0 => array:4 [▼
@@ -2367,6 +2309,13 @@ class StatsController extends Controller
 
                     if($state)
                     {
+                        $total_states = DB::table('cases')
+                            ->selectRaw('sum(cases.confirmed) as confirmed, sum(cases.deaths) as deaths, sum(cases.recovered) as recovered')
+                            ->join('states','states.id','cases.state_id')
+                            ->join('countries','countries.id','states.country_id')
+                            ->where('date','=',$date)
+                            ->where('countries.id','=',$state->country_id)
+                            ->get()->first();
 
                         // If this is a multiple-state country, we need to take them into account and subtract them from the (Unspecified) number
                         $current_states = DB::table('cases')
@@ -2375,35 +2324,28 @@ class StatsController extends Controller
                             ->join('countries','countries.id','states.country_id')
                             ->where('date','=',$date)
                             ->where('countries.id','=',$state->country_id)
-                            ->where('states.id','!=','(Unspecified)')
+                            ->where('states.name','!=','(Unspecified)')
                             ->get()->first();
-
-                        if($row['country'] == 'United Kingdom')
-                        {
-                            dump('current');
-                            dump($current_states);
-                            dump('wikipedia');
-                            dump($row);
-                        }
 
                         if(isset($current_states->confirmed))
                         {
+
                             // There's an existing record so we only adjust the (Unspecified) state for this country
                             $input = [];
-                            if(strlen($row['confirmed'])>0 && $current_states->confirmed < $row['confirmed'])
+                            if(strlen($row['confirmed'])>0 && $total_states->confirmed < $row['confirmed'])
                             {
                                 $input['confirmed'] = intval($row['confirmed']) - $current_states->confirmed;
-                                $input['confirmed_source'] = 'wikipedia';
+                                $input['confirmed_source'] = $source;
                             }
-                            if(strlen($row['deaths'])>0 && $current_states->deaths < $row['deaths'])
+                            if(strlen($row['deaths'])>0 && $total_states->deaths < $row['deaths'])
                             {
                                 $input['deaths'] = intval($row['deaths']) - $current_states->deaths;
-                                $input['deaths_source'] = 'wikipedia';
+                                $input['deaths_source'] = $source;
                             }
-                            if(strlen($row['recovered'])>0 && $current_states->recovered < $row['recovered'])
+                            if(strlen($row['recovered'])>0 && intval($row['recovered']) > 0 && $total_states->recovered < $row['recovered'])
                             {
                                 $input['recovered'] = intval($row['recovered']) - $current_states->recovered;
-                                $input['recovered_source'] = 'wikipedia';
+                                $input['recovered_source'] = $source;
                             }
                             DB::table('cases')->updateOrInsert(
                                 [
@@ -2420,17 +2362,17 @@ class StatsController extends Controller
                             if(strlen($row['confirmed'])>0)
                             {
                                 $input['confirmed'] = intval($row['confirmed']);
-                                $input['confirmed_source'] = 'wikipedia';
+                                $input['confirmed_source'] = $source;
                             }
                             if(strlen($row['deaths'])>0)
                             {
                                 $input['deaths'] = intval($row['deaths']);
-                                $input['deaths_source'] = 'wikipedia';
+                                $input['deaths_source'] = $source;
                             }
                             if(strlen($row['recovered'])>0)
                             {
                                 $input['recovered'] = intval($row['recovered']);
-                                $input['recovered_source'] = 'wikipedia';
+                                $input['recovered_source'] = $source;
                             }
                             DB::table('cases')->updateOrInsert(
                                 [
@@ -2450,22 +2392,22 @@ class StatsController extends Controller
                     if(strlen($row['confirmed'])>0)
                     {
                         $input['confirmed'] = intval($row['confirmed']);
-                        $input['confirmed_source'] = 'wikipedia';
+                        $input['confirmed_source'] = $source;
                     }
                     if(strlen($row['deaths'])>0)
                     {
                         $input['deaths'] = intval($row['deaths']);
-                        $input['deaths_source'] = 'wikipedia';
+                        $input['deaths_source'] = $source;
                     }
                     if(strlen($row['recovered'])>0)
                     {
                         $input['recovered'] = intval($row['recovered']);
-                        $input['recovered_source'] = 'wikipedia';
+                        $input['recovered_source'] = $source;
                     }
 
                     $case = Cases::where('state_id',$state->id)
-                                    ->where('date',$date)
-                                    ->get()->first();
+                        ->where('date',$date)
+                        ->get()->first();
                     if(isset($case->confirmed) && $case->confirmed > 0)
                     {
                         if(!isset($input['confirmed']) || $case->confirmed >= $input['confirmed'])
@@ -2522,10 +2464,75 @@ class StatsController extends Controller
                 }
             }
         }
+        return true;
+    }
+
+    public function data_overrides()
+    {
+        $result = Country::all();
+        $countries = [];
+        foreach($result AS $row)
+        {
+            $countries[$row->name] = $row->id;
+        }
+
+        $result = State::all();
+        $states = [];
+        foreach($result AS $row)
+        {
+            $states[$row->name] = $row->id;
+        }
+
+        $date = date('Y-m-d');
+
+        $yesterday = new \DateTime($date);
+        $yesterday = $yesterday->sub(new \DateInterval('P1D'));
+
+        $records = [];
+        $yesterday_cases = DB::table('cases')
+            ->where('cases.date','=',$yesterday->format('Y-m-d'))
+            ->get();
+        foreach($yesterday_cases AS $row)
+        {
+            $records['yesterday'][$row->state_id] = $row;
+        }
+        $today_cases = DB::table('cases')
+            ->where('cases.date','=',$date)
+            ->get();
+
+        foreach($today_cases AS $row)
+        {
+            $records['today'][$row->state_id] = clone $row;
+        }
+
+        foreach($records['yesterday'] AS $state_id => $row)
+        {
+            if(!isset($records['today'][$state_id]))
+            {
+                // Create new records for today based on yesterday's data
+                DB::table('cases')->insert(
+                    [
+                        'date' => $date,
+                        'state_id' => $state_id,
+                        'confirmed' => $row->confirmed,
+                        'deaths' => $row->deaths,
+                        'recovered' => $row->recovered,
+                    ]
+                );
+            }
+        }
+
+        // Do worldometers
+        $data = $this->harvest_worldometer();
+        $this->apply_overrides($countries,$data,$date,'worldometers');
+
+        // Do wikipedia
+        $data = $this->harvest_wikipedia();
+        $this->apply_overrides($countries,$data,$date,'wikipedia');
+
 
         // Do manual override
 //        $data = $this->manual_override();
-//        dd($data['United States']);
         $data = [];
         foreach($data AS $country_name => $rows)
         {
