@@ -2323,7 +2323,6 @@ class StatsController extends Controller
         {
             if(!isset($records['today'][$state_id]))
             {
-                dump($state_id . ' -- ' . $date . ' does not exist');
                 // Create new records for today based on yesterday's data
                 DB::table('cases')->insert(
                     [
@@ -2341,11 +2340,6 @@ class StatsController extends Controller
 
         // Do wikipedia
         $data = $this->harvest_wikipedia();
-
-
-
-
-
 
         foreach($data AS $row)
         {
@@ -2503,6 +2497,92 @@ class StatsController extends Controller
         }
 
         // Do manual override
+        $data = $this->manual_override();
+//        dd($data['United States']);
+        foreach($data AS $country_name => $rows)
+        {
+            foreach($rows AS $date => $states)
+            {
+                foreach($states AS $state_name => $row)
+                {
+                    $state = DB::table('states')
+                        ->where('country_id','=',$countries[$country_name])
+                        ->where('name','=',$state_name)
+                        ->get()
+                        ->first();
+                    if($state)
+                    {
+                        $update = [];
+
+                        // If unspecified, this means we are updating the country's stats, so we subtract from existing states
+                        if($state_name == '(Unspecified)')
+                        {
+                            $total = DB::table('cases')
+                                ->selectRaw('sum(confirmed) AS confirmed, sum(deaths) AS deaths, sum(recovered) AS recovered')
+                                ->join('states','states.id','cases.state_id')
+                                ->join('countries','countries.id','states.country_id')
+                                ->where('cases.state_id','!=',$state->id)
+                                ->where('countries.id','=',$countries[$country_name])
+                                ->where('date','=',$date)
+                                ->get()->first();
+                            if($total)
+                            {
+                                if(isset($row['confirmed']) && strlen($row['confirmed']) > 0)
+                                {
+                                    $update['confirmed'] = intval($row['confirmed']) - $total->confirmed;
+                                }
+                                if(isset($row['deaths']) && strlen($row['deaths']) > 0)
+                                {
+                                    $update['deaths'] = intval($row['deaths']) - $total->deaths;
+                                }
+                                if(isset($row['recovered']) && strlen($row['recovered']) > 0)
+                                {
+                                    $update['recovered'] = intval($row['recovered']) - $total->recovered;
+                                }
+                            }
+                            else
+                            {
+                                if(isset($row['confirmed']) && strlen($row['confirmed']) > 0)
+                                {
+                                    $update['confirmed'] = intval($row['confirmed']);
+                                }
+                                if(isset($row['deaths']) && strlen($row['deaths']) > 0)
+                                {
+                                    $update['deaths'] = intval($row['deaths']);
+                                }
+                                if(isset($row['recovered']) && strlen($row['recovered']) > 0)
+                                {
+                                    $update['recovered'] = intval($row['recovered']);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if(isset($row['confirmed']) && strlen($row['confirmed']) > 0)
+                            {
+                                $update['confirmed'] = intval($row['confirmed']);
+                            }
+                            if(isset($row['deaths']) && strlen($row['deaths']) > 0)
+                            {
+                                $update['deaths'] = intval($row['deaths']);
+                            }
+                            if(isset($row['recovered']) && strlen($row['recovered']) > 0)
+                            {
+                                $update['recovered'] = intval($row['recovered']);
+                            }
+                        }
+
+                        if(count($update)>0)
+                        {
+                            DB::table('cases')
+                                ->where('date','=',$date)
+                                ->where('state_id','=',$state->id)
+                                ->update($update);
+                        }
+                    }
+                }
+            }
+        }
         return response('Done overriding data')->setStatusCode(Response::HTTP_OK);
     }
 
