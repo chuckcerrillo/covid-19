@@ -3899,11 +3899,257 @@ class StatsController extends Controller
 
     public function generate_daily_ranking()
     {
+//  This is probably more efficient, but I got the old code working so I'll abandon this for now
+        
+//        $dates = DB::table('cases')
+//            ->select('date')
+//            ->groupBy('date')
+//            ->orderBy('date','desc')
+//            ->limit(4)
+//            ->get();
+//
+//        $date1 = $dates[0]->date;
+//        $date2 = $dates[1]->date;
+//        $date3 = $dates[2]->date;
+//        $date4 = $dates[3]->date;
+//
+//
+//        $today = [];
+//
+//        // Today - Confirmed surge
+//        $result = DB::select('
+//            SELECT
+//                today.id, today.name, today.confirmed,
+//                (yesterday.confirmed - two_days_ago.confirmed) AS confirmedDelta,
+//                (yesterday.confirmed - two_days_ago.confirmed)/two_days_ago.confirmed AS confirmedDeltaPC
+//            FROM
+//                (SELECT co.id, co.name, SUM(ca.confirmed) AS confirmed
+//                FROM cases ca
+//                INNER JOIN states s
+//                ON s.id = ca.state_id
+//                INNER JOIN countries co
+//                ON co.id = s.country_id
+//                WHERE ca.date = "'.$date1.'"
+//                AND co.name != "Global"
+//                GROUP BY co.id, co.name) today
+//            INNER JOIN
+//                (SELECT co.id, co.name, SUM(ca.confirmed) AS confirmed
+//                FROM cases ca
+//                INNER JOIN states s
+//                ON s.id = ca.state_id
+//                INNER JOIN countries co
+//                ON co.id = s.country_id
+//                WHERE ca.date = "'.$date2.'"
+//                AND co.name != "Global"
+//                GROUP BY co.id, co.name) yesterday
+//            ON today.id = yesterday.id
+//            INNER JOIN
+//                (SELECT co.id, co.name, SUM(ca.confirmed) AS confirmed
+//                FROM cases ca
+//                INNER JOIN states s
+//                ON s.id = ca.state_id
+//                INNER JOIN countries co
+//                ON co.id = s.country_id
+//                WHERE ca.date = "' . $date3 . '"
+//                AND co.name != "Global"
+//                GROUP BY co.id, co.name) two_days_ago
+//            ON yesterday.id = two_days_ago.id
+//            WHERE today.confirmed > 100
+//            ORDER BY confirmedDeltaPC desc
+//        ');
+//
+//        foreach($result AS $index=>$row)
+//        {
+//            $today['confirmedSurge'][$row->name] = [
+//                'rank' => $index,
+//                'id' => $row->id,
+//                'name' => $row->name,
+//                'confirmed' => $row->confirmed,
+//                'confirmedDelta' => $row->confirmedDelta,
+//                'confirmedDeltaPC' => $row->confirmedDeltaPC,
+//            ];
+//        }
+//
+//        // Today - Deaths surge
+//        $result = DB::select('
+//            SELECT
+//                today.id, today.name, today.deaths,
+//                (yesterday.deaths - two_days_ago.deaths) AS deathsDelta,
+//                (yesterday.deaths - two_days_ago.deaths)/two_days_ago.deaths AS deathsDeltaPC
+//            FROM
+//                (SELECT co.id, co.name, SUM(ca.deaths) AS deaths
+//                FROM cases ca
+//                INNER JOIN states s
+//                ON s.id = ca.state_id
+//                INNER JOIN countries co
+//                ON co.id = s.country_id
+//                WHERE ca.date = "'.$date1.'"
+//                AND co.name != "Global"
+//                GROUP BY co.id, co.name) today
+//            INNER JOIN
+//                (SELECT co.id, co.name, SUM(ca.deaths) AS deaths
+//                FROM cases ca
+//                INNER JOIN states s
+//                ON s.id = ca.state_id
+//                INNER JOIN countries co
+//                ON co.id = s.country_id
+//                WHERE ca.date = "'.$date2.'"
+//                AND co.name != "Global"
+//                GROUP BY co.id, co.name) yesterday
+//            ON today.id = yesterday.id
+//            INNER JOIN
+//                (SELECT co.id, co.name, SUM(ca.deaths) AS deaths
+//                FROM cases ca
+//                INNER JOIN states s
+//                ON s.id = ca.state_id
+//                INNER JOIN countries co
+//                ON co.id = s.country_id
+//                WHERE ca.date = "' . $date3 . '"
+//                AND co.name != "Global"
+//                GROUP BY co.id, co.name) two_days_ago
+//            ON yesterday.id = two_days_ago.id
+//            WHERE today.deaths > 100
+//            ORDER BY deathsDeltaPC desc
+//        ');
+//
+//        foreach($result AS $index=>$row)
+//        {
+//            $today['deathsSurge'][$row->name] = [
+//                'rank' => $index,
+//                'id' => $row->id,
+//                'name' => $row->name,
+//                'deaths' => $row->deaths,
+//                'deathsDelta' => $row->deathsDelta,
+//                'deathsDeltaPC' => $row->deathsDeltaPC,
+//            ];
+//        }
+//
+//        dump($today);
+//
+//
+//
+//
+//        $yesterday = [];
+//
+//        // Today - Confirmed surge
+//        $result = DB::select('
+//            SELECT
+//                today.id, today.name, today.confirmed,
+//                (yesterday.confirmed - two_days_ago.confirmed) AS confirmedDelta,
+//                (yesterday.confirmed - two_days_ago.confirmed)/two_days_ago.confirmed AS confirmedDeltaPC
+//            FROM
+//                (SELECT co.id, co.name, SUM(ca.confirmed) AS confirmed
+//                FROM cases ca
+//                INNER JOIN states s
+//                ON s.id = ca.state_id
+//                INNER JOIN countries co
+//                ON co.id = s.country_id
+//                WHERE ca.date = "'.$date1.'"
+//                AND co.name != "Global"
+//                GROUP BY co.id, co.name) today
+//            INNER JOIN
+//                (SELECT co.id, co.name, SUM(ca.confirmed) AS confirmed
+//                FROM cases ca
+//                INNER JOIN states s
+//                ON s.id = ca.state_id
+//                INNER JOIN countries co
+//                ON co.id = s.country_id
+//                WHERE ca.date = "'.$date3.'"
+//                AND co.name != "Global"
+//                GROUP BY co.id, co.name) yesterday
+//            ON today.id = yesterday.id
+//            INNER JOIN
+//                (SELECT co.id, co.name, SUM(ca.confirmed) AS confirmed
+//                FROM cases ca
+//                INNER JOIN states s
+//                ON s.id = ca.state_id
+//                INNER JOIN countries co
+//                ON co.id = s.country_id
+//                WHERE ca.date = "' . $date4 . '"
+//                AND co.name != "Global"
+//                GROUP BY co.id, co.name) two_days_ago
+//            ON yesterday.id = two_days_ago.id
+//            WHERE today.confirmed > 100
+//            ORDER BY confirmedDeltaPC desc
+//        ');
+//
+//        foreach($result AS $index=>$row)
+//        {
+//            $yesterday['confirmedSurge'][$row->name] = [
+//                'rank' => $index,
+//                'id' => $row->id,
+//                'name' => $row->name,
+//                'confirmed' => $row->confirmed,
+//                'confirmedDelta' => $row->confirmedDelta,
+//                'confirmedDeltaPC' => $row->confirmedDeltaPC,
+//            ];
+//        }
+//
+//        // Today - Deaths surge
+//        $result = DB::select('
+//            SELECT
+//                today.id, today.name, today.deaths,
+//                (yesterday.deaths - two_days_ago.deaths) AS deathsDelta,
+//                (yesterday.deaths - two_days_ago.deaths)/two_days_ago.deaths AS deathsDeltaPC
+//            FROM
+//                (SELECT co.id, co.name, SUM(ca.deaths) AS deaths
+//                FROM cases ca
+//                INNER JOIN states s
+//                ON s.id = ca.state_id
+//                INNER JOIN countries co
+//                ON co.id = s.country_id
+//                WHERE ca.date = "'.$date1.'"
+//                AND co.name != "Global"
+//                GROUP BY co.id, co.name) today
+//            INNER JOIN
+//                (SELECT co.id, co.name, SUM(ca.deaths) AS deaths
+//                FROM cases ca
+//                INNER JOIN states s
+//                ON s.id = ca.state_id
+//                INNER JOIN countries co
+//                ON co.id = s.country_id
+//                WHERE ca.date = "'.$date3.'"
+//                AND co.name != "Global"
+//                GROUP BY co.id, co.name) yesterday
+//            ON today.id = yesterday.id
+//            INNER JOIN
+//                (SELECT co.id, co.name, SUM(ca.deaths) AS deaths
+//                FROM cases ca
+//                INNER JOIN states s
+//                ON s.id = ca.state_id
+//                INNER JOIN countries co
+//                ON co.id = s.country_id
+//                WHERE ca.date = "' . $date4 . '"
+//                AND co.name != "Global"
+//                GROUP BY co.id, co.name) two_days_ago
+//            ON yesterday.id = two_days_ago.id
+//            WHERE today.deaths > 100
+//            ORDER BY deathsDeltaPC desc
+//        ');
+//
+//        foreach($result AS $index=>$row)
+//        {
+//            $yesterday['deathsSurge'][$row->name] = [
+//                'rank' => $index,
+//                'id' => $row->id,
+//                'name' => $row->name,
+//                'deaths' => $row->deaths,
+//                'deathsDelta' => $row->deathsDelta,
+//                'deathsDeltaPC' => $row->deathsDeltaPC,
+//            ];
+//        }
+//
+//        dump($yesterday);
+//
+//
+//        foreach($)
+//
+//        dd('done');
         $current_date = date('Y-m-d');
         $dates = DB::table('cases')
             ->select('date')
             ->groupBy('date')
-            ->where('date','!=',$current_date)
+//            ->where('date','!=',$current_date)
             ->orderBy('date','desc')
             ->limit(4)
             ->get();
