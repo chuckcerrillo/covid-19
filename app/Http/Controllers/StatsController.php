@@ -2532,8 +2532,7 @@ class StatsController extends Controller
 
 
         // Do manual override
-//        $data = $this->manual_override();
-        $data = [];
+        $data = $this->manual_override();
         foreach($data AS $country_name => $rows)
         {
             foreach($rows AS $date => $states)
