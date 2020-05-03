@@ -3900,7 +3900,7 @@ class StatsController extends Controller
     public function generate_daily_ranking()
     {
 //  This is probably more efficient, but I got the old code working so I'll abandon this for now
-        
+
 //        $dates = DB::table('cases')
 //            ->select('date')
 //            ->groupBy('date')
@@ -4368,7 +4368,7 @@ class StatsController extends Controller
         $result = [];
         foreach(['confirmedDelta','deathsDelta','recoveredDelta','confirmedSurge','deathsSurge'] AS $field)
         {
-            foreach(array_slice($sorted['today'][$field],0,10) AS $record)
+            foreach($sorted['today'][$field] AS $record)
             {
                 $result[$field][] = $record;
             }
@@ -4401,7 +4401,7 @@ class StatsController extends Controller
         }
 
         file_put_contents(STATS . 'daily_ranking.json',json_encode($result));
-        return response($result)->setStatusCode(Response::HTTP_OK);
+        return response('Done generating files')->setStatusCode(Response::HTTP_OK);
 
     }
 
