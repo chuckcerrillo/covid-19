@@ -270,7 +270,6 @@ class StatsController extends Controller
         'Switzerland' => 'Switzerland',
         'Syria' => 'Syria',
         'Taiwan' => 'Taiwan',
-//        'Taiwan' => 'Taiwan*',
         'Tanzania' => 'Tanzania',
         'Thailand' => 'Thailand',
         'Togo' => 'Togo',
@@ -2292,6 +2291,19 @@ class StatsController extends Controller
 //                "deaths" => "61504"
 //                "recovered" => "126325"
 //            ]
+            if($source == 'wikipedia')
+            {
+                if(!isset($this->wikipedia_jh_map[$row['country']]))
+                    continue;
+                $row['country'] = $this->wikipedia_jh_map[$row['country']];
+            }
+            else if($source == 'worldometers')
+            {
+                if(!isset($this->worldometer_jh_map[$row['country']]))
+                    continue;
+                $row['country'] = $this->worldometer_jh_map[$row['country']];
+            }
+
             if(array_key_exists($row['country'],$countries))
             {
                 $states = State::where('country_id',$countries[$row['country']])->get()->all();
@@ -2517,6 +2529,9 @@ class StatsController extends Controller
                         'confirmed' => $row->confirmed,
                         'deaths' => $row->deaths,
                         'recovered' => $row->recovered,
+                        'confirmed_source' => $row->confirmed_source,
+                        'deaths_source' => $row->deaths_source,
+                        'recovered_source' => $row->recovered_source,
                     ]
                 );
             }
