@@ -2183,9 +2183,9 @@ class StatsController extends Controller
             });
             return [
                 'country' => $columns[0],
-                'confirmed' => $columns[1],
-                'deaths' => $columns[3],
-                'recovered' => $columns[5],
+                'confirmed' => str_replace(',','',$columns[1]),
+                'deaths' => str_replace(',','',$columns[3]),
+                'recovered' => str_replace(',','',$columns[5]),
             ];
         });
         return $data;
@@ -2533,6 +2533,7 @@ class StatsController extends Controller
 
         // Do manual override
         $data = $this->manual_override();
+//        $data = [];
         foreach($data AS $country_name => $rows)
         {
             foreach($rows AS $date => $states)
