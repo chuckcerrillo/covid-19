@@ -2,7 +2,6 @@ import Vue from 'vue';
 import router from './router';
 import App from './components/App';
 import VueNumerals from 'vue-numerals';
-import store from './store';
 
 require('./bootstrap');
 
@@ -18,6 +17,5 @@ const app = new Vue({
     components: {
         App
     },
-    router,
-    store
+    router
 });

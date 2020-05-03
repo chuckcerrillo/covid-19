@@ -22,6 +22,7 @@
         methods: {
             renderLineChart(){
                 var options = this.options;
+                console.log(options);
                 this.renderChart(this.chartData,options);
             }
         },
