@@ -8,7 +8,7 @@
                 <div v-else-if="policy.value.length > 85" class="font-bold text-sm">{{policy.value}}</div>
                 <div v-else-if="policy.value.length > 30" class="font-bold">{{policy.value}}</div>
                 <div v-else-if="policy.value.length > 15" class="font-bold text-2xl">{{policy.value}}</div>
-                <div v-else class="text-3xl font-bold">2x: {{policy.value}}</div>
+                <div v-else class="text-3xl font-bold">{{policy.value}}</div>
 
 
                 <div @click="expanded = true" class="text-xs hover:underline text-lightlabel hover:text-heading cursor-pointer absolute bottom-0 left-0 mb-2 ml-2">More info...</div>
