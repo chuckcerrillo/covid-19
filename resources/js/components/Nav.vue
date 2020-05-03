@@ -20,12 +20,38 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex';
     export default {
         name: "Nav",
         props: [
             'active',
             'mode'
         ],
+        mounted()
+        {
+            if(this.$route.name != 'global')
+            {
+                this.$store.dispatch('fetchCountries');
+                this.$store.dispatch('fetchCountryCases');
+                this.$store.dispatch('fetchStateCases');
+            }
+        },
+        computed:
+        {
+            ...mapGetters({
+                countries: 'countries',
+                countriesIndex: 'countriesIndex',
+                countriesStatus: 'countriesStatus',
+
+                countryCases: 'dailyCountryCases',
+                stateCases: 'dailyStateCases',
+                countryCasesIndex: 'dailyCountryCasesIndex',
+                stateCasesIndex: 'dailyStateCasesIndex',
+
+                countryCasesStatus: 'dailyCountryCasesStatus',
+                stateCasesStatus: 'dailyStateCasesStatus',
+            }),
+        },
         methods: {
             isActive(current, classes){
                 if(this.$route.name == current)

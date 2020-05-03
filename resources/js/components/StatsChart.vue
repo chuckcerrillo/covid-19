@@ -342,6 +342,7 @@
                         ['deaths','Confirmed deaths'],
                         ['deltaDeaths','Daily confirmed deaths'],
                         ['recovered','Confirmed recoveries'],
+                        ['active','Active cases'],
                         ['deltaRecovered','Daily confirmed recoveries'],
                         ['average','Average new cases (5 day spread)'],
                         ['growthFactor','Growth factor'],
@@ -783,6 +784,7 @@
                     }
                 }
 
+
                 // Assemble content
                 for(var x = 0; x <= moment(end).diff(moment(start),'days'); x++)
                 {
@@ -798,6 +800,7 @@
                                     confirmed: [],
                                     deaths: [],
                                     recovered: [],
+                                    active: [],
                                     deltaConfirmed: [],
                                     deltaDeaths: [],
                                     deltaRecovered: [],
@@ -818,14 +821,15 @@
                                 var row = stats[z];
                                 if(moment(row.date).format('YYYY-MM-DD') === current_date)
                                 {
-                                    content[y].confirmed.push(row.confirmed);
-                                    content[y].deaths.push(row.deaths);
-                                    content[y].recovered.push(row.recovered);
-                                    content[y].deltaConfirmed.push(this.data[y].delta[z].confirmed);
-                                    content[y].deltaDeaths.push(this.data[y].delta[z].deaths);
-                                    content[y].deltaRecovered.push(this.data[y].delta[z].recovered);
-                                    content[y].average.push(this.data[y].average[z]);
-                                    content[y].growthFactor.push(this.data[y].growthFactor[z]);
+                                    content[y].confirmed.push(row.c);
+                                    content[y].deaths.push(row.d);
+                                    content[y].recovered.push(row.r);
+                                    content[y].active.push(row.a);
+                                    content[y].deltaConfirmed.push(row.delta.c);
+                                    content[y].deltaDeaths.push(row.delta.d);
+                                    content[y].deltaRecovered.push(row.delta.r);
+                                    content[y].average.push(Math.round(row.average.c*100)/100);
+                                    content[y].growthFactor.push(Math.round(row.growth.c * 100)/100);
                                     found = true;
                                 }
                             }
@@ -838,6 +842,7 @@
                                     content[y].confirmed.push(content[y].confirmed.slice(-1));
                                     content[y].deaths.push(content[y].deaths.slice(-1));
                                     content[y].recovered.push(content[y].recovered.slice(-1));
+                                    content[y].active.push(content[y].active.slice(-1));
                                     content[y].deltaConfirmed.push(content[y].deltaConfirmed.slice(-1));
                                     content[y].deltaDeaths.push(content[y].deltaDeaths.slice(-1));
                                     content[y].deltaRecovered.push(content[y].deltaRecovered.slice(-1));
@@ -849,6 +854,7 @@
                                     content[y].confirmed.push(0);
                                     content[y].deaths.push(0);
                                     content[y].recovered.push(0);
+                                    content[y].active.push(0);
                                     content[y].deltaConfirmed.push(0);
                                     content[y].deltaDeaths.push(0);
                                     content[y].deltaRecovered.push(0);
@@ -1007,6 +1013,53 @@
                                     display: true,
                                     position: position,
                                     id: 'y-recovered',
+
+                                    // grid line settings
+                                    gridLines: {
+                                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                    },
+                                    ticks: {
+                                        fontColor: '#2c3531',
+                                        callback: function(tick, index, ticks) {
+                                            if(
+                                                tick.toString().substr(0,1) == 1
+                                                || tick.toString().substr(0,1) == 5
+                                            )
+                                            {
+                                                return tick.toLocaleString();
+                                            }
+                                        }
+                                    }
+                                },
+                            );
+                        }
+                        else if(this.yAxis[y] == 'active')
+                        {
+                            data.datasets.push(
+                                {
+                                    label: 'Active (' + this.data[x].name.full + ')',
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
+                                    borderDash: [10, 5],
+                                    borderWidth: 2,
+                                    pointRadius: 5,
+                                    fill: false,
+                                    data: _.clone(content[x].active),
+                                    yAxisID: 'y-active'
+                                }
+                            );
+                            options.scales.yAxes.push(
+                                {
+                                    responsive: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Active',
+                                    },
+                                    type: this.options.chartsettings[x][metric].scale,
+                                    display: true,
+                                    position: position,
+                                    id: 'y-active',
 
                                     // grid line settings
                                     gridLines: {
@@ -1350,15 +1403,15 @@
                         // We haven't started logging yet
                         if(!start)
                         {
-                            if(this.options.mode == 'from1' && parseInt(row.confirmed) >= 1)
+                            if(this.options.mode == 'from1' && parseInt(row.c) >= 1)
                             {
                                 start = true;
                             }
-                            else if(this.options.mode == 'from100' && parseInt(row.confirmed) >= 100)
+                            else if(this.options.mode == 'from100' && parseInt(row.c) >= 100)
                             {
                                 start = true;
                             }
-                            else if(this.options.mode == 'from1death' && parseInt(row.deaths) >= 1)
+                            else if(this.options.mode == 'from1death' && parseInt(row.d) >= 1)
                             {
                                 start = true;
                             }
@@ -1377,6 +1430,7 @@
                                         confirmed: [],
                                         deaths: [],
                                         recovered: [],
+                                        active: [],
                                         deltaConfirmed: [],
                                         deltaDeaths: [],
                                         deltaRecovered: [],
@@ -1386,14 +1440,15 @@
                                 );
                             }
 
-                            content[country_index].confirmed.push(row.confirmed);
-                            content[country_index].deaths.push(row.deaths);
-                            content[country_index].recovered.push(row.recovered);
-                            content[country_index].deltaConfirmed.push(this.data[country_index].delta[x].confirmed);
-                            content[country_index].deltaDeaths.push(this.data[country_index].delta[x].deaths);
-                            content[country_index].deltaRecovered.push(this.data[country_index].delta[x].recovered);
-                            content[country_index].average.push(this.data[country_index].average[x]);
-                            content[country_index].growthFactor.push(this.data[country_index].growthFactor[x]);
+                            content[country_index].confirmed.push(row.c);
+                            content[country_index].deaths.push(row.d);
+                            content[country_index].recovered.push(row.r);
+                            content[country_index].active.push(row.a);
+                            content[country_index].deltaConfirmed.push(row.delta.c);
+                            content[country_index].deltaDeaths.push(row.delta.d);
+                            content[country_index].deltaRecovered.push(row.delta.r);
+                            content[country_index].average.push(Math.round(row.average.c * 100)/100);
+                            content[country_index].growthFactor.push(Math.round(row.growth.c * 100)/100);
                         }
                     }
                     if(totalDays < content[country_index].confirmed.length)
@@ -1554,6 +1609,53 @@
                                     display: true,
                                     position: position,
                                     id: 'y-recovered',
+
+                                    // grid line settings
+                                    gridLines: {
+                                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                    },
+                                    ticks: {
+                                        fontColor: '#2c3531',
+                                        callback: function(tick, index, ticks) {
+                                            if(
+                                                tick.toString().substr(0,1) == 1
+                                                || tick.toString().substr(0,1) == 5
+                                            )
+                                            {
+                                                return tick.toLocaleString();
+                                            }
+                                        }
+                                    }
+                                },
+                            );
+                        }
+                        else if(this.yAxis[y] == 'active')
+                        {
+                            data.datasets.push(
+                                {
+                                    label: 'Active (' + this.data[x].name.full + ')',
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
+                                    borderDash: [10, 5],
+                                    borderWidth: 2,
+                                    pointRadius: 5,
+                                    fill: false,
+                                    data: _.cloneDeep(content[x].active),
+                                    yAxisID: 'y-active'
+                                }
+                            );
+                            options.scales.yAxes.push(
+                                {
+                                    responsive: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Active',
+                                    },
+                                    type: this.options.chartsettings[x][metric].scale,
+                                    display: true,
+                                    position: position,
+                                    id: 'y-active',
 
                                     // grid line settings
                                     gridLines: {

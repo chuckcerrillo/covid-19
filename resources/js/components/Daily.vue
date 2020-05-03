@@ -5,10 +5,10 @@
                 <h2 class="font-bold text-3xl">{{data.name.full}}</h2>
 
                 <div class="flex">
-                    <!--                    <div-->
-                    <!--                        class="mr-4 mb-4 text-xs px-4 py-2 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab"-->
-                    <!--                        @click="toggleExpand()"-->
-                    <!--                    >View full stats</div>-->
+<!--                    <div-->
+<!--                        class="mr-4 mb-4 text-xs px-4 py-2 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab"-->
+<!--                        @click="toggleExpand()"-->
+<!--                    >View full stats</div>-->
                     <div
                         class="mr-4 mb-4 text-xs px-4 py-2 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab"
                         @click="remove({country:data.name.country,state:data.name.state})"
@@ -154,10 +154,10 @@
 
 
 
-        <!--        <FullCountry v-if="expanded"-->
-        <!--                     :data="recomputed"-->
-        <!--                    v-on:close="toggleExpand"-->
-        <!--        />-->
+<!--        <FullCountry v-if="expanded"-->
+<!--                     :data="recomputed"-->
+<!--                    v-on:close="toggleExpand"-->
+<!--        />-->
     </div>
 </template>
 

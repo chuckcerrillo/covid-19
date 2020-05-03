@@ -2230,10 +2230,10 @@ class StatsController extends Controller
                 if(isset($this->wikipedia_jh_map[$country]))
                 {
                     return [
-                        'country' => $this->wikipedia_jh_map[$country],
-                        'confirmed' => str_replace(',','',$col_body[0]),
-                        'deaths' => str_replace(',','',$col_body[1]),
-                        'recovered' => str_replace(',','',$col_body[2]),
+                    'country' => $this->wikipedia_jh_map[$country],
+                    'confirmed' => str_replace(',','',$col_body[0]),
+                    'deaths' => str_replace(',','',$col_body[1]),
+                    'recovered' => str_replace(',','',$col_body[2]),
                     ];
                 }
             }
@@ -3108,9 +3108,9 @@ class StatsController extends Controller
                 if(strlen($row[6]) > 0)
                 {
                     $daily[$country][$date]['policies']['C2'] = [
-                        'v' => $row[6],
-                        't' => $row[7],
-                        'n' => $row[8],
+                            'v' => $row[6],
+                            't' => $row[7],
+                            'n' => $row[8],
                     ];
 
                     if(isset($latest[$country]['policies']['C2']))
@@ -3150,9 +3150,9 @@ class StatsController extends Controller
                 if(strlen($row[9]) > 0)
                 {
                     $daily[$country][$date]['policies']['C3'] = [
-                        'v' => $row[9],
-                        't' => $row[10],
-                        'n' => $row[11],
+                            'v' => $row[9],
+                            't' => $row[10],
+                            'n' => $row[11],
                     ];
 
                     if(isset($latest[$country]['policies']['C3']))
@@ -3192,9 +3192,9 @@ class StatsController extends Controller
                 if(strlen($row[12]) > 0)
                 {
                     $daily[$country][$date]['policies']['C4'] = [
-                        'v' => $row[12],
-                        't' => $row[13],
-                        'n' => $row[14],
+                            'v' => $row[12],
+                            't' => $row[13],
+                            'n' => $row[14],
                     ];
 
                     if(isset($latest[$country]['policies']['C4']))
@@ -3234,9 +3234,9 @@ class StatsController extends Controller
                 if(strlen($row[15]) > 0)
                 {
                     $daily[$country][$date]['policies']['C5'] = [
-                        'v' => $row[15],
-                        't' => $row[16],
-                        'n' => $row[17],
+                            'v' => $row[15],
+                            't' => $row[16],
+                            'n' => $row[17],
                     ];
 
 
@@ -3277,9 +3277,9 @@ class StatsController extends Controller
                 if(strlen($row[18]) > 0)
                 {
                     $daily[$country][$date]['policies']['C6'] = [
-                        'v' => $row[18],
-                        't' => $row[19],
-                        'n' => $row[20],
+                            'v' => $row[18],
+                            't' => $row[19],
+                            'n' => $row[20],
                     ];
 
                     if(isset($latest[$country]['policies']['C6']))
@@ -3319,9 +3319,9 @@ class StatsController extends Controller
                 if(strlen($row[21]) > 0)
                 {
                     $daily[$country][$date]['policies']['C7'] = [
-                        'v' => $row[21],
-                        't' => $row[22],
-                        'n' => $row[23],
+                            'v' => $row[21],
+                            't' => $row[22],
+                            'n' => $row[23],
                     ];
 
                     if(isset($latest[$country]['policies']['C7']))
@@ -3361,9 +3361,9 @@ class StatsController extends Controller
                 if($row[24] > 0)
                 {
                     $daily[$country][$date]['policies']['C8'] = [
-                        'v' => $row[24],
-                        't' => '',
-                        'n' => $row[25],
+                            'v' => $row[24],
+                            't' => '',
+                            'n' => $row[25],
                     ];
 
                     if(isset($latest[$country]['policies']['C8']))
@@ -3400,9 +3400,9 @@ class StatsController extends Controller
                 if($row[26] > 0)
                 {
                     $daily[$country][$date]['policies']['E1'] = [
-                        'v' => $row[26],
-                        't' => $row[27],
-                        'n' => $row[28],
+                            'v' => $row[26],
+                            't' => $row[27],
+                            'n' => $row[28],
                     ];
 
                     if(isset($latest[$country]['policies']['E1']))
@@ -3442,9 +3442,9 @@ class StatsController extends Controller
                 if($row[29] > 0)
                 {
                     $daily[$country][$date]['policies']['E2'] = [
-                        'v' => $row[29],
-                        't' => '',
-                        'n' => $row[30],
+                            'v' => $row[29],
+                            't' => '',
+                            'n' => $row[30],
                     ];
 
                     if(isset($latest[$country]['policies']['E2']))
@@ -3484,9 +3484,9 @@ class StatsController extends Controller
                 if($row[31] > 0)
                 {
                     $daily[$country][$date]['policies']['E3'] = [
-                        'v' => $row[31],
-                        't' => '',
-                        'n' => $row[32],
+                            'v' => $row[31],
+                            't' => '',
+                            'n' => $row[32],
                     ];
 
                     if(isset($latest[$country]['policies']['E3']))
@@ -3526,9 +3526,9 @@ class StatsController extends Controller
                 if(strlen($row[33]) > 0)
                 {
                     $daily[$country][$date]['policies']['E4'] = [
-                        'v' => $row[33],
-                        't' => '',
-                        'n' => $row[34],
+                            'v' => $row[33],
+                            't' => '',
+                            'n' => $row[34],
                     ];
 
                     if(isset($latest[$country]['policies']['E4']))
@@ -3568,9 +3568,9 @@ class StatsController extends Controller
                 if(strlen($row[35]) > 0)
                 {
                     $daily[$country][$date]['policies']['H1'] = [
-                        'v' => $row[35],
-                        't' => $row[36],
-                        'n' => $row[37],
+                            'v' => $row[35],
+                            't' => $row[36],
+                            'n' => $row[37],
                     ];
 
                     if(isset($latest[$country]['policies']['H1']))
@@ -3900,7 +3900,7 @@ class StatsController extends Controller
     public function generate_daily_ranking()
     {
 //  This is probably more efficient, but I got the old code working so I'll abandon this for now
-
+        
 //        $dates = DB::table('cases')
 //            ->select('date')
 //            ->groupBy('date')
@@ -4811,8 +4811,8 @@ class StatsController extends Controller
             ->get()->first();
 
         $global = DB::table('countries')->updateOrInsert([
-            'name' => 'Global',
-        ],
+                'name' => 'Global',
+            ],
             [
                 'lat' => 0,
                 'lng' => 0,
@@ -5019,7 +5019,7 @@ class StatsController extends Controller
     {
         $first_date = '2020-01-22';
 
-        // Special preparation for the US time series data...
+         // Special preparation for the US time series data...
         $files = COVID_DATA_TIME_SERIES;
 
         unset($files['confirmed']);

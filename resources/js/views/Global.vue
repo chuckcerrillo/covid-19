@@ -4,21 +4,21 @@
             <div class="relative h-full w-full flex flex-col justify-start items-center overflow-y-scroll">
                 <a name="top"></a>
                 <div class="relative w-full bg-gray-200">
-                    <!--                    <div v-if="ajax && ajax.countries_list_map" class="h-full w-full">-->
+<!--                    <div v-if="ajax && ajax.countries_list_map" class="h-full w-full">-->
                     <div class="h-full w-full splash-bg">
                         <img class="min-h-screen"
-                             src="/img/backgrounds/transparent.png">
-                        <!--                        <Map-->
-                        <!--                            class="w-full overflow-hidden h-256"-->
-                        <!--                            id="world_map"-->
-                        <!--                            :enable="true"-->
-                        <!--                            :data="map_countries"-->
-                        <!--                            :settings="{interactive:false,zoom:2}"-->
-                        <!--                        />-->
+                            src="/img/backgrounds/transparent.png">
+<!--                        <Map-->
+<!--                            class="w-full overflow-hidden h-256"-->
+<!--                            id="world_map"-->
+<!--                            :enable="true"-->
+<!--                            :data="map_countries"-->
+<!--                            :settings="{interactive:false,zoom:2}"-->
+<!--                        />-->
                     </div>
-                    <!--                    <div v-else class="bg-white rounded h-screen">Loading map</div>-->
+<!--                    <div v-else class="bg-white rounded h-screen">Loading map</div>-->
 
-                    <!--                    <div class="absolute top-0 left-0 bottom-0 w-1/2 bg-black opacity-50 z-10"></div>-->
+<!--                    <div class="absolute top-0 left-0 bottom-0 w-1/2 bg-black opacity-50 z-10"></div>-->
 
                     <div class="global_stats absolute z-20  inset-0 sm:left-0 sm:inset-y-0 sm:w-1/2 flex items-center content-center justify-center">
                         <div>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="text-shadow absolute inset-x-0 sm:inset-x-auto bottom-0 mb-44 sm:mb-0 sm:inset-y-0 sm:right-0 sm:flex items-center justify-center sm:w-128 text-center">
                         <div class="text-center">
-                            <div class="text-center"><img src="/img/logo/logo-140.png" class="w-16 inline sm:w-auto" /></div>
+                        <div class="text-center"><img src="/img/logo/logo-140.png" class="w-16 inline sm:w-auto" /></div>
                             <div class="ml-2 sm:ml-4 text-xs sm:text-sm font-normal text-headin"g>Presented by<br><a class="text-white font-bold hover:text-blue-400" href="https://www.makeitsimpler.com.au">Simpler Solutions</a></div>
                             <div class="mt-8 sm:hidden text-white text-shadow font-bold"><img class="inline" src="/img/arrow-down-1.png" /></div>
                         </div>
@@ -68,35 +68,35 @@
                 </div>
 
                 <div class="w-full xl:w-256">
-                    <!--                    <div class="fullhd:hidden text-3xl font-bold tracking-tight text-center mb-4">COVID-19 Tracker</div>-->
-                    <!--                    <div class="flex-col xl:block justify-center items-center">-->
-                    <!--                        <div class="p-4 xl:p-0 xl:flex items-center justify-center text-center">-->
-                    <!--                            <div v-if="loading && loading.global" class="text-5xl xl:mr-4 xl:text-7xl font-bold text-white">{{global.total.active | numeralFormat}}</div>-->
-                    <!--                            <div v-else class="text-5xl xl:mr-4 xl:text-7xl font-bold text-white"></div>-->
-                    <!--                            <div>-->
-                    <!--                                <div class="text-2xl xl:text-3xl font-bold tracking-tight">active cases</div>-->
-                    <!--                                <div class="text-xs text-lightslab">as of {{global.last_update}}</div>-->
-                    <!--                            </div>-->
-                    <!--                        </div>-->
-                    <!--                        <div class="flex items-start mt-4 xl:mt-0 flex-1 justify-center px-4 xl:px-0">-->
-                    <!--                            <div class="w-1/3 xl:w-auto xl:mr-8 text-center">-->
-                    <!--                                <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-white">{{global.total.confirmed| numeralFormat}}</div>-->
-                    <!--                                <div v-else class="xl:text-3xl font-bold text-white"></div>-->
-                    <!--                                <div class="font-bold">confirmed cases</div>-->
-                    <!--                            </div>-->
-                    <!--                            <div class="w-1/3 xl:w-auto xl:mr-8 text-center">-->
-                    <!--                                <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-red-400">{{global.total.deaths| numeralFormat}}</div>-->
-                    <!--                                <div v-else class="xl:text-3xl font-bold text-red-400"></div>-->
-                    <!--                                <div class="font-bold">deaths</div>-->
-                    <!--                            </div>-->
-                    <!--                            <div class="w-1/3 xl:w-auto text-center">-->
-                    <!--                                <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-green-400">{{global.total.recovered| numeralFormat}}</div>-->
-                    <!--                                <div v-else class="xl:text-3xl font-bold text-green-400"></div>-->
-                    <!--                                <div class="font-bold">recoveries</div>-->
-                    <!--                            </div>-->
-                    <!--                        </div>-->
+<!--                    <div class="fullhd:hidden text-3xl font-bold tracking-tight text-center mb-4">COVID-19 Tracker</div>-->
+<!--                    <div class="flex-col xl:block justify-center items-center">-->
+<!--                        <div class="p-4 xl:p-0 xl:flex items-center justify-center text-center">-->
+<!--                            <div v-if="loading && loading.global" class="text-5xl xl:mr-4 xl:text-7xl font-bold text-white">{{global.total.active | numeralFormat}}</div>-->
+<!--                            <div v-else class="text-5xl xl:mr-4 xl:text-7xl font-bold text-white"></div>-->
+<!--                            <div>-->
+<!--                                <div class="text-2xl xl:text-3xl font-bold tracking-tight">active cases</div>-->
+<!--                                <div class="text-xs text-lightslab">as of {{global.last_update}}</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="flex items-start mt-4 xl:mt-0 flex-1 justify-center px-4 xl:px-0">-->
+<!--                            <div class="w-1/3 xl:w-auto xl:mr-8 text-center">-->
+<!--                                <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-white">{{global.total.confirmed| numeralFormat}}</div>-->
+<!--                                <div v-else class="xl:text-3xl font-bold text-white"></div>-->
+<!--                                <div class="font-bold">confirmed cases</div>-->
+<!--                            </div>-->
+<!--                            <div class="w-1/3 xl:w-auto xl:mr-8 text-center">-->
+<!--                                <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-red-400">{{global.total.deaths| numeralFormat}}</div>-->
+<!--                                <div v-else class="xl:text-3xl font-bold text-red-400"></div>-->
+<!--                                <div class="font-bold">deaths</div>-->
+<!--                            </div>-->
+<!--                            <div class="w-1/3 xl:w-auto text-center">-->
+<!--                                <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-green-400">{{global.total.recovered| numeralFormat}}</div>-->
+<!--                                <div v-else class="xl:text-3xl font-bold text-green-400"></div>-->
+<!--                                <div class="font-bold">recoveries</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
 
-                    <!--                    </div>-->
+<!--                    </div>-->
 
                     <div class="xl:hidden flex justify-center">
                         <div class="text-2xl max-w-xl text-center text-yellow-400 m-4 my-8 font-bold">For the full features, including comparison views and charts, please view this website on a larger screen.</div>

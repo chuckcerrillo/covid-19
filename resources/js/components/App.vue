@@ -3,7 +3,7 @@
         <Nav
             v-on:showAbout="showAbout"
             v-on:setMode="setMode"
-            v-show="inComparison()"
+            v-if="inComparison()"
             :mode="mode"
         />
 <!--        <About-->
@@ -22,6 +22,7 @@
 <script>
     import Nav from './Nav';
     import About from "../views/About";
+    import {mapGetters} from 'vuex';
     export default {
         name: "App",
         data()
@@ -62,10 +63,12 @@
             Nav,
             About
         },
-        mounted()
+        created()
         {
 
-
+        },
+        mounted()
+        {
             // axios.get('/api/stats/countries')
             //     .then(res => {
             //         this.database.raw.raw_countries = res.data;
@@ -152,6 +155,19 @@
         },
         computed:
         {
+            ...mapGetters({
+                countries: 'countries',
+                countriesIndex: 'countriesIndex',
+                countriesStatus: 'countriesStatus',
+
+                countryCases: 'dailyCountryCases',
+                stateCases: 'dailyStateCases',
+                countryCasesIndex: 'dailyCountryCasesIndex',
+                stateCasesIndex: 'dailyStateCasesIndex',
+
+                countryCasesStatus: 'dailyCountryCasesStatus',
+                stateCasesStatus: 'dailyStateCasesStatus',
+            }),
             // global()
             // {
             //     return this.database.processed.global;

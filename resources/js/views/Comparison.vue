@@ -132,82 +132,82 @@
                                 <About />
                             </div>
 
-                            <!--                            <div class="h-full relative flex flex-1" v-show="view == 'dashboard'">-->
-                            <!--                                <simplebar data-simplebar-auto-hide="true" class="h-full w-full">-->
-                            <!--                                    <div class="flex items-start">-->
-                            <!--                                        <div class="w-full h-64 md:h-120 xl:h-148 wqhd:h-200">-->
-                            <!--                                            <Map-->
-                            <!--                                                class="w-full xl:rounded-lg overflow-hidden h-full"-->
-                            <!--                                                id="world_map"-->
-                            <!--                                                :enable="true"-->
-                            <!--                                                :data="countries_sorted"-->
-                            <!--                                                :settings="{interactive:true,zoom:1}"-->
-                            <!--                                            />-->
-                            <!--                                            <div class="mt-4 flex">-->
-                            <!--                                                <div @click="ui.dashboard.table = 'daily'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="ui.dashboard.table == 'daily' ? 'border border-heading bg-lightslab':''">Daily stats</div>-->
-                            <!--                                                <div @click="ui.dashboard.table = 'countries'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="ui.dashboard.table == 'countries' ? 'border border-heading  bg-lightslab':''">Countries</div>-->
-                            <!--                                            </div>-->
-                            <!--                                            <div class="mt-4 tableforglobaldata relative bg-hoverslab p-2 rounded" v-show="ui.dashboard.table == 'daily'">-->
-                            <!--                                                <Daily-->
-                            <!--                                                    :data="getGlobalData()"-->
-                            <!--                                                    :settings="{absolute:false, solo:true}"-->
-                            <!--                                                />-->
-                            <!--                                            </div>-->
-                            <!--                                            <div class="mt-4 tableforglobaldata relative bg-hoverslab p-2 rounded" v-show="ui.dashboard.table == 'countries'">-->
-                            <!--                                                <div class="mx-2 border-b border-hoverslab">-->
-                            <!--                                                    <div class="tracking-tight font-bold">Countries and states <br>({{countries().length}} total)</div>-->
-                            <!--                                                    <div class="text-xs text-right">Sorting by {{ui.dashboard.sort_stats.key}} {{ui.dashboard.sort_stats.order}}</div>-->
-                            <!--                                                    <div class="flex font-bold py-2 text-xs items-center bg-slab-primary rounded-t flex justify-center items-end">-->
-                            <!--                                                        <div class="w-4 p-2 m-1 ml-0"></div>-->
-                            <!--                                                        <div class="w-32 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'country' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('country')">Country / Region</div>-->
-                            <!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('confirmed')">Confirmed</div>-->
-                            <!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'deaths' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('deaths')">Deaths</div>-->
-                            <!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'recovered' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('recovered')">Recovered</div>-->
-                            <!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'active' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('active')">Active</div>-->
-                            <!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'population' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('population')">Population</div>-->
-                            <!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'confirmedpc' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('confirmedpc')">Confirmed Per 1M population</div>-->
-                            <!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'deathspc' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('deathspc')">Deaths Per 1M population</div>-->
-                            <!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'recoveredpc' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('recoveredpc')">Recovered Per 1M population</div>-->
-                            <!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'stringencyindex' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('stringencyindex')">Stringency Index</div>-->
-                            <!--                                                    </div>-->
-                            <!--                                                </div>-->
-                            <!--                                                <div class="relative mx-2">-->
-                            <!--                                                        <CountryStateItem-->
-                            <!--                                                            v-for="(data,key,index) in dashboard_countries_sorted()"-->
-                            <!--                                                            :key="key"-->
-                            <!--                                                            :data="data"-->
-                            <!--                                                            :country_key="key"-->
-                            <!--                                                            :compare="compare"-->
-                            <!--                                                            :settings="{dashboard:true}"-->
-                            <!--                                                        />-->
-                            <!--                                                </div>-->
-                            <!--                                            </div>-->
-                            <!--                                        </div>-->
+<!--                            <div class="h-full relative flex flex-1" v-show="view == 'dashboard'">-->
+<!--                                <simplebar data-simplebar-auto-hide="true" class="h-full w-full">-->
+<!--                                    <div class="flex items-start">-->
+<!--                                        <div class="w-full h-64 md:h-120 xl:h-148 wqhd:h-200">-->
+<!--                                            <Map-->
+<!--                                                class="w-full xl:rounded-lg overflow-hidden h-full"-->
+<!--                                                id="world_map"-->
+<!--                                                :enable="true"-->
+<!--                                                :data="countries_sorted"-->
+<!--                                                :settings="{interactive:true,zoom:1}"-->
+<!--                                            />-->
+<!--                                            <div class="mt-4 flex">-->
+<!--                                                <div @click="ui.dashboard.table = 'daily'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="ui.dashboard.table == 'daily' ? 'border border-heading bg-lightslab':''">Daily stats</div>-->
+<!--                                                <div @click="ui.dashboard.table = 'countries'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="ui.dashboard.table == 'countries' ? 'border border-heading  bg-lightslab':''">Countries</div>-->
+<!--                                            </div>-->
+<!--                                            <div class="mt-4 tableforglobaldata relative bg-hoverslab p-2 rounded" v-show="ui.dashboard.table == 'daily'">-->
+<!--                                                <Daily-->
+<!--                                                    :data="getGlobalData()"-->
+<!--                                                    :settings="{absolute:false, solo:true}"-->
+<!--                                                />-->
+<!--                                            </div>-->
+<!--                                            <div class="mt-4 tableforglobaldata relative bg-hoverslab p-2 rounded" v-show="ui.dashboard.table == 'countries'">-->
+<!--                                                <div class="mx-2 border-b border-hoverslab">-->
+<!--                                                    <div class="tracking-tight font-bold">Countries and states <br>({{countries().length}} total)</div>-->
+<!--                                                    <div class="text-xs text-right">Sorting by {{ui.dashboard.sort_stats.key}} {{ui.dashboard.sort_stats.order}}</div>-->
+<!--                                                    <div class="flex font-bold py-2 text-xs items-center bg-slab-primary rounded-t flex justify-center items-end">-->
+<!--                                                        <div class="w-4 p-2 m-1 ml-0"></div>-->
+<!--                                                        <div class="w-32 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'country' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('country')">Country / Region</div>-->
+<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('confirmed')">Confirmed</div>-->
+<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'deaths' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('deaths')">Deaths</div>-->
+<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'recovered' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('recovered')">Recovered</div>-->
+<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'active' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('active')">Active</div>-->
+<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'population' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('population')">Population</div>-->
+<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'confirmedpc' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('confirmedpc')">Confirmed Per 1M population</div>-->
+<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'deathspc' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('deathspc')">Deaths Per 1M population</div>-->
+<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'recoveredpc' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('recoveredpc')">Recovered Per 1M population</div>-->
+<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'stringencyindex' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('stringencyindex')">Stringency Index</div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div class="relative mx-2">-->
+<!--                                                        <CountryStateItem-->
+<!--                                                            v-for="(data,key,index) in dashboard_countries_sorted()"-->
+<!--                                                            :key="key"-->
+<!--                                                            :data="data"-->
+<!--                                                            :country_key="key"-->
+<!--                                                            :compare="compare"-->
+<!--                                                            :settings="{dashboard:true}"-->
+<!--                                                        />-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
 
-                            <!--                                        <div class="w-128 rounded bg-hoverslab p-4 ml-4">-->
-                            <!--                                            <div class="font-bold mb-2">Events</div>-->
-                            <!--                                            <simplebar data-simplebar-auto-hide="true" class="text-sm h-48 md:h-120 xl:h-132 wqhd:h-184" >-->
-                            <!--    &lt;!&ndash;                                        {{getAnnotations()}}&ndash;&gt;-->
-                            <!--                                                <ul>-->
-                            <!--                                                    <li v-if="getAnnotations().length == 0" class="text-xs p-4">-->
-                            <!--                                                        Nothing to show here.-->
-                            <!--                                                    </li>-->
-                            <!--                                                    <li v-for="note in getAnnotations()" class="flex text-xs items-start justify-start mr-4">-->
-                            <!--                                                        <div class="mr-1 w-20 text-date-slab">{{note.date}}</div>-->
-                            <!--                                                        <div class="w-full">-->
-                            <!--                                                            <span v-if="note.state.length > 0" class="font-bold mr-1">[{{note.state}}]</span>-->
-                            <!--                                                            <span>{{note.notes}}</span>-->
-                            <!--                                                            <span v-if="note.url"><a class="underline hover:text-white" :href="note.url">(source)</a></span>-->
-                            <!--                                                        </div>-->
-                            <!--                                                    </li>-->
-                            <!--                                                </ul>-->
-                            <!--                                            </simplebar>-->
-                            <!--                                        </div>-->
-                            <!--                                    </div>-->
+<!--                                        <div class="w-128 rounded bg-hoverslab p-4 ml-4">-->
+<!--                                            <div class="font-bold mb-2">Events</div>-->
+<!--                                            <simplebar data-simplebar-auto-hide="true" class="text-sm h-48 md:h-120 xl:h-132 wqhd:h-184" >-->
+<!--    &lt;!&ndash;                                        {{getAnnotations()}}&ndash;&gt;-->
+<!--                                                <ul>-->
+<!--                                                    <li v-if="getAnnotations().length == 0" class="text-xs p-4">-->
+<!--                                                        Nothing to show here.-->
+<!--                                                    </li>-->
+<!--                                                    <li v-for="note in getAnnotations()" class="flex text-xs items-start justify-start mr-4">-->
+<!--                                                        <div class="mr-1 w-20 text-date-slab">{{note.date}}</div>-->
+<!--                                                        <div class="w-full">-->
+<!--                                                            <span v-if="note.state.length > 0" class="font-bold mr-1">[{{note.state}}]</span>-->
+<!--                                                            <span>{{note.notes}}</span>-->
+<!--                                                            <span v-if="note.url"><a class="underline hover:text-white" :href="note.url">(source)</a></span>-->
+<!--                                                        </div>-->
+<!--                                                    </li>-->
+<!--                                                </ul>-->
+<!--                                            </simplebar>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
 
 
-                            <!--                                </simplebar>-->
-                            <!--                            </div>-->
+<!--                                </simplebar>-->
+<!--                            </div>-->
                         </div>
                     </div>
 
@@ -1037,7 +1037,7 @@
             loaded()
             {
                 if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success')
-                    // if (this.database && this.database.loading && this.database.loading.countries && this.database.loading.states && this.database.loading.annotations && this.database.loading.global && this.database.loading.oxford)
+                // if (this.database && this.database.loading && this.database.loading.countries && this.database.loading.states && this.database.loading.annotations && this.database.loading.global && this.database.loading.oxford)
                 {
                     return true;
                 }
