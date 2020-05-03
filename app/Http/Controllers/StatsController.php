@@ -4618,13 +4618,13 @@ class StatsController extends Controller
 
                 $new_date = new \DateTime($first_date);
 
-                // Further trim to grab last 3 days
+                // Further trim to grab last day
 //                dump('Country: ' . $country . ' State: ' . $state);
                 if($request->full) {
                 }
                 else
                 {
-                    $total = count($row) - 3;
+                    $total = count($row) - 1;
                     array_splice($row,0, $total);
                     $new_date = $new_date->add(new \DateInterval('P' . $total . 'D'));
                 }
@@ -4823,12 +4823,12 @@ class StatsController extends Controller
 
                 $new_date = new \DateTime($first_date);
 
-                // Further trim to grab last 3 days
+                // Further trim to grab last day
                 if($request->full) {
                 }
                 else
                 {
-                    $total = count($row) - 3;
+                    $total = count($row) - 1;
                     array_splice($row,0, $total);
                     $new_date = $new_date->add(new \DateInterval('P' . $total . 'D'));
                 }
