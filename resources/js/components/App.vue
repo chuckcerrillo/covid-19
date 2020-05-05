@@ -42,7 +42,7 @@
                     processed: {
                         'global' : {},
                         'countries': {},
-                        'compare' : {},
+                        'compare' : [],
                         'dataset' : {},
                         'oxford' : {},
                         'annotations' : {},
@@ -130,7 +130,7 @@
             },
             updateCompare(compare)
             {
-                var data = {};
+                var data = [];
                 for(var x in compare)
                 {
                     data[x] = compare[x];
