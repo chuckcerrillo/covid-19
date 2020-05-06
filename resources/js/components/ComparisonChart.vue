@@ -57,6 +57,7 @@
         computed: {
             comparison()
             {
+                console.log(this.data);
                 return this.data;
             },
             dataset()

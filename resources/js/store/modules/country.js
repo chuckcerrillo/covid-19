@@ -21,10 +21,12 @@ const actions = {
         commit('setCountriesStatus','loading');
         axios.get('/api/stats/get_all_countries')
             .then(res => {
+                console.log('got countries');
                 commit('setCountries',res.data);
                 commit('setCountriesStatus','success');
             })
             .catch(error => {
+                console.log('Unable to fetch all countries');
                 commit('setCountriesStatus','error');
             });
     },
