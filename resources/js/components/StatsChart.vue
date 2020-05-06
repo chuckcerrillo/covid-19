@@ -346,6 +346,7 @@
                         ['deltaRecovered','Daily confirmed recoveries'],
                         ['average','Average new cases (5 day spread)'],
                         ['growthFactor','Growth factor'],
+                        ['stringencyIndex','Stringency Index'],
                     ],
                     'scaleType' : [
                         ['logarithmic','Logarithmic'],
@@ -806,6 +807,7 @@
                                     deltaRecovered: [],
                                     average: [],
                                     growthFactor: [],
+                                    stringencyIndex: [],
                                 }
                             );
                         }
@@ -830,6 +832,7 @@
                                     content[y].deltaRecovered.push(row.delta.r);
                                     content[y].average.push(Math.round(row.average.c*100)/100);
                                     content[y].growthFactor.push(Math.round(row.growth.c * 100)/100);
+                                    content[y].stringencyIndex.push(row.stringencyindex);
                                     found = true;
                                 }
                             }
@@ -848,6 +851,7 @@
                                     content[y].deltaRecovered.push(content[y].deltaRecovered.slice(-1));
                                     content[y].average.push(content[y].average.slice(-1));
                                     content[y].growthFactor.push(content[y].growthFactor.slice(-1));
+                                    content[y].stringencyIndex.push(content[y].stringencyIndex.slice(-1));
                                 }
                                 else
                                 {
@@ -860,6 +864,7 @@
                                     content[y].deltaRecovered.push(0);
                                     content[y].average.push(0);
                                     content[y].growthFactor.push(0);
+                                    content[y].stringencyIndex.push(0);
                                 }
                             }
                         }
@@ -1309,6 +1314,47 @@
                                 },
                             );
                         }
+                        else if(this.yAxis[y] == 'stringencyIndex')
+                        {
+                            data.datasets.push(
+                                {
+                                    label: 'Stringency Index (' + this.data[x].name.full + ')',
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
+                                    borderDash: [10, 5],
+                                    borderWidth: 2,
+                                    pointRadius: 5,
+                                    fill: false,
+                                    data: _.clone(content[x].stringencyIndex),
+                                    yAxisID: 'y-stringencyIndex'
+                                }
+                            );
+                            options.scales.yAxes.push(
+                                {
+                                    responsive: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Stringency Index',
+                                    },
+                                    type: this.options.chartsettings[x][metric].scale,
+                                    display: true,
+                                    position: position,
+                                    id: 'y-stringencyIndex',
+
+                                    // grid line settings
+                                    gridLines: {
+                                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                    },
+                                    ticks: {
+                                        fontColor: '#2c3531',
+                                        callback: function(tick, index, ticks) {
+                                            return tick.toLocaleString()
+                                        }
+                                    }
+                                },
+                            );
+                        }
                     }
                 }
 
@@ -1436,6 +1482,7 @@
                                         deltaRecovered: [],
                                         average: [],
                                         growthFactor: [],
+                                        stringencyIndex: [],
                                     }
                                 );
                             }
@@ -1449,6 +1496,7 @@
                             content[country_index].deltaRecovered.push(row.delta.r);
                             content[country_index].average.push(Math.round(row.average.c * 100)/100);
                             content[country_index].growthFactor.push(Math.round(row.growth.c * 100)/100);
+                            content[country_index].stringencyIndex.push(row.stringencyindex);
                         }
                     }
                     if(totalDays < content[country_index].confirmed.length)
@@ -1891,6 +1939,53 @@
                                     display: true,
                                     position: position,
                                     id: 'y-growthFactor',
+
+                                    // grid line settings
+                                    gridLines: {
+                                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                    },
+                                    ticks: {
+                                        fontColor: '#2c3531',
+                                        callback: function(tick, index, ticks) {
+                                            if(
+                                                tick.toString().substr(0,1) == 1
+                                                || tick.toString().substr(0,1) == 5
+                                            )
+                                            {
+                                                return tick.toLocaleString();
+                                            }
+                                        }
+                                    }
+                                },
+                            );
+                        }
+                        else if(this.yAxis[y] == 'stringencyIndex')
+                        {
+                            data.datasets.push(
+                                {
+                                    label: 'Stringency Index (' + this.data[x].name.full + ')',
+                                    type: this.options.chartsettings[x][metric].type,
+                                    backgroundColor: this.options.chartsettings[x][metric].color,
+                                    borderColor: this.options.chartsettings[x][metric].border,
+                                    borderDash: [10, 5],
+                                    borderWidth: 2,
+                                    pointRadius: 5,
+                                    fill: false,
+                                    data: _.cloneDeep(content[x].stringencyIndex),
+                                    yAxisID: 'y-stringencyIndex'
+                                }
+                            );
+                            options.scales.yAxes.push(
+                                {
+                                    responsive: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Stringency Index',
+                                    },
+                                    type: this.options.chartsettings[x][metric].scale,
+                                    display: true,
+                                    position: position,
+                                    id: 'y-stringencyIndex',
 
                                     // grid line settings
                                     gridLines: {
