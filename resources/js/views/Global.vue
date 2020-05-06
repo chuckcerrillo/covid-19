@@ -416,6 +416,7 @@
                 }
                 if(this.ajax && this.ajax.summary)
                 {
+                    console.log(this.ajax.summary);
                     data = this.ajax.summary;
                 }
             },

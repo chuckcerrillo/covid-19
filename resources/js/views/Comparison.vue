@@ -62,7 +62,7 @@
                         <div class="absolute top-0 right-0 bottom-0 left-0 p-4">
                             <simplebar v-if="view != 'charts' && view != 'dashboard' && view != 'about'" class="text-xs w-full">
                                 <div class="w-full flex items-center justify-start">
-                                    <div v-for="(row,key,index) in compare" v-if="row !== false">
+                                    <div v-for="(row,key,index) in compare">
                                         <div @click="updateSelected(key)" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
                                             {{getCompareLength() > 0 && row.state ? row.state + ' - ' : ''}}
                                             {{getCompareLength() > 0 ? row.country : '(none)'}}
@@ -101,7 +101,6 @@
                                                 <GovtResponse
                                                     v-if="getGovtResponse(row.country)"
                                                     v-for="(policy,key,index) in getLatestGovtResponse(row.country)"
-                                                    :key="key"
                                                     :policy="policy" />
                                             </div>
                                         </div>
@@ -114,11 +113,11 @@
                                     Select up to {{options.compare_limit}} countries or states to begin comparing.
                                 </div>
                                 <div v-else class="absolute top-0 right-0 bottom-0 left-0 bg-hoverslab rounded" style="bottom:32px;">
-                                    <div v-if="getCompareLength() > 0 && row" v-for="(row,key,index) in compare" class="" :key="key">
+                                    <div v-if="getCompareLength() > 0" v-for="(row,key,index) in compare" class="">
                                         <div class="h-full" :class="selectedCompareTab != key ? 'hidden' : ''">
                                             <Daily
                                                 v-on:removeCompare="removeCompare"
-                                                :data="getComparisonData()[key]"
+                                                :data="getComparisonData()[index]"
                                                 :settings="{absolute:true, solo:false}"
                                             />
                                         </div>
@@ -287,7 +286,7 @@
                     'table' : 'daily',
                 },
                 'options' : {
-                    'compare_limit' : 10,
+                    'compare_limit' : 5,
                 },
                 'comparison' : [],
 
@@ -535,6 +534,9 @@
                 }
                 row.total = row.daily[row.daily.length - 1];
 
+                console.log('total');
+                console.log(row.total);
+
                 if(this.database.raw.raw_annotations)
                 {
                     if (this.database.raw.raw_annotations['All'] && this.database.raw.raw_annotations['All'].length > 0)
@@ -568,10 +570,6 @@
                     {
                         row = this.assembleDataset(this.database.processed.compare[x])
                         data.push(row);
-                    }
-                    else
-                    {
-                        data.push(false);
                     }
                 }
                 return data;
@@ -617,16 +615,13 @@
                 var found = false;
                 for(var x in this.compare)
                 {
-                    if(this.compare[x])
+                    if(this.compare[x].country == item.country)
                     {
-                        if(this.compare[x].country == item.country)
-                        {
 
-                            if(this.compare[x].state == item.state)
-                            {
-                                found = x;
-                                break;
-                            }
+                        if(this.compare[x].state == item.state)
+                        {
+                            found = x;
+                            break;
                         }
                     }
                 }
@@ -637,8 +632,8 @@
                 var found = this.findCompare(item);
                 if(found)
                 {
-                    var key = found;
-                    this.compare[found] = false;
+                    var key = item.country + item.state;
+                    delete this.compare[found];
                     if(key == this.selectedCompareTab)
                     {
                         this.updateSelected(this.getLastCompareItem());
@@ -791,7 +786,7 @@
                     // Add new item
                     if(this.getCompareLength() < this.options.compare_limit)
                     {
-                        this.compare.push({country: country, state: state});
+                        this.compare[country+state] = {country: country, state: state};
                     }
 
                     this.updateSelected(this.getLastCompareItem());
@@ -800,6 +795,8 @@
             },
             countries_and_stats()
             {
+                console.log('countries');
+                console.log(this.countries);
                 return _.clone(this.countries);
             },
             updateSelected(key)
