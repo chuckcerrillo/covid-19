@@ -86,7 +86,7 @@
                                 </div>
                                 <div v-else class="absolute top-0 left-0 right-0 bottom-0 rounded bg-hoverslab">
                                     <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0 m-4" style="position:absolute">
-                                        <div v-for="(row,key,index) in getUniqueCountriesCompare()" class="bg-hoverslab rounded p-4" v-if="selectedCompareTab.substr(0,row.country.length) == row.country">
+                                        <div v-for="(row,key,index) in getUniqueCountriesCompare()" class="bg-hoverslab rounded p-4" v-if="selectedCompareTab.substr(0,row.country.length) == row.country" :key="index">
                                             <div class="my-4">
                                                 <div class="w-128 text-4xl font-bold">{{row.country}}</div>
                                                 <div v-if="getGovtResponse(row.country)" class="text-6xl font-bold">{{getGovtResponse(row.country).latest.si}}</div>
@@ -101,6 +101,7 @@
                                                 <GovtResponse
                                                     v-if="getGovtResponse(row.country)"
                                                     v-for="(policy,key,index) in getLatestGovtResponse(row.country)"
+                                                    :key="index"
                                                     :policy="policy" />
                                             </div>
                                         </div>
@@ -534,9 +535,6 @@
                 }
                 row.total = row.daily[row.daily.length - 1];
 
-                console.log('total');
-                console.log(row.total);
-
                 if(this.database.raw.raw_annotations)
                 {
                     if (this.database.raw.raw_annotations['All'] && this.database.raw.raw_annotations['All'].length > 0)
@@ -649,11 +647,23 @@
                     var countryId = this.countriesIndex.indexOf(compare.country);
                     if(countryId >= 0)
                     {
+
+                        var policies = this.getGovtResponse(compare.country);
+                        if(policies && policies.daily)
+                        {
+                            policies = policies.daily;
+                        }
+                        else
+                        {
+                            policies = false;
+                        }
+
                         if(!compare.state)
                         {
                             if(this.countryCases[compare.country] && this.countryCases[compare.country].daily)
                             {
                                 var daily = _.clone(this.countryCases[compare.country].daily);
+                                var stringencyindex = 0;
                                 for(var x in daily)
                                 {
                                     daily[x].delta.a = daily[x].delta.c - daily[x].delta.d - daily[x].delta.r;
@@ -671,6 +681,12 @@
                                         daily[x].percent.r = 0;
                                     }
 
+
+                                    if (daily[x].date && policies && policies[daily[x].date])
+                                    {
+                                        stringencyindex = policies[daily[x].date].si;
+                                    }
+                                    daily[x].stringencyindex = stringencyindex;
                                 }
                                 return daily;
                             }
