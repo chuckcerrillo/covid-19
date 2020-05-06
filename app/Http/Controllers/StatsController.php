@@ -5000,13 +5000,50 @@ class StatsController extends Controller
                                 $input['recovered'] = $values['recovered'];
                                 $input['recovered_source'] = 'JH';
                             }
-                            DB::table('cases')->updateOrInsert(
-                                [
-                                    'state_id' => $state->id,
-                                    'date' => $date,
-                                ],
-                                $input
-                            );
+
+                            $case = DB::table('cases')
+                                ->where('state_id','=',$state->id)
+                                ->where('date','=',$date)
+                                ->get()->first();
+
+                            if($case)
+                            {
+                                if($case->confirmed && $case->confirmed > $input['confirmed'])
+                                {
+                                    unset($input['confirmed']);
+                                    unset($input['confirmed_source']);
+                                }
+                                if($case->deaths && $case->deaths > $input['deaths'])
+                                {
+                                    unset($input['deaths']);
+                                    unset($input['deaths_source']);
+                                }
+                                if($case->recovered && $case->recovered > $input['recovered'])
+                                {
+                                    unset($input['recovered']);
+                                    unset($input['recovered_source']);
+                                }
+                                if(count($input)>0)
+                                {
+                                    DB::table('cases')->updateOrInsert(
+                                        [
+                                            'state_id' => $state->id,
+                                            'date' => $date,
+                                        ],
+                                        $input
+                                    );
+                                }
+                            }
+                            else
+                            {
+                                DB::table('cases')->updateOrInsert(
+                                    [
+                                        'state_id' => $state->id,
+                                        'date' => $date,
+                                    ],
+                                    $input
+                                );
+                            }
                         }
                     }
                 }
@@ -5142,17 +5179,67 @@ class StatsController extends Controller
                     'country_id' => $country->id,
                 ])->first();
                 if($state) {
-                    DB::table('cases')->updateOrInsert([
-                        'state_id' => $state->id,
-                        'date' => $date,
-                    ],
-                        [
-                            'confirmed' => $values['confirmed'],
-                            'confirmed_source' => 'JH',
-                            'deaths' => $values['deaths'],
-                            'deaths_source' => 'JH',
-                        ]
-                    );
+
+                    $input = [];
+                    if(isset($values['confirmed']))
+                    {
+                        $input['confirmed'] = $values['confirmed'];
+                        $input['confirmed_source'] = 'JH';
+                    }
+                    if(isset($values['deaths']))
+                    {
+                        $input['deaths'] = $values['deaths'];
+                        $input['deaths_source'] = 'JH';
+                    }
+                    if(isset($values['recovered']))
+                    {
+                        $input['recovered'] = $values['recovered'];
+                        $input['recovered_source'] = 'JH';
+                    }
+
+                    $case = DB::table('cases')
+                        ->where('state_id','=',$state->id)
+                        ->where('date','=',$date)
+                        ->get()->first();
+
+                    if($case)
+                    {
+                        if($case->confirmed && $case->confirmed > $input['confirmed'])
+                        {
+                            unset($input['confirmed']);
+                            unset($input['confirmed_source']);
+                        }
+                        if($case->deaths && $case->deaths > $input['deaths'])
+                        {
+                            unset($input['deaths']);
+                            unset($input['deaths_source']);
+                        }
+                        if($case->recovered && $case->recovered > $input['recovered'])
+                        {
+                            unset($input['recovered']);
+                            unset($input['recovered_source']);
+                        }
+                        if(count($input)>0)
+                        {
+                            DB::table('cases')->updateOrInsert(
+                                [
+                                    'state_id' => $state->id,
+                                    'date' => $date,
+                                ],
+                                $input
+                            );
+                        }
+                    }
+                    else
+                    {
+                        DB::table('cases')->updateOrInsert(
+                            [
+                                'state_id' => $state->id,
+                                'date' => $date,
+                            ],
+                            $input
+                        );
+                    }
                 }
             }
         }
