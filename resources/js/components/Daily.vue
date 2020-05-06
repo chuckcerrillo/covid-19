@@ -58,6 +58,7 @@
                         <div class="w-24 h-full p-2 border-l border-slab flex items-end">Recovered Per 1M population</div>
                         <div class="w-24 p-2">5D Ave</div>
                         <div class="w-16 p-2">Growth Factor</div>
+                        <div class="w-16 p-2">Stringency Index</div>
                     </div>
                 </div>
                 <simplebar data-simplebar-auto-hide="false" class="bg-slab rounded absolute inset-x-0 bottom-0" style="min-width: 75rem; position: absolute; top: 70px;">
@@ -117,6 +118,9 @@
                                 <div class="w-16 p-2">
                                     <span class="text-red-400" v-if="row.growth.c > 1">{{row.growth.c | numeralFormat('0.00')}}</span>
                                     <span class="text-green-400" v-else>{{row.growth.c | numeralFormat('0.00')}}</span>
+                                </div>
+                                <div class="w-16 p-2">
+                                    {{row.stringencyindex | numeralFormat('0.00')}}
                                 </div>
                             </div>
                             <div v-if="key==0" class="w-full text-lightlabel flex justify-start">
