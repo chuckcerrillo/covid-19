@@ -3,6 +3,8 @@ import router from './router';
 import App from './components/App';
 import VueNumerals from 'vue-numerals';
 import store from './store';
+import VCalendar from 'v-calendar';
+
 
 require('./bootstrap');
 
@@ -12,6 +14,7 @@ import moment from 'moment'
 Vue.prototype.moment = moment
 
 Vue.use(VueNumerals);
+Vue.use(VCalendar);
 
 const app = new Vue({
     el: '#app',
