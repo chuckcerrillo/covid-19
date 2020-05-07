@@ -62,6 +62,9 @@
                         <div class="absolute top-0 right-0 bottom-0 left-0 p-4">
                             <simplebar v-if="view != 'charts' && view != 'dashboard' && view != 'about'" class="text-xs w-full">
                                 <div class="w-full flex items-center justify-start">
+                                    <div @click="updateSelected('all')" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == 'all' ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
+                                        Comparison
+                                    </div>
                                     <div v-for="(row,key,index) in compare">
                                         <div @click="updateSelected(key)" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
                                             {{getCompareLength() > 0 && row.state ? row.state + ' - ' : ''}}
@@ -110,10 +113,19 @@
                             </div>
                             <!--                                <div class="" v-show="ui.content.selectedTab == 'timeline'">Timeline</div>-->
                             <div class="h-full relative" v-if="view == 'daily'">
-                                <div v-if="getCompareLength() == 0">
-                                    Select up to {{options.compare_limit}} countries or states to begin comparing.
-                                </div>
-                                <div v-else class="absolute top-0 right-0 bottom-0 left-0 bg-hoverslab rounded" style="bottom:32px;">
+                                <div class="absolute top-0 right-0 bottom-0 left-0 bg-hoverslab rounded" style="bottom:32px;">
+                                    <div class="h-full" :class="selectedCompareTab != 'all' ? 'hidden' : ''">
+                                        <div v-if="getCompareLength() == 0" class="m-4">
+                                            Select up to {{options.compare_limit}} countries or states to begin comparing.
+                                        </div>
+                                        <Latest v-else
+                                                :data="getComparisonData()"
+                                        />
+                                    </div>
+    <!--                                <div v-if="getCompareLength() == 0">-->
+    <!--                                    Select up to {{options.compare_limit}} countries or states to begin comparing.-->
+    <!--                                </div>-->
+
                                     <div v-if="getCompareLength() > 0" v-for="(row,key,index) in compare" class="">
                                         <div class="h-full" :class="selectedCompareTab != key ? 'hidden' : ''">
                                             <Daily
@@ -232,6 +244,7 @@
     import {mapGetters} from 'vuex';
     import GovtResponse from "../components/GovtResponse";
     import About from "./About";
+    import Latest from "../components/Latest";
 
     export default {
         name: "Comparison",
@@ -246,6 +259,7 @@
             StatsChart,
             Map,
             GovtResponse,
+            Latest,
         },
         props: [
             'database',
@@ -271,6 +285,8 @@
                 });
 
             // alert('created');
+
+            this.database.processed.selectedCompareTab = 'all';
         },
         mounted()
         {
@@ -805,7 +821,7 @@
                         this.compare[country+state] = {country: country, state: state};
                     }
 
-                    this.updateSelected(this.getLastCompareItem());
+                    // this.updateSelected(this.getLastCompareItem());
                 }
                 this.$emit('updateCompare',this.compare);
             },
