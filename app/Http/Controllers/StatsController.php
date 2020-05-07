@@ -5008,17 +5008,17 @@ class StatsController extends Controller
 
                             if($case)
                             {
-                                if($case->confirmed && $case->confirmed > $input['confirmed'])
+                                if($case->confirmed && isset($input['confirmed']) && $case->confirmed > $input['confirmed'])
                                 {
                                     unset($input['confirmed']);
                                     unset($input['confirmed_source']);
                                 }
-                                if($case->deaths && $case->deaths > $input['deaths'])
+                                if($case->deaths && isset($input['deaths']) && $case->deaths > $input['deaths'])
                                 {
                                     unset($input['deaths']);
                                     unset($input['deaths_source']);
                                 }
-                                if($case->recovered && $case->recovered > $input['recovered'])
+                                if($case->recovered && isset($input['recovered']) && $case->recovered > $input['recovered'])
                                 {
                                     unset($input['recovered']);
                                     unset($input['recovered_source']);
@@ -5204,17 +5204,17 @@ class StatsController extends Controller
 
                     if($case)
                     {
-                        if($case->confirmed && $case->confirmed > $input['confirmed'])
+                        if($case->confirmed && isset($input['confirmed']) && $case->confirmed > $input['confirmed'])
                         {
                             unset($input['confirmed']);
                             unset($input['confirmed_source']);
                         }
-                        if($case->deaths && $case->deaths > $input['deaths'])
+                        if($case->deaths && isset($input['deaths']) && $case->deaths > $input['deaths'])
                         {
                             unset($input['deaths']);
                             unset($input['deaths_source']);
                         }
-                        if($case->recovered && $case->recovered > $input['recovered'])
+                        if($case->recovered && isset($input['recovered']) && $case->recovered > $input['recovered'])
                         {
                             unset($input['recovered']);
                             unset($input['recovered_source']);
