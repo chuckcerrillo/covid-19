@@ -131,7 +131,10 @@
                                 var row = stats[z];
                                 if(moment(row.date).format('YYYY-MM-DD') === current_date)
                                 {
-                                    content[y].deltaConfirmed.push(row.delta.c);
+                                    if(row.delta.c >= 0)
+                                        content[y].deltaConfirmed.push(row.delta.c);
+                                    else
+                                        content[y].deltaConfirmed.push(0);
                                     found = true;
                                 }
                             }

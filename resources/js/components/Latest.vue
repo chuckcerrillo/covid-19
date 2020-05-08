@@ -116,7 +116,7 @@
                                         <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('confirmedCapita',row.latest.capita.c) ? 'bg-darkslab':''">
                                             {{row.latest.capita.c | numeralFormat('0,000.00')}}
                                         </div>
-                                        <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('deathsCapite',row.latest.capita.d) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('deathsCapita',row.latest.capita.d) ? 'bg-darkslab':''">
                                             {{row.latest.capita.d | numeralFormat('0,000.00')}}
                                         </div>
                                         <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('recoveredCapita',row.latest.capita.r) ? 'bg-darkslab':''">
@@ -129,7 +129,7 @@
                                             <span class="text-red-400" v-if="row.latest.growth.c > 1">{{row.latest.growth.c | numeralFormat('0.00')}}</span>
                                             <span class="text-green-400" v-else>{{row.latest.growth.c | numeralFormat('0.00')}}</span>
                                         </div>
-                                        <div class="px-4 py-2 h-12" :class="getBiggestValue('stringencyIndex',row.stringencyindex) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-12" :class="getBiggestValue('stringencyIndex',row.latest.stringencyindex) ? 'bg-darkslab':''">
                                             {{row.latest.stringencyindex | numeralFormat('0.00')}}
                                         </div>
                                     </div>
@@ -275,7 +275,7 @@
                     }
                     else if(field == 'stringencyIndex')
                     {
-                        data.push(row.stringencyindex);
+                        data.push(row.latest.stringencyindex);
                     }
                 }
 
