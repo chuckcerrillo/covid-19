@@ -61,7 +61,7 @@
                     <div class="bg-slab rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col p-4">
                         <div class="absolute top-0 right-0 bottom-0 left-0 p-4">
                             <simplebar v-if="view != 'charts' && view != 'dashboard' && view != 'about'" class="text-xs w-full">
-                                <div class="w-full flex items-center justify-start">
+                                <div class="w-full flex items-center justify-start relative">
                                     <div @click="updateSelected('all')" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == 'all' ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
                                         Comparison
                                     </div>
@@ -71,6 +71,9 @@
                                             {{getCompareLength() > 0 ? row.country : '(none)'}}
                                             <div v-on:click.stop="removeCompare({country: row.country,state: row.state})" class="text-lightlabel text-xs absolute top-0 right-0 m-2 px-2 pb-1 rounded hover:text-heading hover:bg-lightlabel">x</div>
                                         </div>
+                                    </div>
+                                    <div v-if="getCompareLength() > 0" class="w-24 border absolute z-10 bg-slab border-hoverslab hover:bg-hoverslab px-2 py-1 top-0 right-0 cursor-pointer" @click="removeAllCompare()">
+                                        Remove all
                                     </div>
                                 </div>
                             </simplebar>
@@ -641,6 +644,15 @@
                 }
                 return found;
             },
+            removeAllCompare()
+            {
+                for(var x in this.compare)
+                {
+                    delete this.compare[x];
+                }
+                this.updateSelected('all')
+                this.$emit('updateCompare',this.compare);
+            },
             removeCompare(item)
             {
                 var found = this.findCompare(item);
@@ -827,8 +839,6 @@
             },
             countries_and_stats()
             {
-                console.log('countries');
-                console.log(this.countries);
                 return _.clone(this.countries);
             },
             updateSelected(key)
