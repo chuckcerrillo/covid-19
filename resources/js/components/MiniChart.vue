@@ -18,6 +18,7 @@
         },
         props: [
             'data',
+            'maxDate',
         ],
         data(){
             return {
@@ -93,6 +94,13 @@
                             end = moment(date).format('YYYY-MM-DD');
                         }
                     }
+                }
+
+                console.log('Max Date: ' + this.maxDate);
+                if (this.maxDate)
+                {
+                    end = moment(this.maxDate).format('YYYY-MM-DD');
+                    console.log(end);
                 }
 
                 // Assemble content

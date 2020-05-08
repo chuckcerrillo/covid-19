@@ -45,7 +45,7 @@
                      </div>
                     <div class="px-4 py-2 h-20 border-l border-lightslab"></div>
                 </div>
-                <simplebar data-simplebar-auto-hide="false" class="bg-slab rounded absolute inset-x-0 bottom-0 h-full" style="min-width: 75rem; position: absolute; top: 80px;">
+                <simplebar data-simplebar-auto-hide="false" class="inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0" style="min-width: 75rem; position: absolute; top: 80px;" :style="'min-width: ' + (9 + (comparison.length * 16)) + 'em'">
                     <div class="flex justify-start rounded-t z-10 relative bg-slab">
                         <div class="bg-slab-primary justify-start items-end border-b border-lightslab w-36 text-xs font-bold flex-shrink-0">
                             <div class="px-4 py-2 h-32 border-b border-slab">New cases per day</div>
@@ -75,66 +75,66 @@
                                     <div class="w-full">
 
                                         <div class="p-2 h-32 border-b border-lightslab">
-                                            <MiniChart :data="dataset(key)" />
+                                            <MiniChart :data="dataset(key)" :maxDate="date" />
                                         </div>
-                                        <div class="px-4 py-2 h-16 border-b border-lightslab">
+                                        <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('confirmed',row.latest.c) ? 'bg-darkslab':''">
                                             {{ isNaN(row.latest.c) ? 0 : row.latest.c | numeralFormat}}<br />
                                             <span class="text-xs text-red-400" v-if="row.latest.percent.c > 0">(+{{row.latest.percent.c| numeralFormat('0.0%')}})</span>
                                             <span class="text-xs text-green-400" v-else>({{row.latest.percent.c | numeralFormat('0.0%')}})</span>
                                         </div>
-                                        <div class="px-4 py-2 h-16 border-b border-lightslab">
+                                        <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('deaths',row.latest.d) ? 'bg-darkslab':''">
                                             {{ isNaN(row.latest.d) ? 0 : row.latest.d | numeralFormat}}<br />
                                             <span class="text-xs text-red-400" v-if="row.latest.percent.d > 0">(+{{row.latest.percent.d| numeralFormat('0.0%')}})</span>
                                             <span class="text-xs text-green-400" v-else>({{row.latest.percent.d | numeralFormat('0.0%')}})</span>
                                         </div>
-                                        <div class="px-4 py-2 h-16 border-b border-lightslab">
+                                        <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('recovered',row.latest.r) ? 'bg-darkslab':''">
                                             {{ isNaN(row.latest.r) ? 0 : row.latest.r | numeralFormat}}<br />
                                             <span class="text-xs text-green-400" v-if="row.latest.percent.r > 0">(+{{row.latest.percent.r | numeralFormat('0.0%')}})</span>
                                             <span class="text-xs text-green-400" v-else-if="row.latest.percent.r == 0">({{row.latest.percent.r | numeralFormat('0.0%')}})</span>
                                             <span class="text-xs text-red-400" v-else>({{row.latest.percent.r | numeralFormat('0.0%')}})</span>
                                         </div>
-                                        <div class="px-4 py-2 h-24 border-b border-lightslab">
+                                        <div class="px-4 py-2 h-24 border-b border-lightslab" :class="getBiggestValue('active',row.latest.a) ? 'bg-darkslab':''">
                                             {{ (isNaN(row.latest.a) ? 0 : row.latest.a) | numeralFormat}}<br />
                                             <span class="text-xs text-green-400" v-if="row.latest.delta.a < 0">({{row.latest.delta.a| numeralFormat}})</span>
                                             <span class="text-xs text-green-400" v-else-if="row.latest.delta.a == 0">({{row.latest.delta.a| numeralFormat}})</span>
                                             <span class="text-xs text-red-400" v-else>(+{{row.latest.delta.a| numeralFormat}})</span><br />
                                             <span class="text-xs text-blue-400">{{row.latest.a / row.latest.population | numeralFormat('0.000%')}} of total population</span>
                                         </div>
-                                        <div class="px-4 py-2 h-12 border-b border-lightslab">
+                                        <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('confirmedDelta',row.latest.delta.c) ? 'bg-darkslab':''">
                                             {{row.latest.delta.c| numeralFormat}}
                                         </div>
-                                        <div class="px-4 py-2 h-12 border-b border-lightslab">
+                                        <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('deathsDelta',row.latest.delta.d) ? 'bg-darkslab':''">
                                             {{row.latest.delta.d| numeralFormat}}
                                         </div>
-                                        <div class="px-4 py-2 h-12 border-b border-lightslab">
+                                        <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('recoveredDelta',row.latest.delta.r) ? 'bg-darkslab':''">
                                             {{row.latest.delta.r| numeralFormat}}
                                         </div>
-                                        <div class="px-4 py-2 h-12 border-b border-lightslab">
+                                        <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('population',row.population) ? 'bg-darkslab':''">
                                             {{row.population | numeralFormat('0,000')}}
                                         </div>
-                                        <div class="px-4 py-2 h-16 border-b border-lightslab">
+                                        <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('confirmedCapita',row.latest.capita.c) ? 'bg-darkslab':''">
                                             {{row.latest.capita.c | numeralFormat('0,000.00')}}
                                         </div>
-                                        <div class="px-4 py-2 h-16 border-b border-lightslab">
+                                        <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('deathsCapite',row.latest.capita.d) ? 'bg-darkslab':''">
                                             {{row.latest.capita.d | numeralFormat('0,000.00')}}
                                         </div>
-                                        <div class="px-4 py-2 h-16 border-b border-lightslab">
+                                        <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('recoveredCapita',row.latest.capita.r) ? 'bg-darkslab':''">
                                             {{row.latest.capita.r | numeralFormat('0,000.00')}}
                                         </div>
-                                        <div class="px-4 py-2 h-12 border-b border-lightslab">
+                                        <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('confirmedAverage',row.latest.average.c) ? 'bg-darkslab':''">
                                             {{row.latest.average.c | numeralFormat('0,000.0')}}
                                         </div>
-                                        <div class="px-4 py-2 h-12 border-b border-lightslab">
+                                        <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('confirmedGrowth',row.latest.growth.c) ? 'bg-darkslab':''">
                                             <span class="text-red-400" v-if="row.latest.growth.c > 1">{{row.latest.growth.c | numeralFormat('0.00')}}</span>
                                             <span class="text-green-400" v-else>{{row.latest.growth.c | numeralFormat('0.00')}}</span>
                                         </div>
-                                        <div class="px-4 py-2 h-12">
+                                        <div class="px-4 py-2 h-12" :class="getBiggestValue('stringencyIndex',row.stringencyindex) ? 'bg-darkslab':''">
                                             {{row.latest.stringencyindex | numeralFormat('0.00')}}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="border-l border-lightslab h-228"></div>
+                            <div class="border-l border-lightslab h-240"></div>
                         </div>
                     </div>
                 </simplebar>
@@ -180,14 +180,15 @@
                 options: {
                     date: {
                         min: new Date('2020-01-22'),
-                        max: new Date(),
+                        max: false,
                     }
                 }
             }
         },
         created()
         {
-            this.date = moment().format('YYYY-MM-DD');
+            this.date = moment().subtract(1,'d').format('YYYY-MM-DD');
+            this.options.date.max = this.date;
         },
         methods: {
             getDayNotes(date)
@@ -206,12 +207,82 @@
             {
                 this.expanded = !this.expanded;
             },
-            remove(item){
+            remove(item)
+            {
                 this.$emit('removeCompare',item);
             },
             getBiggestValue(field,value)
             {
+                var result = false;
+                var data = [];
 
+                for(var x in this.comparison)
+                {
+                    var row = this.comparison[x];
+
+                    if(field == 'confirmed')
+                    {
+                        data.push(row.latest.c);
+                    }
+                    else if(field == 'deaths')
+                    {
+                        data.push(row.latest.d);
+                    }
+                    else if(field == 'recovered')
+                    {
+                        data.push(row.latest.r);
+                    }
+                    else if(field == 'active')
+                    {
+                        data.push(row.latest.a);
+                    }
+                    else if(field == 'confirmedDelta')
+                    {
+                        data.push(row.latest.delta.c);
+                    }
+                    else if(field == 'deathsDelta')
+                    {
+                        data.push(row.latest.delta.d);
+                    }
+                    else if(field == 'recoveredDelta')
+                    {
+                        data.push(row.latest.delta.r);
+                    }
+                    else if(field == 'population')
+                    {
+                        data.push(row.population);
+                    }
+                    else if(field == 'confirmedCapita')
+                    {
+                        data.push(row.latest.capita.c);
+                    }
+                    else if(field == 'deathsCapita')
+                    {
+                        data.push(row.latest.capita.d);
+                    }
+                    else if(field == 'recoveredCapita')
+                    {
+                        data.push(row.latest.capita.r);
+                    }
+                    else if(field == 'confirmedAverage')
+                    {
+                        data.push(row.latest.average.c);
+                    }
+                    else if(field == 'confirmedGrowth')
+                    {
+                        data.push(row.latest.growth.c);
+                    }
+                    else if(field == 'stringencyIndex')
+                    {
+                        data.push(row.stringencyindex);
+                    }
+                }
+
+                if(data.length > 1 && value && Math.max(...data) == value)
+                {
+                    result = true;
+                }
+                return result;
             },
             dataset(x)
             {
@@ -325,6 +396,8 @@
 
                 var date1 = new Date('2020-01-01');
                 var date2 = new Date();
+                date2.setDate(date2.getDate() - 1);
+
                 var daysTotal = (date2.getTime() - date1.getTime()) / (1000*3600*24);
                 var data = [];
 
@@ -338,6 +411,8 @@
     }
 </script>
 
-<style scoped>
-
+<style>
+.inner-scrollbar .simplebar-track.simplebar-horizontal {
+    visibility: hidden !important;
+}
 </style>
