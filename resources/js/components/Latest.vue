@@ -192,18 +192,6 @@
             this.options.date.max = this.date;
         },
         methods: {
-            getDayNotes(date)
-            {
-                var data = [];
-                for(var x in this.annotations)
-                {
-                    if (this.annotations[x].date == date)
-                    {
-                        data.push(this.annotations[x]);
-                    }
-                }
-                return data;
-            },
             toggleExpand()
             {
                 this.expanded = !this.expanded;
@@ -302,29 +290,6 @@
                     'absolute': (this.settings && this.settings.absolute) ? this.settings.absolute : false,
                     'solo': (this.settings && this.settings.solo) ? this.settings.solo : false,
                 }
-            },
-            annotations()
-            {
-                var data = [];
-                for(var x in this.data.annotations)
-                {
-                    if(this.data.annotations[x].country == 'All')
-                    {
-                        data.push(_.clone(this.data.annotations[x]));
-                    }
-                    else if(this.data.annotations[x].state && this.data.name.state.length > 0)
-                    {
-                        if(this.data.name.state == this.data.annotations[x].state)
-                        {
-                            data.push(_.clone(this.data.annotations[x]));
-                        }
-                    }
-                    else
-                    {
-                        data.push(_.clone(this.data.annotations[x]));
-                    }
-                }
-                return data;
             },
             comparison()
             {

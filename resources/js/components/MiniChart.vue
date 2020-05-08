@@ -96,12 +96,12 @@
                     }
                 }
 
-                console.log('Max Date: ' + this.maxDate);
                 if (this.maxDate)
                 {
                     end = moment(this.maxDate).format('YYYY-MM-DD');
-                    console.log(end);
                 }
+
+                data.labels.push('2019-12-31');
 
                 // Assemble content
                 for(var x = 0; x <= moment(end).diff(moment(start),'days'); x++)
@@ -155,6 +155,11 @@
                     }
                 }
 
+                if(data.labels.length <= 1)
+                {
+                    data.labels.push('2020-01-01');
+                }
+
                 var position = '',
                     chartType = '',
                     metric = '',
@@ -182,6 +187,22 @@
                         }
                         if(this.yAxis[y] == 'deltaConfirmed')
                         {
+                            var datavalues = [0,0];
+                            if(content && content[x] && content[x].deltaConfirmed){
+                                if(content[x].deltaConfirmed.length > 0)
+                                {
+                                    datavalues = [0];
+                                    for(var z in content[x].deltaConfirmed)
+                                    {
+                                        datavalues.push(content[x].deltaConfirmed[z]);
+                                    }
+                                }
+                                else
+                                {
+                                    datavalues = content[x].deltaConfirmed;
+                                }
+
+                            }
                             data.datasets.push(
                                 {
                                     label: 'New cases per day ',
@@ -193,7 +214,7 @@
                                     borderWidth: 1,
                                     pointRadius: 0,
                                     fill: false,
-                                    data: _.clone(content[x].deltaConfirmed),
+                                    data: datavalues,
                                     yAxisID: 'y-deltaConfirmed',
                                 }
                             );
