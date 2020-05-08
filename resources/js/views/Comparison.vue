@@ -97,7 +97,7 @@
                                                     :data="comparePolicies()"
                                             />
                                         </div>
-                                        <div v-for="(row,key,index) in getUniqueCountriesCompare()" class="absolute m-4 inset-0 bg-hoverslab rounded p-4 border" v-if="selectedCompareTab.substr(0,row.country.length) == row.country" :key="index">
+                                        <div v-for="(row,key,index) in getUniqueCountriesCompare()" class="absolute m-4 inset-0 bg-hoverslab rounded p-4" v-if="selectedCompareTab.substr(0,row.country.length) == row.country" :key="index">
                                             <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0" style="position:absolute;">
                                                 <div class="my-4">
                                                     <div class="w-128 text-4xl font-bold">{{row.country}}</div>
