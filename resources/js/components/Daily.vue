@@ -219,8 +219,6 @@
             annotations()
             {
                 var data = [];
-                console.log('annotations for ' + this.data.name.country);
-                console.log(this.data.annotations)
                 for(var x in this.data.annotations)
                 {
                     if(this.data.annotations[x].country == 'All')
