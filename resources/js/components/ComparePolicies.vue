@@ -390,8 +390,6 @@
             comparison()
             {
                 var data = [];
-                console.log(this.data);
-                console.log(this.date);
                 for(var x in this.data)
                 {
                     var policies = _.clone(this.data[x]);
@@ -401,21 +399,17 @@
                         'latest' : {},
                     };
 
-                    console.log('first check');
-                    console.log(policies);
-
                     if(policies && policies.daily)
                     {
 
                         for(var y in policies.daily)
                         {
-                            console.log('Compare ' + this.date + ' vs ' + policies.daily[y].date);
                             if(this.date === policies.daily[y].date)
                             {
                                 row.latest = _.clone(policies.daily[y].latest);
+                                row.stringencyindex = policies.daily[y].stringencyindex;
                                 break;
                             }
-                            row.stringencyindex = policies.daily[y].stringencyindex;
                         }
 
 
