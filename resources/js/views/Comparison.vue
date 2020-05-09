@@ -81,8 +81,8 @@
                                 <div class="absolute top-0 left-0 right-0 bottom-0 rounded bg-hoverslab" style="bottom:2rem;">
 
                                         <div class="h-full m-4" :class="selectedCompareTab != 'all' ? 'hidden' : ''">
-                                            <h1 class="text-3xl font-bold">Government Response Tracker</h1>
                                             <div v-if="getCompareLength() == 0">
+                                                <h1 class="text-3xl font-bold">Government Response Tracker</h1>
                                                 <div>
                                                     <p>These data are based on the <a class="text-orangeslab hover:text-blue-400 hover:underline" target="_blank" href="https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker">Coronavirus Government Response Tracker</a> by the University of Oxford.</p>
                                                     <blockquote class="italic m-2 ml-4 border-l-4 p-4 border-lightslab">
@@ -362,18 +362,91 @@
                 {
                     var row = {};
                     row.name = this.getUniqueCountriesCompare()[x].country;
-                    row.latest = this.getLatestGovtResponse(row.name);
+                    // row.latest = this.getLatestGovtResponse(row.name);
+
+
                     if(this.getGovtResponse(row.name))
                     {
                         row.stringencyindex = this.getGovtResponse(row.name).latest.si;
+                        var daily = [];
+                        for(var y in this.getGovtResponse(row.name).daily)
+                        {
+                            daily.push(_.clone(this.translateGovtResponse(this.getGovtResponse(row.name).daily[y])))
+                        }
+                        row.daily = daily;
                     }
                     else
                     {
                         row.stringencyindex = 'N/A';
+                        row.daily = {};
                     }
                     data.push(_.clone(row));
                 }
                 return data;
+            },
+            translateGovtResponse(policy)
+            {
+
+                var key = this.database.raw.raw_oxford.key;
+                for(var x in policy.latest)
+                {
+                    var row = policy.latest[x];
+                    var target = '';
+                    var value = row.value;
+                    if(key && key[x] && key[x].values)
+                    {
+                        var help = key[x].values;
+                    }
+                    else
+                    {
+                        var help = [];
+                    }
+
+                    if(key[x] && key[x].hasTarget)
+                    {
+                        if(key[x].targets && key[x].targets.length > 0)
+                        {
+                            target = 'Scope: ' + key[x].targets[row.target];
+                        }
+                        else
+                        {
+                            if(row.t == 1)
+                            {
+                                target = 'Scope: Targeted';
+                            }
+                            else
+                            {
+                                target = 'Scope: General';
+                            }
+                        }
+                    }
+                    if(row.value.length == 0)
+                    {
+                        value = '';
+                        target = '';
+                    }
+                    else if(key[x] && key[x].type == 'lookup')
+                    {
+                        value = key[x].values[parseInt(row.value)];
+                    }
+                    else
+                    {
+                        value = row.value;
+                    }
+
+                    policy.latest[x] = {
+                        id: x,
+                        name: key[x].name,
+                        description: key[x].description,
+                        value: value,
+                        target: target,
+                        since: row.s,
+                        help: help,
+                        notes: row.n,
+                        date: policy.date,
+                    };
+                }
+                return _.clone(policy);
             },
             getLatestGovtResponse(country)
             {
@@ -456,11 +529,61 @@
                         return {
                             key: this.database.raw.raw_oxford.key,
                             latest: this.database.raw.raw_oxford.latest[country],
-                            daily: this.database.raw.raw_oxford.daily[country],
+                            daily: this.getDailyGovtResponse(this.database.raw.raw_oxford.daily[country],'2020-01-01',moment().format('YYYY-MM-DD')),
+                            // daily: this.database.raw.raw_oxford.daily[country],
                         }
                     }
                 }
                 return false;
+            },
+            getDailyGovtResponse(daily,start_date,end_date)
+            {
+                Date.prototype.addDays = function(days) {
+                    var date = new Date(this.valueOf());
+                    date.setDate(date.getDate() + days);
+                    return date;
+                }
+
+                var data = [],
+                    temp = {};
+
+                var date1 = new Date(start_date);
+                var date2 = new Date(end_date);
+                date2.setDate(date2.getDate() - 1);
+                var daysTotal = (date2.getTime() - date1.getTime()) / (1000*3600*24);
+                var row = {};
+
+
+                for(var x = 0; x<=daysTotal; x++)
+                {
+                    var new_date = moment(date1.addDays(x)).format('YYYY-MM-DD');
+                    if(daily && daily[new_date])
+                    {
+                        row = {
+                            date: new_date,
+                            latest: {}
+                        };
+                        for(var y in daily[new_date].policies)
+                        {
+
+                            row.latest[y] = {
+                                value: daily[new_date].policies[y].v,
+                                target: daily[new_date].policies[y].t,
+                            }
+                        }
+                        data.push(_.clone(row));
+                        temp = _.clone(row);
+                    }
+                    else
+                    {
+                        row = _.clone(temp);
+                        row.date = new_date;
+                        data.push(row);
+                    }
+
+                }
+
+                return data;
             },
             getGlobalDayNotes(date)
             {
