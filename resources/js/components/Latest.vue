@@ -188,7 +188,7 @@
         },
         created()
         {
-            this.date = moment().subtract(1,'d').format('YYYY-MM-DD');
+            this.date = this.dateSliderRange[this.dateSliderRange.length - 1];
             this.options.date.max = this.date;
         },
         methods: {
@@ -297,7 +297,7 @@
                 var date = moment(this.date).format('YYYY-MM-DD');
                 for(var x in this.data)
                 {
-                    var row = {};
+                    var row = [];
                     row.latest = {
                         c: 0,
                         d: 0,

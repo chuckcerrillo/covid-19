@@ -1,6 +1,25 @@
 <template>
     <div class="h-full">
-        <div class="absolute top-0 left-0 right-0 bottom-0 m-4" style="position:absolute; top: 4rem">
+        <div class="my-2 py-2 pb-4 px-4 bg-slab-primary rounded">
+            <span class="font-bold">Select date</span>
+            <v-date-picker
+                v-model="date"
+                :min-date="options.date.min"
+                :max-date="options.date.max"
+                :masks="{ data: ['YYYY-MM-DD', 'YYYY/MM/DD'],input: ['YYYY-MM-DD', 'YYYY/MM/DD'] }"
+                :popover="{ placement: 'bottom', visibility: 'click' }">
+                <button class="p-2 hover:bg-lightlabel text-white rounded focus:outline-none">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        class="w-4 h-4 fill-current">
+                        <path d="M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z" />
+                    </svg>
+                </button>
+            </v-date-picker> {{moment(date).format('YYYY-MM-DD')}}
+            <vue-slider v-model="date" :data="dateSliderRange" :lazy="true" :adsorb="true" />
+        </div>
+        <div class="absolute top-0 left-0 right-0 bottom-0 m-4" style="position:absolute; top: 5.5rem">
             <simplebar data-simplebar-auto-hide="false" class="w-full h-full">
                 <div class="flex justify-start rounded-t z-10 relative bg-slab-primary" style="min-width: 75rem;">
                     <div class="bg-slab-primary justify-start items-end border-lightslab w-36 text-xs font-bold flex-shrink-0">
@@ -24,7 +43,7 @@
                      </div>
                     <div class="px-4 py-2 h-36 border-l border-lightslab"></div>
                 </div>
-                <simplebar data-simplebar-auto-hide="false" class="inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0" style="min-width: 75rem; position: absolute; top: 80px;" :style="'min-width: ' + (9 + (data.length * 16)) + 'em'">
+                <simplebar data-simplebar-auto-hide="false" class="inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0" style="min-width: 75rem; position: absolute; top: 9rem;" :style="'min-width: ' + (9 + (data.length * 16)) + 'em'">
                     <div class="flex justify-start rounded-t z-10 relative bg-slab">
                         <div class="bg-slab-primary justify-start items-end border-b border-lightslab w-36 text-xs font-bold flex-shrink-0">
                             <div class="px-4 py-2 h-16 bg-darkslab border-b border-slab">Containment and closure</div>
@@ -225,12 +244,10 @@
     import FullCountry from "./FullCountry";
     import VueSlider from 'vue-slider-component'
     import 'vue-slider-component/theme/default.css'
-    import MiniChart from "./MiniChart";
 
     export default {
         name: "Latest",
         components: {
-            MiniChart,
             simplebar,
             FullCountry,
             VueSlider,
@@ -255,7 +272,7 @@
         },
         created()
         {
-            this.date = moment().subtract(1,'d').format('YYYY-MM-DD');
+            this.date = this.dateSliderRange[this.dateSliderRange.length - 1];
             this.options.date.max = this.date;
         },
         methods: {
@@ -373,23 +390,53 @@
             comparison()
             {
                 var data = [];
+                console.log(this.data);
+                console.log(this.date);
                 for(var x in this.data)
                 {
                     var policies = _.clone(this.data[x]);
                     var row = {
                         'name': policies.name,
-                        'stringencyindex' : policies.stringencyindex,
+                        'stringencyindex' : 'N/A',
                         'latest' : {},
                     };
-                    for(var y in policies.latest)
+
+                    console.log('first check');
+                    console.log(policies);
+
+                    if(policies && policies.daily)
                     {
-                        row.latest[policies.latest[y].id] = policies.latest[y]
+
+                        for(var y in policies.daily)
+                        {
+                            console.log('Compare ' + this.date + ' vs ' + policies.daily[y].date);
+                            if(this.date === policies.daily[y].date)
+                            {
+                                console.log('found ' + this.date);
+                                console.log(policies.daily[y].latest);
+                                row.latest = _.clone(policies.daily[y].latest);
+                                console.log('found it');
+                                console.log(row);
+                                break;
+                            }
+
+                        }
+                        row.stringencyindex = policies.stringencyindex;
+
                     }
 
+                    console.log('check again')
+                    console.log(row);
+
                     var list = ['C1','C2','C3','C4','C5','C6','C7','C8','E1','E2','E3','E4','H1','H2','H3','H4','H5','M1'];
+                    console.log('latest');
+                    console.log(row.latest);
                     for(var y in list)
                     {
                         var field = list[y];
+
+                        console.log(field);
+                        console.log(!row.latest[field])
 
                         if(!row.latest[field])
                         {
@@ -399,7 +446,6 @@
                             }
                         }
                     }
-
                     data.push(row);
                 }
 
