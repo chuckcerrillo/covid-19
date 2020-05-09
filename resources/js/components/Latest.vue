@@ -297,7 +297,7 @@
                 var date = moment(this.date).format('YYYY-MM-DD');
                 for(var x in this.data)
                 {
-                    var row = [];
+                    var row = {};
                     row.latest = {
                         c: 0,
                         d: 0,
@@ -339,13 +339,12 @@
                     row.population = this.data[x].population;
                     for(var y in this.data[x].daily)
                     {
-                        if(date == this.data[x].daily[y].date)
+                        if(date === this.data[x].daily[y].date)
                         {
                             row.latest = this.data[x].daily[y];
                             break;
                         }
                     }
-
                     data.push(_.clone(row));
                 }
 
