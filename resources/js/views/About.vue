@@ -32,6 +32,14 @@
             <div class="m-2 text-2xl font-bold">Changelog:</div>
             <simplebar class="p-2 rounded bg-slab-primary h-128 absolute inset-x-0" style="position:absolute; bottom: 1rem; top: 5rem;">
                 <div class="m2 text-sm">
+                    <div class="font-bold">2020-05-10</div>
+                    <ul class="list-disc ml-8 mr-4">
+                        <li>Added comparison table view for Government Response</li>
+                        <li>Added comparison table view for Daily Breakdown</li>
+                        <li>Changes to government response now appear as annotations in the daily breakdown.</li>
+                        <li>Bugfix: Charts were loading in the background regardless of the page you're viewing, causing unnecessary delays to page load.</li>
+                    </ul>
+
                     <div class="font-bold">2020-05-03</div>
                     <ul class="list-disc ml-8 mr-4">
                         <li>Overhauled data structure, which should result in better performance and overall responsiveness of the UI.</li>

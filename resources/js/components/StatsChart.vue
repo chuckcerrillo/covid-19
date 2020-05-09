@@ -1,7 +1,7 @@
 <template>
     <div class="absolute top-0 left-0 right-0 bottom-0" v-on:click="resetDropdowns()">
 <!--        <div class="absolute top-0 right-0 bottom-0 left-0 bg-red-400"></div>-->
-        <div class="absolute left-0 top-0 mt-20 ml-4 border border-gray-600 bg-gray-100 text-gray-800 p-4 rounded flex items-start" :class="ui.settings ? 'z-10':'w-64 z-0'">
+        <div class="absolute left-0 top-0 mt-20 ml-4 border border-gray-600 bg-gray-100 text-gray-800 p-4 rounded flex items-start" :class="ui.settings ? 'z-10':'w-64 z-0 hidden'">
             <div>
                 <div class="font-bold text-2xl mb-4">Chart Settings</div>
                 <div class="flex flex-wrap border" style="max-width:940px; max-height:530px">
@@ -107,7 +107,7 @@
                            :options="dataset.options"
                            class="bg-heading rounded"
                            :class="full ? (settings.controls.menu ? 'absolute top-0 bottom-0 right-0 left-0 m-2 mb-16': 'absolute top-0 bottom-0 right-0 left-0 m-2') : 'h-200 m-4 mb-0'"
-                           v-if="data.length > 0"
+                           v-if="active && data.length > 0"
                 />
                 <div class="text-xs absolute left-0 right-0 bottom-0 h-12 flex items-start justify-between" v-if="settings.controls.menu">
                     <div class="flex items-center justify-start">
@@ -359,6 +359,7 @@
             'data',
             'full',
             'config',
+            'active',
         ],
         methods: {
             setColor(name,color)

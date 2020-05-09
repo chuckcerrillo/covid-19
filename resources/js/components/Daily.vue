@@ -133,7 +133,9 @@
                             >
                                 <div class="w-24 p-2 pt-0"></div>
                                 <div class="w-268 p-2 pt-0 border-l border-lightslab">
-                                    <div class="flex rounded bg-hoverslab p-2">
+                                    <div class="flex rounded p-2"
+                                         :class="annotation.type === 'policy' ? 'bg-heading text-gray-800' : 'bg-hoverslab'"
+                                    >
                                         <div v-if="annotation.state.length > 0" class="font-bold mr-2">{{annotation.state}}</div>
                                         <div>
                                             <div>{{annotation.notes}}</div>
@@ -215,8 +217,6 @@
             annotations()
             {
                 var data = [];
-                console.log('annotations for ' + this.data.name.country);
-                console.log(this.data.annotations)
                 for(var x in this.data.annotations)
                 {
                     if(this.data.annotations[x].country == 'All')
