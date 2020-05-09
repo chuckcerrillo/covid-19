@@ -2157,9 +2157,25 @@ class StatsController extends Controller
     {
 
         $filename = STATS . 'annotations.json';
-        $file = fopen($filename,'r');
-        $countries = fread($file,filesize($filename));
-        return response($countries)->setStatusCode(Response::HTTP_OK);
+        $file = fopen($filename, 'r');
+        $countries = json_decode(fread($file, filesize($filename)),true);
+
+        $filename = STATS . 'oxford_annotations.json';
+        $file = fopen($filename, 'r');
+        $policies = json_decode(fread($file, filesize($filename)),true);
+
+
+        $data = $countries;
+        foreach ($policies as $country => $dates)
+        {
+            foreach($dates AS $date => $row)
+            {
+                $row['type'] = 'policy';
+                $data[$country][] = $row;
+            }
+        }
+
+        return response($data)->setStatusCode(Response::HTTP_OK);
     }
 
     public function global()
@@ -2766,6 +2782,7 @@ class StatsController extends Controller
 
     protected function harvest_oxford()
     {
+        $annotations = [];
 
         $filename = OXFORD_LATEST;
         $csv = array_map('str_getcsv', file($filename));
@@ -3058,10 +3075,6 @@ class StatsController extends Controller
                 // Latest
                 // data: [country] [stringencyindex / policies]
 
-//                if($country == 'Australia')
-//                    dump($row);
-
-
                 if(strlen($row[3]) > 0)
                 {
                     $daily[$country][$date]['policies']['C1'] = [
@@ -3083,13 +3096,30 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['C1']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['C1'] = [
-                                'v' => $daily[$country][$date]['policies']['C1']['v'],
-                                't' => $daily[$country][$date]['policies']['C1']['t'],
-                                'n' => $daily[$country][$date]['policies']['C1']['n'],
-                                's' => $latest[$country]['policies']['C1']['s'],
+
+                            $target = false;
+                            if($daily[$country][$date]['policies']['C1']['t'] == 1)
+                            {
+                                $target = 'general';
+                            }
+                            else if($daily[$country][$date]['policies']['C1']['t'] == 0)
+                            {
+                                $target = 'targeted';
+                            }
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['C1']['v'])
+                            {
+                                $policy_note = 'C1. ' . $key['C1']['name'] . ' - ' . $key['C1']['values'][(int)$daily[$country][$date]['policies']['C1']['v']] . ($target ? ' (scope: ' . $target . ')' : '');
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['C1'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3102,8 +3132,12 @@ class StatsController extends Controller
                             's' => $date,
                         ];
                     }
-
                 }
+                else if(isset($latest[$country]['policies']['C1']))
+                {
+                    $daily[$country][$date]['policies']['C1'] = $latest[$country]['policies']['C1'];
+                }
+
 
                 if(strlen($row[6]) > 0)
                 {
@@ -3126,13 +3160,30 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['C2']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['C2'] = [
-                                'v' => $daily[$country][$date]['policies']['C2']['v'],
-                                't' => $daily[$country][$date]['policies']['C2']['t'],
-                                'n' => $daily[$country][$date]['policies']['C2']['n'],
-                                's' => $latest[$country]['policies']['C2']['s'],
+
+                            $target = false;
+                            if($daily[$country][$date]['policies']['C2']['t'] == 1)
+                            {
+                                $target = 'general';
+                            }
+                            else if($daily[$country][$date]['policies']['C2']['t'] == 0)
+                            {
+                                $target = 'targeted';
+                            }
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['C2']['v'])
+                            {
+                                $policy_note = 'C2. ' . $key['C2']['name'] . ' - ' . $key['C2']['values'][(int)$daily[$country][$date]['policies']['C2']['v']] . ($target ? ' (scope: ' . $target . ')' : '');
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['C2'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3145,6 +3196,10 @@ class StatsController extends Controller
                             's' => $date,
                         ];
                     }
+                }
+                else if(isset($latest[$country]['policies']['C2']))
+                {
+                    $daily[$country][$date]['policies']['C2'] = $latest[$country]['policies']['C2'];
                 }
 
                 if(strlen($row[9]) > 0)
@@ -3168,13 +3223,30 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['C3']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['C3'] = [
-                                'v' => $daily[$country][$date]['policies']['C3']['v'],
-                                't' => $daily[$country][$date]['policies']['C3']['t'],
-                                'n' => $daily[$country][$date]['policies']['C3']['n'],
-                                's' => $latest[$country]['policies']['C3']['s'],
+
+                            $target = false;
+                            if($daily[$country][$date]['policies']['C3']['t'] == 1)
+                            {
+                                $target = 'general';
+                            }
+                            else if($daily[$country][$date]['policies']['C3']['t'] == 0)
+                            {
+                                $target = 'targeted';
+                            }
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['C3']['v'])
+                            {
+                                $policy_note = 'C3. ' . $key['C3']['name'] . ' - ' . $key['C3']['values'][(int)$daily[$country][$date]['policies']['C3']['v']] . ($target ? ' (scope: ' . $target . ')' : '');
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['C3'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3187,6 +3259,10 @@ class StatsController extends Controller
                             's' => $date,
                         ];
                     }
+                }
+                else if(isset($latest[$country]['policies']['C3']))
+                {
+                    $daily[$country][$date]['policies']['C3'] = $latest[$country]['policies']['C3'];
                 }
 
                 if(strlen($row[12]) > 0)
@@ -3210,13 +3286,30 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['C4']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['C4'] = [
-                                'v' => $daily[$country][$date]['policies']['C4']['v'],
-                                't' => $daily[$country][$date]['policies']['C4']['t'],
-                                'n' => $daily[$country][$date]['policies']['C4']['n'],
-                                's' => $latest[$country]['policies']['C4']['s'],
+
+                            $target = false;
+                            if($daily[$country][$date]['policies']['C4']['t'] == 1)
+                            {
+                                $target = 'general';
+                            }
+                            else if($daily[$country][$date]['policies']['C4']['t'] == 0)
+                            {
+                                $target = 'targeted';
+                            }
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['C4']['v'])
+                            {
+                                $policy_note = 'C4. ' . $key['C4']['name'] . ' - ' . $key['C4']['values'][(int)$daily[$country][$date]['policies']['C4']['v']] . ($target ? ' (scope: ' . $target . ')' : '');
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['C4'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3229,6 +3322,10 @@ class StatsController extends Controller
                             's' => $date,
                         ];
                     }
+                }
+                else if(isset($latest[$country]['policies']['C4']))
+                {
+                    $daily[$country][$date]['policies']['C4'] = $latest[$country]['policies']['C4'];
                 }
 
                 if(strlen($row[15]) > 0)
@@ -3253,13 +3350,30 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['C5']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['C5'] = [
-                                'v' => $daily[$country][$date]['policies']['C5']['v'],
-                                't' => $daily[$country][$date]['policies']['C5']['t'],
-                                'n' => $daily[$country][$date]['policies']['C5']['n'],
-                                's' => $latest[$country]['policies']['C5']['s'],
+
+                            $target = false;
+                            if($daily[$country][$date]['policies']['C5']['t'] == 1)
+                            {
+                                $target = 'general';
+                            }
+                            else if($daily[$country][$date]['policies']['C5']['t'] == 0)
+                            {
+                                $target = 'targeted';
+                            }
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['C5']['v'])
+                            {
+                                $policy_note = 'C5. ' . $key['C5']['name'] . ' - ' . $key['C5']['values'][(int)$daily[$country][$date]['policies']['C5']['v']] . ($target ? ' (scope: ' . $target . ')' : '');
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['C5'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3272,6 +3386,10 @@ class StatsController extends Controller
                             's' => $date,
                         ];
                     }
+                }
+                else if(isset($latest[$country]['policies']['C5']))
+                {
+                    $daily[$country][$date]['policies']['C5'] = $latest[$country]['policies']['C5'];
                 }
 
                 if(strlen($row[18]) > 0)
@@ -3295,13 +3413,30 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['C6']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['C6'] = [
-                                'v' => $daily[$country][$date]['policies']['C6']['v'],
-                                't' => $daily[$country][$date]['policies']['C6']['t'],
-                                'n' => $daily[$country][$date]['policies']['C6']['n'],
-                                's' => $latest[$country]['policies']['C6']['s'],
+
+                            $target = false;
+                            if($daily[$country][$date]['policies']['C6']['t'] == 1)
+                            {
+                                $target = 'general';
+                            }
+                            else if($daily[$country][$date]['policies']['C6']['t'] == 0)
+                            {
+                                $target = 'targeted';
+                            }
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['C6']['v'])
+                            {
+                                $policy_note = 'C6. ' . $key['C6']['name'] . ' - ' . $key['C6']['values'][(int)$daily[$country][$date]['policies']['C6']['v']] . ($target ? ' (scope: ' . $target . ')' : '');
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['C6'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3314,6 +3449,10 @@ class StatsController extends Controller
                             's' => $date,
                         ];
                     }
+                }
+                else if(isset($latest[$country]['policies']['C6']))
+                {
+                    $daily[$country][$date]['policies']['C6'] = $latest[$country]['policies']['C6'];
                 }
 
                 if(strlen($row[21]) > 0)
@@ -3337,13 +3476,30 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['C7']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['C7'] = [
-                                'v' => $daily[$country][$date]['policies']['C7']['v'],
-                                't' => $daily[$country][$date]['policies']['C7']['t'],
-                                'n' => $daily[$country][$date]['policies']['C7']['n'],
-                                's' => $latest[$country]['policies']['C7']['s'],
+
+                            $target = false;
+                            if($daily[$country][$date]['policies']['C7']['t'] == 1)
+                            {
+                                $target = 'general';
+                            }
+                            else if($daily[$country][$date]['policies']['C7']['t'] == 0)
+                            {
+                                $target = 'targeted';
+                            }
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['C7']['v'])
+                            {
+                                $policy_note = 'C7. ' . $key['C7']['name'] . ' - ' . $key['C7']['values'][(int)$daily[$country][$date]['policies']['C7']['v']] . ($target ? ' (scope: ' . $target . ')' : '');
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['C7'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3356,6 +3512,10 @@ class StatsController extends Controller
                             's' => $date,
                         ];
                     }
+                }
+                else if(isset($latest[$country]['policies']['C7']))
+                {
+                    $daily[$country][$date]['policies']['C7'] = $latest[$country]['policies']['C7'];
                 }
 
                 if($row[24] > 0)
@@ -3378,12 +3538,20 @@ class StatsController extends Controller
                                 't' => $daily[$country][$date]['policies']['C8']['t'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['C8'] = [
-                                'v' => $daily[$country][$date]['policies']['C8']['v'],
-                                't' => $daily[$country][$date]['policies']['C8']['t'],
-                                's' => $latest[$country]['policies']['C8']['s'],
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['C8']['v'])
+                            {
+                                $policy_note = 'C8. ' . $key['C8']['name'] . ' - ' . $key['C8']['values'][(int)$daily[$country][$date]['policies']['C8']['v']];
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['C8'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3395,6 +3563,10 @@ class StatsController extends Controller
                             's' => $date,
                         ];
                     }
+                }
+                else if(isset($latest[$country]['policies']['C8']))
+                {
+                    $daily[$country][$date]['policies']['C8'] = $latest[$country]['policies']['C8'];
                 }
 
                 if($row[26] > 0)
@@ -3418,13 +3590,30 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['E1']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['E1'] = [
-                                'v' => $daily[$country][$date]['policies']['E1']['v'],
-                                't' => $daily[$country][$date]['policies']['E1']['t'],
-                                'n' => $daily[$country][$date]['policies']['E1']['n'],
-                                's' => $latest[$country]['policies']['E1']['s'],
+
+                            $target = false;
+                            if($daily[$country][$date]['policies']['E1']['t'] == 1)
+                            {
+                                $target = 'formal and informal sector workers';
+                            }
+                            else if($daily[$country][$date]['policies']['E1']['t'] == 0)
+                            {
+                                $target = 'formal sector workers only';
+                            }
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['E1']['v'])
+                            {
+                                $policy_note = 'E1. ' . $key['E1']['name'] . ' - ' . $key['E1']['values'][(int)$daily[$country][$date]['policies']['E1']['v']] . ($target ? ' (scope: ' . $target . ')' : '');
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['E1'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3437,6 +3626,10 @@ class StatsController extends Controller
                             's' => $date,
                         ];
                     }
+                }
+                else if(isset($latest[$country]['policies']['E1']))
+                {
+                    $daily[$country][$date]['policies']['E1'] = $latest[$country]['policies']['E1'];
                 }
 
                 if($row[29] > 0)
@@ -3460,13 +3653,20 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['E2']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['E2'] = [
-                                'v' => $daily[$country][$date]['policies']['E2']['v'],
-                                't' => $daily[$country][$date]['policies']['E2']['t'],
-                                'n' => $daily[$country][$date]['policies']['E2']['n'],
-                                's' => $latest[$country]['policies']['E2']['s'],
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['E2']['v'])
+                            {
+                                $policy_note = 'E2. ' . $key['E2']['name'] . ' - ' . $key['E2']['values'][(int)$daily[$country][$date]['policies']['E2']['v']];
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['E2'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3479,6 +3679,10 @@ class StatsController extends Controller
                             's' => $date,
                         ];
                     }
+                }
+                else if(isset($latest[$country]['policies']['E2']))
+                {
+                    $daily[$country][$date]['policies']['E2'] = $latest[$country]['policies']['E2'];
                 }
 
                 if($row[31] > 0)
@@ -3502,13 +3706,20 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['E3']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['E3'] = [
-                                'v' => $daily[$country][$date]['policies']['E3']['v'],
-                                't' => $daily[$country][$date]['policies']['E3']['t'],
-                                'n' => $daily[$country][$date]['policies']['E3']['n'],
-                                's' => $latest[$country]['policies']['E3']['s'],
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['E3']['v'])
+                            {
+                                $policy_note = 'E3. ' . $key['E3']['name'] . ' - total budget of US$' . number_format($daily[$country][$date]['policies']['E3']['v']);
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['E3'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3522,36 +3733,49 @@ class StatsController extends Controller
                         ];
                     }
                 }
+                else if(isset($latest[$country]['policies']['E3']))
+                {
+                    $daily[$country][$date]['policies']['E3'] = $latest[$country]['policies']['E3'];
+                }
 
                 if(strlen($row[33]) > 0)
                 {
                     $daily[$country][$date]['policies']['E4'] = [
-                            'v' => $row[33],
+                            'v' => $row[33] + (isset($latest[$country]['policies']['E4']['v'])?$latest[$country]['policies']['E4']['v']:0),
                             't' => '',
                             'n' => $row[34],
                     ];
 
                     if(isset($latest[$country]['policies']['E4']))
                     {
+                        // This is cumulative, so we keep adding.
                         if(
                             $latest[$country]['policies']['E4']['v'] != $daily[$country][$date]['policies']['E4']['v']
                             || $latest[$country]['policies']['E4']['t'] != $daily[$country][$date]['policies']['E4']['t']
                         )
                         {
-                            $latest[$country]['policies']['E4'] = [
-                                'v' => $daily[$country][$date]['policies']['E4']['v'],
-                                't' => $daily[$country][$date]['policies']['E4']['t'],
-                                'n' => $daily[$country][$date]['policies']['E4']['n'],
-                                's' => $date,
+
+                            $latest[$country]['policies']['E4']['v'] = $daily[$country][$date]['policies']['E4']['v'];
+                            $latest[$country]['policies']['E4']['t'] = $daily[$country][$date]['policies']['E4']['t'];
+                            $latest[$country]['policies']['E4']['n'] = $daily[$country][$date]['policies']['E4']['n'];
+                            $latest[$country]['policies']['E4']['s'] = $date;
+
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['E4']['v'])
+                            {
+                                $policy_note = 'E4. ' . $key['E4']['name'] . ' - total aid budget of US$' . number_format($daily[$country][$date]['policies']['E4']['v']);
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['E4'],
+                                'url' => ''
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['E4'] = [
-                                'v' => $daily[$country][$date]['policies']['E4']['v'],
-                                't' => $daily[$country][$date]['policies']['E4']['t'],
-                                'n' => $daily[$country][$date]['policies']['E4']['n'],
-                                's' => $latest[$country]['policies']['E4']['s'],
-                            ];
+
                         }
                     }
                     else
@@ -3563,6 +3787,10 @@ class StatsController extends Controller
                             's' => $date,
                         ];
                     }
+                }
+                else if(isset($latest[$country]['policies']['E4']))
+                {
+                    $daily[$country][$date]['policies']['E4'] = $latest[$country]['policies']['E4'];
                 }
 
                 if(strlen($row[35]) > 0)
@@ -3586,13 +3814,30 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['H1']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['H1'] = [
-                                'v' => $daily[$country][$date]['policies']['H1']['v'],
-                                't' => $daily[$country][$date]['policies']['H1']['t'],
-                                'n' => $daily[$country][$date]['policies']['H1']['n'],
-                                's' => $latest[$country]['policies']['H1']['s'],
+
+                            $target = false;
+                            if($daily[$country][$date]['policies']['H1']['t'] == 1)
+                            {
+                                $target = 'general';
+                            }
+                            else if($daily[$country][$date]['policies']['H1']['t'] == 0)
+                            {
+                                $target = 'targeted';
+                            }
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['H1']['v'])
+                            {
+                                $policy_note = 'H1. ' . $key['H1']['name'] . ' - ' . $key['H1']['values'][(int)$daily[$country][$date]['policies']['H1']['v']] . ($target ? ' (scope: ' . $target . ')' : '');
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['H1'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3605,6 +3850,10 @@ class StatsController extends Controller
                             's' => $date,
                         ];
                     }
+                }
+                else if(isset($latest[$country]['policies']['H1']))
+                {
+                    $daily[$country][$date]['policies']['H1'] = $latest[$country]['policies']['H1'];
                 }
 
                 if(strlen($row[38]) > 0)
@@ -3628,13 +3877,20 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['H2']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['H2'] = [
-                                'v' => $daily[$country][$date]['policies']['H2']['v'],
-                                't' => $daily[$country][$date]['policies']['H2']['t'],
-                                'n' => $daily[$country][$date]['policies']['H2']['n'],
-                                's' => $latest[$country]['policies']['H2']['s'],
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['H2']['v'])
+                            {
+                                $policy_note = 'H2. ' . $key['H2']['name'] . ' - ' . $key['H2']['values'][(int)$daily[$country][$date]['policies']['H2']['v']];
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['H2'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3647,6 +3903,10 @@ class StatsController extends Controller
                             's' => $date,
                         ];
                     }
+                }
+                else if(isset($latest[$country]['policies']['H2']))
+                {
+                    $daily[$country][$date]['policies']['H2'] = $latest[$country]['policies']['H2'];
                 }
 
                 if(strlen($row[40]) > 0)
@@ -3670,13 +3930,20 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['H3']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['H3'] = [
-                                'v' => $daily[$country][$date]['policies']['H3']['v'],
-                                't' => $daily[$country][$date]['policies']['H3']['t'],
-                                'n' => $daily[$country][$date]['policies']['H3']['n'],
-                                's' => $latest[$country]['policies']['H3']['s'],
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['H3']['v'])
+                            {
+                                $policy_note = 'H3. ' . $key['H3']['name'] . ' - ' . $key['H3']['values'][(int)$daily[$country][$date]['policies']['H3']['v']];
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['H3'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3690,11 +3957,15 @@ class StatsController extends Controller
                         ];
                     }
                 }
+                else if(isset($latest[$country]['policies']['H3']))
+                {
+                    $daily[$country][$date]['policies']['H3'] = $latest[$country]['policies']['H3'];
+                }
 
                 if(strlen($row[42]) > 0)
                 {
                     $daily[$country][$date]['policies']['H4'] = [
-                        'v' => $row[42],
+                        'v' => $row[42] + (isset($latest[$country]['policies']['H4']['v'])?$latest[$country]['policies']['H4']['v']:0),
                         't' => '',
                         'n' => $row[43],
                     ];
@@ -3712,13 +3983,20 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['H4']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['H4'] = [
-                                'v' => $daily[$country][$date]['policies']['H4']['v'],
-                                't' => $daily[$country][$date]['policies']['H4']['t'],
-                                'n' => $daily[$country][$date]['policies']['H4']['n'],
-                                's' => $latest[$country]['policies']['H4']['s'],
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['H4']['v'])
+                            {
+                                $policy_note = 'H4. ' . $key['H4']['name'] . ' - total budget of US$' . (number_format($daily[$country][$date]['policies']['H4']['v']));
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['H4'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3732,35 +4010,46 @@ class StatsController extends Controller
                         ];
                     }
                 }
+                else if(isset($latest[$country]['policies']['H4']))
+                {
+                    $daily[$country][$date]['policies']['H4'] = $latest[$country]['policies']['H4'];
+                }
 
                 if(strlen($row[44]) > 0)
                 {
                     $daily[$country][$date]['policies']['H5'] = [
-                        'v' => $row[44],
+                        'v' => $row[44] + (isset($latest[$country]['policies']['H5']['v'])?$latest[$country]['policies']['H5']['v']:0),
                         't' => '',
                         'n' => $row[45],
                     ];
 
                     if(isset($latest[$country]['policies']['H5']))
                     {
+                        // This is cumulative, so we keep adding.
                         if(
                             $latest[$country]['policies']['H5']['v'] != $daily[$country][$date]['policies']['H5']['v']
                             || $latest[$country]['policies']['H5']['t'] != $daily[$country][$date]['policies']['H5']['t']
                         )
                         {
-                            $latest[$country]['policies']['H5'] = [
-                                'v' => $daily[$country][$date]['policies']['H5']['v'],
-                                't' => $daily[$country][$date]['policies']['H5']['t'],
-                                'n' => $daily[$country][$date]['policies']['H5']['n'],
-                                's' => $date,
-                            ];
-                        }
-                        else {
-                            $latest[$country]['policies']['H5'] = [
-                                'v' => $daily[$country][$date]['policies']['H5']['v'],
-                                't' => $daily[$country][$date]['policies']['H5']['t'],
-                                'n' => $daily[$country][$date]['policies']['H5']['n'],
-                                's' => $latest[$country]['policies']['H5']['s'],
+
+                            $latest[$country]['policies']['H5']['v'] = $daily[$country][$date]['policies']['H5']['v'];
+                            $latest[$country]['policies']['H5']['t'] = $daily[$country][$date]['policies']['H5']['t'];
+                            $latest[$country]['policies']['H5']['n'] = $daily[$country][$date]['policies']['H5']['n'];
+                            $latest[$country]['policies']['H5']['s'] = $date;
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['H5']['v'])
+                            {
+                                $policy_note = 'H5. ' . $key['H5']['name'] . ' - total investment of US$' . number_format($daily[$country][$date]['policies']['H5']['v']);
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['H5'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3773,6 +4062,10 @@ class StatsController extends Controller
                             's' => $date,
                         ];
                     }
+                }
+                else if(isset($latest[$country]['policies']['H5']))
+                {
+                    $daily[$country][$date]['policies']['H5'] = $latest[$country]['policies']['H5'];
                 }
 
                 if(strlen($row[46]) > 0)
@@ -3796,13 +4089,20 @@ class StatsController extends Controller
                                 'n' => $daily[$country][$date]['policies']['M1']['n'],
                                 's' => $date,
                             ];
-                        }
-                        else {
-                            $latest[$country]['policies']['M1'] = [
-                                'v' => $daily[$country][$date]['policies']['M1']['v'],
-                                't' => $daily[$country][$date]['policies']['M1']['t'],
-                                'n' => $daily[$country][$date]['policies']['M1']['n'],
-                                's' => $latest[$country]['policies']['M1']['s'],
+
+                            $policy_note = '';
+                            if($daily[$country][$date]['policies']['M1']['v'])
+                            {
+                                $policy_note = 'M1. ' . $key['M1']['name'] . ' - ' . $daily[$country][$date]['policies']['M1']['v'];
+                            }
+
+                            $annotations[$country][$date] = [
+                                'country' => $country,
+                                'state' => '',
+                                'date' => $date,
+                                'notes' => $policy_note,
+                                'data' => $latest[$country]['policies']['M1'],
+                                'url' => ''
                             ];
                         }
                     }
@@ -3816,8 +4116,16 @@ class StatsController extends Controller
                         ];
                     }
                 }
+                else if(isset($latest[$country]['policies']['M1']))
+                {
+                    $daily[$country][$date]['policies']['M1'] = $latest[$country]['policies']['M1'];
+                }
 
-                $daily[$country][$date]['si'] = $row[51];
+
+                if(isset($daily[$country][$date]['policies']))
+                {
+                    $daily[$country][$date]['si'] = $row[51];
+                }
                 $latest[$country]['si'] = $row[51];
             }
         }
@@ -3835,6 +4143,8 @@ class StatsController extends Controller
         ];
 
         file_put_contents(STATS . 'oxford.json',json_encode($data));
+
+        file_put_contents(STATS . 'oxford_annotations.json',json_encode($annotations));
 
         return response('Done harvesting data')->setStatusCode(Response::HTTP_OK);
     }

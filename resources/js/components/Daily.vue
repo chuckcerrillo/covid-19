@@ -58,6 +58,7 @@
                         <div class="w-24 h-full p-2 border-l border-slab flex items-end">Recovered Per 1M population</div>
                         <div class="w-24 p-2">5D Ave</div>
                         <div class="w-16 p-2">Growth Factor</div>
+                        <div class="w-16 p-2">Stringency Index</div>
                     </div>
                 </div>
                 <simplebar data-simplebar-auto-hide="false" class="bg-slab rounded absolute inset-x-0 bottom-0" style="min-width: 75rem; position: absolute; top: 70px;">
@@ -118,6 +119,9 @@
                                     <span class="text-red-400" v-if="row.growth.c > 1">{{row.growth.c | numeralFormat('0.00')}}</span>
                                     <span class="text-green-400" v-else>{{row.growth.c | numeralFormat('0.00')}}</span>
                                 </div>
+                                <div class="w-16 p-2">
+                                    {{row.stringencyindex | numeralFormat('0.00')}}
+                                </div>
                             </div>
                             <div v-if="key==0" class="w-full text-lightlabel flex justify-start">
                                 <div class="w-24 p-2"></div>
@@ -133,7 +137,9 @@
                             >
                                 <div class="w-24 p-2 pt-0"></div>
                                 <div class="w-268 p-2 pt-0 border-l border-lightslab">
-                                    <div class="flex rounded bg-hoverslab p-2">
+                                    <div class="flex rounded p-2"
+                                         :class="annotation.type === 'policy' ? 'bg-heading text-gray-800' : 'bg-hoverslab'"
+                                    >
                                         <div v-if="annotation.state.length > 0" class="font-bold mr-2">{{annotation.state}}</div>
                                         <div>
                                             <div>{{annotation.notes}}</div>
@@ -215,8 +221,6 @@
             annotations()
             {
                 var data = [];
-                console.log('annotations for ' + this.data.name.country);
-                console.log(this.data.annotations)
                 for(var x in this.data.annotations)
                 {
                     if(this.data.annotations[x].country == 'All')
