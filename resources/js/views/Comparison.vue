@@ -588,7 +588,6 @@
                     }
 
                 }
-
                 return data;
             },
             getGlobalDayNotes(date)
@@ -848,7 +847,6 @@
                             if(this.countryCases[compare.country] && this.countryCases[compare.country].daily)
                             {
                                 var daily = _.clone(this.countryCases[compare.country].daily);
-                                var stringencyindex = 0;
                                 for(var x in daily)
                                 {
                                     daily[x].delta.a = daily[x].delta.c - daily[x].delta.d - daily[x].delta.r;
@@ -866,11 +864,19 @@
                                         daily[x].percent.r = 0;
                                     }
 
-
-                                    if (daily[x].date && policies && policies[daily[x].date])
+                                    var stringencyindex = 0;
+                                    if(daily[x].date)
                                     {
-                                        stringencyindex = policies[daily[x].date].si;
+                                        for(var y in policies)
+                                        {
+                                            if(policies[y].date === daily[x].date)
+                                            {
+                                                stringencyindex = policies[y].stringencyindex;
+                                                break;
+                                            }
+                                        }
                                     }
+
                                     daily[x].stringencyindex = stringencyindex;
                                 }
                                 return daily;
