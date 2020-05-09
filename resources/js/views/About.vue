@@ -37,6 +37,7 @@
                         <li>Added comparison table view for Government Response</li>
                         <li>Added comparison table view for Daily Breakdown</li>
                         <li>Changes to government response now appear as annotations in the daily breakdown.</li>
+                        <li>Bugfix: Charts were loading in the background regardless of the page you're viewing, causing unnecessary delays to page load.</li>
                     </ul>
 
                     <div class="font-bold">2020-05-03</div>
