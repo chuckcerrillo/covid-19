@@ -36,6 +36,7 @@
                     <ul class="list-disc ml-8 mr-4">
                         <li>Added comparison table view for Government Response</li>
                         <li>Added comparison table view for Daily Breakdown</li>
+                        <li>Changes to government response now appear as annotations in the daily breakdown.</li>
                     </ul>
 
                     <div class="font-bold">2020-05-03</div>

@@ -3710,7 +3710,7 @@ class StatsController extends Controller
                             $policy_note = '';
                             if($daily[$country][$date]['policies']['E3']['v'])
                             {
-                                $policy_note = 'E3. ' . $key['E3']['name'] . ' announced spending US$' . ((int)$daily[$country][$date]['policies']['E3']['v']);
+                                $policy_note = 'E3. ' . $key['E3']['name'] . ' - total budget of US$' . number_format($daily[$country][$date]['policies']['E3']['v']);
                             }
 
                             $annotations[$country][$date] = [
@@ -3750,7 +3750,7 @@ class StatsController extends Controller
                     {
                         // This is cumulative, so we keep adding.
                         if(
-                            $daily[$country][$date]['policies']['E4']['v'] > 0
+                            $latest[$country]['policies']['E4']['v'] != $daily[$country][$date]['policies']['E4']['v']
                             || $latest[$country]['policies']['E4']['t'] != $daily[$country][$date]['policies']['E4']['t']
                         )
                         {
@@ -3764,7 +3764,7 @@ class StatsController extends Controller
                             $policy_note = '';
                             if($daily[$country][$date]['policies']['E4']['v'])
                             {
-                                $policy_note = 'E4. ' . $key['E4']['name'] . ' - announced aid of US$' . ((int)$daily[$country][$date]['policies']['E4']['v']);
+                                $policy_note = 'E4. ' . $key['E4']['name'] . ' - total aid budget of US$' . number_format($daily[$country][$date]['policies']['E4']['v']);
                             }
 
                             $annotations[$country][$date] = [
@@ -3987,7 +3987,7 @@ class StatsController extends Controller
                             $policy_note = '';
                             if($daily[$country][$date]['policies']['H4']['v'])
                             {
-                                $policy_note = 'H4. ' . $key['H4']['name'] . ' - announced spending of US$' . ((int)$daily[$country][$date]['policies']['H4']['v']);
+                                $policy_note = 'H4. ' . $key['H4']['name'] . ' - total budget of US$' . (number_format($daily[$country][$date]['policies']['H4']['v']));
                             }
 
                             $annotations[$country][$date] = [
@@ -4027,7 +4027,7 @@ class StatsController extends Controller
                     {
                         // This is cumulative, so we keep adding.
                         if(
-                            $daily[$country][$date]['policies']['H5']['v'] > 0
+                            $latest[$country]['policies']['H5']['v'] != $daily[$country][$date]['policies']['H5']['v']
                             || $latest[$country]['policies']['H5']['t'] != $daily[$country][$date]['policies']['H5']['t']
                         )
                         {
@@ -4040,7 +4040,7 @@ class StatsController extends Controller
                             $policy_note = '';
                             if($daily[$country][$date]['policies']['H5']['v'])
                             {
-                                $policy_note = 'H5. ' . $key['H5']['name'] . ' - investing US$' . ((int)$daily[$country][$date]['policies']['H5']['v']);
+                                $policy_note = 'H5. ' . $key['H5']['name'] . ' - total investment of US$' . number_format($daily[$country][$date]['policies']['H5']['v']);
                             }
 
                             $annotations[$country][$date] = [

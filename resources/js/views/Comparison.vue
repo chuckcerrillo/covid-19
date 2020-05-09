@@ -561,8 +561,14 @@
                     {
                         row = {
                             date: new_date,
+                            stringencyindex: false,
                             latest: {}
                         };
+
+                        if(daily[new_date].si)
+                        {
+                            row.stringencyindex = daily[new_date].si;
+                        }
                         for(var y in daily[new_date].policies)
                         {
 
