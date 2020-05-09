@@ -76,7 +76,7 @@
                                     <div class="w-full">
 
                                         <div class="p-2 h-32 border-b border-lightslab">
-                                            <MiniChart :data="dataset(key)" :maxDate="date" />
+                                            <MiniChart v-if="active && graphReady" :data="dataset(key)" :maxDate="date" :active="active" />
                                         </div>
                                         <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('confirmed',row.latest.c) ? 'bg-darkslab':''">
                                             {{ isNaN(row.latest.c) ? 0 : row.latest.c | numeralFormat}}<br />
@@ -160,6 +160,10 @@
     import 'vue-slider-component/theme/default.css'
     import MiniChart from "./MiniChart";
 
+    // const MiniChart = () => ({
+    //     component: import("./MiniChart"),
+    //
+    // });
     export default {
         name: "Latest",
         components: {
@@ -170,7 +174,8 @@
         },
         props: [
             'data',
-            'settings'
+            'settings',
+            'active'
         ],
         data(){
             return {
@@ -183,15 +188,24 @@
                         min: new Date('2020-01-22'),
                         max: false,
                     }
-                }
+                },
+                graphReady: false
             }
         },
         created()
         {
-            this.date = this.dateSliderRange[this.dateSliderRange.length - 1];
-            this.options.date.max = this.date;
+            this.prepare();
+            var self = this;
+            setTimeout(function(){
+                self.graphReady = true;
+            },200)
         },
         methods: {
+            prepare()
+            {
+                this.date = this.dateSliderRange[this.dateSliderRange.length - 1];
+                this.options.date.max = this.date;
+            },
             toggleExpand()
             {
                 this.expanded = !this.expanded;

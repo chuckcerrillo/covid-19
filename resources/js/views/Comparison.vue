@@ -40,6 +40,7 @@
                         </div>
                         <div class="w-full h-full relative">
                             <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0" style="position:absolute">
+
                                 <CountryStateItem
                                     v-for="(data,key,index) in countries_sorted"
                                     v-on:selectCountry="selectCountry"
@@ -77,10 +78,12 @@
                                     </div>
                                 </div>
                             </simplebar>
+                            <keep-alive>
                             <div class="h-full relative" v-if="view == 'response'">
                                 <div class="absolute top-0 left-0 right-0 bottom-0 rounded bg-hoverslab" style="bottom:2rem;">
 
                                         <div class="h-full m-4" :class="selectedCompareTab != 'all' ? 'hidden' : ''">
+
                                             <div v-if="getCompareLength() == 0">
                                                 <h1 class="text-3xl font-bold">Government Response Tracker</h1>
                                                 <div>
@@ -93,9 +96,11 @@
                                                     <p class="mt-8">Select a country or state to begin comparing.</p>
                                                 </div>
                                             </div>
-                                            <ComparePolicies v-else
-                                                    :data="comparePolicies()"
-                                            />
+
+                                                <ComparePolicies v-else
+                                                        :data="comparePolicies()"
+                                                />
+
                                         </div>
                                         <div v-for="(row,key,index) in getUniqueCountriesCompare()" class="absolute m-4 inset-0 bg-hoverslab rounded p-4" v-if="selectedCompareTab.substr(0,row.country.length) == row.country" :key="index">
                                             <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0" style="position:absolute;">
@@ -110,25 +115,26 @@
                                                     <div class="py-2 text-sm">A higher position in the Stringency Index does not necessarily mean that a country's response is ‘better’ than others lower on the index.</div>
                                                 </div>
                                                 <div class="flex flex-wrap">
-                                                    <GovtResponse
-                                                        v-if="getGovtResponse(row.country)"
-                                                        v-for="(policy,key,index) in getLatestGovtResponse(row.country)"
-                                                        :key="index"
-                                                        :policy="policy" />
+                                                        <GovtResponse
+                                                            v-if="getGovtResponse(row.country)"
+                                                            v-for="(policy,key,index) in getLatestGovtResponse(row.country)"
+                                                            :key="index"
+                                                            :policy="policy" />
                                                 </div>
                                             </simplebar>
                                         </div>
                                 </div>
                             </div>
                             <!--                                <div class="" v-show="ui.content.selectedTab == 'timeline'">Timeline</div>-->
-                            <div class="h-full relative" v-if="view == 'daily'">
+                            <div class="h-full relative" v-else-if="view === 'daily'">
                                 <div class="absolute top-0 right-0 bottom-0 left-0 bg-hoverslab rounded" style="bottom:32px;">
-                                    <div class="h-full" :class="selectedCompareTab != 'all' ? 'hidden' : ''">
-                                        <div v-if="getCompareLength() == 0" class="m-4">
+                                    <div class="h-full" :class="selectedCompareTab !== 'all' ? 'hidden' : ''">
+                                        <div v-if="getCompareLength() === 0" class="m-4">
                                             Select up to {{options.compare_limit}} countries or states to begin comparing.
                                         </div>
                                         <Latest v-else
                                                 :data="getComparisonData()"
+                                                :active="view === 'daily' && selectedCompareTab === 'all'"
                                         />
                                     </div>
     <!--                                <div v-if="getCompareLength() == 0">-->
@@ -146,10 +152,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="h-full relative flex flex-1 pt-8" v-if="view == 'charts'">
-                                <StatsChart :data="getComparisonData()" :full="true" />
+                            <div class="h-full relative flex flex-1 pt-8" v-else-if="view === 'charts'">
+                                <StatsChart :data="getComparisonData()" :full="true" :active="view === 'charts'" />
                             </div>
-
+                            </keep-alive>
                             <div class="h-full relative flex flex-1" v-show="view == 'about'">
                                 <About />
                             </div>
@@ -1242,7 +1248,6 @@
             loaded()
             {
                 if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success')
-                // if (this.database && this.database.loading && this.database.loading.countries && this.database.loading.states && this.database.loading.annotations && this.database.loading.global && this.database.loading.oxford)
                 {
                     return true;
                 }
@@ -1250,7 +1255,7 @@
             },
         }
     }
-</script>
+    </script>
 
 <style scoped>
 

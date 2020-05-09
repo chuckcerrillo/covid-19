@@ -107,7 +107,7 @@
                            :options="dataset.options"
                            class="bg-heading rounded"
                            :class="full ? (settings.controls.menu ? 'absolute top-0 bottom-0 right-0 left-0 m-2 mb-16': 'absolute top-0 bottom-0 right-0 left-0 m-2') : 'h-200 m-4 mb-0'"
-                           v-if="data.length > 0"
+                           v-if="active && data.length > 0"
                 />
                 <div class="text-xs absolute left-0 right-0 bottom-0 h-12 flex items-start justify-between" v-if="settings.controls.menu">
                     <div class="flex items-center justify-start">
@@ -360,6 +360,7 @@
             'data',
             'full',
             'config',
+            'active',
         ],
         methods: {
             setColor(name,color)
