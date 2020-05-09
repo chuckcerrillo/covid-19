@@ -1,16 +1,23 @@
 <template>
     <div class="h-full">
-        <LineChart :data="dataset.data"
-                   :options="dataset.options"
+        <keep-alive>
+        <LineChart v-if="active && dataReady" :data="dataset().data"
+                   :options="dataset().options"
                    class="rounded h-full"
         />
-
+        </keep-alive>
     </div>
 </template>
 
 <script>
-    import LineChart from "./charts/LineChart";
     import moment from 'moment';
+
+
+    const LineChart = () => ({
+        component: import("./charts/LineChart"),
+
+    });
+
     export default {
         name: "MiniChart",
         components:{
@@ -19,15 +26,17 @@
         props: [
             'data',
             'maxDate',
+            'active'
         ],
         data(){
             return {
                 yAxis: [
                     'deltaConfirmed',
-                ]
+                ],
+                dataReady: false,
             }
         },
-        computed:{
+        methods:{
             dataset()
             {
 
@@ -258,6 +267,15 @@
                     options: options
                 };
             },
+        },
+        created()
+        {
+            var self = this;
+            // setTimeout(function(){
+                self.dataset();
+                self.dataReady = true;
+            // },10)
+
         }
     }
 </script>

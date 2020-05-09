@@ -21,14 +21,18 @@
         },
         methods: {
             renderLineChart(){
-                var options = this.options;
-                this.renderChart(this.chartData,options);
+                var self = this;
+                var options = self.options;
+                self.renderChart(self.chartData,options);
             }
         },
         watch: {
             data: function() {
-                this._data._chart.destroy();
-                this.renderLineChart();
+                var self = this;
+                // setTimeout(function(){
+                    self._data._chart.destroy();
+                    self.renderLineChart();
+                // },10)
             }
         }
     }
