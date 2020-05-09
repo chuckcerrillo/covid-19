@@ -29,7 +29,7 @@
                     <div
                         class="border-l flex-shrink-0
                         border-lightslab w-64"
-                        v-for="(row, key, index) in data"
+                        v-for="(row, key, index) in comparison"
                     >
                         <div class="w-full">
                             <div class="px-4 py-2 text-2xl h-12 bg-slab-primary">
@@ -412,31 +412,19 @@
                             console.log('Compare ' + this.date + ' vs ' + policies.daily[y].date);
                             if(this.date === policies.daily[y].date)
                             {
-                                console.log('found ' + this.date);
-                                console.log(policies.daily[y].latest);
                                 row.latest = _.clone(policies.daily[y].latest);
-                                console.log('found it');
-                                console.log(row);
                                 break;
                             }
-
+                            row.stringencyindex = policies.daily[y].stringencyindex;
                         }
-                        row.stringencyindex = policies.stringencyindex;
+
 
                     }
 
-                    console.log('check again')
-                    console.log(row);
-
                     var list = ['C1','C2','C3','C4','C5','C6','C7','C8','E1','E2','E3','E4','H1','H2','H3','H4','H5','M1'];
-                    console.log('latest');
-                    console.log(row.latest);
                     for(var y in list)
                     {
                         var field = list[y];
-
-                        console.log(field);
-                        console.log(!row.latest[field])
 
                         if(!row.latest[field])
                         {
