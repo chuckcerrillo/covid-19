@@ -4121,12 +4121,25 @@ class StatsController extends Controller
                     $daily[$country][$date]['policies']['M1'] = $latest[$country]['policies']['M1'];
                 }
 
-
                 if(isset($daily[$country][$date]['policies']))
                 {
-                    $daily[$country][$date]['si'] = $row[51];
+                    if(strlen($row[51])>0)
+                    {
+                        $daily[$country][$date]['si'] = $row[51];
+                        $latest[$country]['si'] = $row[51];
+                    }
+                    else
+                    {
+                        if(isset($latest[$country]['si']))
+                        {
+                            $daily[$country][$date]['si'] = $latest[$country]['si'];
+                        }
+                        else
+                        {
+                            $daily[$country][$date]['si'] = 0;
+                        }
+                    }
                 }
-                $latest[$country]['si'] = $row[51];
             }
         }
 

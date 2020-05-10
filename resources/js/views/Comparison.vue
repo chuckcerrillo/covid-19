@@ -129,13 +129,16 @@
                             <div class="h-full relative" v-else-if="view === 'daily'">
                                 <div class="absolute top-0 right-0 bottom-0 left-0 bg-hoverslab rounded" style="bottom:32px;">
                                     <div class="h-full" :class="selectedCompareTab !== 'all' ? 'hidden' : ''">
+                                        <keep-alive>
                                         <div v-if="getCompareLength() === 0" class="m-4">
                                             Select up to {{options.compare_limit}} countries or states to begin comparing.
                                         </div>
+
                                         <Latest v-else
                                                 :data="getComparisonData()"
                                                 :active="view === 'daily' && selectedCompareTab === 'all'"
                                         />
+                                        </keep-alive>
                                     </div>
     <!--                                <div v-if="getCompareLength() == 0">-->
     <!--                                    Select up to {{options.compare_limit}} countries or states to begin comparing.-->
