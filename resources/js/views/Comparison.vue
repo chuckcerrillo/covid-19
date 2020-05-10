@@ -843,6 +843,16 @@
                     var countryId = this.countriesIndex.indexOf(compare.country);
                     if(countryId >= 0)
                     {
+                        var policies = this.getGovtResponse(compare.country);
+                        if(policies && policies.daily)
+                        {
+                            policies = policies.daily;
+                        }
+                        else
+                        {
+                            policies = false;
+                        }
+                        
                         if(!compare.state)
                         {
                             if(this.countryCases[compare.country] && this.countryCases[compare.country].daily)
