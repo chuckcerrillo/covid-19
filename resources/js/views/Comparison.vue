@@ -6,58 +6,15 @@
         <div class="hidden xl:block" v-if="!loaded">Loading data</div>
         <div v-else class="h-full overflow-hidden relative">
             <div class="hidden relative h-full xl:flex flex-1">
-                <div class="flex flex-col" :class="view == 'dashboard' || view == 'about' ? 'hidden' : ''">
-                    <div class="m-4 mb-0 overflow-hidden bg-lightslab rounded h-56 p-4">
-                        <div class="text-2xl tracking-tight font-bold">Global tally</div>
-                        <div class="text-xs mb-4">as of {{global().last_update}}</div>
-
-                        <div class="flex font-bold justify-between items-center">
-                            <div class="m-2 ml-0">
-                                <div class="text-sm">Confirmed</div>
-                                <div class="text-2xl text-white">{{global().total.confirmed| numeralFormat}}</div>
-                            </div>
-                            <div class="m-2">
-                                <div class="text-sm">Deaths</div>
-                                <div class="text-2xl text-white">{{global().total.deaths| numeralFormat}}</div>
-                            </div>
-                            <div class="m-2 mr-0">
-                                <div class="text-sm">Recovered</div>
-                                <div class="text-2xl text-white">{{global().total.recovered| numeralFormat}}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="overflow-hidden bg-slab rounded m-4 flex flex-col items-start h-full p-4 relative">
-                        <div class="">
-                            <div class="tracking-tight font-bold">Countries and states <br>({{countriesIndex.length}} total)</div>
-                            <div class="text-xs text-right">Sorting by {{sort_stats.key}} {{sort_stats.order}}</div>
-                            <div class="flex font-bold py-2 text-xs items-center bg-slab-primary">
-                                <div class="w-4 p-2 m-1 ml-0"></div>
-                                <div class="w-32 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key == 'country' ? 'bg-hoverslab' : '' " @click="toggleSort('country')">Country / Region</div>
-                                <div class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmed')">Confirmed</div>
-                                <div class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key == 'deaths' ? 'bg-hoverslab' : '' " @click="toggleSort('deaths')">Deaths</div>
-                                <div class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key == 'recovered' ? 'bg-hoverslab' : '' " @click="toggleSort('recovered')">Recovered</div>
-                            </div>
-                        </div>
-                        <div class="w-full h-full relative">
-                            <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0" style="position:absolute">
-
-                                <CountryStateItem
-                                    v-for="(data,key,index) in countries_sorted"
-                                    v-on:selectCountry="selectCountry"
-                                    :data="data"
-                                    :key="key"
-                                    :country_key="key"
-                                    :compare="compare"
-                                    :settings="{dashboard:false}"
-                                />
-
-                            </simplebar>
-                        </div>
-                        <div>
-
-                        </div>
-                    </div>
-                </div>
+                <Sidebar
+                    :class="view == 'dashboard' || view == 'about' ? 'hidden' : ''"
+                    :global="global()"
+                    :sort_stats="sort_stats"
+                    :countriesIndex="countriesIndex"
+                    :countries_sorted="countries_sorted"
+                    :selectCountry="selectCountry"
+                    :compare="compare"
+                />
                 <div class="m-4 ml-0 w-full overflow-hidden relative" :class="view == 'dashboard' || view == 'about' ? 'ml-4': ''">
                     <div class="bg-slab rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col p-4">
                         <div class="absolute top-0 right-0 bottom-0 left-0 p-4">
@@ -78,167 +35,45 @@
                                     </div>
                                 </div>
                             </simplebar>
-                            <keep-alive>
-                            <div class="h-full relative" v-if="view == 'response'">
-                                <div class="absolute top-0 left-0 right-0 bottom-0 rounded bg-hoverslab" style="bottom:2rem;">
 
-                                        <div class="h-full m-4" :class="selectedCompareTab != 'all' ? 'hidden' : ''">
+                            <keep-alive include="DashboardView">
+                                <PoliciesView
+                                    v-if="view == 'response'"
+                                    :selectedCompareTab="selectedCompareTab"
+                                    :comparePolicies="comparePolicies()"
+                                    :uniqueCountries="getUniqueCountriesCompare()"
+                                    :compareLength="getCompareLength()"
+                                    :database="database"
+                                />
 
-                                            <div v-if="getCompareLength() == 0">
-                                                <h1 class="text-3xl font-bold">Government Response Tracker</h1>
-                                                <div>
-                                                    <p>These data are based on the <a class="text-orangeslab hover:text-blue-400 hover:underline" target="_blank" href="https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker">Coronavirus Government Response Tracker</a> by the University of Oxford.</p>
-                                                    <blockquote class="italic m-2 ml-4 border-l-4 p-4 border-lightslab">
-                                                        <p class="py-2">Systematic information on which governments have taken which measures, and when, can help decision-makers and citizens understand the robustness of governmental responses in a consistent way, aiding efforts to fight the pandemic. The Oxford COVID-19 Government Response Tracker (OxCGRT) systematically collects information on several different common policy responses governments have taken, scores the stringency of such measures, and aggregates these scores into a common Stringency Index.</p>
-                                                        <p class="py-2">Data is collected from public sources by a team of over one hundred Oxford University students and staff from every part of the world.</p>
-                                                    </blockquote>
+                                <DailyView
+                                    v-else-if="view === 'daily'"
+                                    :selectedCompareTab="selectedCompareTab"
+                                    :options="options"
+                                    :comparisonData="getComparisonData()"
+                                    :view="view"
+                                    :compare="compare"
+                                    v-on:updateCompare="emitCompare"
+                                    v-on:updateSelected="updateSelected"
+                                />
 
-                                                    <p class="mt-8">Select a country or state to begin comparing.</p>
-                                                </div>
-                                            </div>
 
-                                                <ComparePolicies v-else
-                                                        :data="comparePolicies()"
-                                                />
-
-                                        </div>
-                                        <div v-for="(row,key,index) in getUniqueCountriesCompare()" class="absolute m-4 inset-0 bg-hoverslab rounded p-4" v-if="selectedCompareTab.substr(0,row.country.length) == row.country" :key="index">
-                                            <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0" style="position:absolute;">
-                                                <div class="my-4">
-                                                    <div class="w-128 text-4xl font-bold">{{row.country}}</div>
-                                                    <div v-if="getGovtResponse(row.country)" class="text-6xl font-bold">{{getGovtResponse(row.country).latest.si}}</div>
-                                                    <div v-else class="text-6xl font-bold">N/A</div>
-                                                    <div class="text-lightlabel font-bold tracking-tight">stringency index</div>
-                                                    <div class="py-2 text-sm">OxCGRT collects publicly available information on 17 indicators of government response. This information is collected by a team of over 100 volunteers from the Oxford community and is updated continuously.</div>
-                                                    <div class="py-2 text-sm">Eight of the policy indicators (C1-C8) record information on containment and closure policies, such as school closures and restrictions in movement. Four of the indicators (E1-E4) record economic policies such as income support to citizens or provision of foreign aid. And five indicators (H1-H5) record health system policies such as the Covid-19 testing regime or emergency investments into healthcare.</div>
-                                                    <div class="py-2 text-sm">For a full description of the data and how it is collected, check out the <a target="_blank" class="text-orangeslab hover:text-blue-400 hover:underline" href="https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker">University of Oxford's coronavirus government response tracker (OxCGRT)</a></div>
-                                                    <div class="py-2 text-sm">A higher position in the Stringency Index does not necessarily mean that a country's response is ‘better’ than others lower on the index.</div>
-                                                </div>
-                                                <div class="flex flex-wrap">
-                                                        <GovtResponse
-                                                            v-if="getGovtResponse(row.country)"
-                                                            v-for="(policy,key,index) in getLatestGovtResponse(row.country)"
-                                                            :key="index"
-                                                            :policy="policy" />
-                                                </div>
-                                            </simplebar>
-                                        </div>
+                                <div class="h-full relative flex flex-1 pt-8" v-else-if="view === 'charts'">
+                                    <keep-alive>
+                                        <StatsChart :data="getComparisonData()" :full="true" :active="view === 'charts'" />
+                                    </keep-alive>
                                 </div>
-                            </div>
-                            <!--                                <div class="" v-show="ui.content.selectedTab == 'timeline'">Timeline</div>-->
-                            <div class="h-full relative" v-else-if="view === 'daily'">
-                                <div class="absolute top-0 right-0 bottom-0 left-0 bg-hoverslab rounded" style="bottom:32px;">
-                                    <div class="h-full" :class="selectedCompareTab !== 'all' ? 'hidden' : ''">
-                                        <keep-alive>
-                                        <div v-if="getCompareLength() === 0" class="m-4">
-                                            Select up to {{options.compare_limit}} countries or states to begin comparing.
-                                        </div>
 
-                                        <Latest v-else
-                                                :data="getComparisonData()"
-                                                :active="view === 'daily' && selectedCompareTab === 'all'"
-                                        />
-                                        </keep-alive>
-                                    </div>
-    <!--                                <div v-if="getCompareLength() == 0">-->
-    <!--                                    Select up to {{options.compare_limit}} countries or states to begin comparing.-->
-    <!--                                </div>-->
+                                <DashboardView
+                                    v-else-if="view === 'dashboard'"
+                                    :countries_sorted="countries_sorted"
+                                    :annotations="getAnnotations()"
+                                />
 
-                                    <div v-if="getCompareLength() > 0" v-for="(row,key,index) in compare" class="">
-                                        <div class="h-full" :class="selectedCompareTab != key ? 'hidden' : ''">
-                                            <Daily
-                                                v-on:removeCompare="removeCompare"
-                                                :data="getComparisonData()[index]"
-                                                :settings="{absolute:true, solo:false}"
-                                            />
-                                        </div>
-                                    </div>
+                                <div class="h-full relative flex flex-1" v-show="view == 'about'">
+                                    <About />
                                 </div>
-                            </div>
-                            <div class="h-full relative flex flex-1 pt-8" v-else-if="view === 'charts'">
-                                <StatsChart :data="getComparisonData()" :full="true" :active="view === 'charts'" />
-                            </div>
                             </keep-alive>
-                            <div class="h-full relative flex flex-1" v-show="view == 'about'">
-                                <About />
-                            </div>
-
-<!--                            <div class="h-full relative flex flex-1" v-show="view == 'dashboard'">-->
-<!--                                <simplebar data-simplebar-auto-hide="true" class="h-full w-full">-->
-<!--                                    <div class="flex items-start">-->
-<!--                                        <div class="w-full h-64 md:h-120 xl:h-148 wqhd:h-200">-->
-<!--                                            <Map-->
-<!--                                                class="w-full xl:rounded-lg overflow-hidden h-full"-->
-<!--                                                id="world_map"-->
-<!--                                                :enable="true"-->
-<!--                                                :data="countries_sorted"-->
-<!--                                                :settings="{interactive:true,zoom:1}"-->
-<!--                                            />-->
-<!--                                            <div class="mt-4 flex">-->
-<!--                                                <div @click="ui.dashboard.table = 'daily'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="ui.dashboard.table == 'daily' ? 'border border-heading bg-lightslab':''">Daily stats</div>-->
-<!--                                                <div @click="ui.dashboard.table = 'countries'" class="p-2 mr-4 text-sm rounded cursor-pointer hover:bg-lightslab" :class="ui.dashboard.table == 'countries' ? 'border border-heading  bg-lightslab':''">Countries</div>-->
-<!--                                            </div>-->
-<!--                                            <div class="mt-4 tableforglobaldata relative bg-hoverslab p-2 rounded" v-show="ui.dashboard.table == 'daily'">-->
-<!--                                                <Daily-->
-<!--                                                    :data="getGlobalData()"-->
-<!--                                                    :settings="{absolute:false, solo:true}"-->
-<!--                                                />-->
-<!--                                            </div>-->
-<!--                                            <div class="mt-4 tableforglobaldata relative bg-hoverslab p-2 rounded" v-show="ui.dashboard.table == 'countries'">-->
-<!--                                                <div class="mx-2 border-b border-hoverslab">-->
-<!--                                                    <div class="tracking-tight font-bold">Countries and states <br>({{countries().length}} total)</div>-->
-<!--                                                    <div class="text-xs text-right">Sorting by {{ui.dashboard.sort_stats.key}} {{ui.dashboard.sort_stats.order}}</div>-->
-<!--                                                    <div class="flex font-bold py-2 text-xs items-center bg-slab-primary rounded-t flex justify-center items-end">-->
-<!--                                                        <div class="w-4 p-2 m-1 ml-0"></div>-->
-<!--                                                        <div class="w-32 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'country' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('country')">Country / Region</div>-->
-<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('confirmed')">Confirmed</div>-->
-<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'deaths' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('deaths')">Deaths</div>-->
-<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'recovered' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('recovered')">Recovered</div>-->
-<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'active' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('active')">Active</div>-->
-<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'population' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('population')">Population</div>-->
-<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'confirmedpc' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('confirmedpc')">Confirmed Per 1M population</div>-->
-<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'deathspc' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('deathspc')">Deaths Per 1M population</div>-->
-<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'recoveredpc' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('recoveredpc')">Recovered Per 1M population</div>-->
-<!--                                                        <div class="w-20 rounded cursor-pointer p-2 overflow-hidden" :class="ui.dashboard.sort_stats.key == 'stringencyindex' ? 'bg-hoverslab' : '' " @click="toggleDashboardSort('stringencyindex')">Stringency Index</div>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                                <div class="relative mx-2">-->
-<!--                                                        <CountryStateItem-->
-<!--                                                            v-for="(data,key,index) in dashboard_countries_sorted()"-->
-<!--                                                            :key="key"-->
-<!--                                                            :data="data"-->
-<!--                                                            :country_key="key"-->
-<!--                                                            :compare="compare"-->
-<!--                                                            :settings="{dashboard:true}"-->
-<!--                                                        />-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-
-<!--                                        <div class="w-128 rounded bg-hoverslab p-4 ml-4">-->
-<!--                                            <div class="font-bold mb-2">Events</div>-->
-<!--                                            <simplebar data-simplebar-auto-hide="true" class="text-sm h-48 md:h-120 xl:h-132 wqhd:h-184" >-->
-<!--    &lt;!&ndash;                                        {{getAnnotations()}}&ndash;&gt;-->
-<!--                                                <ul>-->
-<!--                                                    <li v-if="getAnnotations().length == 0" class="text-xs p-4">-->
-<!--                                                        Nothing to show here.-->
-<!--                                                    </li>-->
-<!--                                                    <li v-for="note in getAnnotations()" class="flex text-xs items-start justify-start mr-4">-->
-<!--                                                        <div class="mr-1 w-20 text-date-slab">{{note.date}}</div>-->
-<!--                                                        <div class="w-full">-->
-<!--                                                            <span v-if="note.state.length > 0" class="font-bold mr-1">[{{note.state}}]</span>-->
-<!--                                                            <span>{{note.notes}}</span>-->
-<!--                                                            <span v-if="note.url"><a class="underline hover:text-white" :href="note.url">(source)</a></span>-->
-<!--                                                        </div>-->
-<!--                                                    </li>-->
-<!--                                                </ul>-->
-<!--                                            </simplebar>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-
-
-<!--                                </simplebar>-->
-<!--                            </div>-->
                         </div>
                     </div>
 
@@ -250,36 +85,28 @@
 
 <script>
     import simplebar from 'simplebar-vue';
-    import LineChart from "../components/charts/LineChart";
     import 'simplebar/dist/simplebar.min.css';
-    import Daily from "../components/Daily";
-    import ComparisonChart from "../components/ComparisonChart";
     import StatsChart from "../components/StatsChart";
-    import CountryStateItem from "../components/CountryStateItem";
     import moment from 'moment'
-    import Single from "./Single";
     import Map from '../components/Map';
     import {mapGetters} from 'vuex';
-    import GovtResponse from "../components/GovtResponse";
     import About from "./About";
-    import Latest from "../components/Latest";
-    import ComparePolicies from "../components/ComparePolicies";
+    import Sidebar from "../components/Sidebar";
+    import PoliciesView from "./PoliciesView";
+    import DailyView from "./DailyView";
+    import DashboardView from "./DashboardView";
 
     export default {
         name: "Comparison",
         components:{
+            DashboardView,
+            DailyView,
+            PoliciesView,
             About,
             simplebar,
-            LineChart,
-            Daily,
-            ComparisonChart,
-            CountryStateItem,
-            Single,
             StatsChart,
             Map,
-            GovtResponse,
-            Latest,
-            ComparePolicies,
+            Sidebar,
         },
         props: [
             'database',
@@ -340,10 +167,17 @@
                         }
                     },
                     'chart' : {}
+                },
+                layers : {
+                    confirmed: false
                 }
             }
         },
         methods:{
+            addConfirmedLayer()
+            {
+                this.layers.confirmed = true;
+            },
             getAnnotations()
             {
                 var data = _.clone(this.database.raw.raw_annotations.All);
@@ -756,24 +590,6 @@
                 }
                 return data;
             },
-            toggleSort(key)
-            {
-                if(this.sort_stats.key == key)
-                {
-                    if(this.sort_stats.order == 'asc')
-                    {
-                        this.sort_stats.order = 'desc';
-                    }
-                    else
-                    {
-                        this.sort_stats.order = 'asc';
-                    }
-                }
-                else
-                {
-                    this.sort_stats.key = key;
-                }
-            },
             toggleDashboardSort(key)
             {
                 if(this.ui.dashboard.sort_stats.key == key)
@@ -1144,6 +960,10 @@
                 });
 
             },
+            emitCompare(item)
+            {
+                this.$emit('updateCompare',item);
+            }
         },
         computed: {
             ...mapGetters({

@@ -1,10 +1,10 @@
 <template>
     <div class="h-full">
         <keep-alive>
-        <LineChart v-if="active && dataReady" :data="dataset().data"
-                   :options="dataset().options"
-                   class="rounded h-full"
-        />
+            <LineChart v-if="active && dataReady" :data="dataset().data"
+                       :options="dataset().options"
+                       class="rounded h-full"
+            />
         </keep-alive>
     </div>
 </template>
@@ -275,6 +275,8 @@
                 self.dataset();
                 self.dataReady = true;
             // },10)
+
+            console.log('Minichart loaded for ' + this.data[0].name.country + ' ' + this.data[0].name.state);
 
         }
     }
