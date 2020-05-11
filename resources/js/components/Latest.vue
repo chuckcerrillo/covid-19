@@ -76,7 +76,9 @@
                                     <div class="w-full">
 
                                         <div class="p-2 h-32 border-b border-lightslab">
-                                            <MiniChart v-if="active && graphReady" :data="dataset(key)" :maxDate="date" :active="active" />
+                                            <keep-alive>
+                                                <MiniChart v-if="active && graphReady" :data="dataset(key)" :maxDate="date" :active="active" />
+                                            </keep-alive>
                                         </div>
                                         <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('confirmed',row.latest.c) ? 'bg-darkslab':''">
                                             {{ isNaN(row.latest.c) ? 0 : row.latest.c | numeralFormat}}<br />

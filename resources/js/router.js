@@ -18,7 +18,7 @@ export default new VueRouter({
         },
         {
             // Comparison page
-            path: '/comparison', name: 'comparisonDaily', component: Comparison,
+            path: '/comparison', name: 'comparisonDashboard', component: Comparison,
             meta: {title: 'Dashboard'}
         },
         {
