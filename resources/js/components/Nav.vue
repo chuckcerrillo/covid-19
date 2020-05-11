@@ -7,7 +7,7 @@
             </router-link>
 <!--            <router-link to="/" @click="setMode('global')" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive('global','bg-hoverslab')">Global</router-link>-->
 <!--            <div @click="setMode('comparison')" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive(mode,'comparison','bg-hoverslab')">Compare</div>-->
-            <router-link to="/comparison" @click="setMode('trends')" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive('compare','bg-hoverslab')">Dashboard</router-link>
+            <router-link to="/comparison" @click="setMode('trends')" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive('comparisonDashboard','bg-hoverslab')">Dashboard</router-link>
             <router-link to="/comparison/response" @click="setMode('trends')" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive('comparisonResponse','bg-hoverslab')">Government Response</router-link>
             <router-link to="/comparison/daily" @click="setMode('trends')" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive('comparisonDaily','bg-hoverslab')">Daily Breakdown</router-link>
             <router-link to="/comparison/charts" @click="setMode('trends')" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive('comparisonCharts','bg-hoverslab')">Charts</router-link>
