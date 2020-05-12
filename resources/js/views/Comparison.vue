@@ -36,9 +36,9 @@
                                 </div>
                             </simplebar>
 
-                            <keep-alive include="DashboardView">
+                            <keep-alive include="DashboardView,PoliciesView,About,StatsChart">
                                 <PoliciesView
-                                    v-if="view == 'response'"
+                                    v-if="view === 'response'"
                                     :selectedCompareTab="selectedCompareTab"
                                     :comparePolicies="comparePolicies()"
                                     :uniqueCountries="getUniqueCountriesCompare()"
@@ -59,9 +59,7 @@
 
 
                                 <div class="h-full relative flex flex-1 pt-8" v-else-if="view === 'charts'">
-                                    <keep-alive>
-                                        <StatsChart :data="getComparisonData()" :full="true" :active="view === 'charts'" />
-                                    </keep-alive>
+                                    <StatsChart :data="getComparisonData()" :full="true" :active="view === 'charts'" />
                                 </div>
 
                                 <DashboardView

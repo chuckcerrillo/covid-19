@@ -23,8 +23,9 @@
             renderLineChart(){
                 var self = this;
                 var options = self.options;
-                self.renderChart(self.chartData,options);
-                console.log('Render line chart');
+                setTimeout(function(){
+                    self.renderChart(self.chartData,options);
+                },50)
             },
             compareValues(oldValue,newValue){
                 if (oldValue && newValue)
