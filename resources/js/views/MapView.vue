@@ -3,7 +3,7 @@
         <keep-alive>
             <simplebar data-simplebar-auto-hide="true" class="h-full w-full">
                 <div class="xl:flex items-start">
-                    <div class="w-full h-64 md:h-120 xl:h-148 wqhd:h-200">
+                    <div class="w-full h-64 md:h-120 xl:h-148 wqhd:h-200 relative">
 <!--                        {{database.processed.dataset['Australia']}}-->
 <!--                        <div v-if="ajax.rankings && ajax.rankings.confirmedSurge">{{ajax.rankings.confirmedSurge}}</div>-->
                         <keep-alive>

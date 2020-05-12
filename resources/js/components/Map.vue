@@ -231,10 +231,23 @@
                 console.log('trying to run addConfirmed');
                 if(this.mapReady)
                 {
-                    var fillColour = 'rgba(255,0,0,0.1)';
+                    var
+                        fillColour1 = 'rgba(255,0,0,0.1)',
+                        fillColour10 = 'rgba(255,0,0,0.1)',
+                        fillColour100 = 'rgba(255,0,0,0.1)',
+                        fillColour1000 = 'rgba(255,0,0,0.1)',
+                        fillColour10000 = 'rgba(255,0,0,0.1)',
+                        fillColour100000 = 'rgba(255,0,0,0.1)',
+                        fillColour1000000 = 'rgba(255,0,0,0.1)';
                     if(this.options.home)
                     {
-                        fillColour = 'rgba(31,128,130,0.1)';
+                        fillColour1 = 'rgba(31,128,130,0.1)';
+                        fillColour10 = 'rgba(31,128,130,0.1)';
+                        fillColour100 = 'rgba(31,128,130,0.1)';
+                        fillColour1000 = 'rgba(31,128,130,0.1)';
+                        fillColour10000 = 'rgba(31,128,130,0.1)';
+                        fillColour100000 = 'rgba(31,128,130,0.1)';
+                        fillColour1000000 = 'rgba(31,128,130,0.1)';
                     }
 
 
@@ -340,7 +353,12 @@
                                     'interpolate',
                                     ['linear'],
                                     ['get','confirmed'],
-                                    1, fillColour,
+                                    1, fillColour1,
+                                    100, fillColour100,
+                                    1000, fillColour1000,
+                                    10000, fillColour10000,
+                                    100000, fillColour100000,
+                                    1000000, fillColour1000000,
                                     // 100, 'rgba(208,209,230,0.8)',
                                     // 1000, 'rgba(166,189,219,0.7)',
                                     // 10000, 'rgba(103,169,207,0.6)',
