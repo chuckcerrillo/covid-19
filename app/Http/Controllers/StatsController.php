@@ -701,6 +701,8 @@ class StatsController extends Controller
 
     public function update_database(Request $request)
     {
+
+        $this->clear_todays_data();
         $this->harvest_cases_from_jh_timeline_global($request);
         $this->harvest_cases_from_jh_timeline_us($request);
         $this->harvest_oxford();
@@ -1164,6 +1166,15 @@ class StatsController extends Controller
             }
         }
         dd($data['Australia']['daily']['2020-04-18']);
+    }
+
+    protected function clear_todays_data()
+    {
+        $current_timestamp = time();
+        $current_date = gmdate('Y-m-d',$current_timestamp);
+
+        Cases::where('date',$current_date)->delete();
+        return response('Done deleting today\'s data')->setStatusCode(Response::HTTP_OK);
     }
 
     public function master()
