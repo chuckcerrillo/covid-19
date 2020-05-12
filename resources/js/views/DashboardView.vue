@@ -4,12 +4,15 @@
             <simplebar data-simplebar-auto-hide="true" class="h-full w-full">
                 <div class="xl:flex items-start">
                     <div class="w-full h-64 md:h-120 xl:h-148 wqhd:h-200">
+<!--                        {{database.processed.dataset['Australia']}}-->
+<!--                        <div v-if="ajax.rankings && ajax.rankings.confirmedSurge">{{ajax.rankings.confirmedSurge}}</div>-->
                         <keep-alive>
                             <Map
                                 class="w-full xl:rounded-lg overflow-hidden h-full"
                                 id="world_map"
                                 :enable="true"
                                 :data="countries_sorted"
+                                :rankings="ajax.rankings"
                                 :layers="layers"
                                 :settings="{interactive:true,zoom:1}"
                             />
@@ -76,7 +79,10 @@
                     </div>
                 </div>
                 <div class="flex mt-4">
-                    <div class="rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.confirmed ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.confirmed = !layers.confirmed">Confirmed</div>
+                    <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.confirmed ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.confirmed = !layers.confirmed">Total Confirmed Cases</div>
+                    <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.deaths ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.deaths = !layers.deaths">Total Deaths</div>
+                    <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.recovered ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.recovered = !layers.recovered">Total Recoveries</div>
+                    <div v-if="ajax && ajax.rankings && ajax.rankings.confirmedSurge" class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.confirmedSurge ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.confirmedSurge = !layers.confirmedSurge">Surge of new cases (Top 10)</div>
                 </div>
             </simplebar>
         </keep-alive>
@@ -95,14 +101,32 @@
         props: [
             'annotations',
             'countries_sorted',
+            'getDaily',
+            'database'
         ],
         data()
         {
             return {
                 layers : {
-                    confirmed: false
+                    confirmed: false,
+                    deaths: false,
+                    recovered: false,
+                    confirmedSurge: false,
+                },
+                ajax : {
+                    rankings: {}
                 }
             }
+        },
+        mounted()
+        {
+            axios.get('/api/stats/rankings')
+                .then(res => {
+                    this.ajax.rankings = res.data;
+                })
+                .catch(error => {
+
+                });
         }
     }
 </script>

@@ -66,6 +66,8 @@
                                     v-else-if="view === 'dashboard'"
                                     :countries_sorted="countries_sorted"
                                     :annotations="getAnnotations()"
+                                    :getDaily="getDaily()"
+                                    :database="database"
                                 />
 
                                 <div class="h-full relative flex flex-1" v-show="view == 'about'">
@@ -136,6 +138,8 @@
         mounted()
         {
             // alert('mounted');
+            // // Assemble data for everything and prepopulate the processed array
+            // this.preProcessData();
         },
         data()
         {
@@ -495,6 +499,7 @@
             assembleDataset(source,daily,name)
             {
                 // Check if this source has already been processed
+                console.log('assemble');
                 var row = this.getProcessedData(source);
                 if (row)
                 {
@@ -564,6 +569,8 @@
                     }
                 }
                 var compareName = this.getCompareName(source).full;
+
+
                 this.$emit('saveProcessedData',row,compareName);
                 return row;
             },
@@ -1074,7 +1081,15 @@
                 }
                 return false;
             },
-        }
+            preProcessData()
+            {
+                var countries = _.clone(this.countries_and_stats());
+                for(var x in countries)
+                {
+                    this.assembleDataset({country:countries[x].name})
+                }
+            },
+        },
     }
     </script>
 

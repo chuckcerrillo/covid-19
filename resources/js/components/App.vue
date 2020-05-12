@@ -151,7 +151,9 @@
             },
             saveProcessedData(row,name)
             {
+                console.log('save processed data');
                 this.database.processed.dataset[name] = row;
+                console.log(this.database.processed.dataset);
             },
             setPageTitle(title)
             {
