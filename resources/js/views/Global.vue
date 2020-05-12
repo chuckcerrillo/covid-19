@@ -5,16 +5,18 @@
                 <a name="top"></a>
                 <div class="relative w-full bg-gray-200">
 <!--                    <div v-if="ajax && ajax.countries_list_map" class="h-full w-full">-->
-                    <div class="h-full w-full splash-bg">
+                    <div class="h-full w-full splash-bg relative">
                         <img class="min-h-screen"
-                            src="/img/backgrounds/transparent.png">
-<!--                        <Map-->
-<!--                            class="w-full overflow-hidden h-256"-->
-<!--                            id="world_map"-->
-<!--                            :enable="true"-->
-<!--                            :data="map_countries"-->
-<!--                            :settings="{interactive:false,zoom:2}"-->
-<!--                        />-->
+                            src="/img/backgrounds/transparent.png" style="opacity:0">
+                        <Map
+                            class="w-full overflow-hidden absolute inset-x-0 inset-y-0"
+                            style="position: absolute"
+                            id="world_map"
+                            :enable="true"
+                            :data="map_countries"
+                            :layers="{confirmed:true}"
+                            :settings="{interactive:false,zoom:2,home:true}"
+                        />
                     </div>
 <!--                    <div v-else class="bg-white rounded h-screen">Loading map</div>-->
 
@@ -447,6 +449,15 @@
             },
             map_countries()
             {
+                var data = [];
+                var list = _.clone(this.ajax.countries_list_map);
+                for(var x in list)
+                {
+                    var row = list[x];
+
+                }
+                console.log('Map countries');
+                console.log(this.ajax.countries_list_map);
                 return _.clone(this.ajax.countries_list_map);
             }
         }
@@ -488,26 +499,26 @@
         text-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.5);
     }
 
-    .splash-bg {
-        background-image: url("/img/backgrounds/twelve-apostles-1x.jpg");
-        background-size: cover;
-        background-position: center center;
-        box-shadow: 0px -50px 50px inset rgba(0,0,0,0.5);
-    }
+    /*.splash-bg {*/
+    /*    background-image: url("/img/backgrounds/twelve-apostles-1x.jpg");*/
+    /*    background-size: cover;*/
+    /*    background-position: center center;*/
+    /*    box-shadow: 0px -50px 50px inset rgba(0,0,0,0.5);*/
+    /*}*/
 
-    @media
-    (-webkit-min-device-pixel-ratio: 2),
-    (min-width: 640px) {
-        .splash-bg {
-            background-image: url("/img/backgrounds/twelve-apostles-2x.jpg");
-        }
-    }
+    /*@media*/
+    /*(-webkit-min-device-pixel-ratio: 2),*/
+    /*(min-width: 640px) {*/
+    /*    .splash-bg {*/
+    /*        background-image: url("/img/backgrounds/twelve-apostles-2x.jpg");*/
+    /*    }*/
+    /*}*/
 
-    @media
-    (-webkit-min-device-pixel-ratio: 2),
-    (min-width: 1280px) {
-        .splash-bg {
-            background-image: url("/img/backgrounds/twelve-apostles-4x.jpg");
-        }
-    }
+    /*@media*/
+    /*(-webkit-min-device-pixel-ratio: 2),*/
+    /*(min-width: 1280px) {*/
+    /*    .splash-bg {*/
+    /*        background-image: url("/img/backgrounds/twelve-apostles-4x.jpg");*/
+    /*    }*/
+    /*}*/
 </style>

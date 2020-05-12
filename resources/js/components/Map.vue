@@ -1,8 +1,8 @@
 <template>
-    <div :id="id" class="relative">
+    <div :id="id" class="absolute inset-x-0 inset-y-0">
         <keep-alive>
             <div v-if="!enable" class="bg-white w-full h-full text-gray-800 flex items-center justify-center"><div>Map is disabled</div></div>
-            <div v-else id="global_map" class="h-full w-full"></div>
+            <div v-else id="global_map" class="absolute inset-x-0 inset-y-0" style="position:absolute"></div>
         </keep-alive>
     </div>
 </template>
@@ -44,13 +44,25 @@
             map.setZoom(this.options.zoom);
             map.setCenter([6.679687499992383, 34.597041516152586]);
 
+            console.log('layers');
+            console.log(this.layers)
 
-            if(this.options.interactive === false)
+
+            if(this.settings)
             {
-                map.dragRotate.disable();
-                map.zoom.disable();
-                map.pan.disable();
+                if(this.settings && this.settings.home)
+                {
+
+                }
             }
+
+
+            // if(this.options.interactive === false)
+            // {
+            //     map.dragRotate.disable();
+            //     map.zoom.disable();
+            //     map.pan.disable();
+            // }
 
             // for(var x in this.data)
             // {
@@ -65,6 +77,7 @@
             map.on('load',function(){
                 console.log('MAP LOAD!');
                 self.mapReady = true;
+                self.setLayers(self.layers);
             })
         },
         methods:
@@ -215,8 +228,17 @@
             },
             addConfirmed()
             {
+                console.log('trying to run addConfirmed');
                 if(this.mapReady)
                 {
+                    var fillColour = 'rgba(255,0,0,0.1)';
+                    if(this.options.home)
+                    {
+                        fillColour = 'rgba(31,128,130,0.1)';
+                    }
+
+
+                    console.log('running addConfirmed');
                     if(!this.map.getSource('confirmed'))
                     {
                         this.map.addSource('confirmed', {
@@ -318,7 +340,7 @@
                                     'interpolate',
                                     ['linear'],
                                     ['get','confirmed'],
-                                    1, 'rgba(255,0,0,0.1)',
+                                    1, fillColour,
                                     // 100, 'rgba(208,209,230,0.8)',
                                     // 1000, 'rgba(166,189,219,0.7)',
                                     // 10000, 'rgba(103,169,207,0.6)',
@@ -715,6 +737,40 @@
                 this.map.addSource('confirmed',{
 
                 });
+            },
+            setLayers(newvalue)
+            {
+                if(newvalue.confirmed === true) {
+                    this.addConfirmed();
+                }
+                else if(newvalue.confirmed === false)
+                {
+                    this.removeConfirmed();
+                }
+
+                if(newvalue.deaths === true) {
+                    this.addDeaths();
+                }
+                else if(newvalue.deaths === false)
+                {
+                    this.removeDeaths();
+                }
+
+                if(newvalue.recovered === true) {
+                    this.addRecovered();
+                }
+                else if(newvalue.recovered === false)
+                {
+                    this.removeRecovered();
+                }
+
+                if(newvalue.confirmedSurge === true) {
+                    this.addConfirmedSurge();
+                }
+                else if(newvalue.confirmedSurge === false)
+                {
+                    this.removeConfirmedSurge();
+                }
             }
         },
         computed: {
@@ -740,6 +796,15 @@
                     {
                         options.zoom = this.config.zoom;
                     }
+
+                    if(this.settings.home)
+                    {
+                        options.home = true;
+                    }
+                    else
+                    {
+                        options.home = false;
+                    }
                 }
                 return options;
             }
@@ -755,39 +820,7 @@
                 immediate: true,
                 deep: true,
                 handler(newvalue, oldvalue) {
-
-
-                    if(newvalue.confirmed === true) {
-                        this.addConfirmed();
-                    }
-                    else if(newvalue.confirmed === false)
-                    {
-                        this.removeConfirmed();
-                    }
-
-                    if(newvalue.deaths === true) {
-                        this.addDeaths();
-                    }
-                    else if(newvalue.deaths === false)
-                    {
-                        this.removeDeaths();
-                    }
-
-                    if(newvalue.recovered === true) {
-                        this.addRecovered();
-                    }
-                    else if(newvalue.recovered === false)
-                    {
-                        this.removeRecovered();
-                    }
-
-                    if(newvalue.confirmedSurge === true) {
-                        this.addConfirmedSurge();
-                    }
-                    else if(newvalue.confirmedSurge === false)
-                    {
-                        this.removeConfirmedSurge();
-                    }
+                    this.setLayers(newvalue)
                 }
             }
         }
