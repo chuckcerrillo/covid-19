@@ -7,7 +7,7 @@
         <div v-else class="h-full overflow-hidden relative">
             <div class="hidden relative h-full xl:flex flex-1">
                 <Sidebar
-                    :class="view == 'dashboard' || view == 'about' ? 'hidden' : ''"
+                    :class="view === 'dashboard' || view === 'about' || view === 'map'? 'hidden' : ''"
                     :global="global()"
                     :sort_stats="sort_stats"
                     :countriesIndex="countriesIndex"
@@ -15,10 +15,10 @@
                     :selectCountry="selectCountry"
                     :compare="compare"
                 />
-                <div class="m-4 ml-0 w-full overflow-hidden relative" :class="view == 'dashboard' || view == 'about' ? 'ml-4': ''">
+                <div class="m-4 ml-0 w-full overflow-hidden relative" :class="view === 'dashboard' || view === 'about' || view === 'map' ? 'ml-4': ''">
                     <div class="bg-slab rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col p-4">
                         <div class="absolute top-0 right-0 bottom-0 left-0 p-4">
-                            <simplebar v-if="view != 'charts' && view != 'dashboard' && view != 'about'" class="text-xs w-full">
+                            <simplebar v-if="view != 'charts' && view != 'dashboard' && view != 'about' && view != 'map'" class="text-xs w-full">
                                 <div class="w-full flex items-center justify-start relative">
                                     <div @click="updateSelected('all')" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == 'all' ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
                                         Comparison
@@ -36,7 +36,7 @@
                                 </div>
                             </simplebar>
 
-                            <keep-alive include="DashboardView,PoliciesView,About,StatsChart">
+                            <keep-alive include="DashboardView,PoliciesView,MapView,About,StatsChart">
                                 <PoliciesView
                                     v-if="view === 'response'"
                                     :selectedCompareTab="selectedCompareTab"
@@ -62,8 +62,8 @@
                                     <StatsChart :data="getComparisonData()" :full="true" :active="view === 'charts'" />
                                 </div>
 
-                                <DashboardView
-                                    v-else-if="view === 'dashboard'"
+                                <MapView
+                                    v-else-if="view === 'map'"
                                     :countries_sorted="countries_sorted"
                                     :annotations="getAnnotations()"
                                     :getDaily="getDaily()"
@@ -95,11 +95,13 @@
     import PoliciesView from "./PoliciesView";
     import DailyView from "./DailyView";
     import DashboardView from "./DashboardView";
+    import MapView from "./MapView";
 
     export default {
         name: "Comparison",
         components:{
             DashboardView,
+            MapView,
             DailyView,
             PoliciesView,
             About,
@@ -999,19 +1001,23 @@
             },
             view()
             {
-                if(this.$route.name == 'comparisonDaily')
+                if(this.$route.name === 'comparisonDaily')
                 {
                     this.ui.content.selectedTab = 'daily';
                 }
-                else if(this.$route.name == 'comparisonCharts')
+                else if(this.$route.name === 'comparisonCharts')
                 {
                     this.ui.content.selectedTab = 'charts';
                 }
-                else if(this.$route.name == 'comparisonResponse')
+                else if(this.$route.name === 'comparisonResponse')
                 {
                     this.ui.content.selectedTab = 'response';
                 }
-                else if(this.$route.name == 'about')
+                else if(this.$route.name === 'comparisonMap')
+                {
+                    this.ui.content.selectedTab = 'map';
+                }
+                else if(this.$route.name === 'about')
                 {
                     this.ui.content.selectedTab = 'about';
                 }
