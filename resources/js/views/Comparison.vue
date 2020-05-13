@@ -141,7 +141,6 @@
         {
             // alert('mounted');
             // // Assemble data for everything and prepopulate the processed array
-            // this.preProcessData();
         },
         data()
         {
@@ -501,7 +500,6 @@
             assembleDataset(source,daily,name)
             {
                 // Check if this source has already been processed
-                console.log('assemble');
                 var row = this.getProcessedData(source);
                 if (row)
                 {
@@ -541,7 +539,7 @@
                     else
                     {
                         lat = country.lat;
-                        long = country.long;
+                        long = country.lng;
                         population = country.population;
                     }
 
@@ -970,7 +968,15 @@
             emitCompare(item)
             {
                 this.$emit('updateCompare',item);
-            }
+            },
+            preProcessData()
+            {
+                var countries = _.clone(this.countries_and_stats());
+                for(var x in countries)
+                {
+                    this.assembleDataset({country:countries[x].name})
+                }
+            },
         },
         computed: {
             ...mapGetters({
@@ -1087,15 +1093,16 @@
                 }
                 return false;
             },
-            preProcessData()
-            {
-                var countries = _.clone(this.countries_and_stats());
-                for(var x in countries)
-                {
-                    this.assembleDataset({country:countries[x].name})
-                }
-            },
         },
+        watch: {
+            loaded: function(newvalue)
+            {
+                if(newvalue === true)
+                {
+                    this.preProcessData();
+                }
+            }
+        }
     }
     </script>
 

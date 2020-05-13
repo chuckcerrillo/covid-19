@@ -12,7 +12,9 @@
         name: "Map",
         props: [
             'id',
+            'date',
             'data',
+            'database',
             'rankings',
             'enable',
             'settings',
@@ -43,9 +45,6 @@
             this.map = map;
             map.setZoom(this.options.zoom);
             map.setCenter([6.679687499992383, 34.597041516152586]);
-
-            console.log('layers');
-            console.log(this.layers)
 
 
             if(this.settings)
@@ -89,11 +88,7 @@
                     features: [
                     ]
                 };
-                console.log('RANKINGS');
-                console.log(this.rankings);
-                console.log('DATA');
-                console.log(this.data);
-
+                console.log('DATE: ' + this.date);
 
                 if(!field)
                 {
@@ -103,28 +98,35 @@
 
                 if(field === 'confirmed')
                 {
-                    for(var x in this.data)
+                    for(var x in this.database.processed.dataset)
                     {
-                        if(this.data[x].name !== 'Global')
+                        var row = this.database.processed.dataset[x];
+                        if(x !== 'Global')
                         {
-
-                            var row = _.clone(this.data[x]);
-
-                            data.features.push({
-                                type: 'Feature',
-                                properties: {
-                                    name: this.data[x].name,
-                                    confirmed: this.data[x].total.confirmed,
-                                },
-                                geometry: {
-                                    type: 'Point',
-                                    coordinates: [
-                                        this.data[x].lng,
-                                        this.data[x].lat,
-                                    ]
+                            for(var y in row.daily)
+                            {
+                                if(row.daily[y])
+                                {
+                                    if(row.daily[y].date === this.date)
+                                    {
+                                        data.features.push({
+                                            type: 'Feature',
+                                            properties: {
+                                                name: x,
+                                                confirmed: parseInt(row.daily[y].c),
+                                            },
+                                            geometry: {
+                                                type: 'Point',
+                                                coordinates: [
+                                                    row.long,
+                                                    row.lat,
+                                                ]
+                                            }
+                                        });
+                                        break;
+                                    }
                                 }
-                            });
-
+                            }
                         }
                     }
                 }
@@ -839,6 +841,13 @@
                 deep: true,
                 handler(newvalue, oldvalue) {
                     this.setLayers(newvalue)
+                }
+            },
+            date: {
+                handler(newvalue)
+                {
+                    console.log('new geojson');
+                    this.map.getSource('confirmed').setData(this.geoJson('confirmed'));
                 }
             }
         }
