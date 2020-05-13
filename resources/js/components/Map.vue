@@ -74,7 +74,6 @@
             // }
             var self = this;
             map.on('load',function(){
-                console.log('MAP LOAD!');
                 self.mapReady = true;
                 self.setLayers(self.layers);
             })
@@ -88,15 +87,13 @@
                     features: [
                     ]
                 };
-                console.log('DATE: ' + this.date);
-
                 if(!field)
                 {
                     field = 'confirmed';
                 }
 
 
-                if(field === 'confirmed')
+                if(['confirmed','deaths','recovered'].indexOf(field) !== -1)
                 {
                     for(var x in this.database.processed.dataset)
                     {
@@ -114,6 +111,8 @@
                                             properties: {
                                                 name: x,
                                                 confirmed: parseInt(row.daily[y].c),
+                                                deaths: parseInt(row.daily[y].d),
+                                                recovered: parseInt(row.daily[y].r),
                                             },
                                             geometry: {
                                                 type: 'Point',
@@ -127,60 +126,6 @@
                                     }
                                 }
                             }
-                        }
-                    }
-                }
-                else if(field === 'deaths')
-                {
-                    for(var x in this.data)
-                    {
-                        if(this.data[x].name !== 'Global')
-                        {
-
-                            var row = _.clone(this.data[x]);
-
-                            data.features.push({
-                                type: 'Feature',
-                                properties: {
-                                    name: this.data[x].name,
-                                    deaths: this.data[x].total.deaths,
-                                },
-                                geometry: {
-                                    type: 'Point',
-                                    coordinates: [
-                                        this.data[x].lng,
-                                        this.data[x].lat,
-                                    ]
-                                }
-                            });
-
-                        }
-                    }
-                }
-                else if(field === 'recovered')
-                {
-                    for(var x in this.data)
-                    {
-                        if(this.data[x].name !== 'Global')
-                        {
-
-                            var row = _.clone(this.data[x]);
-
-                            data.features.push({
-                                type: 'Feature',
-                                properties: {
-                                    name: this.data[x].name,
-                                    recovered: this.data[x].total.recovered,
-                                },
-                                geometry: {
-                                    type: 'Point',
-                                    coordinates: [
-                                        this.data[x].lng,
-                                        this.data[x].lat,
-                                    ]
-                                }
-                            });
-
                         }
                     }
                 }
@@ -223,14 +168,10 @@
                         }
                     }
                 }
-
-                console.log('GeoJSON');
-                console.log(data);
                 return data;
             },
             addConfirmed()
             {
-                console.log('trying to run addConfirmed');
                 if(this.mapReady)
                 {
                     var
@@ -253,7 +194,6 @@
                     }
 
 
-                    console.log('running addConfirmed');
                     if(!this.map.getSource('confirmed'))
                     {
                         this.map.addSource('confirmed', {
@@ -355,6 +295,7 @@
                                     'interpolate',
                                     ['linear'],
                                     ['get','confirmed'],
+                                    0, 'rgba(0,0,0,0)',
                                     1, fillColour1,
                                     100, fillColour100,
                                     1000, fillColour1000,
@@ -846,8 +787,11 @@
             date: {
                 handler(newvalue)
                 {
-                    console.log('new geojson');
-                    this.map.getSource('confirmed').setData(this.geoJson('confirmed'));
+                    for(var x in this.layers)
+                    {
+                        if(this.layers[x] === true)
+                            this.map.getSource(x).setData(this.geoJson(x));
+                    }
                 }
             }
         }
