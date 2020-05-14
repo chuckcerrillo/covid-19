@@ -103,6 +103,7 @@
                 </div>
             </div>
             <div class="bg-hoverslab p-4 absolute rounded left-0 top-0 right-0 bottom-0" :class="settings.controls.menu ? 'mt-16' : ''">
+                {{gradualDataset}}
                 <LineChart :data="dataset.data"
                            :options="dataset.options"
                            class="bg-heading rounded"
@@ -209,6 +210,10 @@
         },
         data(){
             return {
+                'gradualDataset' : {
+                    datasets: false,
+                    labels: false,
+                },
                 'options' : {
                     'mode': 'chronological',
 
@@ -580,7 +585,7 @@
                 this.ui.primary = false;
                 this.ui.secondary = false;
                 this.ui.settings = false;
-            }
+            },
         },
         computed: {
             chartsettings()
@@ -630,69 +635,20 @@
             dataset()
             {
                 var xAxis = this.xAxis,
-                    yAxis = this.yAxis;
+                    yAxis = this.yAxis,
+                    data = false;
 
 
                 if (this.options.mode == 'chronological')
                 {
-                    return this.datasetChronological;
+                    data = _.clone(this.datasetChronological);
                 }
                 else if (this.options.mode == 'from1' || this.options.mode == 'from100' || this.options.mode == 'from1death')
                 {
-                    return this.datasetCaseCount;
+                    data = _.clone(this.datasetCaseCount);
                 }
 
-                else
-                {
-                    return {
-                        data: [],
-                        options: {
-
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            hoverMode: 'index',
-                            stacked: false,
-                            legend: {
-                                labels: {
-                                    fontColor: '#d1e8e2'
-                                }
-                            },
-                            scales: {
-                                xAxes: [{
-                                    ticks: {
-                                        fontColor: '#d1e8e2',
-                                    }
-                                }],
-                                yAxes: [{
-                                    type: 'logarithmic',
-                                    display: true,
-                                    position: 'left',
-                                    id: 'y-1',
-                                    ticks: {
-                                        fontColor: '#d1e8e2',
-                                        callback: function(tick, index, ticks) {
-                                            return tick.toLocaleString()
-                                        }
-                                    }
-                                }],
-                            },
-                            plugins: {
-                                zoom: {
-                                    pan: {
-                                        enabled: true,
-                                        mode: 'xy'
-                                    },
-                                    zoom: {
-                                        enabled: true,
-                                        mode: 'xy',
-                                    }
-                                }
-                            }
-                        },
-
-                    }
-                }
-
+                return data;
             },
             datasetChronological()
             {
@@ -2015,7 +1971,7 @@
                     options: options
                 };
             },
-        }
+        },
     }
 </script>
 

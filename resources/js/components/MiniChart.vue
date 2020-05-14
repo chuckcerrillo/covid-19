@@ -25,6 +25,7 @@
         },
         props: [
             'data',
+            'minDate',
             'maxDate',
             'active'
         ],
@@ -105,6 +106,11 @@
                     }
                 }
 
+                if (this.minDate)
+                {
+                    start = moment(this.minDate).format('YYYY-MM-DD');
+                }
+
                 if (this.maxDate)
                 {
                     end = moment(this.maxDate).format('YYYY-MM-DD');
@@ -151,7 +157,7 @@
                             // If today's data is missing, use previous day's
                             if (!found)
                             {
-                                if (content[y].confirmed.length > 0)
+                                if (content[y] && content[y].confirmed && content[y].confirmed.length > 0)
                                 {
                                     content[y].deltaConfirmed.push(content[y].deltaConfirmed.slice(-1));
                                 }

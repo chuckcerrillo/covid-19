@@ -95,36 +95,65 @@
 
                 if(['confirmed','deaths','recovered'].indexOf(field) !== -1)
                 {
-                    for(var x in this.database.processed.dataset)
+                    if (this.database && this.database.processed)
                     {
-                        var row = this.database.processed.dataset[x];
-                        if(x !== 'Global')
+                        for(var x in this.database.processed.dataset)
                         {
-                            for(var y in row.daily)
+                            var row = this.database.processed.dataset[x];
+                            if(x !== 'Global')
                             {
-                                if(row.daily[y])
+                                for(var y in row.daily)
                                 {
-                                    if(row.daily[y].date === this.date)
+                                    if(row.daily[y])
                                     {
-                                        data.features.push({
-                                            type: 'Feature',
-                                            properties: {
-                                                name: x,
-                                                confirmed: parseInt(row.daily[y].c),
-                                                deaths: parseInt(row.daily[y].d),
-                                                recovered: parseInt(row.daily[y].r),
-                                            },
-                                            geometry: {
-                                                type: 'Point',
-                                                coordinates: [
-                                                    row.long,
-                                                    row.lat,
-                                                ]
-                                            }
-                                        });
-                                        break;
+                                        if(row.daily[y].date === this.date)
+                                        {
+                                            data.features.push({
+                                                type: 'Feature',
+                                                properties: {
+                                                    name: x,
+                                                    confirmed: parseInt(row.daily[y].c),
+                                                    deaths: parseInt(row.daily[y].d),
+                                                    recovered: parseInt(row.daily[y].r),
+                                                },
+                                                geometry: {
+                                                    type: 'Point',
+                                                    coordinates: [
+                                                        row.long,
+                                                        row.lat,
+                                                    ]
+                                                }
+                                            });
+                                            break;
+                                        }
                                     }
                                 }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for(var x in this.data)
+                        {
+                            var row = this.data[x];
+                            if(row.name !== 'Global')
+                            {
+                                data.features.push({
+                                    type: 'Feature',
+                                    properties: {
+                                        name: x,
+                                        confirmed: parseInt(row.total.confirmed),
+                                        deaths: parseInt(row.total.deaths),
+                                        recovered: parseInt(row.total.recovered),
+                                    },
+                                    geometry: {
+                                        type: 'Point',
+                                        coordinates: [
+                                            row.lng,
+                                            row.lat,
+                                        ]
+                                    }
+                                });
                             }
                         }
                     }
@@ -175,24 +204,26 @@
                 if(this.mapReady)
                 {
                     var
-                        fillColour1 = 'rgba(255,0,0,0.1)',
-                        fillColour10 = 'rgba(255,0,0,0.1)',
-                        fillColour100 = 'rgba(255,0,0,0.1)',
-                        fillColour1000 = 'rgba(255,0,0,0.1)',
-                        fillColour10000 = 'rgba(255,0,0,0.1)',
-                        fillColour100000 = 'rgba(255,0,0,0.1)',
-                        fillColour1000000 = 'rgba(255,0,0,0.1)';
+                        fillColour1 = 'rgba(31,128,130,0.2)',
+                        fillColour10 = 'rgba(31,128,130,0.2)',
+                        fillColour100 = 'rgba(31,128,130,0.2)',
+                        fillColour1000 = 'rgba(31,128,130,0.2)',
+                        fillColour10000 = 'rgba(31,128,130,0.2)',
+                        fillColour100000 = 'rgba(31,128,130,0.2)',
+                        fillColour1000000 = 'rgba(31,128,130,0.2)';
+
+
                     if(this.options.home)
                     {
-                        fillColour1 = 'rgba(31,128,130,0.1)';
-                        fillColour10 = 'rgba(31,128,130,0.1)';
-                        fillColour100 = 'rgba(31,128,130,0.1)';
-                        fillColour1000 = 'rgba(31,128,130,0.1)';
-                        fillColour10000 = 'rgba(31,128,130,0.1)';
-                        fillColour100000 = 'rgba(31,128,130,0.1)';
-                        fillColour1000000 = 'rgba(31,128,130,0.1)';
+                        var
+                            fillColour1 = 'rgba(31,128,130,0.1)',
+                            fillColour10 = 'rgba(31,128,130,0.1)',
+                            fillColour100 = 'rgba(31,128,130,0.1)',
+                            fillColour1000 = 'rgba(31,128,130,0.1)',
+                            fillColour10000 = 'rgba(31,128,130,0.1)',
+                            fillColour100000 = 'rgba(31,128,130,0.1)',
+                            fillColour1000000 = 'rgba(31,128,130,0.1)';
                     }
-
 
                     if(!this.map.getSource('confirmed'))
                     {
@@ -297,6 +328,7 @@
                                     ['get','confirmed'],
                                     0, 'rgba(0,0,0,0)',
                                     1, fillColour1,
+                                    10, fillColour10,
                                     100, fillColour100,
                                     1000, fillColour1000,
                                     10000, fillColour10000,
@@ -535,7 +567,7 @@
                                     ['linear'],
                                     ['get','recovered'],
                                     0, 'rgba(0,0,0,0)',
-                                    1, 'rgba(255,0,0,0.1)',
+                                    1, 'rgba(104,211,145,0.3)',
                                     // 100, 'rgba(208,209,230,0.8)',
                                     // 1000, 'rgba(166,189,219,0.7)',
                                     // 10000, 'rgba(103,169,207,0.6)',
