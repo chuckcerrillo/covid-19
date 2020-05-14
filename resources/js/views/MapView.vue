@@ -41,11 +41,17 @@
                                 </v-date-picker> {{moment(date).format('YYYY-MM-DD')}}
                                 <vue-slider v-model="date" :data="dateSliderRange" :adsorb="true" />
                             </div>
-                            <div class="flex">
-                                <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.confirmed ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.confirmed = !layers.confirmed">Total Confirmed Cases</div>
-                                <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.deaths ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.deaths = !layers.deaths">Total Deaths</div>
-                                <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.recovered ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.recovered = !layers.recovered">Total Recoveries</div>
-                                <div v-if="ajax && ajax.rankings && ajax.rankings.confirmedSurge" class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.confirmedSurge ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.confirmedSurge = !layers.confirmedSurge">Surge of new cases (Top 10)</div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="text-xs mr-2">Time Series</div>
+                                    <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.confirmed ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.confirmed = !layers.confirmed">Total Confirmed Cases</div>
+                                    <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.deaths ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.deaths = !layers.deaths">Total Deaths</div>
+                                    <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.recovered ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.recovered = !layers.recovered">Total Recoveries</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="text-xs mr-2">Report</div>
+                                    <div v-if="ajax && ajax.rankings && ajax.rankings.confirmedSurge" class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.confirmedSurge ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.confirmedSurge = !layers.confirmedSurge">Surge of new cases (Top 10)</div>
+                                </div>
                             </div>
                         </div>
                     </div>
