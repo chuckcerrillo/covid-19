@@ -20,12 +20,69 @@
             }
         },
         methods: {
+            repopulate(data)
+            {
+                var self = this,
+                    x = 0;
+
+
+                console.log('gds');
+                console.log(this.gradualDataset);
+                if(data.data.labels && data.data.labels.length > 0)
+                {
+                    for(var x in data.data.datasets)
+                    {
+                        var items = data.data.datasets[x].data.splice(0,20);
+                        self.gradualDataset.datasets[x].data = self.gradualDataset.datasets[x].data.concat(items);
+                    }
+
+                    var items = data.data.labels.splice(0,20);
+                    console.log('will add the following labels');
+                    console.log(items);
+                    this.gradualDataset.labels = this.gradualDataset.labels.concat(items);
+                }
+                console.log('so far...');
+                console.log(this.gradualDataset);
+
+                if(data.data.labels.length > 0)
+                {
+                    setTimeout(function(){
+                        self.repopulate(data);
+                    },50)
+                }
+
+            },
             renderLineChart(){
                 var self = this;
                 var options = self.options;
-                setTimeout(function(){
-                    self.renderChart(self.chartData,options);
-                },50)
+                var offset = 0;
+
+                console.log('chart data');
+                console.log(self.chartData);
+
+                var chartData = _.cloneDeep(self.chartData);
+                for(var x in chartData.datasets)
+                {
+                    chartData.datasets[x].data = [];
+                }
+
+                for(var x in self.chartData.datasets)
+                {
+                    offset = 0;
+                    var items = _.clone(self.chartData.datasets[x].data.slice(offset,offset+20));
+                    while(items.length > 0)
+                    {
+                        for(var y in items)
+                        {
+                            chartData.datasets[x].data.push(_.clone(items[y]));
+                        }
+                        offset += items.length;
+                        items = self.chartData.datasets[x].data.slice(offset,offset+20);
+                        self.renderChart(chartData,options);
+                    }
+                }
+                console.log('chart data final');
+                console.log(chartData);
             },
             compareValues(oldValue,newValue){
                 if (oldValue && newValue)
@@ -129,7 +186,7 @@
                     console.log(newValue);
 
                     // true means something changed
-                    self._data._chart.destroy();
+                    // self._data._chart.update();
                     self.renderLineChart();
                 }
             }
