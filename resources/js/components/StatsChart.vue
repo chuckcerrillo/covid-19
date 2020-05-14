@@ -103,7 +103,6 @@
                 </div>
             </div>
             <div class="bg-hoverslab p-4 absolute rounded left-0 top-0 right-0 bottom-0" :class="settings.controls.menu ? 'mt-16' : ''">
-                {{gradualDataset}}
                 <LineChart :data="dataset.data"
                            :options="dataset.options"
                            class="bg-heading rounded"
