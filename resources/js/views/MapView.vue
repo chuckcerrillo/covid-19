@@ -292,10 +292,6 @@
                 {
                     if(this.annotations[x] && this.annotations[x].date)
                     {
-                        console.log('Compare:');
-                        console.log(this.annotations[x].date + ' vs ' + this.date + ' = ');
-                        console.log(moment(this.annotations[x].date) <= moment(this.date))
-
                         if(moment(this.annotations[x].date) <= moment(this.date))
                         {
                             data.push(_.clone(this.annotations[x]));
