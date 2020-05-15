@@ -556,6 +556,9 @@
                 }
                 row.total = row.daily[row.daily.length - 1];
 
+                console.log('total');
+                console.log(row.total);
+
                 if(this.database.raw.raw_annotations)
                 {
                     if (this.database.raw.raw_annotations['All'] && this.database.raw.raw_annotations['All'].length > 0)
@@ -661,7 +664,6 @@
                     var countryId = this.countriesIndex.indexOf(compare.country);
                     if(countryId >= 0)
                     {
-
                         var policies = this.getGovtResponse(compare.country);
                         if(policies && policies.daily)
                         {
@@ -671,7 +673,7 @@
                         {
                             policies = false;
                         }
-
+                        
                         if(!compare.state)
                         {
                             if(this.countryCases[compare.country] && this.countryCases[compare.country].daily)
