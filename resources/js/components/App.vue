@@ -1,6 +1,7 @@
 <template>
     <div class="flex flex-col flex-1 h-screen overflow-y-hidden">
         <Nav
+            class="fixed top-0 inset-x-0 z-20"
             v-on:showAbout="showAbout"
             v-on:setMode="setMode"
             v-if="inComparison()"
@@ -28,11 +29,19 @@
             </router-view>
 <!--            :key="$route.fullPath"-->
         </keep-alive>
+        <MobileNav
+            class="xl:hidden fixed bottom-0 inset-x-0 z-10"
+            v-on:showAbout="showAbout"
+            v-on:setMode="setMode"
+            v-if="inComparison()"
+            :mode="mode"
+        />
     </div>
 </template>
 
 <script>
     import Nav from './Nav';
+    import MobileNav from "./MobileNav";
     import About from "../views/About";
     import {mapGetters} from 'vuex';
     export default {
@@ -73,6 +82,7 @@
         },
         components: {
             Nav,
+            MobileNav,
             About
         },
         created()
