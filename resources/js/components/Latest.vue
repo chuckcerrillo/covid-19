@@ -5,7 +5,8 @@
             <div class="my-2 py-2 pb-4 px-4 bg-slab-primary rounded">
                 <span class="font-bold">Select date</span>
                 <v-date-picker
-                    v-model="date"
+                    mode="range"
+                    v-model="range"
                     :min-date="options.date.min"
                     :max-date="options.date.max"
                     :masks="{ data: ['YYYY-MM-DD', 'YYYY/MM/DD'],input: ['YYYY-MM-DD', 'YYYY/MM/DD'] }"
@@ -19,7 +20,7 @@
                         </svg>
                     </button>
                 </v-date-picker> {{moment(date).format('YYYY-MM-DD')}}
-                <vue-slider v-model="date" :data="dateSliderRange" :lazy="true" :adsorb="true" />
+                <vue-slider v-model="dateRange" :data="dateSliderRange" :lazy="true" :adsorb="true" />
             </div>
         </div>
         <div class="absolute top-0 left-0 right-0 bottom-0 m-4" style="position:absolute; top: 5.5rem">
@@ -76,7 +77,7 @@
                                     <div class="w-full">
 
                                         <div class="p-2 h-32 border-b border-lightslab">
-                                            <MiniChart v-if="active && graphReady" :data="dataset(key)" :maxDate="date" :active="active" />
+                                            <MiniChart v-if="active && graphReady" :data="dataset(key)" :minDate="range.start" :maxDate="range.end" :active="active" />
                                         </div>
                                         <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('confirmed',row.latest.c) ? 'bg-darkslab':''">
                                             {{ isNaN(row.latest.c) ? 0 : row.latest.c | numeralFormat}}<br />
@@ -189,6 +190,13 @@
                         max: false,
                     }
                 },
+
+                range: {
+                    start: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+                    end: moment().subtract(1, 'days').format('YYYY-MM-DD')
+                },
+
+
                 graphReady: false
             }
         },
@@ -298,7 +306,22 @@
             },
         },
         computed: {
-
+            dateRange:
+            {
+                get()
+                {
+                    var data = [
+                        _.clone(this.range.start),
+                        _.clone(this.range.end),
+                    ]
+                    return data;
+                },
+                set(newvalue)
+                {
+                    this.range.start = newvalue[0];
+                    this.range.end = newvalue[1];
+                }
+            },
             config() {
                 return {
                     'absolute': (this.settings && this.settings.absolute) ? this.settings.absolute : false,
@@ -393,6 +416,14 @@
                 if(typeof(newValue) != 'string')
                 {
                     this.date = moment(newValue).format('YYYY-MM-DD');
+                }
+            },
+            range: function(newvalue)
+            {
+                if(typeof(newvalue.start) != 'string')
+                {
+                    this.range.start = moment(newvalue.start).format('YYYY-MM-DD');
+                    this.range.end = moment(newvalue.end).format('YYYY-MM-DD');
                 }
             }
         }
