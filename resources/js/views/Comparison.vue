@@ -36,7 +36,7 @@
                                 </div>
                             </simplebar>
 
-                            <keep-alive include="DashboardView,PoliciesView,MapView,About,StatsChart">
+                            <keep-alive include="DashboardView,PoliciesView,MapView,About,StatsChart,LineChart">
                                 <PoliciesView
                                     v-if="view === 'response'"
                                     :selectedCompareTab="selectedCompareTab"

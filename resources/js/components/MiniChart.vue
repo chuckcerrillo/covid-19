@@ -24,6 +24,8 @@
             LineChart,
         },
         props: [
+            'minValue',
+            'maxValue',
             'data',
             'minDate',
             'maxDate',
