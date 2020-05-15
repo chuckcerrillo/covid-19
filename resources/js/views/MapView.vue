@@ -79,10 +79,10 @@
                         <simplebar data-simplebar-auto-hide="true" class="text-sm h-full" >
                             <!--                                        {{getAnnotations()}}-->
                             <ul>
-                                <li v-if="annotations.length == 0" class="text-xs p-4">
+                                <li v-if="filteredAnnotations.length == 0" class="text-xs p-4">
                                     Nothing to show here.
                                 </li>
-                                <li v-for="note in annotations" class="flex text-xs items-start justify-start mr-4">
+                                <li v-for="note in filteredAnnotations" class="flex text-xs items-start justify-start mr-4">
                                     <div class="mr-1 w-20 flex-shrink-0 text-date-slab">{{note.date}}</div>
                                     <div class="w-full">
                                         <span v-if="note.state.length > 0" class="font-bold mr-1">[{{note.state}}]</span>
@@ -282,6 +282,25 @@
                 for(var x = 0; x<daysTotal; x++)
                 {
                     data.push(moment(date1.addDays(x)).format('YYYY-MM-DD'));
+                }
+                return data;
+            },
+            filteredAnnotations()
+            {
+                var data = [];
+                for(var x in this.annotations)
+                {
+                    if(this.annotations[x] && this.annotations[x].date)
+                    {
+                        console.log('Compare:');
+                        console.log(this.annotations[x].date + ' vs ' + this.date + ' = ');
+                        console.log(moment(this.annotations[x].date) <= moment(this.date))
+
+                        if(moment(this.annotations[x].date) <= moment(this.date))
+                        {
+                            data.push(_.clone(this.annotations[x]));
+                        }
+                    }
                 }
                 return data;
             }
