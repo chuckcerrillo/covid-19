@@ -2197,10 +2197,10 @@ class StatsController extends Controller
                 return $column->text();
             });
             return [
-                'country' => $columns[0],
-                'confirmed' => str_replace(',','',$columns[1]),
-                'deaths' => str_replace(',','',$columns[3]),
-                'recovered' => str_replace(',','',$columns[5]),
+                'country' => $columns[1],
+                'confirmed' => str_replace(',','',$columns[2]),
+                'deaths' => str_replace(',','',$columns[4]),
+                'recovered' => str_replace(',','',$columns[6]),
             ];
         });
         return $data;
@@ -2299,6 +2299,7 @@ class StatsController extends Controller
 
     protected function apply_overrides($countries,$data,$date,$source)
     {
+
         foreach($data AS $row)
         {
 //            0 => array:4 [▼
@@ -2319,6 +2320,7 @@ class StatsController extends Controller
                     continue;
                 $row['country'] = $this->worldometer_jh_map[$row['country']];
             }
+
 
             if(array_key_exists($row['country'],$countries))
             {
@@ -2354,6 +2356,8 @@ class StatsController extends Controller
                             ->where('countries.id','=',$state->country_id)
                             ->where('states.name','!=','(Unspecified)')
                             ->get()->first();
+
+
 
                         if(isset($current_states->confirmed))
                         {
@@ -5202,13 +5206,13 @@ class StatsController extends Controller
 
                 $new_date = new \DateTime($first_date);
 
-                // Further trim to grab last day
+                // Further trim to grab last 2 days because JH is a day behind
 //                dump('Country: ' . $country . ' State: ' . $state);
                 if($request->full) {
                 }
                 else
                 {
-                    $total = count($row) - 1;
+                    $total = count($row) - 2;
                     array_splice($row,0, $total);
                     $new_date = $new_date->add(new \DateInterval('P' . $total . 'D'));
                 }
@@ -5444,12 +5448,12 @@ class StatsController extends Controller
 
                 $new_date = new \DateTime($first_date);
 
-                // Further trim to grab last day
+                // Further trim to grab last 2 days since JH is a day behind
                 if($request->full) {
                 }
                 else
                 {
-                    $total = count($row) - 1;
+                    $total = count($row) - 2;
                     array_splice($row,0, $total);
                     $new_date = $new_date->add(new \DateInterval('P' . $total . 'D'));
                 }
@@ -5527,16 +5531,17 @@ class StatsController extends Controller
 
                     if($case)
                     {
-                        if($case->confirmed && isset($input['confirmed']) && $case->confirmed > $input['confirmed'])
-                        {
-                            unset($input['confirmed']);
-                            unset($input['confirmed_source']);
-                        }
-                        if($case->deaths && isset($input['deaths']) && $case->deaths > $input['deaths'])
-                        {
-                            unset($input['deaths']);
-                            unset($input['deaths_source']);
-                        }
+                        // For the US, we will always use JH data for confirmed and deaths
+//                        if($case->confirmed && isset($input['confirmed']) && $case->confirmed > $input['confirmed'])
+//                        {
+//                            unset($input['confirmed']);
+//                            unset($input['confirmed_source']);
+//                        }
+//                        if($case->deaths && isset($input['deaths']) && $case->deaths > $input['deaths'])
+//                        {
+//                            unset($input['deaths']);
+//                            unset($input['deaths_source']);
+//                        }
                         if($case->recovered && isset($input['recovered']) && $case->recovered > $input['recovered'])
                         {
                             unset($input['recovered']);

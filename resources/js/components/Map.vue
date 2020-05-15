@@ -204,13 +204,13 @@
                 if(this.mapReady)
                 {
                     var
-                        fillColour1 = 'rgba(31,128,130,0.2)',
-                        fillColour10 = 'rgba(31,128,130,0.2)',
-                        fillColour100 = 'rgba(31,128,130,0.2)',
-                        fillColour1000 = 'rgba(31,128,130,0.2)',
-                        fillColour10000 = 'rgba(31,128,130,0.2)',
-                        fillColour100000 = 'rgba(31,128,130,0.2)',
-                        fillColour1000000 = 'rgba(31,128,130,0.2)';
+                        fillColour1 = 'rgba(31,128,130,0.5)',
+                        fillColour10 = 'rgba(31,128,130,0.5)',
+                        fillColour100 = 'rgba(31,128,130,0.5)',
+                        fillColour1000 = 'rgba(31,128,130,0.5)',
+                        fillColour10000 = 'rgba(31,128,130,0.5)',
+                        fillColour100000 = 'rgba(31,128,130,0.5)',
+                        fillColour1000000 = 'rgba(31,128,130,0.5)';
 
 
                     if(this.options.home)
@@ -450,7 +450,7 @@
                                     ['linear'],
                                     ['get','deaths'],
                                     0, 'rgba(0,0,0,0)',
-                                    1, 'rgba(255,0,0,0.1)',
+                                    1, 'rgba(255,0,0,0.5)',
                                     // 100, 'rgba(208,209,230,0.8)',
                                     // 1000, 'rgba(166,189,219,0.7)',
                                     // 10000, 'rgba(103,169,207,0.6)',
@@ -567,7 +567,7 @@
                                     ['linear'],
                                     ['get','recovered'],
                                     0, 'rgba(0,0,0,0)',
-                                    1, 'rgba(104,211,145,0.3)',
+                                    1, 'rgba(104,211,145,0.5)',
                                     // 100, 'rgba(208,209,230,0.8)',
                                     // 1000, 'rgba(166,189,219,0.7)',
                                     // 10000, 'rgba(103,169,207,0.6)',

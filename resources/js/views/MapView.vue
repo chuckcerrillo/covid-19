@@ -4,7 +4,7 @@
             <simplebar data-simplebar-auto-hide="true" class="h-full w-full">
                 <div class="absolute inset-y-0 inset-x-0" >
                     <div class="absolute inset-y-0 left-0" style="right:21rem;">
-                        <div class="absolute inset-x-0 top-0" style="bottom:8rem;">
+                        <div class="absolute inset-x-0 top-0" style="bottom:9rem;">
                             <!--                        {{database.processed.dataset['Australia']}}-->
                             <!--                        <div v-if="ajax.rankings && ajax.rankings.confirmedSurge">{{ajax.rankings.confirmedSurge}}</div>-->
                             <keep-alive>
@@ -39,14 +39,32 @@
                                         </svg>
                                     </button>
                                 </v-date-picker> {{moment(date).format('YYYY-MM-DD')}}
-                                <vue-slider v-model="date" :data="dateSliderRange" :adsorb="true" />
+                                <div class="flex w-full items-center">
+                                    <div v-if="!playing" class="text-xs cursor-pointer hover:text-white text-hoverslab" @click="play()">
+                                        <svg class="w-8 fill-current mr-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 28 28">
+                                            <g>
+                                                <path d="M22.52,13.47,6.06,2a.54.54,0,0,0-.52,0,.5.5,0,0,0-.27.44V25.62a.5.5,0,0,0,.27.44.46.46,0,0,0,.23.06.53.53,0,0,0,.29-.1L22.52,14.29a.52.52,0,0,0,.21-.41A.51.51,0,0,0,22.52,13.47ZM6.27,24.65V3.34L21.36,13.89Z"/>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div v-else class="text-xs cursor-pointer hover:text-white text-hoverslab" @click="pause()">
+                                        <svg class="w-8 fill-current mr-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 28 28">
+                                            <g>
+                                                <path d="M12.37,1.88H5.85a.51.51,0,0,0-.5.5V25.62a.51.51,0,0,0,.5.5h6.52a.5.5,0,0,0,.5-.5V2.38A.5.5,0,0,0,12.37,1.88Zm-.5,23.24H6.35V2.88h5.52Z"/><path d="M22.15,1.88H15.63a.5.5,0,0,0-.5.5V25.62a.5.5,0,0,0,.5.5h6.52a.51.51,0,0,0,.5-.5V2.38A.51.51,0,0,0,22.15,1.88Zm-.5,23.24H16.13V2.88h5.52Z"/>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="w-full">
+                                        <vue-slider v-model="date" :data="dateSliderRange" :adsorb="true" />
+                                    </div>
+                                </div>
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex items-center">
                                     <div class="text-xs mr-2">Time Series</div>
-                                    <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.confirmed ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.confirmed = !layers.confirmed">Total Confirmed Cases</div>
-                                    <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.deaths ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.deaths = !layers.deaths">Total Deaths</div>
-                                    <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-hoverslab hover:text-white" :class="layers && layers.recovered ? 'border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.recovered = !layers.recovered">Total Recoveries</div>
+                                    <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-lightslab hover:text-white" :class="layers && layers.confirmed ? 'bg-hoverslab border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.confirmed = !layers.confirmed">Total Confirmed Cases</div>
+                                    <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-lightslab hover:text-white" :class="layers && layers.deaths ? 'bg-hoverslab border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.deaths = !layers.deaths">Total Deaths</div>
+                                    <div class="ml-1 rounded text-xs p-2 border cursor-pointer hover:bg-lightslab hover:text-white" :class="layers && layers.recovered ? 'bg-hoverslab border-heading text-white':'text-lightlabel border-lightslab'" @click="layers.recovered = !layers.recovered">Total Recoveries</div>
                                 </div>
                                 <div class="flex items-center">
                                     <div class="text-xs mr-2">Report</div>
@@ -106,7 +124,7 @@
         {
             return {
                 layers : {
-                    confirmed: false,
+                    confirmed: true,
                     deaths: false,
                     recovered: false,
                     confirmedSurge: false,
@@ -117,10 +135,12 @@
                 date: '',
                 options: {
                     date: {
-                        min: new Date('2020-01-22'),
+                        min: new Date('2020-01-01'),
                         max: false,
                     }
-                }
+                },
+                playing: false,
+                interval: false,
             }
         },
         created()
@@ -163,6 +183,38 @@
                     data.push(moment(date1.addDays(x)).format('YYYY-MM-DD'));
                 }
                 return data;
+            }
+        },
+        methods: {
+            play()
+            {
+                var self = this;
+                this.playing = true;
+                this.interval = setInterval(function(){
+                    var date = new Date(self.date);
+                    var max = new Date(self.options.date.max);
+
+                    if(date < max)
+                    {
+                        self.date = moment(date.addDays(1)).format('YYYY-MM-DD');
+                    }
+                    else
+                    {
+                        clearInterval(self.interval);
+
+                        setTimeout(function(){
+                            self.date = self.options.date.min;
+                            setTimeout(function(){
+                                self.play();
+                            },500)
+                        },500)
+                    }
+                },100);
+            },
+            pause()
+            {
+                this.playing = false;
+                clearInterval(this.interval);
             }
         },
         watch: {
