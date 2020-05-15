@@ -4702,6 +4702,10 @@ class StatsController extends Controller
 
             foreach($result[$field] AS $index => $row)
             {
+                $result[$field][$index]['confirmed'] = $display[$row['name']]->confirmed;
+                $result[$field][$index]['deaths'] = $display[$row['name']]->deaths;
+                $result[$field][$index]['recovered'] = $display[$row['name']]->recovered;
+
                 $result[$field][$index]['movement'] = '';
                 $yesterday_rank = $row['rank'];
                 foreach($sorted['yesterday'][$field] AS $y_index => $y_row)
@@ -4842,26 +4846,23 @@ class StatsController extends Controller
             $result['confirmed'][$key]->delta = $row->confirmed - $temp->confirmed;
             $result['confirmed'][$key]->percent = $result['confirmed'][$key]->delta / $temp->confirmed;
 
-            if($result['confirmed'][$key]->delta == 0)
-            {
-                $temp = DB::table('cases')
-                    ->selectRaw('sum(cases.confirmed) AS confirmed')
-                    ->join('states','states.id','cases.state_id')
-                    ->join('countries','countries.id','states.country_id')
-                    ->where('countries.name','!=','Global')
-                    ->where('cases.date','=',$date3)
-                    ->where('countries.id','=',$row->id)
-                    ->groupBy('countries.id')
-                    ->groupBy('countries.name')
-                    ->orderBy('confirmed','desc')
-                    ->get()->first();
+            $temp2 = DB::table('cases')
+                ->selectRaw('sum(cases.confirmed) AS confirmed')
+                ->join('states','states.id','cases.state_id')
+                ->join('countries','countries.id','states.country_id')
+                ->where('countries.name','!=','Global')
+                ->where('cases.date','=',$date3)
+                ->where('countries.id','=',$row->id)
+                ->groupBy('countries.id')
+                ->groupBy('countries.name')
+                ->orderBy('confirmed','desc')
+                ->get()->first();
 
-                $result['confirmed'][$key]->confirmed = intval($row->confirmed);
-                $temp->confirmed = intval($temp->confirmed);
+            $result['confirmed'][$key]->confirmed = intval($row->confirmed);
+            $temp2->confirmed = intval($temp2->confirmed);
 
-                $result['confirmed'][$key]->delta = $row->confirmed - $temp->confirmed;
-                $result['confirmed'][$key]->percent = $result['confirmed'][$key]->delta / $temp->confirmed;
-            }
+            $result['confirmed'][$key]->delta = $temp->confirmed - $temp2->confirmed;
+            $result['confirmed'][$key]->percent = $result['confirmed'][$key]->delta / $temp2->confirmed;
         }
 
         $result['deaths'] = DB::table('cases')
@@ -4898,26 +4899,23 @@ class StatsController extends Controller
             $result['deaths'][$key]->delta = $row->deaths - $temp->deaths;
             $result['deaths'][$key]->percent = $result['deaths'][$key]->delta / $temp->deaths;
 
-            if($result['deaths'][$key]->delta == 0)
-            {
-                $temp = DB::table('cases')
-                    ->selectRaw('sum(cases.deaths) AS deaths')
-                    ->join('states','states.id','cases.state_id')
-                    ->join('countries','countries.id','states.country_id')
-                    ->where('countries.name','!=','Global')
-                    ->where('cases.date','=',$date3)
-                    ->where('countries.id','=',$row->id)
-                    ->groupBy('countries.id')
-                    ->groupBy('countries.name')
-                    ->orderBy('deaths','desc')
-                    ->get()->first();
+            $temp2 = DB::table('cases')
+                ->selectRaw('sum(cases.deaths) AS deaths')
+                ->join('states','states.id','cases.state_id')
+                ->join('countries','countries.id','states.country_id')
+                ->where('countries.name','!=','Global')
+                ->where('cases.date','=',$date3)
+                ->where('countries.id','=',$row->id)
+                ->groupBy('countries.id')
+                ->groupBy('countries.name')
+                ->orderBy('deaths','desc')
+                ->get()->first();
 
-                $result['deaths'][$key]->deaths = intval($row->deaths);
-                $temp->deaths = intval($temp->deaths);
+            $result['deaths'][$key]->deaths = intval($row->deaths);
+            $temp2->deaths = intval($temp2->deaths);
 
-                $result['deaths'][$key]->delta = $row->deaths - $temp->deaths;
-                $result['deaths'][$key]->percent = $result['deaths'][$key]->delta / $temp->deaths;
-            }
+            $result['deaths'][$key]->delta = $temp->deaths - $temp2->deaths;
+            $result['deaths'][$key]->percent = $result['deaths'][$key]->delta / $temp2->deaths;
         }
 
         $result['recovered'] = DB::table('cases')
@@ -4956,7 +4954,7 @@ class StatsController extends Controller
 
             if($result['recovered'][$key]->delta == 0)
             {
-                $temp = DB::table('cases')
+                $temp2 = DB::table('cases')
                     ->selectRaw('sum(cases.recovered) AS recovered')
                     ->join('states','states.id','cases.state_id')
                     ->join('countries','countries.id','states.country_id')
@@ -4971,10 +4969,10 @@ class StatsController extends Controller
 
 
                 $result['recovered'][$key]->recovered = intval($row->recovered);
-                $temp->recovered = intval($temp->recovered);
+                $temp2->recovered = intval($temp2->recovered);
 
-                $result['recovered'][$key]->delta = $row->recovered - $temp->recovered;
-                $result['recovered'][$key]->percent = $result['recovered'][$key]->delta / $temp->recovered;
+                $result['recovered'][$key]->delta = $temp->recovered - $temp2->recovered;
+                $result['recovered'][$key]->percent = $result['recovered'][$key]->delta / $temp2->recovered;
             }
         }
 
