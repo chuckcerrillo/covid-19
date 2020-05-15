@@ -22,7 +22,7 @@
 
 <!--                    <div class="absolute top-0 left-0 bottom-0 w-1/2 bg-black opacity-50 z-10"></div>-->
 
-                    <div class="global_stats absolute z-20  inset-0 sm:left-0 sm:inset-y-0 sm:w-1/2 flex items-center content-center justify-center">
+                    <div class="global_stats absolute z-20  inset-0 sm:left-0 sm:inset-y-0 sm:w-1/2 sm:ml-16 flex items-center content-center justify-center">
                         <div>
                             <div class="text-shadow rounded-xl p-2 px-8 pb-8 mb-64 sm:mb-0" style="background: rgba(0,0,0,0.5)">
                                 <div class="p-4 xl:p-0 xl:flex items-center justify-center text-center">
