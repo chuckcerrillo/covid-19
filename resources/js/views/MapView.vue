@@ -159,7 +159,6 @@
 
                 });
 
-            console.log(this.database.processed);
         },
         computed:
         {

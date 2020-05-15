@@ -284,7 +284,6 @@
                 self.dataReady = true;
             // },10)
 
-            console.log('Minichart loaded for ' + this.data[0].name.country + ' ' + this.data[0].name.state);
 
         }
     }

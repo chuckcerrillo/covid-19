@@ -460,8 +460,6 @@
                     var row = list[x];
 
                 }
-                console.log('Map countries');
-                console.log(this.ajax.countries_list_map);
                 return _.clone(this.ajax.countries_list_map);
             }
         }
