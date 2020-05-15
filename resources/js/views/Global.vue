@@ -5,22 +5,24 @@
                 <a name="top"></a>
                 <div class="relative w-full bg-gray-200">
 <!--                    <div v-if="ajax && ajax.countries_list_map" class="h-full w-full">-->
-                    <div class="h-full w-full splash-bg">
+                    <div class="h-full w-full splash-bg relative">
                         <img class="min-h-screen"
-                            src="/img/backgrounds/transparent.png">
-<!--                        <Map-->
-<!--                            class="w-full overflow-hidden h-256"-->
-<!--                            id="world_map"-->
-<!--                            :enable="true"-->
-<!--                            :data="map_countries"-->
-<!--                            :settings="{interactive:false,zoom:2}"-->
-<!--                        />-->
+                            src="/img/backgrounds/transparent.png" style="opacity:0">
+                        <Map
+                            class="w-full overflow-hidden absolute inset-x-0 inset-y-0"
+                            style="position: absolute"
+                            id="world_map"
+                            :enable="true"
+                            :data="map_countries"
+                            :layers="{confirmed:true}"
+                            :settings="{interactive:false,zoom:2,home:true}"
+                        />
                     </div>
 <!--                    <div v-else class="bg-white rounded h-screen">Loading map</div>-->
 
 <!--                    <div class="absolute top-0 left-0 bottom-0 w-1/2 bg-black opacity-50 z-10"></div>-->
 
-                    <div class="global_stats absolute z-20  inset-0 sm:left-0 sm:inset-y-0 sm:w-1/2 flex items-center content-center justify-center">
+                    <div class="global_stats absolute z-20  inset-0 sm:left-0 sm:inset-y-0 sm:w-1/2 sm:ml-16 flex items-center content-center justify-center">
                         <div>
                             <div class="text-shadow rounded-xl p-2 px-8 pb-8 mb-64 sm:mb-0" style="background: rgba(0,0,0,0.5)">
                                 <div class="p-4 xl:p-0 xl:flex items-center justify-center text-center">
@@ -55,15 +57,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="text-shadow absolute inset-x-0 sm:inset-x-auto bottom-0 mb-44 sm:mb-0 sm:inset-y-0 sm:right-0 sm:flex items-center justify-center sm:w-128 text-center">
+                    <div class="text-shadow absolute inset-x-0 sm:inset-x-auto bottom-0 mb-28 sm:mb-0 sm:inset-y-0 sm:right-0 sm:flex items-center justify-center sm:w-128 text-center">
                         <div class="text-center">
-                        <div class="text-center"><img src="/img/logo/logo-140.png" class="w-16 inline sm:w-auto" /></div>
-                            <div class="ml-2 sm:ml-4 text-xs sm:text-sm font-normal text-headin"g>Presented by<br><a class="text-white font-bold hover:text-blue-400" href="https://www.makeitsimpler.com.au">Simpler Solutions</a></div>
-                            <div class="mt-8 sm:hidden text-white text-shadow font-bold"><img class="inline" src="/img/arrow-down-1.png" /></div>
+                            <div class="text-center"><img src="/img/logo/logo-140.png" class="w-16 inline sm:w-auto" /></div>
+                            <div class="text-xs sm:text-sm font-normal text-heading rounded">
+                                <div class="inline-block p-1 px-2 pb-2 rounded mt-4" style="background: rgba(0,0,0,0); text-shadow: 0.1em 0.1em 0.5em rgba(0,0,0,1),0.1em 0.1em 0.5em rgba(0,0,0,1)">
+                                    Presented by<br><a class="text-white font-bold hover:text-blue-400" href="https://www.makeitsimpler.com.au">Simpler Solutions</a>
+                                </div>
+                            </div>
+                            <div class="mt-8 sm:hidden text-white text-shadow font-bold"><img class="rounded inline px-2 pb-2" src="/img/arrow-down-1b.png" /></div>
                         </div>
                     </div>
                     <div class="text-center absolute inset-x-0 bottom-0 mb-8 text-white text-shadow font-bold z-20 hidden sm:block">
-                        <img class="inline" src="/img/arrow-down-1.png" />
+                        <img class="rounded inline px-2 pb-2" src="/img/arrow-down-1b.png" />
                     </div>
                 </div>
 
@@ -447,6 +453,13 @@
             },
             map_countries()
             {
+                var data = [];
+                var list = _.clone(this.ajax.countries_list_map);
+                for(var x in list)
+                {
+                    var row = list[x];
+
+                }
                 return _.clone(this.ajax.countries_list_map);
             }
         }
@@ -488,26 +501,26 @@
         text-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.5);
     }
 
-    .splash-bg {
-        background-image: url("/img/backgrounds/twelve-apostles-1x.jpg");
-        background-size: cover;
-        background-position: center center;
-        box-shadow: 0px -50px 50px inset rgba(0,0,0,0.5);
-    }
+    /*.splash-bg {*/
+    /*    background-image: url("/img/backgrounds/twelve-apostles-1x.jpg");*/
+    /*    background-size: cover;*/
+    /*    background-position: center center;*/
+    /*    box-shadow: 0px -50px 50px inset rgba(0,0,0,0.5);*/
+    /*}*/
 
-    @media
-    (-webkit-min-device-pixel-ratio: 2),
-    (min-width: 640px) {
-        .splash-bg {
-            background-image: url("/img/backgrounds/twelve-apostles-2x.jpg");
-        }
-    }
+    /*@media*/
+    /*(-webkit-min-device-pixel-ratio: 2),*/
+    /*(min-width: 640px) {*/
+    /*    .splash-bg {*/
+    /*        background-image: url("/img/backgrounds/twelve-apostles-2x.jpg");*/
+    /*    }*/
+    /*}*/
 
-    @media
-    (-webkit-min-device-pixel-ratio: 2),
-    (min-width: 1280px) {
-        .splash-bg {
-            background-image: url("/img/backgrounds/twelve-apostles-4x.jpg");
-        }
-    }
+    /*@media*/
+    /*(-webkit-min-device-pixel-ratio: 2),*/
+    /*(min-width: 1280px) {*/
+    /*    .splash-bg {*/
+    /*        background-image: url("/img/backgrounds/twelve-apostles-4x.jpg");*/
+    /*    }*/
+    /*}*/
 </style>

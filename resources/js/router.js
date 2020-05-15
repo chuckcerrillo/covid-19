@@ -19,7 +19,7 @@ export default new VueRouter({
         {
             // Comparison page
             path: '/comparison', name: 'comparisonDaily', component: Comparison,
-            meta: {title: 'Dashboard'}
+            meta: {title: 'Compare daily statistics'}
         },
         {
             // Daily page
@@ -35,6 +35,11 @@ export default new VueRouter({
             // Govt response
             path: '/comparison/response', name: 'comparisonResponse', component: Comparison,
             meta: {title: 'Government Response'}
+        },
+        {
+            // Map page
+            path: '/comparison/map', name: 'comparisonMap', component: Comparison,
+            meta: {title: 'Map'}
         },
         {
             path: '/glossary', name: 'glossary', component: Glossary,
