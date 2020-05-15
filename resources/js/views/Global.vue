@@ -74,38 +74,10 @@
                 </div>
 
                 <div class="w-full xl:w-256">
-<!--                    <div class="fullhd:hidden text-3xl font-bold tracking-tight text-center mb-4">COVID-19 Tracker</div>-->
-<!--                    <div class="flex-col xl:block justify-center items-center">-->
-<!--                        <div class="p-4 xl:p-0 xl:flex items-center justify-center text-center">-->
-<!--                            <div v-if="loading && loading.global" class="text-5xl xl:mr-4 xl:text-7xl font-bold text-white">{{global.total.active | numeralFormat}}</div>-->
-<!--                            <div v-else class="text-5xl xl:mr-4 xl:text-7xl font-bold text-white"></div>-->
-<!--                            <div>-->
-<!--                                <div class="text-2xl xl:text-3xl font-bold tracking-tight">active cases</div>-->
-<!--                                <div class="text-xs text-lightslab">as of {{global.last_update}}</div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="flex items-start mt-4 xl:mt-0 flex-1 justify-center px-4 xl:px-0">-->
-<!--                            <div class="w-1/3 xl:w-auto xl:mr-8 text-center">-->
-<!--                                <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-white">{{global.total.confirmed| numeralFormat}}</div>-->
-<!--                                <div v-else class="xl:text-3xl font-bold text-white"></div>-->
-<!--                                <div class="font-bold">confirmed cases</div>-->
-<!--                            </div>-->
-<!--                            <div class="w-1/3 xl:w-auto xl:mr-8 text-center">-->
-<!--                                <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-red-400">{{global.total.deaths| numeralFormat}}</div>-->
-<!--                                <div v-else class="xl:text-3xl font-bold text-red-400"></div>-->
-<!--                                <div class="font-bold">deaths</div>-->
-<!--                            </div>-->
-<!--                            <div class="w-1/3 xl:w-auto text-center">-->
-<!--                                <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-green-400">{{global.total.recovered| numeralFormat}}</div>-->
-<!--                                <div v-else class="xl:text-3xl font-bold text-green-400"></div>-->
-<!--                                <div class="font-bold">recoveries</div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
-<!--                    </div>-->
-
-                    <div class="xl:hidden flex justify-center">
-                        <div class="text-2xl max-w-xl text-center text-yellow-400 m-4 my-8 font-bold">For the full features, including comparison views and charts, please view this website on a larger screen.</div>
+                    <div class="xl:hidden text-center p-4">
+                        <router-link to="/comparison" class="text-heading bg-hoverslab hover:text-white cursor-pointer p-2 px-4">
+                            Go to the comparison panel
+                        </router-link>
                     </div>
                 </div>
 

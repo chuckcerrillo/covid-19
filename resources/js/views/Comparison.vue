@@ -2,7 +2,7 @@
     <div>
         <div v-if="!loaded">Loading data</div>
         <div v-else class="h-full overflow-hidden relative">
-            <div class="relative h-full flex flex-1">
+            <div class="relative h-full xl:flex flex-1">
                 <Sidebar
                     :class="view === 'dashboard' || view === 'about' || view === 'map'? 'hidden' : ''"
                     :global="global()"

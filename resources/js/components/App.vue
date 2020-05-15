@@ -25,7 +25,7 @@
                 v-on:saveProcessedData="saveProcessedData"
                 :mode="mode"
 
-                class="fixed top-0 left-0 right-0 bottom-0" :class="inComparison()?'xl:mt-14':''" :loading="database.loading" :database="database">
+                class="fixed xl:pt-0 top-0 left-0 right-0 bottom-0" :class="inComparison()?'pt-16 xl:mt-14':''" :loading="database.loading" :database="database">
             </router-view>
 <!--            :key="$route.fullPath"-->
         </keep-alive>
