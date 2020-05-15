@@ -35,11 +35,11 @@
 
                     <div class="font-bold">2020-05-15</div>
                     <ul class="list-disc ml-8 mr-4">
-                        <li>Charts now lazy loaded, which makes </li>
-                        <li>Added comparison table view for Daily Breakdown</li>
-                        <li>Changes to government response now appear as annotations in the daily breakdown.</li>
-                        <li>Added "Remove all" button to quickly clear the selected countries list.</li>
-                        <li>Bugfix: Charts were loading in the background regardless of the page you're viewing, causing unnecessary delays to page load.</li>
+                        <li>The background on the home page is now a map showing overlays representing the number of confirmed cases per country.</li>
+                        <li>Added a new "Maps" view in the comparison tool, which visually shows certain statistics for each country. This is currently limited to "Confirmed", "Deaths", and "Recovered", but more will be added in future updates.</li>
+                        <li>The map has a time series mode, which you can play/pause to see the progression of the country statistics.</li>
+                        <li>All of the charts are now lazy loaded, which makes the "Daily Breakdown" and "Charts" pages a lot more responsive.</li>
+                        <li>The date slider in the "Daily Breakdown comparison page" is now a date range slider, allowing you to specify start and end dates. This affects the mini charts.</li>
                     </ul>
 
                     <div class="font-bold">2020-05-10</div>
