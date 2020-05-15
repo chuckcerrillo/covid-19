@@ -13,15 +13,28 @@
 
     <title>Covid-19 Tracker</title>
 
+
+    <?php
+    if($_SERVER['SERVER_NAME'] == 'coronavirus.makeitsimpler.com.au' || $_SERVER['SERVER_NAME'] == 'staging.makeitsimpler.com.au')
+    {
+    ?>
     <!-- Scripts -->
     <script src="{{ secure_asset('js/app.js') }}" defer></script>
+    <!-- Styles -->
+    <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">
+    <?php }
+    else {?>
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <?php }?>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-    <!-- Styles -->
-    <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">
+
 
     <!-- Mapbox -->
     <link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
