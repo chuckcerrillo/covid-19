@@ -1,11 +1,8 @@
 <template>
     <div>
-        <div class="xl:hidden">
-            <p class="text-sm text-yellow-400 m-4">For the full experience, including comparison views and charts, please view this website on a larger screen (at least 1920x1080). We are currently working on making this tool available on smaller screens.</p>
-        </div>
-        <div class="hidden xl:block" v-if="!loaded">Loading data</div>
+        <div v-if="!loaded">Loading data</div>
         <div v-else class="h-full overflow-hidden relative">
-            <div class="hidden relative h-full xl:flex flex-1">
+            <div class="relative h-full xl:flex flex-1">
                 <Sidebar
                     :class="view === 'dashboard' || view === 'about' || view === 'map'? 'hidden' : ''"
                     :global="global()"
