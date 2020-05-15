@@ -314,7 +314,6 @@
                         _.clone(this.range.start),
                         _.clone(this.range.end),
                     ]
-                    console.log(data);
                     return data;
                 },
                 set(newvalue)

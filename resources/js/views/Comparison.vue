@@ -36,7 +36,7 @@
                                 </div>
                             </simplebar>
 
-                            <keep-alive include="DashboardView,PoliciesView,MapView,About,StatsChart,LineChart">
+                            <keep-alive include="DashboardView,PoliciesView,MapView,StatsChart,LineChart">
                                 <PoliciesView
                                     v-if="view === 'response'"
                                     :selectedCompareTab="selectedCompareTab"
@@ -70,10 +70,10 @@
                                     :database="database"
                                 />
 
-                                <div class="h-full relative flex flex-1" v-show="view == 'about'">
-                                    <About />
-                                </div>
                             </keep-alive>
+                            <div class="h-full relative flex flex-1" v-if="view === 'about'">
+                                <About />
+                            </div>
                         </div>
                     </div>
 
@@ -556,9 +556,6 @@
                 }
                 row.total = row.daily[row.daily.length - 1];
 
-                console.log('total');
-                console.log(row.total);
-
                 if(this.database.raw.raw_annotations)
                 {
                     if (this.database.raw.raw_annotations['All'] && this.database.raw.raw_annotations['All'].length > 0)
@@ -673,7 +670,7 @@
                         {
                             policies = false;
                         }
-                        
+
                         if(!compare.state)
                         {
                             if(this.countryCases[compare.country] && this.countryCases[compare.country].daily)

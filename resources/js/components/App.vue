@@ -81,50 +81,6 @@
         },
         mounted()
         {
-            // axios.get('/api/stats/countries')
-            //     .then(res => {
-            //         this.database.raw.raw_countries = res.data;
-            //         // for(var x in res.data)
-            //         // {
-            //         //     this.processed.country_ids[res.data[x].name] = x;
-            //         // }
-            //         //
-            //         // console.log('country ids');
-            //         // console.log('this.processed.country_ids');
-            //
-            //         this.database.loading.countries = true;
-            //     })
-            //     .catch(error => {
-            //
-            //     });
-
-            // axios.get('/api/stats/states')
-            //     .then(res => {
-            //         this.database.raw.raw_state_data = res.data;
-            //         this.database.loading.states = true;
-            //     })
-            //     .catch(error => {
-            //
-            //     });
-            //
-            // axios.get('/api/stats/annotations')
-            //     .then(res => {
-            //         this.database.raw.raw_annotations = res.data;
-            //         this.database.loading.annotations = true;
-            //     })
-            //     .catch(error => {
-            //
-            //     });
-            //
-            // axios.get('/api/stats/oxford')
-            //     .then(res => {
-            //         this.database.raw.raw_oxford = res.data;
-            //         this.database.loading.oxford = true;
-            //     })
-            //     .catch(error => {
-            //
-            //     });
-
             this.setPageTitle(this.$route.meta.title);
         },
         methods: {

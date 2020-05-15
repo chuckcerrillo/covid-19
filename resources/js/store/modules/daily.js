@@ -39,7 +39,6 @@ const actions = {
                 commit('setDailyCountryCasesStatus','success');
             })
             .catch(error => {
-                console.log('Unable to fetch all cases');
                 commit('setDailyCountryCasesStatus','error');
             });
     },
@@ -51,7 +50,6 @@ const actions = {
                 commit('setDailyStateCasesStatus','success');
             })
             .catch(error => {
-                console.log('Unable to fetch all cases');
                 commit('setDailyStateCasesStatus','error');
             });
     },

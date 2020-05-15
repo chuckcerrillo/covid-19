@@ -25,7 +25,6 @@ const actions = {
                 commit('setStatesStatus','success');
             })
             .catch(error => {
-                console.log('Unable to fetch all states');
                 commit('setStatesStatus','error');
             });
     },

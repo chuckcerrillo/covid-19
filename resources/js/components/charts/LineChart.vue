@@ -24,10 +24,6 @@
             {
                 var self = this,
                     x = 0;
-
-
-                console.log('gds');
-                console.log(this.gradualDataset);
                 if(data.data.labels && data.data.labels.length > 0)
                 {
                     for(var x in data.data.datasets)
@@ -37,12 +33,8 @@
                     }
 
                     var items = data.data.labels.splice(0,20);
-                    console.log('will add the following labels');
-                    console.log(items);
                     this.gradualDataset.labels = this.gradualDataset.labels.concat(items);
                 }
-                console.log('so far...');
-                console.log(this.gradualDataset);
 
                 if(data.data.labels.length > 0)
                 {
@@ -56,9 +48,6 @@
                 var self = this;
                 var options = self.options;
                 var offset = 0;
-
-                console.log('chart data');
-                console.log(self.chartData);
 
                 var chartData = _.cloneDeep(self.chartData);
                 for(var x in chartData.datasets)
@@ -81,8 +70,6 @@
                         self.renderChart(chartData,options);
                     }
                 }
-                console.log('chart data final');
-                console.log(chartData);
             },
             compareValues(oldValue,newValue){
                 if (oldValue && newValue)
@@ -179,12 +166,6 @@
                 var self = this;
                 if (self.compareValues(oldValue, newValue))
                 {
-                    console.log('chart data changed')
-                    console.log('old');
-                    console.log(oldValue);
-                    console.log('new');
-                    console.log(newValue);
-
                     // true means something changed
                     // self._data._chart.update();
                     self.renderLineChart();

@@ -30,7 +30,7 @@
         </div>
         <div class="pt-8 w-220 relative h-full">
             <div class="m-2 text-2xl font-bold">Changelog:</div>
-            <simplebar class="p-2 rounded bg-slab-primary h-128 absolute inset-x-0" style="position:absolute; bottom: 1rem; top: 5rem;">
+            <simplebar class="p-2 rounded bg-slab-primary absolute inset-x-0" style="position:absolute; bottom: 1rem; top: 6rem;">
                 <div class="m2 text-sm">
 
                     <div class="font-bold">2020-05-15</div>
