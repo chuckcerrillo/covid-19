@@ -259,6 +259,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -562,6 +584,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -569,6 +611,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "PoliciesView",
   props: ['selectedCompareTab', 'uniqueCountries', 'comparePolicies', 'compareLength', 'database'],
+  data: function data() {
+    return {
+      expanded: false
+    };
+  },
   components: {
     ComparePolicies: _components_ComparePolicies__WEBPACK_IMPORTED_MODULE_0__["default"],
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -709,7 +756,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".inner-scrollbar .simplebar-track.simplebar-horizontal {\n  visibility: hidden !important;\n}\n", ""]);
+exports.push([module.i, ".inner-scrollbar .simplebar-track.simplebar-horizontal {\n  visibility: hidden !important;\n}\r\n", ""]);
 
 // exports
 
@@ -764,7 +811,7 @@ var render = function() {
   return _c("div", { staticClass: "h-full" }, [
     _c(
       "div",
-      { staticClass: "my-2 py-2 pb-4 px-4 bg-slab-primary rounded" },
+      { staticClass: "m-4 py-2 pb-4 px-4 bg-slab-primary rounded" },
       [
         _c("span", { staticClass: "font-bold" }, [_vm._v("Select date")]),
         _vm._v(" "),
@@ -840,7 +887,7 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "absolute top-0 left-0 right-0 bottom-0 m-4",
+        staticClass: "absolute top-5.5 left-0 right-0 bottom-4.25 m-4",
         staticStyle: { position: "absolute", top: "5.5rem" }
       },
       [
@@ -863,7 +910,7 @@ var render = function() {
                   "div",
                   {
                     staticClass:
-                      "bg-slab-primary justify-start items-end border-lightslab w-36 text-xs font-bold flex-shrink-0"
+                      "hidden xl:block bg-slab-primary border-lightslab w-36 text-xs font-bold flex-shrink-0"
                   },
                   [
                     _c("div", { staticClass: "px-4 py-2 h-20" }),
@@ -888,7 +935,7 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "px-4 py-2 text-2xl h-12 bg-slab-primary"
+                              "px-4 py-2 xl:text-2xl xl:h-12 bg-slab-primary"
                           },
                           [
                             _c(
@@ -901,7 +948,10 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "px-4 py-2 h-24 text-5xl font-bold" },
+                          {
+                            staticClass:
+                              "px-4 py-2 xl:h-24 text-2xl xl:text-5xl font-bold"
+                          },
                           [
                             !isNaN(row.stringencyindex)
                               ? _c("div", [
@@ -923,7 +973,7 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("div", {
-                  staticClass: "px-4 py-2 h-36 border-l border-lightslab"
+                  staticClass: "px-4 py-2 xl:h-36 border-l border-lightslab"
                 })
               ],
               2
@@ -933,12 +983,8 @@ var render = function() {
               "simplebar",
               {
                 staticClass:
-                  "inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0",
-                staticStyle: {
-                  "min-width": "75rem",
-                  position: "absolute",
-                  top: "9rem"
-                },
+                  "inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0 top-5.85 xl:top-9",
+                staticStyle: { "min-width": "75rem", position: "absolute" },
                 style: "min-width: " + (9 + _vm.data.length * 16) + "em",
                 attrs: { "data-simplebar-auto-hide": "false" }
               },
@@ -954,7 +1000,7 @@ var render = function() {
                       "div",
                       {
                         staticClass:
-                          "bg-slab-primary justify-start items-end border-b border-lightslab w-36 text-xs font-bold flex-shrink-0"
+                          "hidden xl:block bg-slab-primary justify-start items-end border-b border-lightslab w-36 text-xs font-bold flex-shrink-0"
                       },
                       [
                         _c(
@@ -1001,7 +1047,7 @@ var render = function() {
                         _c(
                           "div",
                           {
-                            staticClass: "px-4 py-2 h-24 border-b border-slab"
+                            staticClass: "px-4 py-2 h-28 border-b border-slab"
                           },
                           [_vm._v("C5 - Public transport")]
                         ),
@@ -1009,7 +1055,7 @@ var render = function() {
                         _c(
                           "div",
                           {
-                            staticClass: "px-4 py-2 h-24 border-b border-slab"
+                            staticClass: "px-4 py-2 h-28 border-b border-slab"
                           },
                           [_vm._v("C6 - Stay at home")]
                         ),
@@ -1017,7 +1063,7 @@ var render = function() {
                         _c(
                           "div",
                           {
-                            staticClass: "px-4 py-2 h-24 border-b border-slab"
+                            staticClass: "px-4 py-2 h-28 border-b border-slab"
                           },
                           [_vm._v("C7 - Internal movements")]
                         ),
@@ -1091,7 +1137,7 @@ var render = function() {
                         _c(
                           "div",
                           {
-                            staticClass: "px-4 py-2 h-28 border-b border-slab"
+                            staticClass: "px-4 py-2 h-32 border-b border-slab"
                           },
                           [_vm._v("H2 - Testing policy")]
                         ),
@@ -1159,10 +1205,20 @@ var render = function() {
                                 },
                                 [
                                   _c("div", { staticClass: "w-full" }, [
-                                    _c("div", {
-                                      staticClass:
-                                        "px-4 py-2 h-16 bg-darkslab border-b border-lightslab"
-                                    }),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "px-4 py-2 xl:h-16 bg-darkslab border-b border-lightslab"
+                                      },
+                                      [
+                                        _c(
+                                          "div",
+                                          { staticClass: "xl:hidden text-xs" },
+                                          [_vm._v("Containment and closure")]
+                                        )
+                                      ]
+                                    ),
                                     _vm._v(" "),
                                     _c(
                                       "div",
@@ -1171,6 +1227,15 @@ var render = function() {
                                           "px-4 py-2 h-24 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [_vm._v("C1 - Schools")]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.C1.value.length > 60
                                           ? _c(
                                               "div",
@@ -1227,6 +1292,15 @@ var render = function() {
                                           "px-4 py-2 h-24 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [_vm._v("C2 - Workplaces")]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.C2.value.length > 60
                                           ? _c(
                                               "div",
@@ -1283,6 +1357,15 @@ var render = function() {
                                           "px-4 py-2 h-24 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [_vm._v("C3 - Public events")]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.C3.value.length > 60
                                           ? _c(
                                               "div",
@@ -1339,6 +1422,19 @@ var render = function() {
                                           "px-4 py-2 h-24 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [
+                                            _vm._v(
+                                              "C4 - Restrictions on gatherings"
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.C4.value.length > 60
                                           ? _c(
                                               "div",
@@ -1392,9 +1488,18 @@ var render = function() {
                                       "div",
                                       {
                                         staticClass:
-                                          "px-4 py-2 h-24 border-b border-lightslab"
+                                          "px-4 py-2 h-28 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [_vm._v("C5 - Public transport")]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.C5.value.length > 60
                                           ? _c(
                                               "div",
@@ -1448,9 +1553,18 @@ var render = function() {
                                       "div",
                                       {
                                         staticClass:
-                                          "px-4 py-2 h-24 border-b border-lightslab"
+                                          "px-4 py-2 h-28 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [_vm._v("C6 - Stay at home")]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.C6.value.length > 60
                                           ? _c(
                                               "div",
@@ -1504,9 +1618,18 @@ var render = function() {
                                       "div",
                                       {
                                         staticClass:
-                                          "px-4 py-2 h-24 border-b border-lightslab"
+                                          "px-4 py-2 h-28 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [_vm._v("C7 - Internal movements")]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.C7.value.length > 60
                                           ? _c(
                                               "div",
@@ -1563,6 +1686,15 @@ var render = function() {
                                           "px-4 py-2 h-16 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [_vm._v("C8 - International travel")]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.C8.value.length > 60
                                           ? _c(
                                               "div",
@@ -1593,10 +1725,20 @@ var render = function() {
                                       ]
                                     ),
                                     _vm._v(" "),
-                                    _c("div", {
-                                      staticClass:
-                                        "px-4 py-2 h-16 bg-darkslab border-b border-lightslab"
-                                    }),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "px-4 py-2 xl:h-16 bg-darkslab border-b border-lightslab"
+                                      },
+                                      [
+                                        _c(
+                                          "div",
+                                          { staticClass: "xl:hidden text-xs" },
+                                          [_vm._v("Economic response")]
+                                        )
+                                      ]
+                                    ),
                                     _vm._v(" "),
                                     _c(
                                       "div",
@@ -1605,6 +1747,15 @@ var render = function() {
                                           "px-4 py-2 h-28 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [_vm._v("E1 - Income support")]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.E1.value.length > 60
                                           ? _c(
                                               "div",
@@ -1661,6 +1812,15 @@ var render = function() {
                                           "px-4 py-2 h-20 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [_vm._v("E2 - Debt/contract relief")]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.E2.value.length > 60
                                           ? _c(
                                               "div",
@@ -1698,6 +1858,15 @@ var render = function() {
                                           "px-4 py-2 h-20 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [_vm._v("E3 - Fiscal measures")]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.E3.value
                                           ? _c("div", [
                                               _vm._v(
@@ -1721,6 +1890,15 @@ var render = function() {
                                           "px-4 py-2 h-20 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [_vm._v("E4 - International support")]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.E4.value
                                           ? _c("div", [
                                               _vm._v(
@@ -1737,10 +1915,20 @@ var render = function() {
                                       ]
                                     ),
                                     _vm._v(" "),
-                                    _c("div", {
-                                      staticClass:
-                                        "px-4 py-2 h-16 bg-darkslab border-b border-lightslab"
-                                    }),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "px-4 py-2 xl:h-16 bg-darkslab border-b border-lightslab"
+                                      },
+                                      [
+                                        _c(
+                                          "div",
+                                          { staticClass: "xl:hidden text-xs" },
+                                          [_vm._v("Health systems")]
+                                        )
+                                      ]
+                                    ),
                                     _vm._v(" "),
                                     _c(
                                       "div",
@@ -1749,6 +1937,19 @@ var render = function() {
                                           "px-4 py-2 h-24 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [
+                                            _vm._v(
+                                              "H1 - Public information campaign"
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.H1.value.length > 60
                                           ? _c(
                                               "div",
@@ -1802,9 +2003,18 @@ var render = function() {
                                       "div",
                                       {
                                         staticClass:
-                                          "px-4 py-2 h-28 border-b border-lightslab"
+                                          "px-4 py-2 h-32 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [_vm._v("H2 - Testing policy")]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.H2.value.length > 60
                                           ? _c(
                                               "div",
@@ -1842,6 +2052,15 @@ var render = function() {
                                           "px-4 py-2 h-20 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [_vm._v("H3 - Contact tracing")]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.H3.value.length > 60
                                           ? _c(
                                               "div",
@@ -1879,6 +2098,19 @@ var render = function() {
                                           "px-4 py-2 h-20 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [
+                                            _vm._v(
+                                              "H4 - Emergency healthcare investment"
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.H4.value
                                           ? _c("div", [
                                               _vm._v(
@@ -1902,6 +2134,19 @@ var render = function() {
                                           "px-4 py-2 h-20 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [
+                                            _vm._v(
+                                              "H5 - COVID-19 vaccine investment"
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.H5.value
                                           ? _c("div", [
                                               _vm._v(
@@ -1918,10 +2163,20 @@ var render = function() {
                                       ]
                                     ),
                                     _vm._v(" "),
-                                    _c("div", {
-                                      staticClass:
-                                        "px-4 py-2 h-16 bg-darkslab border-b border-lightslab"
-                                    }),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "px-4 py-2 xl:h-16 bg-darkslab border-b border-lightslab"
+                                      },
+                                      [
+                                        _c(
+                                          "div",
+                                          { staticClass: "xl:hidden text-xs" },
+                                          [_vm._v("Miscellaneous")]
+                                        )
+                                      ]
+                                    ),
                                     _vm._v(" "),
                                     _c(
                                       "div",
@@ -1930,6 +2185,15 @@ var render = function() {
                                           "px-4 py-2 h-24 border-b border-lightslab"
                                       },
                                       [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "xl:hidden text-xs font-bold"
+                                          },
+                                          [_vm._v("M1 - Other responses")]
+                                        ),
+                                        _vm._v(" "),
                                         row.latest.M1.value.length > 60
                                           ? _c(
                                               "div",
@@ -2007,8 +2271,8 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "py-1 w-100" }, [
-    _c("div", { staticClass: "rounded bg-slab-primary mr-4 h-44" }, [
-      _c("div", { staticClass: "w-full h-full p-2 relative" }, [
+    _c("div", { staticClass: "rounded bg-slab-primary xl:mr-4 xl:h-44" }, [
+      _c("div", { staticClass: "w-full h-full pb-8 xl:pb-2 p-2 relative" }, [
         _c("div", { staticClass: "font-bold mb-4 text-lightlabel" }, [
           _c("span", { staticClass: "uppercase" }, [
             _vm._v(_vm._s(_vm.policy.id))
@@ -2032,10 +2296,10 @@ var render = function() {
               _vm._v(_vm._s(_vm.policy.value))
             ])
           : _vm.policy.value.length > 15
-          ? _c("div", { staticClass: "font-bold text-2xl" }, [
+          ? _c("div", { staticClass: "font-bold xl:text-2xl" }, [
               _vm._v(_vm._s(_vm.policy.value))
             ])
-          : _c("div", { staticClass: "text-3xl font-bold" }, [
+          : _c("div", { staticClass: "xl:text-3xl font-bold" }, [
               _vm._v(_vm._s(_vm.policy.value))
             ]),
         _vm._v(" "),
@@ -2060,7 +2324,7 @@ var render = function() {
           "div",
           {
             staticClass:
-              "fixed top-0 left-0 bottom-0 right-0 flex items-center justify-center z-30",
+              "fixed top-0 left-0 bottom-0 right-0 flex items-center justify-center z-40",
             staticStyle: { background: "rgba(0,0,0,0.5)" }
           },
           [
@@ -2076,7 +2340,8 @@ var render = function() {
             _c(
               "div",
               {
-                staticClass: "bg-slab rounded p-4 relative z-10 w-1/2",
+                staticClass:
+                  "bg-slab rounded p-4 relative z-10 w-full m-6 xl:m-0 xl:w-1/2",
                 staticStyle: { "max-width": "800px" }
               },
               [
@@ -2097,7 +2362,9 @@ var render = function() {
                 _vm.policy.id == "H5"
                   ? _c(
                       "div",
-                      { staticClass: "text-3xl text-white font-bold" },
+                      {
+                        staticClass: "text-2xl xl:text-3xl text-white font-bold"
+                      },
                       [
                         _vm._v(
                           "US$" +
@@ -2185,19 +2452,83 @@ var render = function() {
         _c(
           "div",
           {
-            staticClass: "h-full m-4",
+            staticClass: "h-full relative",
             class: _vm.selectedCompareTab != "all" ? "hidden" : ""
           },
           [
-            _vm.compareLength == 0
-              ? _c("div", [
-                  _c("h1", { staticClass: "text-3xl font-bold" }, [
-                    _vm._v("Government Response Tracker")
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(0)
-                ])
-              : _c("ComparePolicies", { attrs: { data: _vm.comparePolicies } })
+            _c(
+              "simplebar",
+              { staticClass: "h-full overflow-x-hidden" },
+              [
+                _vm.compareLength == 0
+                  ? _c("div", [
+                      _c("div", { staticClass: "p-2 xl:p-4" }, [
+                        _c("h1", { staticClass: "xl:text-3xl font-bold" }, [
+                          _vm._v("Government Response Tracker")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "text-xs xl:text-base mt-2" },
+                          [
+                            _c("p", [
+                              _vm._v("These data are based on the "),
+                              _c(
+                                "a",
+                                {
+                                  staticClass:
+                                    "text-orangeslab hover:text-blue-400 hover:underline",
+                                  attrs: {
+                                    target: "_blank",
+                                    href:
+                                      "https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker"
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "Coronavirus Government Response Tracker"
+                                  )
+                                ]
+                              ),
+                              _vm._v(" by the University of Oxford.")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "blockquote",
+                              {
+                                staticClass:
+                                  "italic m-2 ml-4 border-l-4 p-4 border-lightslab"
+                              },
+                              [
+                                _c("p", { staticClass: "py-2" }, [
+                                  _vm._v(
+                                    "Systematic information on which governments have taken which measures, and when, can help decision-makers and citizens understand the robustness of governmental responses in a consistent way, aiding efforts to fight the pandemic. The Oxford COVID-19 Government Response Tracker (OxCGRT) systematically collects information on several different common policy responses governments have taken, scores the stringency of such measures, and aggregates these scores into a common Stringency Index."
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("p", { staticClass: "py-2" }, [
+                                  _vm._v(
+                                    "Data is collected from public sources by a team of over one hundred Oxford University students and staff from every part of the world."
+                                  )
+                                ])
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("p", { staticClass: "mt-2 xl:mt-8" }, [
+                              _vm._v(
+                                "Select a country or state to begin comparing."
+                              )
+                            ])
+                          ]
+                        )
+                      ])
+                    ])
+                  : _c("ComparePolicies", {
+                      attrs: { data: _vm.comparePolicies }
+                    })
+              ],
+              1
+            )
           ],
           1
         ),
@@ -2209,34 +2540,39 @@ var render = function() {
                 "div",
                 {
                   key: index,
-                  staticClass: "absolute m-4 inset-0 bg-hoverslab rounded p-4"
+                  staticClass:
+                    "absolute inset-0 bg-hoverslab rounded p-2 xl:p-4 bottom-4.25 xl:bottom-0"
                 },
                 [
-                  _c(
-                    "simplebar",
-                    {
-                      staticClass: "top-0 right-0 bottom-0 left-0",
-                      staticStyle: { position: "absolute" },
-                      attrs: { "data-simplebar-auto-hide": "false" }
-                    },
-                    [
-                      _c("div", { staticClass: "my-4" }, [
-                        _c("div", { staticClass: "w-128 text-4xl font-bold" }, [
-                          _vm._v(_vm._s(row.country))
-                        ]),
-                        _vm._v(" "),
-                        _vm.getGovtResponse(row.country)
-                          ? _c("div", { staticClass: "text-6xl font-bold" }, [
+                  _c("simplebar", { staticClass: "h-full z-0" }, [
+                    _c("div", { staticClass: "my-4" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "xl:w-128 text-2xl xl:text-4xl font-bold"
+                        },
+                        [_vm._v(_vm._s(row.country))]
+                      ),
+                      _vm._v(" "),
+                      _vm.getGovtResponse(row.country)
+                        ? _c(
+                            "div",
+                            { staticClass: "xl:text-6xl text-3xl font-bold" },
+                            [
                               _vm._v(
                                 _vm._s(
                                   _vm.getGovtResponse(row.country).latest.si
                                 )
                               )
-                            ])
-                          : _c("div", { staticClass: "text-6xl font-bold" }, [
-                              _vm._v("N/A")
-                            ]),
-                        _vm._v(" "),
+                            ]
+                          )
+                        : _c(
+                            "div",
+                            { staticClass: "xl:text-6xl text-3xl font-bold" },
+                            [_vm._v("N/A")]
+                          ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "flex items-center" }, [
                         _c(
                           "div",
                           {
@@ -2246,19 +2582,111 @@ var render = function() {
                           [_vm._v("stringency index")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "py-2 text-sm" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "xl:hidden ml-2 text-xs text-heading",
+                            on: {
+                              click: function($event) {
+                                _vm.expanded = !_vm.expanded
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                (info)\n                            "
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.expanded,
+                              expression: "expanded"
+                            }
+                          ],
+                          staticClass: "xl:hidden"
+                        },
+                        [
+                          _c(
+                            "div",
+                            { staticClass: "py-2 text-xs xl:text-sm" },
+                            [
+                              _vm._v(
+                                "OxCGRT collects publicly available information on 17 indicators of government response. This information is collected by a team of over 100 volunteers from the Oxford community and is updated continuously."
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "py-2 text-xs xl:text-sm" },
+                            [
+                              _vm._v(
+                                "Eight of the policy indicators (C1-C8) record information on containment and closure policies, such as school closures and restrictions in movement. Four of the indicators (E1-E4) record economic policies such as income support to citizens or provision of foreign aid. And five indicators (H1-H5) record health system policies such as the Covid-19 testing regime or emergency investments into healthcare."
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "py-2 text-xs xl:text-sm" },
+                            [
+                              _vm._v(
+                                "For a full description of the data and how it is collected, check out the "
+                              ),
+                              _c(
+                                "a",
+                                {
+                                  staticClass:
+                                    "text-orangeslab hover:text-blue-400 hover:underline",
+                                  attrs: {
+                                    target: "_blank",
+                                    href:
+                                      "https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker"
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "University of Oxford's coronavirus government response tracker (OxCGRT)"
+                                  )
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "py-2 text-xs xl:text-sm" },
+                            [
+                              _vm._v(
+                                "A higher position in the Stringency Index does not necessarily mean that a country's response is ‘better’ than others lower on the index."
+                              )
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "hidden xl:block" }, [
+                        _c("div", { staticClass: "py-2 text-xs xl:text-sm" }, [
                           _vm._v(
                             "OxCGRT collects publicly available information on 17 indicators of government response. This information is collected by a team of over 100 volunteers from the Oxford community and is updated continuously."
                           )
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "py-2 text-sm" }, [
+                        _c("div", { staticClass: "py-2 text-xs xl:text-sm" }, [
                           _vm._v(
                             "Eight of the policy indicators (C1-C8) record information on containment and closure policies, such as school closures and restrictions in movement. Four of the indicators (E1-E4) record economic policies such as income support to citizens or provision of foreign aid. And five indicators (H1-H5) record health system policies such as the Covid-19 testing regime or emergency investments into healthcare."
                           )
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "py-2 text-sm" }, [
+                        _c("div", { staticClass: "py-2 text-xs xl:text-sm" }, [
                           _vm._v(
                             "For a full description of the data and how it is collected, check out the "
                           ),
@@ -2281,35 +2709,35 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "py-2 text-sm" }, [
+                        _c("div", { staticClass: "py-2 text-xs xl:text-sm" }, [
                           _vm._v(
                             "A higher position in the Stringency Index does not necessarily mean that a country's response is ‘better’ than others lower on the index."
                           )
                         ])
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "flex flex-wrap" },
-                        _vm.getGovtResponse(row.country)
-                          ? _vm._o(
-                              _vm._l(
-                                _vm.getLatestGovtResponse(row.country),
-                                function(policy, key, index) {
-                                  return _c("GovtResponse", {
-                                    key: index,
-                                    attrs: { policy: policy }
-                                  })
-                                }
-                              ),
-                              0,
-                              index
-                            )
-                          : _vm._e(),
-                        1
-                      )
-                    ]
-                  )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "flex flex-wrap" },
+                      _vm.getGovtResponse(row.country)
+                        ? _vm._o(
+                            _vm._l(
+                              _vm.getLatestGovtResponse(row.country),
+                              function(policy, key, index) {
+                                return _c("GovtResponse", {
+                                  key: index,
+                                  attrs: { policy: policy }
+                                })
+                              }
+                            ),
+                            0,
+                            index
+                          )
+                        : _vm._e(),
+                      1
+                    )
+                  ])
                 ],
                 1
               )
@@ -2320,53 +2748,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("p", [
-        _vm._v("These data are based on the "),
-        _c(
-          "a",
-          {
-            staticClass: "text-orangeslab hover:text-blue-400 hover:underline",
-            attrs: {
-              target: "_blank",
-              href:
-                "https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker"
-            }
-          },
-          [_vm._v("Coronavirus Government Response Tracker")]
-        ),
-        _vm._v(" by the University of Oxford.")
-      ]),
-      _vm._v(" "),
-      _c(
-        "blockquote",
-        { staticClass: "italic m-2 ml-4 border-l-4 p-4 border-lightslab" },
-        [
-          _c("p", { staticClass: "py-2" }, [
-            _vm._v(
-              "Systematic information on which governments have taken which measures, and when, can help decision-makers and citizens understand the robustness of governmental responses in a consistent way, aiding efforts to fight the pandemic. The Oxford COVID-19 Government Response Tracker (OxCGRT) systematically collects information on several different common policy responses governments have taken, scores the stringency of such measures, and aggregates these scores into a common Stringency Index."
-            )
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "py-2" }, [
-            _vm._v(
-              "Data is collected from public sources by a team of over one hundred Oxford University students and staff from every part of the world."
-            )
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      _c("p", { staticClass: "mt-8" }, [
-        _vm._v("Select a country or state to begin comparing.")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

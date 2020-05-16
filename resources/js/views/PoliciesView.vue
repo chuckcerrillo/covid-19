@@ -1,38 +1,58 @@
 <template>
     <div class="h-full relative">
         <div class="absolute top-0 left-0 right-0 bottom-0 rounded bg-hoverslab" style="bottom:2rem;">
+            <!-- comparison tab -->
+            <div class="h-full relative" :class="selectedCompareTab != 'all' ? 'hidden' : ''">
+                <simplebar class="h-full overflow-x-hidden">
+                    <div v-if="compareLength == 0">
+                        <div class="p-2 xl:p-4">
+                            <h1 class="xl:text-3xl font-bold">Government Response Tracker</h1>
+                            <div class="text-xs xl:text-base mt-2">
+                                <p>These data are based on the <a class="text-orangeslab hover:text-blue-400 hover:underline" target="_blank" href="https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker">Coronavirus Government Response Tracker</a> by the University of Oxford.</p>
+                                <blockquote class="italic m-2 ml-4 border-l-4 p-4 border-lightslab">
+                                    <p class="py-2">Systematic information on which governments have taken which measures, and when, can help decision-makers and citizens understand the robustness of governmental responses in a consistent way, aiding efforts to fight the pandemic. The Oxford COVID-19 Government Response Tracker (OxCGRT) systematically collects information on several different common policy responses governments have taken, scores the stringency of such measures, and aggregates these scores into a common Stringency Index.</p>
+                                    <p class="py-2">Data is collected from public sources by a team of over one hundred Oxford University students and staff from every part of the world.</p>
+                                </blockquote>
 
-            <div class="h-full m-4" :class="selectedCompareTab != 'all' ? 'hidden' : ''">
-
-                <div v-if="compareLength == 0">
-                    <h1 class="text-3xl font-bold">Government Response Tracker</h1>
-                    <div>
-                        <p>These data are based on the <a class="text-orangeslab hover:text-blue-400 hover:underline" target="_blank" href="https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker">Coronavirus Government Response Tracker</a> by the University of Oxford.</p>
-                        <blockquote class="italic m-2 ml-4 border-l-4 p-4 border-lightslab">
-                            <p class="py-2">Systematic information on which governments have taken which measures, and when, can help decision-makers and citizens understand the robustness of governmental responses in a consistent way, aiding efforts to fight the pandemic. The Oxford COVID-19 Government Response Tracker (OxCGRT) systematically collects information on several different common policy responses governments have taken, scores the stringency of such measures, and aggregates these scores into a common Stringency Index.</p>
-                            <p class="py-2">Data is collected from public sources by a team of over one hundred Oxford University students and staff from every part of the world.</p>
-                        </blockquote>
-
-                        <p class="mt-8">Select a country or state to begin comparing.</p>
+                                <p class="mt-2 xl:mt-8">Select a country or state to begin comparing.</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <ComparePolicies v-else
-                                 :data="comparePolicies"
-                />
-
+                    <ComparePolicies v-else
+                                     :data="comparePolicies"
+                    />
+                </simplebar>
             </div>
-            <div v-for="(row,key,index) in uniqueCountries" class="absolute m-4 inset-0 bg-hoverslab rounded p-4" v-if="selectedCompareTab.substr(0,row.country.length) === row.country" :key="index">
-                <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0" style="position:absolute;">
+            <div v-for="(row,key,index) in uniqueCountries" class="absolute inset-0 bg-hoverslab rounded p-2 xl:p-4 bottom-4.25 xl:bottom-0" v-if="selectedCompareTab.substr(0,row.country.length) === row.country" :key="index">
+                <simplebar class="h-full z-0">
                     <div class="my-4">
-                        <div class="w-128 text-4xl font-bold">{{row.country}}</div>
-                        <div v-if="getGovtResponse(row.country)" class="text-6xl font-bold">{{getGovtResponse(row.country).latest.si}}</div>
-                        <div v-else class="text-6xl font-bold">N/A</div>
-                        <div class="text-lightlabel font-bold tracking-tight">stringency index</div>
-                        <div class="py-2 text-sm">OxCGRT collects publicly available information on 17 indicators of government response. This information is collected by a team of over 100 volunteers from the Oxford community and is updated continuously.</div>
-                        <div class="py-2 text-sm">Eight of the policy indicators (C1-C8) record information on containment and closure policies, such as school closures and restrictions in movement. Four of the indicators (E1-E4) record economic policies such as income support to citizens or provision of foreign aid. And five indicators (H1-H5) record health system policies such as the Covid-19 testing regime or emergency investments into healthcare.</div>
-                        <div class="py-2 text-sm">For a full description of the data and how it is collected, check out the <a target="_blank" class="text-orangeslab hover:text-blue-400 hover:underline" href="https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker">University of Oxford's coronavirus government response tracker (OxCGRT)</a></div>
-                        <div class="py-2 text-sm">A higher position in the Stringency Index does not necessarily mean that a country's response is ‘better’ than others lower on the index.</div>
+                        <div class="xl:w-128 text-2xl xl:text-4xl font-bold">{{row.country}}</div>
+                        <div v-if="getGovtResponse(row.country)" class="xl:text-6xl text-3xl font-bold">{{getGovtResponse(row.country).latest.si}}</div>
+                        <div v-else class="xl:text-6xl text-3xl font-bold">N/A</div>
+                        <div class="flex items-center">
+                            <div class="text-lightlabel font-bold tracking-tight">stringency index</div>
+                            <div class="xl:hidden ml-2 text-xs text-heading" @click="expanded = !expanded">
+<!--                                <svg class="h-4 fill-current" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 28 28">-->
+<!--                                    <g>-->
+<!--                                        <path d="M14,1.86A12.14,12.14,0,1,0,26.14,14,12.15,12.15,0,0,0,14,1.86Zm0,23.28A11.14,11.14,0,1,1,25.14,14,11.16,11.16,0,0,1,14,25.14Z"/><path d="M14,11.51a.74.74,0,0,0-.46.14.43.43,0,0,0-.18.34V20.4a.48.48,0,0,0,.19.36.67.67,0,0,0,.45.16.72.72,0,0,0,.46-.16.46.46,0,0,0,.2-.36V12a.44.44,0,0,0-.19-.34A.79.79,0,0,0,14,11.51Z"/><path d="M14,7.08a.93.93,0,0,0-.64.24.77.77,0,0,0-.26.58.78.78,0,0,0,.26.58.89.89,0,0,0,.64.25.82.82,0,0,0,.61-.25.81.81,0,0,0,.25-.58.79.79,0,0,0-.25-.58A.85.85,0,0,0,14,7.08Z"/>-->
+<!--                                    </g>-->
+<!--                                </svg>-->
+                                (info)
+                            </div>
+                        </div>
+                        <div v-show="expanded" class="xl:hidden">
+                            <div class="py-2 text-xs xl:text-sm">OxCGRT collects publicly available information on 17 indicators of government response. This information is collected by a team of over 100 volunteers from the Oxford community and is updated continuously.</div>
+                            <div class="py-2 text-xs xl:text-sm">Eight of the policy indicators (C1-C8) record information on containment and closure policies, such as school closures and restrictions in movement. Four of the indicators (E1-E4) record economic policies such as income support to citizens or provision of foreign aid. And five indicators (H1-H5) record health system policies such as the Covid-19 testing regime or emergency investments into healthcare.</div>
+                            <div class="py-2 text-xs xl:text-sm">For a full description of the data and how it is collected, check out the <a target="_blank" class="text-orangeslab hover:text-blue-400 hover:underline" href="https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker">University of Oxford's coronavirus government response tracker (OxCGRT)</a></div>
+                            <div class="py-2 text-xs xl:text-sm">A higher position in the Stringency Index does not necessarily mean that a country's response is ‘better’ than others lower on the index.</div>
+                        </div>
+                        <div class="hidden xl:block">
+                            <div class="py-2 text-xs xl:text-sm">OxCGRT collects publicly available information on 17 indicators of government response. This information is collected by a team of over 100 volunteers from the Oxford community and is updated continuously.</div>
+                            <div class="py-2 text-xs xl:text-sm">Eight of the policy indicators (C1-C8) record information on containment and closure policies, such as school closures and restrictions in movement. Four of the indicators (E1-E4) record economic policies such as income support to citizens or provision of foreign aid. And five indicators (H1-H5) record health system policies such as the Covid-19 testing regime or emergency investments into healthcare.</div>
+                            <div class="py-2 text-xs xl:text-sm">For a full description of the data and how it is collected, check out the <a target="_blank" class="text-orangeslab hover:text-blue-400 hover:underline" href="https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker">University of Oxford's coronavirus government response tracker (OxCGRT)</a></div>
+                            <div class="py-2 text-xs xl:text-sm">A higher position in the Stringency Index does not necessarily mean that a country's response is ‘better’ than others lower on the index.</div>
+                        </div>
                     </div>
                     <div class="flex flex-wrap">
                         <GovtResponse
@@ -62,6 +82,11 @@
             'compareLength',
             'database'
         ],
+        data(){
+            return {
+                expanded: false,
+            }
+        },
         components:{
             ComparePolicies,
             simplebar,
