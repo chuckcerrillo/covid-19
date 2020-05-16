@@ -4,7 +4,7 @@
         <div v-else class="h-full overflow-hidden relative">
             <div class="relative h-full xl:flex flex-1">
                 <Sidebar
-                    class="hidden xl:block"
+                    class="hidden xl:flex"
                     :class="view === 'dashboard' || view === 'about' || view === 'map'? 'hidden' : ''"
                     :global="global()"
                     :sort_stats="sort_stats"
