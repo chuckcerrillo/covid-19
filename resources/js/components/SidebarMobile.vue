@@ -1,13 +1,16 @@
 <template>
     <div class="flex flex-col z-30">
         <div class="overflow-hidden bg-lightslab flex items-center justify-between p-2">
-            <div v-if="countCompare() === 1">{{countCompare()}} country/state selected</div>
-            <div v-else-if="countCompare() === 0">No countries selected</div>
-            <div v-else>{{countCompare()}} countries/states selected</div>
+            <div class="flex items-center text-xs">
+                <div v-if="countCompare() === 1">{{countCompare()}} country/state selected</div>
+                <div v-else-if="countCompare() === 0">No countries selected</div>
+                <div v-else>{{countCompare()}} countries/states selected</div>
+                <div v-if="countCompare() > 0" class="ml-2 underline" @click="$emit('removeAllCompare')">Remove all</div>
+            </div>
             <div class="cursor-pointer bg-slab rounded p-2 text-xs" @click="showSelector = !showSelector">Change selection</div>
         </div>
 
-        <div v-if="showSelector" class="fixed inset-x-0 rounded bg-darkslab z-30 p-2" style="top:3.5rem; bottom: 4rem;">
+        <div v-if="showSelector" class="fixed inset-x-0 xl:rounded bg-slab z-30 p-2" style="top:3.5rem; bottom: 4rem;">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <div class="tracking-tight font-bold">Countries and states</div>
@@ -26,7 +29,7 @@
                         <div class="w-24 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'recovered' ? 'bg-hoverslab' : '' " @click="toggleSort('recovered')">Recovered</div>
                     </div>
                 </div>
-                <div class="w-full absolute inset-x-0 bottom-0" style="top:4rem">
+                <div class="w-full absolute inset-x-0 bottom-0" style="top:5rem">
                     <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0" style="position:absolute">
                         <CountryStateItem
                             v-for="(data,key,index) in countries_sorted"
@@ -41,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="overflow-hidden bg-slab rounded p-2 absolute inset-x-0 bottom-0 m-2">
+            <div class="overflow-hidden bg-hoverslab rounded p-2 absolute inset-x-0 bottom-0 m-2">
                 <div class="flex justify-between items-center">
                     <div class="xl:text-2xl tracking-tight font-bold">Global tally</div>
                     <div class="text-xs xl:mb-4">as of {{global.last_update}}</div>

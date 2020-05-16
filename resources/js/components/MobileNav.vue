@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-slab text-left text-xs">
+    <div class="bg-darkslab text-left text-xs">
         <div class="flex text-lightlabel items-center justify-between">
 <!--            <router-link to="/comparison" @click="setMode('trends')" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive('comparisonDashboard','bg-hoverslab')">Dashboard</router-link>-->
             <router-link to="/comparison/response" @click="setMode('trends')" class="w-20 p-2 cursor-pointer hover:text-white flex flex-col items-center justify-center" :class="isActive('comparisonResponse','text-heading')">
