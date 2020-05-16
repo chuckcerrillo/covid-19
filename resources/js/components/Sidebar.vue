@@ -1,23 +1,21 @@
 <template>
     <div class="flex flex-col">
-        <div class="mx-2 xl:m-4 xl:mb-0 overflow-hidden bg-lightslab rounded xl:h-56 p-2 xl:p-4">
-            <div class="flex xl:block justify-between items-center">
-                <div class="xl:text-2xl tracking-tight font-bold">Global tally</div>
-                <div class="text-xs xl:mb-4">as of {{global.last_update}}</div>
-            </div>
+        <div class="m-4 mb-0 overflow-hidden bg-lightslab rounded p-4 h-56">
+            <div class="text-2xl tracking-tight font-bold">Global tally</div>
+            <div class="text-xs mb-4">as of {{global.last_update}}</div>
 
             <div class="flex font-bold justify-between items-center">
                 <div class="m-2 ml-0">
                     <div class="text-sm">Confirmed</div>
-                    <div class="xl:text-2xl text-white">{{global.total.confirmed| numeralFormat}}</div>
+                    <div class="text-2xl text-white">{{global.total.confirmed| numeralFormat}}</div>
                 </div>
                 <div class="m-2">
                     <div class="text-sm">Deaths</div>
-                    <div class="xl:text-2xl text-white">{{global.total.deaths| numeralFormat}}</div>
+                    <div class="text-2xl text-white">{{global.total.deaths| numeralFormat}}</div>
                 </div>
                 <div class="m-2 mr-0">
                     <div class="text-sm">Recovered</div>
-                    <div class="xl:text-2xl text-white">{{global.total.recovered| numeralFormat}}</div>
+                    <div class="text-2xl text-white">{{global.total.recovered| numeralFormat}}</div>
                 </div>
             </div>
         </div>
