@@ -4,6 +4,17 @@
         <div v-else class="h-full overflow-hidden relative">
             <div class="relative h-full xl:flex flex-1">
                 <Sidebar
+                    class="hidden xl:block"
+                    :class="view === 'dashboard' || view === 'about' || view === 'map'? 'hidden' : ''"
+                    :global="global()"
+                    :sort_stats="sort_stats"
+                    :countriesIndex="countriesIndex"
+                    :countries_sorted="countries_sorted"
+                    :selectCountry="selectCountry"
+                    :compare="compare"
+                />
+                <SidebarMobile
+                    class="xl:hidden"
                     :class="view === 'dashboard' || view === 'about' || view === 'map'? 'hidden' : ''"
                     :global="global()"
                     :sort_stats="sort_stats"
@@ -89,6 +100,7 @@
     import {mapGetters} from 'vuex';
     import About from "./About";
     import Sidebar from "../components/Sidebar";
+    import SidebarMobile from "../components/SidebarMobile";
     import PoliciesView from "./PoliciesView";
     import DailyView from "./DailyView";
     import DashboardView from "./DashboardView";
@@ -106,6 +118,7 @@
             StatsChart,
             Map,
             Sidebar,
+            SidebarMobile,
         },
         props: [
             'database',
