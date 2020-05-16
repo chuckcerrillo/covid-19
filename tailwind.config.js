@@ -244,6 +244,7 @@ module.exports = {
           },
           inset: {
               '3.1' : '3.1rem',
+              '425rem' : '4.25rem',
           }
       },
   },
