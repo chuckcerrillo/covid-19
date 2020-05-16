@@ -33,7 +33,7 @@
                                     <div @click="updateSelected('all')" class="w-28 flex-shrink-0 cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == 'all' ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
                                         Comparison
                                     </div>
-                                    <div v-for="(row,key,index) in compare">
+                                    <div v-for="(row,key,index) in compare" :key="key">
                                         <div @click="updateSelected(key)" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
                                             {{getCompareLength() > 0 && row.state ? row.state + ' - ' : ''}}
                                             {{getCompareLength() > 0 ? row.country : '(none)'}}
@@ -97,31 +97,20 @@
 <script>
     import simplebar from 'simplebar-vue';
     import 'simplebar/dist/simplebar.min.css';
-    import StatsChart from "../components/StatsChart";
     import moment from 'moment'
-    import Map from '../components/Map';
     import {mapGetters} from 'vuex';
-    import About from "./About";
-    import Sidebar from "../components/Sidebar";
-    import SidebarMobile from "../components/SidebarMobile";
-    import PoliciesView from "./PoliciesView";
-    import DailyView from "./DailyView";
-    import DashboardView from "./DashboardView";
-    import MapView from "./MapView";
 
     export default {
         name: "Comparison",
         components:{
-            DashboardView,
-            MapView,
-            DailyView,
-            PoliciesView,
-            About,
+            DashboardView: () => import('./DashboardView'),
+            MapView: () => import('./MapView'),
+            DailyView: () => import('./DailyView'),
+            PoliciesView: () => import('./PoliciesView'),
+            Sidebar: () => import('../components/Sidebar'),
+            StatsChart: () => import('../components/StatsChart'),
+            About: () => import('./About'),
             simplebar,
-            StatsChart,
-            Map,
-            Sidebar,
-            SidebarMobile,
         },
         props: [
             'database',

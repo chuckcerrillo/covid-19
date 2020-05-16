@@ -64,6 +64,8 @@
                     <div
 
                         v-for="(row, key, index) in daily"
+                        :key="key"
+                        v-once
                     >
                         <div class="text-xs"
                              :class="key % 2 == 1 ? 'bg-slab-primary' : ''">
