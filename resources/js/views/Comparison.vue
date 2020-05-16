@@ -1,10 +1,12 @@
 <template>
     <div>
-        <div v-if="!loaded">Loading data</div>
+        <div class="xl:hidden">
+            <p class="text-sm text-yellow-400 m-4">For the full experience, including comparison views and charts, please view this website on a larger screen (at least 1920x1080). We are currently working on making this tool available on smaller screens.</p>
+        </div>
+        <div class="hidden xl:block" v-if="!loaded">Loading data</div>
         <div v-else class="h-full overflow-hidden relative">
-            <div class="relative h-full xl:flex flex-1">
+            <div class="hidden relative h-full xl:flex flex-1">
                 <Sidebar
-                    class="hidden xl:flex"
                     :class="view === 'dashboard' || view === 'about' || view === 'map'? 'hidden' : ''"
                     :global="global()"
                     :sort_stats="sort_stats"
@@ -13,24 +15,12 @@
                     :selectCountry="selectCountry"
                     :compare="compare"
                 />
-                <SidebarMobile
-                    class="xl:hidden"
-                    :class="view === 'dashboard' || view === 'about' || view === 'map'? 'hidden' : ''"
-                    :global="global()"
-                    :sort_stats="sort_stats"
-                    :countriesIndex="countriesIndex"
-                    :countries_sorted="countries_sorted"
-                    :selectCountry="selectCountry"
-                    :compare="compare"
-                    v-on:removeAllCompare="removeAllCompare"
-                />
-
-                <div class="absolute inset-x-0 bottom-0 xl:m-4 xl:ml-0 xl:w-full xl:overflow-hidden xl:relative xl:top-auto top-3.1" :class="view === 'dashboard' || view === 'about' || view === 'map' ? 'ml-4': ''">
-                    <div class="bg-slab xl:rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col xl:p-4">
-                        <div class="absolute top-0 right-0 bottom-0 left-0 pt-2 xl:p-4">
+                <div class="m-4 ml-0 w-full overflow-hidden relative" :class="view === 'dashboard' || view === 'about' || view === 'map' ? 'ml-4': ''">
+                    <div class="bg-slab rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col p-4">
+                        <div class="absolute top-0 right-0 bottom-0 left-0 p-4">
                             <simplebar v-if="view != 'charts' && view != 'dashboard' && view != 'about' && view != 'map'" class="text-xs w-full">
                                 <div class="w-full flex items-center justify-start relative">
-                                    <div @click="updateSelected('all')" class="w-28 flex-shrink-0 cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == 'all' ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
+                                    <div @click="updateSelected('all')" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == 'all' ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
                                         Comparison
                                     </div>
                                     <div v-for="(row,key,index) in compare">
@@ -40,7 +30,7 @@
                                             <div v-on:click.stop="removeCompare({country: row.country,state: row.state})" class="text-lightlabel text-xs absolute top-0 right-0 m-2 px-2 pb-1 rounded hover:text-heading hover:bg-lightlabel">x</div>
                                         </div>
                                     </div>
-                                    <div v-if="getCompareLength() > 0" class="hidden xl:block xl:absolute w-24 border z-10 bg-slab border-hoverslab hover:bg-hoverslab px-2 py-1 top-0 right-0 cursor-pointer" @click="removeAllCompare()">
+                                    <div v-if="getCompareLength() > 0" class="w-24 border absolute z-10 bg-slab border-hoverslab hover:bg-hoverslab px-2 py-1 top-0 right-0 cursor-pointer" @click="removeAllCompare()">
                                         Remove all
                                     </div>
                                 </div>
@@ -48,7 +38,6 @@
 
                             <keep-alive include="DashboardView,PoliciesView,MapView,StatsChart,LineChart">
                                 <PoliciesView
-                                    class="policies-view"
                                     v-if="view === 'response'"
                                     :selectedCompareTab="selectedCompareTab"
                                     :comparePolicies="comparePolicies()"
@@ -103,7 +92,6 @@
     import {mapGetters} from 'vuex';
     import About from "./About";
     import Sidebar from "../components/Sidebar";
-    import SidebarMobile from "../components/SidebarMobile";
     import PoliciesView from "./PoliciesView";
     import DailyView from "./DailyView";
     import DashboardView from "./DashboardView";
@@ -121,7 +109,6 @@
             StatsChart,
             Map,
             Sidebar,
-            SidebarMobile,
         },
         props: [
             'database',
