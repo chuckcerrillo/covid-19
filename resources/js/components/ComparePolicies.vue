@@ -1,6 +1,6 @@
 <template>
     <div class="h-full">
-        <div class="m-4 py-2 pb-4 px-4 bg-slab-primary rounded">
+        <div class="my-2 py-2 pb-4 px-4 bg-slab-primary rounded">
             <span class="font-bold">Select date</span>
             <v-date-picker
                 v-model="date"

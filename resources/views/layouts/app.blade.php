@@ -60,7 +60,7 @@
 </head>
 <body class="bg-gray-400 text-gray-800 antialiased font-sans">
     <div id="app">
-        <main class="h-screen bg-baseslab text-heading">
+        <main class="h-screen bg-base text-heading">
             @yield('content')
         </main>
     </div>

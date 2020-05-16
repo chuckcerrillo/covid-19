@@ -49,7 +49,7 @@
 
 
                             </div>
-                            <div class="hidden xl:flex text-baseslab items-center justify-start mt-2" style="">
+                            <div class="hidden xl:flex text-base items-center justify-start mt-2" style="">
                                 <router-link to="/comparison" class="flex text-lightlabel hover:text-white cursor-pointer rounded-lg p-2 px-4" style="background: rgba(0,0,0,0.8)">
                                     <div class="text-3xl font-bold mr-4 mt-1">Go to the comparison panel</div>
                                     <div class="text-4xl font-bold">&raquo;</div>
@@ -74,10 +74,38 @@
                 </div>
 
                 <div class="w-full xl:w-256">
-                    <div class="xl:hidden text-center p-4">
-                        <router-link to="/comparison" class="text-heading bg-hoverslab hover:text-white cursor-pointer p-2 px-4">
-                            Go to the comparison panel
-                        </router-link>
+<!--                    <div class="fullhd:hidden text-3xl font-bold tracking-tight text-center mb-4">COVID-19 Tracker</div>-->
+<!--                    <div class="flex-col xl:block justify-center items-center">-->
+<!--                        <div class="p-4 xl:p-0 xl:flex items-center justify-center text-center">-->
+<!--                            <div v-if="loading && loading.global" class="text-5xl xl:mr-4 xl:text-7xl font-bold text-white">{{global.total.active | numeralFormat}}</div>-->
+<!--                            <div v-else class="text-5xl xl:mr-4 xl:text-7xl font-bold text-white"></div>-->
+<!--                            <div>-->
+<!--                                <div class="text-2xl xl:text-3xl font-bold tracking-tight">active cases</div>-->
+<!--                                <div class="text-xs text-lightslab">as of {{global.last_update}}</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="flex items-start mt-4 xl:mt-0 flex-1 justify-center px-4 xl:px-0">-->
+<!--                            <div class="w-1/3 xl:w-auto xl:mr-8 text-center">-->
+<!--                                <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-white">{{global.total.confirmed| numeralFormat}}</div>-->
+<!--                                <div v-else class="xl:text-3xl font-bold text-white"></div>-->
+<!--                                <div class="font-bold">confirmed cases</div>-->
+<!--                            </div>-->
+<!--                            <div class="w-1/3 xl:w-auto xl:mr-8 text-center">-->
+<!--                                <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-red-400">{{global.total.deaths| numeralFormat}}</div>-->
+<!--                                <div v-else class="xl:text-3xl font-bold text-red-400"></div>-->
+<!--                                <div class="font-bold">deaths</div>-->
+<!--                            </div>-->
+<!--                            <div class="w-1/3 xl:w-auto text-center">-->
+<!--                                <div v-if="loading && loading.global" class="xl:text-3xl font-bold text-green-400">{{global.total.recovered| numeralFormat}}</div>-->
+<!--                                <div v-else class="xl:text-3xl font-bold text-green-400"></div>-->
+<!--                                <div class="font-bold">recoveries</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                    </div>-->
+
+                    <div class="xl:hidden flex justify-center">
+                        <div class="text-2xl max-w-xl text-center text-yellow-400 m-4 my-8 font-bold">For the full features, including comparison views and charts, please view this website on a larger screen.</div>
                     </div>
                 </div>
 
@@ -265,7 +293,7 @@
                 </div>
 
                 <!-- footer -->
-                <div class="bg-baseslab sm:flex py-8 w-full items-center justify-center">
+                <div class="bg-base sm:flex py-8 w-full items-center justify-center">
                     <div class="mx-4 sm:w-256 lg:mx-0">
                         <div class="sm:flex items-start my-4 justify-between">
                             <div>The COVID-19 Tracker is a project by <a class="font-bold underline hover:text-lightlabel" href="https://www.makeitsimpler.com.au">Simpler</a>. For feedback, suggestions, and bug reports, please contact feedback@makeitsimpler.com.au or get in touch with us on our socials.</div>
