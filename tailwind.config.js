@@ -23,7 +23,7 @@ module.exports = {
               slab : '#116466',
               lightslab : '#4e8f93',
               hoverslab : '#1f8082',
-              base : '#2c3531',
+              baseslab : '#2c3531',
               heading : '#d1e8e2',
               orangeslab : '#d9b08c',
               darkslab : '#094445',
@@ -31,6 +31,9 @@ module.exports = {
               'slab-secondary' : '#116466',
               'date-slab': '#80cbcd',
               'lightlabel' : '#60acae',
+          },
+          padding: {
+              '14': '3.5rem',
           },
           margin: {
               '14' : '3.5rem',
@@ -239,6 +242,9 @@ module.exports = {
               '360' : '90rem',
               '512' : '128rem',
           },
+          inset: {
+              '3.1' : '3.1rem',
+          }
       },
   },
   variants: {},

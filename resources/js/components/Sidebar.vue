@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col">
-        <div class="m-4 mb-0 overflow-hidden bg-lightslab rounded h-56 p-4">
+        <div class="m-4 mb-0 overflow-hidden bg-lightslab rounded p-4 h-56">
             <div class="text-2xl tracking-tight font-bold">Global tally</div>
             <div class="text-xs mb-4">as of {{global.last_update}}</div>
 
