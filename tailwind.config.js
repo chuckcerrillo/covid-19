@@ -23,7 +23,7 @@ module.exports = {
               slab : '#116466',
               lightslab : '#4e8f93',
               hoverslab : '#1f8082',
-              base : '#2c3531',
+              baseslab : '#2c3531',
               heading : '#d1e8e2',
               orangeslab : '#d9b08c',
               darkslab : '#094445',

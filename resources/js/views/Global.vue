@@ -49,7 +49,7 @@
 
 
                             </div>
-                            <div class="hidden xl:flex text-base items-center justify-start mt-2" style="">
+                            <div class="hidden xl:flex text-baseslab items-center justify-start mt-2" style="">
                                 <router-link to="/comparison" class="flex text-lightlabel hover:text-white cursor-pointer rounded-lg p-2 px-4" style="background: rgba(0,0,0,0.8)">
                                     <div class="text-3xl font-bold mr-4 mt-1">Go to the comparison panel</div>
                                     <div class="text-4xl font-bold">&raquo;</div>
@@ -265,7 +265,7 @@
                 </div>
 
                 <!-- footer -->
-                <div class="bg-base sm:flex py-8 w-full items-center justify-center">
+                <div class="bg-baseslab sm:flex py-8 w-full items-center justify-center">
                     <div class="mx-4 sm:w-256 lg:mx-0">
                         <div class="sm:flex items-start my-4 justify-between">
                             <div>The COVID-19 Tracker is a project by <a class="font-bold underline hover:text-lightlabel" href="https://www.makeitsimpler.com.au">Simpler</a>. For feedback, suggestions, and bug reports, please contact feedback@makeitsimpler.com.au or get in touch with us on our socials.</div>
