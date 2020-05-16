@@ -1,13 +1,13 @@
 <template>
-    <div class="flex flex-col">
-        <div class="mx-2 overflow-hidden bg-lightslab rounded flex items-center justify-between p-2">
+    <div class="flex flex-col z-30">
+        <div class="overflow-hidden bg-lightslab flex items-center justify-between p-2">
             <div v-if="countCompare() === 1">{{countCompare()}} country/state selected</div>
             <div v-else-if="countCompare() === 0">No countries selected</div>
             <div v-else>{{countCompare()}} countries/states selected</div>
             <div class="cursor-pointer bg-slab rounded p-2 text-xs" @click="showSelector = !showSelector">Change selection</div>
         </div>
 
-        <div v-if="showSelector" class="fixed inset-x-0 m-2 rounded bg-slab z-30 p-2" style="top:3.5rem; bottom: 4rem;">
+        <div v-if="showSelector" class="fixed inset-x-0 rounded bg-darkslab z-30 p-2" style="top:3.5rem; bottom: 4rem;">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <div class="tracking-tight font-bold">Countries and states</div>
@@ -15,15 +15,15 @@
                 </div>
                 <div @click="showSelector=false" class="text-xs border border-lightslab bg-hoverslab p-1 px-2 rounded inline-block">Close</div>
             </div>
-            <div class="overflow-hidden rounded flex flex-col items-start absolute inset-x-0 border-b border-slab-primary" style="top: 3rem; bottom: 7rem">
+            <div class="overflow-hidden rounded flex flex-col items-start absolute inset-x-0 border-b border-slab-primary" style="top: 3rem; bottom: 6.75rem">
                 <div class="text-xs text-right mx-2 mb-2">Sorting by {{sort_stats.key}} {{sort_stats.order}}</div>
                 <div class="">
                     <div class="flex font-bold py-2 text-xs items-center bg-slab-primary">
                         <div class="w-4 p-2 m-1 ml-0"></div>
                         <div class="w-28 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'country' ? 'bg-hoverslab' : '' " @click="toggleSort('country')">Country</div>
                         <div class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmed')">Confirmed</div>
-                        <div class="w-16 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'deaths' ? 'bg-hoverslab' : '' " @click="toggleSort('deaths')">Deaths</div>
-                        <div class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'recovered' ? 'bg-hoverslab' : '' " @click="toggleSort('recovered')">Recovered</div>
+                        <div class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'deaths' ? 'bg-hoverslab' : '' " @click="toggleSort('deaths')">Deaths</div>
+                        <div class="w-24 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'recovered' ? 'bg-hoverslab' : '' " @click="toggleSort('recovered')">Recovered</div>
                     </div>
                 </div>
                 <div class="w-full absolute inset-x-0 bottom-0" style="top:4rem">
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="overflow-hidden bg-lightslab rounded p-2 absolute inset-x-0 bottom-0 m-2">
+            <div class="overflow-hidden bg-slab rounded p-2 absolute inset-x-0 bottom-0 m-2">
                 <div class="flex justify-between items-center">
                     <div class="xl:text-2xl tracking-tight font-bold">Global tally</div>
                     <div class="text-xs xl:mb-4">as of {{global.last_update}}</div>

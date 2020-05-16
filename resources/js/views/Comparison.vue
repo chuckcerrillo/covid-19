@@ -23,8 +23,9 @@
                     :selectCountry="selectCountry"
                     :compare="compare"
                 />
-                <div class="m-4 ml-0 w-full overflow-hidden relative" :class="view === 'dashboard' || view === 'about' || view === 'map' ? 'ml-4': ''">
-                    <div class="bg-slab rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col p-4">
+
+                <div class="absolute inset-x-0 bottom-0 xl:m-4 xl:ml-0 xl:w-full xl:overflow-hidden xl:relative xl:top-auto top-3.1" :class="view === 'dashboard' || view === 'about' || view === 'map' ? 'ml-4': ''">
+                    <div class="bg-slab xl:rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col p-4">
                         <div class="absolute top-0 right-0 bottom-0 left-0 p-4">
                             <simplebar v-if="view != 'charts' && view != 'dashboard' && view != 'about' && view != 'map'" class="text-xs w-full">
                                 <div class="w-full flex items-center justify-start relative">

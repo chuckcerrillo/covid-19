@@ -32,6 +32,9 @@ module.exports = {
               'date-slab': '#80cbcd',
               'lightlabel' : '#60acae',
           },
+          padding: {
+              '14': '3.5rem',
+          },
           margin: {
               '14' : '3.5rem',
               '18' : '4.5rem',
@@ -239,6 +242,9 @@ module.exports = {
               '360' : '90rem',
               '512' : '128rem',
           },
+          inset: {
+              '3.1' : '3.1rem',
+          }
       },
   },
   variants: {},
