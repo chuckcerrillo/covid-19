@@ -24,19 +24,22 @@
                     />
                 </simplebar>
             </div>
-            <div v-for="(row,key,index) in uniqueCountries" class="absolute inset-0 bg-hoverslab rounded p-2 xl:p-4" v-if="selectedCompareTab.substr(0,row.country.length) === row.country" :key="index" style="bottom:4.25rem">
+            <div v-for="(row,key,index) in uniqueCountries" class="absolute inset-0 bg-hoverslab rounded p-2 xl:p-4 bottom-4.25 xl:bottom-0" v-if="selectedCompareTab.substr(0,row.country.length) === row.country" :key="index">
                 <simplebar class="h-full z-0">
                     <div class="my-4">
                         <div class="xl:w-128 text-2xl xl:text-4xl font-bold">{{row.country}}</div>
                         <div v-if="getGovtResponse(row.country)" class="xl:text-6xl text-3xl font-bold">{{getGovtResponse(row.country).latest.si}}</div>
                         <div v-else class="xl:text-6xl text-3xl font-bold">N/A</div>
-                        <div class="text-lightlabel font-bold tracking-tight">stringency index</div>
-                        <div class="xl:hidden absolute top-0 right-0 mr-2 mt-2" @click="expanded = !expanded">
-                            <svg class="h-8 fill-current" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 28 28">
-                                <g>
-                                    <path d="M14,1.86A12.14,12.14,0,1,0,26.14,14,12.15,12.15,0,0,0,14,1.86Zm0,23.28A11.14,11.14,0,1,1,25.14,14,11.16,11.16,0,0,1,14,25.14Z"/><path d="M14,11.51a.74.74,0,0,0-.46.14.43.43,0,0,0-.18.34V20.4a.48.48,0,0,0,.19.36.67.67,0,0,0,.45.16.72.72,0,0,0,.46-.16.46.46,0,0,0,.2-.36V12a.44.44,0,0,0-.19-.34A.79.79,0,0,0,14,11.51Z"/><path d="M14,7.08a.93.93,0,0,0-.64.24.77.77,0,0,0-.26.58.78.78,0,0,0,.26.58.89.89,0,0,0,.64.25.82.82,0,0,0,.61-.25.81.81,0,0,0,.25-.58.79.79,0,0,0-.25-.58A.85.85,0,0,0,14,7.08Z"/>
-                                </g>
-                            </svg>
+                        <div class="flex items-center">
+                            <div class="text-lightlabel font-bold tracking-tight">stringency index</div>
+                            <div class="xl:hidden ml-2 text-xs text-heading" @click="expanded = !expanded">
+<!--                                <svg class="h-4 fill-current" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 28 28">-->
+<!--                                    <g>-->
+<!--                                        <path d="M14,1.86A12.14,12.14,0,1,0,26.14,14,12.15,12.15,0,0,0,14,1.86Zm0,23.28A11.14,11.14,0,1,1,25.14,14,11.16,11.16,0,0,1,14,25.14Z"/><path d="M14,11.51a.74.74,0,0,0-.46.14.43.43,0,0,0-.18.34V20.4a.48.48,0,0,0,.19.36.67.67,0,0,0,.45.16.72.72,0,0,0,.46-.16.46.46,0,0,0,.2-.36V12a.44.44,0,0,0-.19-.34A.79.79,0,0,0,14,11.51Z"/><path d="M14,7.08a.93.93,0,0,0-.64.24.77.77,0,0,0-.26.58.78.78,0,0,0,.26.58.89.89,0,0,0,.64.25.82.82,0,0,0,.61-.25.81.81,0,0,0,.25-.58.79.79,0,0,0-.25-.58A.85.85,0,0,0,14,7.08Z"/>-->
+<!--                                    </g>-->
+<!--                                </svg>-->
+                                (info)
+                            </div>
                         </div>
                         <div v-show="expanded" class="xl:hidden">
                             <div class="py-2 text-xs xl:text-sm">OxCGRT collects publicly available information on 17 indicators of government response. This information is collected by a team of over 100 volunteers from the Oxford community and is updated continuously.</div>
