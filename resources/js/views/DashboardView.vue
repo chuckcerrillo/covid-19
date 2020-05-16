@@ -66,7 +66,7 @@
                                 <li v-if="annotations.length == 0" class="text-xs p-4">
                                     Nothing to show here.
                                 </li>
-                                <li v-for="note in annotations" class="flex text-xs items-start justify-start mr-4">
+                                <li v-for="note in annotations" class="flex text-xs items-start justify-start mr-4" :key="key">
                                     <div class="mr-1 w-20 flex-shrink-0 text-date-slab">{{note.date}}</div>
                                     <div class="w-full">
                                         <span v-if="note.state.length > 0" class="font-bold mr-1">[{{note.state}}]</span>

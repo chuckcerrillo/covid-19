@@ -8,7 +8,7 @@
                     <div v-if="chartsettings.length == 0" class="p-4 text-xs">
                         Choose countries or states to begin comparing.
                     </div>
-                    <div v-show="chartsettings.length > 0" v-for="row in chartsettings" class="m-2 bg-gray-200 p-2">
+                    <div v-show="chartsettings.length > 0" v-for="(row,key,index) in chartsettings" :key="key" class="m-2 bg-gray-200 p-2">
                         <div class="font-bold text-sm">{{row.name}}</div>
                         <div class="flex text-xs">
                             <div class="w-24"></div>

@@ -37,7 +37,7 @@
                     <div class="flex flex-wrap">
                         <GovtResponse
                             v-if="getGovtResponse(row.country)"
-                            v-for="(policy,key,index) in getLatestGovtResponse(row.country)"
+                            v-for="(policy,key,index) in getLatestGovtResponse(row.country)" v-once
                             :key="index"
                             :policy="policy" />
                     </div>

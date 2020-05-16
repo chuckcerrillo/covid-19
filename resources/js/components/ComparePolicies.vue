@@ -30,6 +30,7 @@
                         class="border-l flex-shrink-0
                         border-lightslab w-64"
                         v-for="(row, key, index) in comparison"
+                        :key="key"
                     >
                         <div class="w-full">
                             <div class="px-4 py-2 text-2xl h-12 bg-slab-primary">
@@ -73,6 +74,7 @@
                             <div
                                  class="border-l border-b border-lightslab flex-shrink-0 w-64"
                                 v-for="(row, key, index) in comparison"
+                                 :key="index"
                             >
                                 <div class=""
                                      :class="index % 2 == 1 ? 'bg-slab-primary' : ''">

@@ -39,6 +39,7 @@
                     <div
 
                         v-for="(row, key, index) in data.daily"
+                        :key="key"
                     >
                         <div class="flex p-2 text-xs items-start bg-slab-primary">
                             <div class="w-20">{{moment(row['date']).format('YYYY-MM-DD')}}</div>
@@ -68,8 +69,9 @@
                             </div>
                         </div>
                         <div v-if="getDayNotes(moment(row['date']).format('YYYY-MM-DD')).length > 0">
-                            <div v-for="annotation in getDayNotes(moment(row['date']).format('YYYY-MM-DD'))"
+                            <div v-for="(annotation,key,index) in getDayNotes(moment(row['date']).format('YYYY-MM-DD'))"
                                  class="p-1 my-1 text-xs rounded bg-lightslab flex"
+                                 :key="key"
                             >
                                 <div v-if="annotation.state.length > 0" class="font-bold mr-2">{{annotation.state}}</div>
                                 <div>{{annotation.notes}}</div>
@@ -86,7 +88,7 @@
                             <li v-if="annotations.length == 0" class="text-xs p-4">
                                 Nothing to show here.
                             </li>
-                            <li v-for="note in annotations" class="flex text-xs items-start justify-start">
+                            <li v-for="(note,key,index) in annotations" :key="key" class="flex text-xs items-start justify-start">
                                 <div class="mr-1 w-20 text-date-slab">{{note.date}}</div>
                                 <div class="w-full">
                                     <span v-if="note.state.length > 0" class="font-bold mr-1">[{{note.state}}]</span>
