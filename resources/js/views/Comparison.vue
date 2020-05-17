@@ -37,7 +37,7 @@
                                         <div @click="updateSelected(key)" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
                                             {{getCompareLength() > 0 && row.state ? row.state + ' - ' : ''}}
                                             {{getCompareLength() > 0 ? row.country : '(none)'}}
-                                            <div v-on:click.stop="removeCompare({country: row.country,state: row.state})" class="text-lightlabel text-xs absolute top-0 right-0 m-2 px-2 pb-1 rounded hover:text-heading hover:bg-lightlabel">x</div>
+                                            <div v-on:click.stop="removeCompare({country: row.country,state: row.state})" class="hidden xl:block text-lightlabel text-xs absolute top-0 right-0 m-2 px-2 pb-1 rounded hover:text-heading hover:bg-lightlabel">x</div>
                                         </div>
                                     </div>
                                     <div v-if="getCompareLength() > 0" class="hidden xl:block xl:absolute w-24 border z-10 bg-slab border-hoverslab hover:bg-hoverslab px-2 py-1 top-0 right-0 cursor-pointer" @click="removeAllCompare()">
@@ -99,6 +99,7 @@
     import 'simplebar/dist/simplebar.min.css';
     import moment from 'moment'
     import {mapGetters} from 'vuex';
+    import SidebarMobile from "../components/SidebarMobile";
 
     export default {
         name: "Comparison",
@@ -108,6 +109,7 @@
             DailyView: () => import('./DailyView'),
             PoliciesView: () => import('./PoliciesView'),
             Sidebar: () => import('../components/Sidebar'),
+            SidebarMobile,
             StatsChart: () => import('../components/StatsChart'),
             About: () => import('./About'),
             simplebar,

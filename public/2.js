@@ -760,7 +760,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".inner-scrollbar .simplebar-track.simplebar-horizontal {\n  visibility: hidden !important;\n}\r\n", ""]);
+exports.push([module.i, ".inner-scrollbar .simplebar-track.simplebar-horizontal {\n  visibility: hidden !important;\n}\n", ""]);
 
 // exports
 
@@ -813,7 +813,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "h-full" }, [
-    _c("div", { staticClass: "m-4" }, [
+    _c("div", { staticClass: "m-2 xl:m-4" }, [
       _c(
         "div",
         { staticClass: "my-2 py-2 pb-4 px-4 bg-slab-primary rounded" },
@@ -894,30 +894,32 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "absolute top-0 left-0 right-0 bottom-0 m-4",
-        staticStyle: { position: "absolute", top: "5.5rem" }
+        staticClass:
+          "absolute left-0 right-0 bottom-4.25 xl:bottom-0 m-2 xl:m-4 top-5.5",
+        staticStyle: { position: "absolute" }
       },
       [
         _c(
           "simplebar",
-          {
-            staticClass: "w-full h-full",
-            attrs: { "data-simplebar-auto-hide": "false" }
-          },
+          { staticClass: "w-full h-full" },
           [
             _c(
               "div",
               {
                 staticClass:
                   "flex justify-start rounded-t z-10 relative bg-slab-primary",
-                staticStyle: { "min-width": "75rem" }
+                class:
+                  "min-w-" +
+                  _vm.comparison.length * 32 +
+                  " xl:min-w-" +
+                  (_vm.comparison.length * 64 + 36)
               },
               [
                 _c(
                   "div",
                   {
                     staticClass:
-                      "bg-slab-primary justify-start items-end border-lightslab w-36 text-xs font-bold flex-shrink-0"
+                      "hidden xl:block bg-slab-primary border-lightslab w-36 text-xs font-bold flex-shrink-0"
                   },
                   [
                     _c("div", { staticClass: "px-4 py-2 h-12" }),
@@ -934,7 +936,7 @@ var render = function() {
                     {
                       key: key,
                       staticClass:
-                        "border-l flex-shrink-0\n                        border-lightslab w-64"
+                        "border-l flex-shrink-0\n                        border-lightslab w-32 xl:w-64"
                     },
                     [
                       _c("div", { staticClass: "w-full" }, [
@@ -942,7 +944,7 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "px-4 py-2 text-2xl h-12 bg-slab-primary"
+                              "px-4 py-2 text-sm xl:text-2xl xl:h-12 bg-slab-primary"
                           },
                           [
                             _c(
@@ -957,7 +959,7 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "px-4 py-2 font-bold h-8 border-b border-lightslab bg-slab-primary text-xs"
+                              "text-xs xl:text-base px-4 py-2 font-bold xl:h-8 border-b border-lightslab bg-slab-primary text-xs"
                           },
                           [
                             row.name.state
@@ -971,7 +973,7 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("div", {
-                  staticClass: "px-4 py-2 h-20 border-l border-lightslab"
+                  staticClass: "px-4 py-2 xl:h-20 border-l border-lightslab"
                 })
               ],
               2
@@ -981,14 +983,13 @@ var render = function() {
               "simplebar",
               {
                 staticClass:
-                  "inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0",
-                staticStyle: {
-                  "min-width": "75rem",
-                  position: "absolute",
-                  top: "80px"
-                },
-                style: "min-width: " + (9 + _vm.comparison.length * 16) + "em",
-                attrs: { "data-simplebar-auto-hide": "false" }
+                  "inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0 top-3.5 xl:top-5 overflow-x-show w-full",
+                class:
+                  "min-w-" +
+                  _vm.comparison.length * 32 +
+                  " xl:min-w-" +
+                  (_vm.comparison.length * 64 + 36),
+                staticStyle: { position: "absolute" }
               },
               [
                 _c(
@@ -1002,7 +1003,7 @@ var render = function() {
                       "div",
                       {
                         staticClass:
-                          "bg-slab-primary justify-start items-end border-b border-lightslab w-36 text-xs font-bold flex-shrink-0"
+                          "hidden xl:block bg-slab-primary border-b border-lightslab w-36 text-xs font-bold flex-shrink-0"
                       },
                       [
                         _c(
@@ -1133,7 +1134,7 @@ var render = function() {
                             {
                               key: index,
                               staticClass:
-                                "border-l border-b border-lightslab flex-shrink-0 w-64"
+                                "border-l border-b border-lightslab flex-shrink-0 w-32 xl:w-64"
                             },
                             [
                               _c(
@@ -1142,627 +1143,636 @@ var render = function() {
                                   class: index % 2 == 1 ? "bg-slab-primary" : ""
                                 },
                                 [
-                                  _c("div", { staticClass: "w-full" }, [
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "p-2 h-32 border-b border-lightslab"
-                                      },
-                                      [
-                                        _vm.active && _vm.graphReady
-                                          ? _c("MiniChart", {
-                                              attrs: {
-                                                data: _vm.dataset(key),
-                                                minDate: _vm.range.start,
-                                                maxDate: _vm.range.end,
-                                                active: _vm.active
-                                              }
-                                            })
-                                          : _vm._e()
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-16 border-b border-lightslab",
-                                        class: _vm.getBiggestValue(
-                                          "confirmed",
-                                          row.latest.c
-                                        )
-                                          ? "bg-darkslab"
-                                          : ""
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(
-                                              _vm._f("numeralFormat")(
-                                                isNaN(row.latest.c)
-                                                  ? 0
-                                                  : row.latest.c
-                                              )
-                                            )
-                                        ),
-                                        _c("br"),
-                                        _vm._v(" "),
-                                        row.latest.percent.c > 0
-                                          ? _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-red-400"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(+" +
-                                                    _vm._s(
-                                                      _vm._f("numeralFormat")(
-                                                        row.latest.percent.c,
-                                                        "0.0%"
-                                                      )
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                          : _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-green-400"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      _vm._f("numeralFormat")(
-                                                        row.latest.percent.c,
-                                                        "0.0%"
-                                                      )
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-16 border-b border-lightslab",
-                                        class: _vm.getBiggestValue(
-                                          "deaths",
-                                          row.latest.d
-                                        )
-                                          ? "bg-darkslab"
-                                          : ""
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(
-                                              _vm._f("numeralFormat")(
-                                                isNaN(row.latest.d)
-                                                  ? 0
-                                                  : row.latest.d
-                                              )
-                                            )
-                                        ),
-                                        _c("br"),
-                                        _vm._v(" "),
-                                        row.latest.percent.d > 0
-                                          ? _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-red-400"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(+" +
-                                                    _vm._s(
-                                                      _vm._f("numeralFormat")(
-                                                        row.latest.percent.d,
-                                                        "0.0%"
-                                                      )
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                          : _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-green-400"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      _vm._f("numeralFormat")(
-                                                        row.latest.percent.d,
-                                                        "0.0%"
-                                                      )
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-16 border-b border-lightslab",
-                                        class: _vm.getBiggestValue(
-                                          "recovered",
-                                          row.latest.r
-                                        )
-                                          ? "bg-darkslab"
-                                          : ""
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(
-                                              _vm._f("numeralFormat")(
-                                                isNaN(row.latest.r)
-                                                  ? 0
-                                                  : row.latest.r
-                                              )
-                                            )
-                                        ),
-                                        _c("br"),
-                                        _vm._v(" "),
-                                        row.latest.percent.r > 0
-                                          ? _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-green-400"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(+" +
-                                                    _vm._s(
-                                                      _vm._f("numeralFormat")(
-                                                        row.latest.percent.r,
-                                                        "0.0%"
-                                                      )
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.percent.r == 0
-                                          ? _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-green-400"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      _vm._f("numeralFormat")(
-                                                        row.latest.percent.r,
-                                                        "0.0%"
-                                                      )
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                          : _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-red-400"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      _vm._f("numeralFormat")(
-                                                        row.latest.percent.r,
-                                                        "0.0%"
-                                                      )
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-24 border-b border-lightslab",
-                                        class: _vm.getBiggestValue(
-                                          "active",
-                                          row.latest.a
-                                        )
-                                          ? "bg-darkslab"
-                                          : ""
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(
-                                              _vm._f("numeralFormat")(
-                                                isNaN(row.latest.a)
-                                                  ? 0
-                                                  : row.latest.a
-                                              )
-                                            )
-                                        ),
-                                        _c("br"),
-                                        _vm._v(" "),
-                                        row.latest.delta.a < 0
-                                          ? _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-green-400"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      _vm._f("numeralFormat")(
-                                                        row.latest.delta.a
-                                                      )
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.delta.a == 0
-                                          ? _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-green-400"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      _vm._f("numeralFormat")(
-                                                        row.latest.delta.a
-                                                      )
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                          : _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-red-400"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(+" +
-                                                    _vm._s(
-                                                      _vm._f("numeralFormat")(
-                                                        row.latest.delta.a
-                                                      )
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            ),
-                                        _c("br"),
-                                        _vm._v(" "),
-                                        _c(
-                                          "span",
-                                          {
-                                            staticClass: "text-xs text-blue-400"
-                                          },
-                                          [
-                                            _vm._v(
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "w-full text-xs xl:text-base"
+                                    },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "p-2 h-24 xl:h-32 border-b border-lightslab"
+                                        },
+                                        [
+                                          _vm.active && _vm.graphReady
+                                            ? _c("MiniChart", {
+                                                attrs: {
+                                                  data: _vm.dataset(key),
+                                                  minDate: _vm.range.start,
+                                                  maxDate: _vm.range.end,
+                                                  active: _vm.active
+                                                }
+                                              })
+                                            : _vm._e()
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "px-4 py-2 h-16 border-b border-lightslab",
+                                          class: _vm.getBiggestValue(
+                                            "confirmed",
+                                            row.latest.c
+                                          )
+                                            ? "bg-darkslab"
+                                            : ""
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
                                               _vm._s(
                                                 _vm._f("numeralFormat")(
-                                                  row.latest.a /
-                                                    row.latest.population,
-                                                  "0.000%"
+                                                  isNaN(row.latest.c)
+                                                    ? 0
+                                                    : row.latest.c
                                                 )
-                                              ) + " of total population"
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-12 border-b border-lightslab",
-                                        class: _vm.getBiggestValue(
-                                          "confirmedDelta",
-                                          row.latest.delta.c
-                                        )
-                                          ? "bg-darkslab"
-                                          : ""
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(
-                                              _vm._f("numeralFormat")(
-                                                row.latest.delta.c
                                               )
-                                            ) +
-                                            "\n                                        "
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-12 border-b border-lightslab",
-                                        class: _vm.getBiggestValue(
-                                          "deathsDelta",
-                                          row.latest.delta.d
-                                        )
-                                          ? "bg-darkslab"
-                                          : ""
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(
-                                              _vm._f("numeralFormat")(
-                                                row.latest.delta.d
+                                          ),
+                                          _c("br"),
+                                          _vm._v(" "),
+                                          row.latest.percent.c > 0
+                                            ? _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "text-xs text-red-400"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "(+" +
+                                                      _vm._s(
+                                                        _vm._f("numeralFormat")(
+                                                          row.latest.percent.c,
+                                                          "0.0%"
+                                                        )
+                                                      ) +
+                                                      ")"
+                                                  )
+                                                ]
                                               )
-                                            ) +
-                                            "\n                                        "
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-12 border-b border-lightslab",
-                                        class: _vm.getBiggestValue(
-                                          "recoveredDelta",
-                                          row.latest.delta.r
-                                        )
-                                          ? "bg-darkslab"
-                                          : ""
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(
-                                              _vm._f("numeralFormat")(
-                                                row.latest.delta.r
+                                            : _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "text-xs text-green-400"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "(" +
+                                                      _vm._s(
+                                                        _vm._f("numeralFormat")(
+                                                          row.latest.percent.c,
+                                                          "0.0%"
+                                                        )
+                                                      ) +
+                                                      ")"
+                                                  )
+                                                ]
                                               )
-                                            ) +
-                                            "\n                                        "
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-12 border-b border-lightslab",
-                                        class: _vm.getBiggestValue(
-                                          "population",
-                                          row.population
-                                        )
-                                          ? "bg-darkslab"
-                                          : ""
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(
-                                              _vm._f("numeralFormat")(
-                                                row.population,
-                                                "0,000"
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "px-4 py-2 h-16 border-b border-lightslab",
+                                          class: _vm.getBiggestValue(
+                                            "deaths",
+                                            row.latest.d
+                                          )
+                                            ? "bg-darkslab"
+                                            : ""
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  isNaN(row.latest.d)
+                                                    ? 0
+                                                    : row.latest.d
+                                                )
                                               )
-                                            ) +
-                                            "\n                                        "
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-16 border-b border-lightslab",
-                                        class: _vm.getBiggestValue(
-                                          "confirmedCapita",
-                                          row.latest.capita.c
-                                        )
-                                          ? "bg-darkslab"
-                                          : ""
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(
-                                              _vm._f("numeralFormat")(
-                                                row.latest.capita.c,
-                                                "0,000.00"
+                                          ),
+                                          _c("br"),
+                                          _vm._v(" "),
+                                          row.latest.percent.d > 0
+                                            ? _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "text-xs text-red-400"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "(+" +
+                                                      _vm._s(
+                                                        _vm._f("numeralFormat")(
+                                                          row.latest.percent.d,
+                                                          "0.0%"
+                                                        )
+                                                      ) +
+                                                      ")"
+                                                  )
+                                                ]
                                               )
-                                            ) +
-                                            "\n                                        "
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-16 border-b border-lightslab",
-                                        class: _vm.getBiggestValue(
-                                          "deathsCapita",
-                                          row.latest.capita.d
-                                        )
-                                          ? "bg-darkslab"
-                                          : ""
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(
-                                              _vm._f("numeralFormat")(
-                                                row.latest.capita.d,
-                                                "0,000.00"
+                                            : _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "text-xs text-green-400"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "(" +
+                                                      _vm._s(
+                                                        _vm._f("numeralFormat")(
+                                                          row.latest.percent.d,
+                                                          "0.0%"
+                                                        )
+                                                      ) +
+                                                      ")"
+                                                  )
+                                                ]
                                               )
-                                            ) +
-                                            "\n                                        "
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-16 border-b border-lightslab",
-                                        class: _vm.getBiggestValue(
-                                          "recoveredCapita",
-                                          row.latest.capita.r
-                                        )
-                                          ? "bg-darkslab"
-                                          : ""
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(
-                                              _vm._f("numeralFormat")(
-                                                row.latest.capita.r,
-                                                "0,000.00"
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "px-4 py-2 h-16 border-b border-lightslab",
+                                          class: _vm.getBiggestValue(
+                                            "recovered",
+                                            row.latest.r
+                                          )
+                                            ? "bg-darkslab"
+                                            : ""
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  isNaN(row.latest.r)
+                                                    ? 0
+                                                    : row.latest.r
+                                                )
                                               )
-                                            ) +
-                                            "\n                                        "
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-12 border-b border-lightslab",
-                                        class: _vm.getBiggestValue(
-                                          "confirmedAverage",
-                                          row.latest.average.c
-                                        )
-                                          ? "bg-darkslab"
-                                          : ""
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(
-                                              _vm._f("numeralFormat")(
-                                                row.latest.average.c,
-                                                "0,000.0"
+                                          ),
+                                          _c("br"),
+                                          _vm._v(" "),
+                                          row.latest.percent.r > 0
+                                            ? _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "text-xs text-green-400"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "(+" +
+                                                      _vm._s(
+                                                        _vm._f("numeralFormat")(
+                                                          row.latest.percent.r,
+                                                          "0.0%"
+                                                        )
+                                                      ) +
+                                                      ")"
+                                                  )
+                                                ]
                                               )
-                                            ) +
-                                            "\n                                        "
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-12 border-b border-lightslab",
-                                        class: _vm.getBiggestValue(
-                                          "confirmedGrowth",
-                                          row.latest.growth.c
-                                        )
-                                          ? "bg-darkslab"
-                                          : ""
-                                      },
-                                      [
-                                        row.latest.growth.c > 1
-                                          ? _c(
-                                              "span",
-                                              { staticClass: "text-red-400" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(
-                                                    _vm._f("numeralFormat")(
-                                                      row.latest.growth.c,
-                                                      "0.00"
+                                            : row.latest.percent.r == 0
+                                            ? _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "text-xs text-green-400"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "(" +
+                                                      _vm._s(
+                                                        _vm._f("numeralFormat")(
+                                                          row.latest.percent.r,
+                                                          "0.0%"
+                                                        )
+                                                      ) +
+                                                      ")"
+                                                  )
+                                                ]
+                                              )
+                                            : _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "text-xs text-red-400"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "(" +
+                                                      _vm._s(
+                                                        _vm._f("numeralFormat")(
+                                                          row.latest.percent.r,
+                                                          "0.0%"
+                                                        )
+                                                      ) +
+                                                      ")"
+                                                  )
+                                                ]
+                                              )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "px-4 py-2 h-24 border-b border-lightslab",
+                                          class: _vm.getBiggestValue(
+                                            "active",
+                                            row.latest.a
+                                          )
+                                            ? "bg-darkslab"
+                                            : ""
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  isNaN(row.latest.a)
+                                                    ? 0
+                                                    : row.latest.a
+                                                )
+                                              )
+                                          ),
+                                          _c("br"),
+                                          _vm._v(" "),
+                                          row.latest.delta.a < 0
+                                            ? _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "text-xs text-green-400"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "(" +
+                                                      _vm._s(
+                                                        _vm._f("numeralFormat")(
+                                                          row.latest.delta.a
+                                                        )
+                                                      ) +
+                                                      ")"
+                                                  )
+                                                ]
+                                              )
+                                            : row.latest.delta.a == 0
+                                            ? _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "text-xs text-green-400"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "(" +
+                                                      _vm._s(
+                                                        _vm._f("numeralFormat")(
+                                                          row.latest.delta.a
+                                                        )
+                                                      ) +
+                                                      ")"
+                                                  )
+                                                ]
+                                              )
+                                            : _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "text-xs text-red-400"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "(+" +
+                                                      _vm._s(
+                                                        _vm._f("numeralFormat")(
+                                                          row.latest.delta.a
+                                                        )
+                                                      ) +
+                                                      ")"
+                                                  )
+                                                ]
+                                              ),
+                                          _c("br"),
+                                          _vm._v(" "),
+                                          _c(
+                                            "span",
+                                            {
+                                              staticClass:
+                                                "text-xs text-blue-400"
+                                            },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  _vm._f("numeralFormat")(
+                                                    row.latest.a /
+                                                      row.latest.population,
+                                                    "0.000%"
+                                                  )
+                                                ) + " of total population"
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "px-4 py-2 h-12 border-b border-lightslab",
+                                          class: _vm.getBiggestValue(
+                                            "confirmedDelta",
+                                            row.latest.delta.c
+                                          )
+                                            ? "bg-darkslab"
+                                            : ""
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.latest.delta.c
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "px-4 py-2 h-12 border-b border-lightslab",
+                                          class: _vm.getBiggestValue(
+                                            "deathsDelta",
+                                            row.latest.delta.d
+                                          )
+                                            ? "bg-darkslab"
+                                            : ""
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.latest.delta.d
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "px-4 py-2 h-12 border-b border-lightslab",
+                                          class: _vm.getBiggestValue(
+                                            "recoveredDelta",
+                                            row.latest.delta.r
+                                          )
+                                            ? "bg-darkslab"
+                                            : ""
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.latest.delta.r
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "px-4 py-2 h-12 border-b border-lightslab",
+                                          class: _vm.getBiggestValue(
+                                            "population",
+                                            row.population
+                                          )
+                                            ? "bg-darkslab"
+                                            : ""
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.population,
+                                                  "0,000"
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "px-4 py-2 h-16 border-b border-lightslab",
+                                          class: _vm.getBiggestValue(
+                                            "confirmedCapita",
+                                            row.latest.capita.c
+                                          )
+                                            ? "bg-darkslab"
+                                            : ""
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.latest.capita.c,
+                                                  "0,000.00"
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "px-4 py-2 h-16 border-b border-lightslab",
+                                          class: _vm.getBiggestValue(
+                                            "deathsCapita",
+                                            row.latest.capita.d
+                                          )
+                                            ? "bg-darkslab"
+                                            : ""
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.latest.capita.d,
+                                                  "0,000.00"
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "px-4 py-2 h-16 border-b border-lightslab",
+                                          class: _vm.getBiggestValue(
+                                            "recoveredCapita",
+                                            row.latest.capita.r
+                                          )
+                                            ? "bg-darkslab"
+                                            : ""
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.latest.capita.r,
+                                                  "0,000.00"
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "px-4 py-2 h-12 border-b border-lightslab",
+                                          class: _vm.getBiggestValue(
+                                            "confirmedAverage",
+                                            row.latest.average.c
+                                          )
+                                            ? "bg-darkslab"
+                                            : ""
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.latest.average.c,
+                                                  "0,000.0"
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "px-4 py-2 h-12 border-b border-lightslab",
+                                          class: _vm.getBiggestValue(
+                                            "confirmedGrowth",
+                                            row.latest.growth.c
+                                          )
+                                            ? "bg-darkslab"
+                                            : ""
+                                        },
+                                        [
+                                          row.latest.growth.c > 1
+                                            ? _c(
+                                                "span",
+                                                { staticClass: "text-red-400" },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(
+                                                      _vm._f("numeralFormat")(
+                                                        row.latest.growth.c,
+                                                        "0.00"
+                                                      )
                                                     )
                                                   )
-                                                )
-                                              ]
-                                            )
-                                          : _c(
-                                              "span",
-                                              { staticClass: "text-green-400" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(
-                                                    _vm._f("numeralFormat")(
-                                                      row.latest.growth.c,
-                                                      "0.00"
+                                                ]
+                                              )
+                                            : _c(
+                                                "span",
+                                                {
+                                                  staticClass: "text-green-400"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(
+                                                      _vm._f("numeralFormat")(
+                                                        row.latest.growth.c,
+                                                        "0.00"
+                                                      )
                                                     )
                                                   )
-                                                )
-                                              ]
-                                            )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass: "px-4 py-2 h-12",
-                                        class: _vm.getBiggestValue(
-                                          "stringencyIndex",
-                                          row.latest.stringencyindex
-                                        )
-                                          ? "bg-darkslab"
-                                          : ""
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                            " +
-                                            _vm._s(
-                                              _vm._f("numeralFormat")(
-                                                row.latest.stringencyindex,
-                                                "0.00"
+                                                ]
                                               )
-                                            ) +
-                                            "\n                                        "
-                                        )
-                                      ]
-                                    )
-                                  ])
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "px-4 py-2 h-12",
+                                          class: _vm.getBiggestValue(
+                                            "stringencyIndex",
+                                            row.latest.stringencyindex
+                                          )
+                                            ? "bg-darkslab"
+                                            : ""
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm._f("numeralFormat")(
+                                                  row.latest.stringencyindex,
+                                                  "0.00"
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  )
                                 ]
                               )
                             ]

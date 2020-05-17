@@ -1,16 +1,16 @@
 <template>
     <div>
         <div
-            class="flex hover:bg-lightslab cursor-pointer items-center h-8"
+            class="flex cursor-pointer items-center h-8"
             :class="
                 (config.dashboard ? 'justify-center ' : '')
                 +
-                (isSelected(data.name,false) ? 'bg-hoverslab ' : ((country_key % 2 == 1) ? 'bg-slab-primary ':'bg-slab-secondary '))
+                (isSelected(data.name,false) ? 'bg-orangeslab' : ((country_key % 2 == 1) ? 'bg-heading ':'bg-heading-secondary '))
             "
         >
             <div v-if="data.states.length <= 1" class="w-4 p-2 m-1 ml-0"></div>
             <div v-else
-                 class="w-5 m-0 text-white border border-transparent hover:border-white rounded text-center font-bold"
+                 class="w-5 m-0 text-lightslab border border-transparent hover:border-white rounded text-center font-bold"
                  @click="toggleExpand()"
             >
                 <div v-if="expanded">-</div>
@@ -28,11 +28,11 @@
 <!--            <div v-if="config.dashboard" @click="selectCountry(data['name'],false)" class="text-xs pl-2 py-1 w-20">{{data.total.recoveredpc|numeralFormat('0,000.00')}}</div>-->
 <!--            <div v-if="config.dashboard" @click="selectCountry(data['name'],false)" class="text-xs pl-2 py-1 w-20">{{data.total.stringencyindex}}</div>-->
         </div>
-        <div v-for="row in data.states" class="pb-1 hover:bg-lightslab cursor-pointer flex items-center text-xs" v-show="expanded"
+        <div v-for="row in data.states" class="pb-1 cursor-pointer flex items-center text-xs" v-show="expanded"
             :class="
             (config.dashboard ? 'justify-center ' : '')
                 +
-            (isSelected(data.name,row.name) ? 'bg-hoverslab' : 'bg-darkslab')
+            (isSelected(data.name,row.name) ? 'bg-orangeslab' : 'bg-heading-secondary')
             "
         >
             <div class="w-4 p-2 m-1 ml-0"></div>

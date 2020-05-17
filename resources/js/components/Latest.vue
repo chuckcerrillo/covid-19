@@ -1,6 +1,6 @@
 <template>
     <div class="h-full">
-        <div class="m-4">
+        <div class="m-2 xl:m-4">
 
             <div class="my-2 py-2 pb-4 px-4 bg-slab-primary rounded">
                 <span class="font-bold">Select date</span>
@@ -23,34 +23,34 @@
                 <vue-slider v-model="dateRange" :data="dateSliderRange" :lazy="true" :adsorb="true" />
             </div>
         </div>
-        <div class="absolute top-0 left-0 right-0 bottom-0 m-4" style="position:absolute; top: 5.5rem">
-            <simplebar data-simplebar-auto-hide="false" class="w-full h-full">
-                <div class="flex justify-start rounded-t z-10 relative bg-slab-primary" style="min-width: 75rem;">
-                    <div class="bg-slab-primary justify-start items-end border-lightslab w-36 text-xs font-bold flex-shrink-0">
+        <div class="absolute left-0 right-0 bottom-4.25 xl:bottom-0 m-2 xl:m-4 top-5.5" style="position:absolute;">
+            <simplebar class="w-full h-full">
+                <div class="flex justify-start rounded-t z-10 relative bg-slab-primary" :class="'min-w-' + (comparison.length*32) + ' xl:min-w-' + (comparison.length*64+36)">
+                    <div class="hidden xl:block bg-slab-primary border-lightslab w-36 text-xs font-bold flex-shrink-0">
                         <div class="px-4 py-2 h-12"></div>
                         <div class="px-4 py-2 h-8 border-b border-slab"></div>
                     </div>
                     <div
                         class="border-l flex-shrink-0
-                        border-lightslab w-64"
+                        border-lightslab w-32 xl:w-64"
                         v-for="(row, key, index) in comparison"
                         :key="key"
                     >
                         <div class="w-full">
-                            <div class="px-4 py-2 text-2xl h-12 bg-slab-primary">
+                            <div class="px-4 py-2 text-sm xl:text-2xl xl:h-12 bg-slab-primary">
                                 <div class="truncate ... font-bold">{{row.name.country}}</div>
                             </div>
-                            <div class="px-4 py-2 font-bold h-8 border-b border-lightslab bg-slab-primary text-xs">
+                            <div class="text-xs xl:text-base px-4 py-2 font-bold xl:h-8 border-b border-lightslab bg-slab-primary text-xs">
                                 <div v-if="row.name.state">{{row.name.state}}</div>
                                 <div v-else></div>
                             </div>
                         </div>
                      </div>
-                    <div class="px-4 py-2 h-20 border-l border-lightslab"></div>
+                    <div class="px-4 py-2 xl:h-20 border-l border-lightslab"></div>
                 </div>
-                <simplebar data-simplebar-auto-hide="false" class="inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0" style="min-width: 75rem; position: absolute; top: 80px;" :style="'min-width: ' + (9 + (comparison.length * 16)) + 'em'">
+                <simplebar class="inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0 top-3.5 xl:top-5 overflow-x-show w-full" style="position: absolute;" :class="'min-w-' + (comparison.length*32) + ' xl:min-w-' + (comparison.length*64+36)">
                     <div class="flex justify-start rounded-t z-10 relative bg-slab">
-                        <div class="bg-slab-primary justify-start items-end border-b border-lightslab w-36 text-xs font-bold flex-shrink-0">
+                        <div class="hidden xl:block bg-slab-primary border-b border-lightslab w-36 text-xs font-bold flex-shrink-0">
                             <div class="px-4 py-2 h-32 border-b border-slab">New cases per day</div>
                             <div class="px-4 py-2 h-16 border-b border-slab">Confirmed</div>
                             <div class="px-4 py-2 h-16 border-b border-slab">Deaths</div>
@@ -69,16 +69,16 @@
                         </div>
                         <div class="flex-shrink-0 flex">
                             <div
-                                class="border-l border-b border-lightslab flex-shrink-0 w-64"
+                                class="border-l border-b border-lightslab flex-shrink-0 w-32 xl:w-64"
                                 v-for="(row, key, index) in comparison"
                                 :key="index"
                             >
                                 <div class=""
                                      :class="index % 2 == 1 ? 'bg-slab-primary' : ''">
 
-                                    <div class="w-full">
+                                    <div class="w-full text-xs xl:text-base">
 
-                                        <div class="p-2 h-32 border-b border-lightslab">
+                                        <div class="p-2 h-24 xl:h-32 border-b border-lightslab">
                                             <MiniChart v-if="active && graphReady" :data="dataset(key)" :minDate="range.start" :maxDate="range.end" :active="active" />
                                         </div>
                                         <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('confirmed',row.latest.c) ? 'bg-darkslab':''">
