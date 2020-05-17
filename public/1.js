@@ -756,7 +756,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".inner-scrollbar .simplebar-track.simplebar-horizontal {\n  visibility: hidden !important;\n}\r\n", ""]);
+exports.push([module.i, ".inner-scrollbar .simplebar-track.simplebar-horizontal {\n  visibility: hidden !important;\n}\n", ""]);
 
 // exports
 
@@ -811,7 +811,7 @@ var render = function() {
   return _c("div", { staticClass: "h-full" }, [
     _c(
       "div",
-      { staticClass: "m-4 py-2 pb-4 px-4 bg-slab-primary rounded" },
+      { staticClass: "m-2 xl:m-4 py-2 pb-4 px-4 bg-slab-primary rounded" },
       [
         _c("span", { staticClass: "font-bold" }, [_vm._v("Select date")]),
         _vm._v(" "),
@@ -887,7 +887,7 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "absolute top-5.5 left-0 right-0 bottom-4.25 m-4",
+        staticClass: "absolute top-5.5 left-0 right-0 bottom-4.25 m-2 xl:m-4",
         staticStyle: { position: "absolute", top: "5.5rem" }
       },
       [

@@ -1,6 +1,6 @@
 <template>
     <div class="h-full">
-        <div class="m-4 py-2 pb-4 px-4 bg-slab-primary rounded">
+        <div class="m-2 xl:m-4 py-2 pb-4 px-4 bg-slab-primary rounded">
             <span class="font-bold">Select date</span>
             <v-date-picker
                 v-model="date"
@@ -19,7 +19,7 @@
             </v-date-picker> {{moment(date).format('YYYY-MM-DD')}}
             <vue-slider v-model="date" :data="dateSliderRange" :lazy="true" :adsorb="true" />
         </div>
-        <div class="absolute top-5.5 left-0 right-0 bottom-4.25 m-4" style="position:absolute; top: 5.5rem">
+        <div class="absolute top-5.5 left-0 right-0 bottom-4.25 m-2 xl:m-4" style="position:absolute; top: 5.5rem">
             <simplebar data-simplebar-auto-hide="false" class="w-full h-full">
                 <div class="flex justify-start rounded-t z-10 relative bg-slab-primary" style="min-width: 75rem;">
                     <div class="hidden xl:block bg-slab-primary border-lightslab w-36 text-xs font-bold flex-shrink-0">
