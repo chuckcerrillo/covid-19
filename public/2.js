@@ -1888,13 +1888,16 @@ var render = function() {
                       " countries or states to begin comparing.\n            "
                   )
                 ])
-              : _c("Latest", {
+              : !_vm.isMobile &&
+                _vm.isMobile && _vm.selectedCompareTab === "all"
+              ? _c("Latest", {
                   attrs: {
                     data: _vm.comparisonData,
                     active:
                       _vm.view === "daily" && _vm.selectedCompareTab === "all"
                   }
                 })
+              : _vm._e()
           ],
           1
         ),

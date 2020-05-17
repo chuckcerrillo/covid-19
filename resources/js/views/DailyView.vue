@@ -6,7 +6,7 @@
                     Select up to {{options.compare_limit}} countries or states to begin comparing.
                 </div>
 
-                <Latest v-else
+                <Latest v-else-if="!isMobile && (isMobile && selectedCompareTab === 'all')"
                         :data="comparisonData"
                         :active="view === 'daily' && selectedCompareTab === 'all'"
                 />
