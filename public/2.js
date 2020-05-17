@@ -743,6 +743,15 @@ __webpack_require__.r(__webpack_exports__);
 
       return count;
     }
+  },
+  computed: {
+    isMobile: function isMobile() {
+      if (screen.width <= 760) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 });
 
@@ -1888,8 +1897,9 @@ var render = function() {
                       " countries or states to begin comparing.\n            "
                   )
                 ])
-              : !_vm.isMobile &&
-                _vm.isMobile && _vm.selectedCompareTab === "all"
+              : _vm.getCompareLength() > 0 &&
+                (!_vm.isMobile ||
+                  (_vm.isMobile && _vm.selectedCompareTab === "all"))
               ? _c("Latest", {
                   attrs: {
                     data: _vm.comparisonData,

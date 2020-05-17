@@ -22,7 +22,9 @@
             <router-view
                 v-on:updateCompare="updateCompare"
                 v-on:updateSelected="updateSelected"
+                v-on:updateLoading="updateSelected"
                 v-on:saveProcessedData="saveProcessedData"
+                v-on:updateGovtResponse="updateGovtResponse"
                 :mode="mode"
 
                 class="fixed xl:pt-0 top-0 left-0 right-0 bottom-0" :class="inComparison()?'pt-14 xl:pt-0 xl:mt-14':''" :loading="database.loading" :database="database">
@@ -94,6 +96,10 @@
             this.setPageTitle(this.$route.meta.title);
         },
         methods: {
+            updateGovtResponse(country,data)
+            {
+                this.database.processed.oxford[country] = _.clone(data);
+            },
             showAbout()
             {
                 this.about = !this.about;
@@ -105,6 +111,13 @@
             updateSelected(key)
             {
                 this.database.processed.selectedCompareTab = key;
+            },
+            updateLoading(key,value)
+            {
+                if(this.database.loading && this.database.loading[key])
+                {
+                    this.database.loading[key] = _.clone(value);
+                }
             },
             updateCompare(compare)
             {

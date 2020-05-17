@@ -610,7 +610,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "PoliciesView",
-  props: ['selectedCompareTab', 'uniqueCountries', 'comparePolicies', 'compareLength', 'database'],
+  props: ['selectedCompareTab', 'uniqueCountries', 'comparePolicies', 'compareLength', 'database', 'countries'],
   data: function data() {
     return {
       expanded: false
@@ -621,9 +621,14 @@ __webpack_require__.r(__webpack_exports__);
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     GovtResponse: _components_GovtResponse__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
+  mounted: function mounted() {},
   methods: {
     getGovtResponse: function getGovtResponse(country) {
       if (country) {
+        if (this.database && this.database.processed && this.database.processed.oxford && this.database.processed.oxford[country]) {
+          return this.database.processed.oxford[country];
+        }
+
         if (this.database.raw.raw_oxford && this.database.raw.raw_oxford.latest && this.database.raw.raw_oxford.latest[country]) {
           return {
             key: this.database.raw.raw_oxford.key,
@@ -896,7 +901,8 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "absolute top-5.5 left-0 right-0 bottom-4.25 m-2 xl:m-4",
+        staticClass:
+          "absolute top-5.5 left-0 right-0 bottom-4.25 xl:bottom-0 m-2 xl:m-4",
         staticStyle: { position: "absolute", top: "5.5rem" }
       },
       [
@@ -1245,6 +1251,7 @@ var render = function() {
                                           [_vm._v("C1 - Schools")]
                                         ),
                                         _vm._v(" "),
+                                        row.latest.C1.value &&
                                         row.latest.C1.value.length > 60
                                           ? _c(
                                               "div",
@@ -1255,7 +1262,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C1.value.length > 30
+                                          : row.latest.C1.value &&
+                                            row.latest.C1.value.length > 30
                                           ? _c(
                                               "div",
                                               { staticClass: "text-sm" },
@@ -1265,7 +1273,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C1.value
+                                          : row.latest.C1.value &&
+                                            row.latest.C1.value
                                           ? _c("div", [
                                               _vm._v(
                                                 _vm._s(row.latest.C1.value)
@@ -1310,6 +1319,7 @@ var render = function() {
                                           [_vm._v("C2 - Workplaces")]
                                         ),
                                         _vm._v(" "),
+                                        row.latest.C2.value &&
                                         row.latest.C2.value.length > 60
                                           ? _c(
                                               "div",
@@ -1320,7 +1330,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C2.value.length > 30
+                                          : row.latest.C2.value &&
+                                            row.latest.C2.value.length > 30
                                           ? _c(
                                               "div",
                                               { staticClass: "text-sm" },
@@ -1330,7 +1341,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C2.value
+                                          : row.latest.C2.value &&
+                                            row.latest.C2.value
                                           ? _c("div", [
                                               _vm._v(
                                                 _vm._s(row.latest.C2.value)
@@ -1375,6 +1387,7 @@ var render = function() {
                                           [_vm._v("C3 - Public events")]
                                         ),
                                         _vm._v(" "),
+                                        row.latest.C3.value &&
                                         row.latest.C3.value.length > 60
                                           ? _c(
                                               "div",
@@ -1385,7 +1398,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C3.value.length > 30
+                                          : row.latest.C3.value &&
+                                            row.latest.C3.value.length > 30
                                           ? _c(
                                               "div",
                                               { staticClass: "text-sm" },
@@ -1395,7 +1409,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C3.value
+                                          : row.latest.C3.value &&
+                                            row.latest.C3.value
                                           ? _c("div", [
                                               _vm._v(
                                                 _vm._s(row.latest.C3.value)
@@ -1444,6 +1459,7 @@ var render = function() {
                                           ]
                                         ),
                                         _vm._v(" "),
+                                        row.latest.C4.value &&
                                         row.latest.C4.value.length > 60
                                           ? _c(
                                               "div",
@@ -1454,7 +1470,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C4.value.length > 30
+                                          : row.latest.C4.value &&
+                                            row.latest.C4.value.length > 30
                                           ? _c(
                                               "div",
                                               { staticClass: "text-sm" },
@@ -1464,7 +1481,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C4.value
+                                          : row.latest.C4.value &&
+                                            row.latest.C4.value
                                           ? _c("div", [
                                               _vm._v(
                                                 _vm._s(row.latest.C4.value)
@@ -1509,6 +1527,7 @@ var render = function() {
                                           [_vm._v("C5 - Public transport")]
                                         ),
                                         _vm._v(" "),
+                                        row.latest.C5.value &&
                                         row.latest.C5.value.length > 60
                                           ? _c(
                                               "div",
@@ -1519,7 +1538,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C5.value.length > 30
+                                          : row.latest.C5.value &&
+                                            row.latest.C5.value.length > 30
                                           ? _c(
                                               "div",
                                               { staticClass: "text-sm" },
@@ -1529,7 +1549,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C5.value
+                                          : row.latest.C5.value &&
+                                            row.latest.C5.value
                                           ? _c("div", [
                                               _vm._v(
                                                 _vm._s(row.latest.C5.value)
@@ -1574,6 +1595,7 @@ var render = function() {
                                           [_vm._v("C6 - Stay at home")]
                                         ),
                                         _vm._v(" "),
+                                        row.latest.C6.value &&
                                         row.latest.C6.value.length > 60
                                           ? _c(
                                               "div",
@@ -1584,7 +1606,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C6.value.length > 30
+                                          : row.latest.C6.value &&
+                                            row.latest.C6.value.length > 30
                                           ? _c(
                                               "div",
                                               { staticClass: "text-sm" },
@@ -1594,7 +1617,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C6.value
+                                          : row.latest.C6.value &&
+                                            row.latest.C6.value
                                           ? _c("div", [
                                               _vm._v(
                                                 _vm._s(row.latest.C6.value)
@@ -1639,6 +1663,7 @@ var render = function() {
                                           [_vm._v("C7 - Internal movements")]
                                         ),
                                         _vm._v(" "),
+                                        row.latest.C7.value &&
                                         row.latest.C7.value.length > 60
                                           ? _c(
                                               "div",
@@ -1649,7 +1674,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C7.value.length > 30
+                                          : row.latest.C7.value &&
+                                            row.latest.C7.value.length > 30
                                           ? _c(
                                               "div",
                                               { staticClass: "text-sm" },
@@ -1659,7 +1685,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C7.value
+                                          : row.latest.C7.value &&
+                                            row.latest.C7.value
                                           ? _c("div", [
                                               _vm._v(
                                                 _vm._s(row.latest.C7.value)
@@ -1704,6 +1731,7 @@ var render = function() {
                                           [_vm._v("C8 - International travel")]
                                         ),
                                         _vm._v(" "),
+                                        row.latest.C8.value &&
                                         row.latest.C8.value.length > 60
                                           ? _c(
                                               "div",
@@ -1714,7 +1742,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C8.value.length > 30
+                                          : row.latest.C8.value &&
+                                            row.latest.C8.value.length > 30
                                           ? _c(
                                               "div",
                                               { staticClass: "text-sm" },
@@ -1724,7 +1753,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.C8.value
+                                          : row.latest.C8.value &&
+                                            row.latest.C8.value
                                           ? _c("div", [
                                               _vm._v(
                                                 _vm._s(row.latest.C8.value)
@@ -1765,6 +1795,7 @@ var render = function() {
                                           [_vm._v("E1 - Income support")]
                                         ),
                                         _vm._v(" "),
+                                        row.latest.E1.value &&
                                         row.latest.E1.value.length > 60
                                           ? _c(
                                               "div",
@@ -1775,7 +1806,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.E1.value.length > 30
+                                          : row.latest.E1.value &&
+                                            row.latest.E1.value.length > 30
                                           ? _c(
                                               "div",
                                               { staticClass: "text-sm" },
@@ -1785,7 +1817,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.E1.value
+                                          : row.latest.E1.value &&
+                                            row.latest.E1.value
                                           ? _c("div", [
                                               _vm._v(
                                                 _vm._s(row.latest.E1.value)
@@ -1830,6 +1863,7 @@ var render = function() {
                                           [_vm._v("E2 - Debt/contract relief")]
                                         ),
                                         _vm._v(" "),
+                                        row.latest.E2.value &&
                                         row.latest.E2.value.length > 60
                                           ? _c(
                                               "div",
@@ -1840,7 +1874,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.E2.value.length > 30
+                                          : row.latest.E2.value &&
+                                            row.latest.E2.value.length > 30
                                           ? _c(
                                               "div",
                                               { staticClass: "text-sm" },
@@ -1850,7 +1885,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.E2.value
+                                          : row.latest.E2.value &&
+                                            row.latest.E2.value
                                           ? _c("div", [
                                               _vm._v(
                                                 _vm._s(row.latest.E2.value)
@@ -1959,6 +1995,7 @@ var render = function() {
                                           ]
                                         ),
                                         _vm._v(" "),
+                                        row.latest.H1.value &&
                                         row.latest.H1.value.length > 60
                                           ? _c(
                                               "div",
@@ -1969,7 +2006,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.H1.value.length > 30
+                                          : row.latest.H1.value &&
+                                            row.latest.H1.value.length > 30
                                           ? _c(
                                               "div",
                                               { staticClass: "text-sm" },
@@ -1979,7 +2017,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.H1.value
+                                          : row.latest.H1.value &&
+                                            row.latest.H1.value
                                           ? _c("div", [
                                               _vm._v(
                                                 _vm._s(row.latest.H1.value)
@@ -2024,6 +2063,7 @@ var render = function() {
                                           [_vm._v("H2 - Testing policy")]
                                         ),
                                         _vm._v(" "),
+                                        row.latest.H2.value &&
                                         row.latest.H2.value.length > 60
                                           ? _c(
                                               "div",
@@ -2034,7 +2074,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.H2.value.length > 30
+                                          : row.latest.H2.value &&
+                                            row.latest.H2.value.length > 30
                                           ? _c(
                                               "div",
                                               { staticClass: "text-sm" },
@@ -2044,7 +2085,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.H2.value
+                                          : row.latest.H2.value &&
+                                            row.latest.H2.value
                                           ? _c("div", [
                                               _vm._v(
                                                 _vm._s(row.latest.H2.value)
@@ -2070,6 +2112,7 @@ var render = function() {
                                           [_vm._v("H3 - Contact tracing")]
                                         ),
                                         _vm._v(" "),
+                                        row.latest.H3.value &&
                                         row.latest.H3.value.length > 60
                                           ? _c(
                                               "div",
@@ -2080,7 +2123,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.H3.value.length > 30
+                                          : row.latest.H3.value &&
+                                            row.latest.H3.value.length > 30
                                           ? _c(
                                               "div",
                                               { staticClass: "text-sm" },
@@ -2090,7 +2134,8 @@ var render = function() {
                                                 )
                                               ]
                                             )
-                                          : row.latest.H3.value
+                                          : row.latest.H3.value &&
+                                            row.latest.H3.value
                                           ? _c("div", [
                                               _vm._v(
                                                 _vm._s(row.latest.H3.value)

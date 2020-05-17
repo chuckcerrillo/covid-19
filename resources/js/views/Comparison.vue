@@ -55,6 +55,8 @@
                                     :uniqueCountries="getUniqueCountriesCompare()"
                                     :compareLength="getCompareLength()"
                                     :database="database"
+                                    :countries="countries_sorted"
+                                    v-on:updateGovtResponse="updateGovtResponse"
                                 />
 
                                 <DailyView
@@ -118,6 +120,14 @@
             'database',
         ],
         created(){
+            // alert('created');
+
+            this.database.processed.selectedCompareTab = 'all';
+        },
+        mounted()
+        {
+            // alert('mounted');
+            // // Assemble data for everything and prepopulate the processed array
 
             axios.get('/api/stats/annotations')
                 .then(res => {
@@ -131,20 +141,11 @@
             axios.get('/api/stats/oxford')
                 .then(res => {
                     this.database.raw.raw_oxford = res.data;
-                    this.database.loading.oxford = true;
+                    this.ajax_loading.oxford = true;
                 })
                 .catch(error => {
 
                 });
-
-            // alert('created');
-
-            this.database.processed.selectedCompareTab = 'all';
-        },
-        mounted()
-        {
-            // alert('mounted');
-            // // Assemble data for everything and prepopulate the processed array
         },
         data()
         {
@@ -177,210 +178,36 @@
                 },
                 layers : {
                     confirmed: false
-                }
+                },
+                ajax_loading: {
+                    oxford: false,
+                },
             }
         },
         methods:{
-            addConfirmedLayer()
+            processGovtResponse()
             {
-                this.layers.confirmed = true;
-            },
-            getAnnotations()
-            {
-                var data = _.clone(this.database.raw.raw_annotations.All);
-                data = data.reverse();
-                return data;
-            },
-            getUniqueCountriesCompare()
-            {
-                var countries = [],
-                    data = [];
-                for(var x in this.compare)
+                for (var x in this.countries)
                 {
-                    if(countries.indexOf(this.compare[x].country) === -1)
-                    {
-                        countries.push(this.compare[x].country);
-                        data.push(this.compare[x]);
-                    }
+                    var country = _.clone(this.countries[x].name);
+                    var response = _.clone(this.getGovtResponse(country));
+                    this.database.processed.oxford[country] = response;
                 }
-                return data;
-            },
-            comparePolicies()
-            {
-                var data = [];
-                for(var x in this.getUniqueCountriesCompare())
-                {
-                    var row = {};
-                    row.name = this.getUniqueCountriesCompare()[x].country;
-                    // row.latest = this.getLatestGovtResponse(row.name);
-
-
-                    if(this.getGovtResponse(row.name))
-                    {
-                        row.stringencyindex = this.getGovtResponse(row.name).latest.si;
-                        var daily = [];
-                        for(var y in this.getGovtResponse(row.name).daily)
-                        {
-                            daily.push(_.clone(this.translateGovtResponse(this.getGovtResponse(row.name).daily[y])))
-                        }
-                        row.daily = daily;
-                    }
-                    else
-                    {
-                        row.stringencyindex = 'N/A';
-                        row.daily = {};
-                    }
-                    data.push(_.clone(row));
-                }
-                return data;
-            },
-            translateGovtResponse(policy)
-            {
-
-                var key = this.database.raw.raw_oxford.key;
-                for(var x in policy.latest)
-                {
-                    var row = policy.latest[x];
-                    var target = '';
-                    var value = row.value;
-                    if(key && key[x] && key[x].values)
-                    {
-                        var help = key[x].values;
-                    }
-                    else
-                    {
-                        var help = [];
-                    }
-
-                    if(key[x] && key[x].hasTarget)
-                    {
-                        if(key[x].targets && key[x].targets.length > 0)
-                        {
-                            target = 'Scope: ' + key[x].targets[row.target];
-                        }
-                        else
-                        {
-                            if(row.t == 1)
-                            {
-                                target = 'Scope: Targeted';
-                            }
-                            else
-                            {
-                                target = 'Scope: General';
-                            }
-                        }
-                    }
-                    if(row.value.length == 0)
-                    {
-                        value = '';
-                        target = '';
-                    }
-                    else if(key[x] && key[x].type == 'lookup')
-                    {
-                        value = key[x].values[parseInt(row.value)];
-                    }
-                    else
-                    {
-                        value = row.value;
-                    }
-
-                    policy.latest[x] = {
-                        id: x,
-                        name: key[x].name,
-                        description: key[x].description,
-                        value: value,
-                        target: target,
-                        since: row.s,
-                        help: help,
-                        notes: row.n,
-                        date: policy.date,
-                    };
-                }
-                return _.clone(policy);
-            },
-            getLatestGovtResponse(country)
-            {
-                var response = this.getGovtResponse(country);
-                var data = [];
-                if(response && response.latest && response.latest.policies)
-                {
-                    for(var x in response.latest.policies)
-                    {
-
-                        var row = response.latest.policies[x];
-                        var key = response.key[x];
-                        var target = '';
-                        var value = row.value;
-                        if(key && key.values)
-                        {
-                            var help = key.values;
-                        }
-                        else
-                        {
-                            var help = [];
-                        }
-
-                        if(key.hasTarget)
-                        {
-                            if(key.targets && key.targets.length > 0)
-                            {
-                                target = 'Scope: ' + key.targets[row.t];
-                            }
-                            else
-                            {
-                                if(row.t == 1)
-                                {
-                                    target = 'Scope: Targeted';
-                                }
-                                else
-                                {
-                                    target = 'Scope: General';
-                                }
-                            }
-                        }
-                        if(row.v.length == 0)
-                        {
-                            value = '';
-                            target = '';
-                        }
-                        else if(key.type == 'lookup')
-                        {
-                            value = key.values[parseInt(row.v)];
-                        }
-                        else
-                        {
-                            value = row.v;
-                        }
-
-                        data.push({
-                            id: x,
-                            name: key.name,
-                            description: key.description,
-                            value: value,
-                            target: target,
-                            since: row.s,
-                            help: help,
-                            notes: row.n,
-                        })
-
-                        data = data.sort(function (a, b) {
-                            return a.id > b.id ? 1 : -1;
-                        });
-                    }
-                }
-                return data;
             },
             getGovtResponse(country)
             {
                 if(country)
                 {
+                    if(this.database && this.database.processed && this.database.processed.oxford && this.database.processed.oxford[country])
+                    {
+                        return this.database.processed.oxford[country];
+                    }
                     if(this.database.raw.raw_oxford && this.database.raw.raw_oxford.latest && this.database.raw.raw_oxford.latest[country])
                     {
                         return {
                             key: this.database.raw.raw_oxford.key,
-                            latest: this.database.raw.raw_oxford.latest[country],
-                            daily: this.getDailyGovtResponse(this.database.raw.raw_oxford.daily[country],'2020-01-01',moment().format('YYYY-MM-DD')),
-                            // daily: this.database.raw.raw_oxford.daily[country],
+                            latest: _.cloneDeep(this.database.raw.raw_oxford.latest[country]),
+                            daily: this.getDailyGovtResponse(_.cloneDeep(this.database.raw.raw_oxford.daily[country]),'2020-01-01',moment().format('YYYY-MM-DD')),
                         }
                     }
                 }
@@ -428,7 +255,7 @@
                             }
                         }
                         data.push(_.clone(row));
-                        temp = _.clone(row);
+                        temp = _.cloneDeep(row);
                     }
                     else
                     {
@@ -439,6 +266,130 @@
 
                 }
                 return data;
+            },
+            updateGovtResponse(country,data)
+            {
+                this.$emit('updateGovtResponse',country,data);
+            },
+            addConfirmedLayer()
+            {
+                this.layers.confirmed = true;
+            },
+            getAnnotations()
+            {
+                var data = _.clone(this.database.raw.raw_annotations.All);
+                data = data.reverse();
+                return data;
+            },
+            getUniqueCountriesCompare()
+            {
+                var countries = [],
+                    data = [];
+                for(var x in this.compare)
+                {
+                    if(countries.indexOf(this.compare[x].country) === -1)
+                    {
+                        countries.push(this.compare[x].country);
+                        data.push(this.compare[x]);
+                    }
+                }
+                return data;
+            },
+            comparePolicies()
+            {
+                var data = [];
+                for(var x in this.getUniqueCountriesCompare())
+                {
+                    var row = {};
+                    row.name = this.getUniqueCountriesCompare()[x].country;
+                    // row.latest = this.getLatestGovtResponse(row.name);
+                    console.log(this.getGovtResponse(row.name));
+
+                    if(this.getGovtResponse(row.name))
+                    {
+                        row.stringencyindex = this.getGovtResponse(row.name).latest.si;
+                        var daily = [];
+                        for(var y in this.getGovtResponse(row.name).daily)
+                        {
+                            daily.push(_.clone(this.translateGovtResponse(this.getGovtResponse(row.name).daily[y])))
+                        }
+                        row.daily = daily;
+                    }
+                    else
+                    {
+                        row.stringencyindex = 'N/A';
+                        row.daily = {};
+                    }
+                    data.push(_.clone(row));
+                }
+                return data;
+            },
+            translateGovtResponse(policy)
+            {
+
+                var key = this.database.raw.raw_oxford.key;
+                console.log('latest');
+                console.log(policy);
+                for(var x in policy.latest)
+                {
+                    var row = policy.latest[x];
+
+                    var target = '';
+                    var value = row.value;
+                    if(key && key[x] && key[x].values)
+                    {
+                        var help = key[x].values;
+                    }
+                    else
+                    {
+                        var help = [];
+                    }
+
+                    if(key[x] && key[x].hasTarget)
+                    {
+                        if(key[x].targets && key[x].targets.length > 0)
+                        {
+                            target = 'Scope: ' + key[x].targets[row.target];
+                        }
+                        else
+                        {
+                            if(row.t == 1)
+                            {
+                                target = 'Scope: Targeted';
+                            }
+                            else
+                            {
+                                target = 'Scope: General';
+                            }
+                        }
+                    }
+                    if(row.value && row.value.length == 0)
+                    {
+                        value = '';
+                        target = '';
+                    }
+                    else if(key[x] && key[x].type == 'lookup')
+                    {
+                        value = key[x].values[parseInt(row.value)];
+                    }
+                    else
+                    {
+                        value = row.value;
+                    }
+
+                    policy.latest[x] = {
+                        id: x,
+                        name: key[x].name,
+                        description: key[x].description,
+                        value: value,
+                        target: target,
+                        since: row.s,
+                        help: help,
+                        notes: row.n,
+                        date: policy.date,
+                    };
+                }
+                return _.clone(policy);
             },
             getGlobalDayNotes(date)
             {
@@ -1039,7 +990,9 @@
             loading()
             {
                 if(this.database && this.database.loading)
+                {
                     return this.database.loading;
+                }
                 else
                     return {
                         'countries' : false,
@@ -1090,7 +1043,7 @@
             },
             loaded()
             {
-                if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success')
+                if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success' && this.ajax_loading.oxford)
                 {
                     return true;
                 }
@@ -1103,6 +1056,7 @@
                 if(newvalue === true)
                 {
                     this.preProcessData();
+                    this.processGovtResponse();
                 }
             }
         }

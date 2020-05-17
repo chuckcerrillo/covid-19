@@ -6,7 +6,7 @@
                     Select up to {{options.compare_limit}} countries or states to begin comparing.
                 </div>
 
-                <Latest v-else-if="!isMobile && (isMobile && selectedCompareTab === 'all')"
+                <Latest v-else-if="getCompareLength() > 0 && (!isMobile || (isMobile && selectedCompareTab === 'all'))"
                         :data="comparisonData"
                         :active="view === 'daily' && selectedCompareTab === 'all'"
                 />
@@ -102,6 +102,17 @@
                 return count;
             },
         },
+        computed:
+        {
+            isMobile() {
+                if( screen.width <= 760 ) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
 
 
     }
