@@ -80,7 +80,8 @@
             'uniqueCountries',
             'comparePolicies',
             'compareLength',
-            'database'
+            'database',
+            'countries',
         ],
         data(){
             return {
@@ -92,11 +93,18 @@
             simplebar,
             GovtResponse,
         },
+        mounted()
+        {
+        },
         methods: {
             getGovtResponse(country)
             {
                 if(country)
                 {
+                    if(this.database && this.database.processed && this.database.processed.oxford && this.database.processed.oxford[country])
+                    {
+                        return this.database.processed.oxford[country];
+                    }
                     if(this.database.raw.raw_oxford && this.database.raw.raw_oxford.latest && this.database.raw.raw_oxford.latest[country])
                     {
                         return {

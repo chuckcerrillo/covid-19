@@ -19,7 +19,7 @@
             </v-date-picker> {{moment(date).format('YYYY-MM-DD')}}
             <vue-slider v-model="date" :data="dateSliderRange" :lazy="true" :adsorb="true" />
         </div>
-        <div class="absolute top-5.5 left-0 right-0 bottom-4.25 m-2 xl:m-4" style="position:absolute; top: 5.5rem">
+        <div class="absolute top-5.5 left-0 right-0 bottom-4.25 xl:bottom-0 m-2 xl:m-4" style="position:absolute; top: 5.5rem">
             <simplebar data-simplebar-auto-hide="false" class="w-full h-full">
                 <div class="flex justify-start rounded-t z-10 relative bg-slab-primary" style="min-width: 75rem;">
                     <div class="hidden xl:block bg-slab-primary border-lightslab w-36 text-xs font-bold flex-shrink-0">
@@ -87,72 +87,72 @@
 
                                         <div class="px-4 py-2 h-24 border-b border-lightslab">
                                             <div class="xl:hidden text-xs font-bold">C1 - Schools</div>
-                                            <div v-if="row.latest.C1.value.length > 60" class="text-xs">{{row.latest.C1.value}}</div>
-                                            <div v-else-if="row.latest.C1.value.length > 30" class="text-sm">{{row.latest.C1.value}}</div>
-                                            <div v-else-if="row.latest.C1.value">{{row.latest.C1.value}}</div>
+                                            <div v-if="row.latest.C1.value && row.latest.C1.value.length > 60" class="text-xs">{{row.latest.C1.value}}</div>
+                                            <div v-else-if="row.latest.C1.value && row.latest.C1.value.length > 30" class="text-sm">{{row.latest.C1.value}}</div>
+                                            <div v-else-if="row.latest.C1.value && row.latest.C1.value">{{row.latest.C1.value}}</div>
                                             <div v-else>N/A</div>
                                             <div v-if="row.latest.C1.target" class="text-xs text-lightlabel">({{row.latest.C1.target}})</div>
                                         </div>
 
                                         <div class="px-4 py-2 h-24 border-b border-lightslab">
                                             <div class="xl:hidden text-xs font-bold">C2 - Workplaces</div>
-                                            <div v-if="row.latest.C2.value.length > 60" class="text-xs">{{row.latest.C2.value}}</div>
-                                            <div v-else-if="row.latest.C2.value.length > 30" class="text-sm">{{row.latest.C2.value}}</div>
-                                            <div v-else-if="row.latest.C2.value">{{row.latest.C2.value}}</div>
+                                            <div v-if="row.latest.C2.value && row.latest.C2.value.length > 60" class="text-xs">{{row.latest.C2.value}}</div>
+                                            <div v-else-if="row.latest.C2.value && row.latest.C2.value.length > 30" class="text-sm">{{row.latest.C2.value}}</div>
+                                            <div v-else-if="row.latest.C2.value && row.latest.C2.value">{{row.latest.C2.value}}</div>
                                             <div v-else>N/A</div>
                                             <div v-if="row.latest.C2.target" class="text-xs text-lightlabel">({{row.latest.C2.target}})</div>
                                         </div>
 
                                         <div class="px-4 py-2 h-24 border-b border-lightslab">
                                             <div class="xl:hidden text-xs font-bold">C3 - Public events</div>
-                                            <div v-if="row.latest.C3.value.length > 60" class="text-xs">{{row.latest.C3.value}}</div>
-                                            <div v-else-if="row.latest.C3.value.length > 30" class="text-sm">{{row.latest.C3.value}}</div>
-                                            <div v-else-if="row.latest.C3.value">{{row.latest.C3.value}}</div>
+                                            <div v-if="row.latest.C3.value && row.latest.C3.value.length > 60" class="text-xs">{{row.latest.C3.value}}</div>
+                                            <div v-else-if="row.latest.C3.value && row.latest.C3.value.length > 30" class="text-sm">{{row.latest.C3.value}}</div>
+                                            <div v-else-if="row.latest.C3.value && row.latest.C3.value">{{row.latest.C3.value}}</div>
                                             <div v-else>N/A</div>
                                             <div v-if="row.latest.C3.target" class="text-xs text-lightlabel">({{row.latest.C3.target}})</div>
                                         </div>
 
                                         <div class="px-4 py-2 h-24 border-b border-lightslab">
                                             <div class="xl:hidden text-xs font-bold">C4 - Restrictions on gatherings</div>
-                                            <div v-if="row.latest.C4.value.length > 60" class="text-xs">{{row.latest.C4.value}}</div>
-                                            <div v-else-if="row.latest.C4.value.length > 30" class="text-sm">{{row.latest.C4.value}}</div>
-                                            <div v-else-if="row.latest.C4.value">{{row.latest.C4.value}}</div>
+                                            <div v-if="row.latest.C4.value && row.latest.C4.value.length > 60" class="text-xs">{{row.latest.C4.value}}</div>
+                                            <div v-else-if="row.latest.C4.value && row.latest.C4.value.length > 30" class="text-sm">{{row.latest.C4.value}}</div>
+                                            <div v-else-if="row.latest.C4.value && row.latest.C4.value">{{row.latest.C4.value}}</div>
                                             <div v-else>N/A</div>
                                             <div v-if="row.latest.C4.target" class="text-xs text-lightlabel">({{row.latest.C4.target}})</div>
                                         </div>
 
                                         <div class="px-4 py-2 h-28 border-b border-lightslab">
                                             <div class="xl:hidden text-xs font-bold">C5 - Public transport</div>
-                                            <div v-if="row.latest.C5.value.length > 60" class="text-xs">{{row.latest.C5.value}}</div>
-                                            <div v-else-if="row.latest.C5.value.length > 30" class="text-sm">{{row.latest.C5.value}}</div>
-                                            <div v-else-if="row.latest.C5.value">{{row.latest.C5.value}}</div>
+                                            <div v-if="row.latest.C5.value && row.latest.C5.value.length > 60" class="text-xs">{{row.latest.C5.value}}</div>
+                                            <div v-else-if="row.latest.C5.value && row.latest.C5.value.length > 30" class="text-sm">{{row.latest.C5.value}}</div>
+                                            <div v-else-if="row.latest.C5.value && row.latest.C5.value">{{row.latest.C5.value}}</div>
                                             <div v-else>N/A</div>
                                             <div v-if="row.latest.C5.target" class="text-xs text-lightlabel">({{row.latest.C5.target}})</div>
                                         </div>
 
                                         <div class="px-4 py-2 h-28 border-b border-lightslab">
                                             <div class="xl:hidden text-xs font-bold">C6 - Stay at home</div>
-                                            <div v-if="row.latest.C6.value.length > 60" class="text-xs">{{row.latest.C6.value}}</div>
-                                            <div v-else-if="row.latest.C6.value.length > 30" class="text-sm">{{row.latest.C6.value}}</div>
-                                            <div v-else-if="row.latest.C6.value">{{row.latest.C6.value}}</div>
+                                            <div v-if="row.latest.C6.value && row.latest.C6.value.length > 60" class="text-xs">{{row.latest.C6.value}}</div>
+                                            <div v-else-if="row.latest.C6.value && row.latest.C6.value.length > 30" class="text-sm">{{row.latest.C6.value}}</div>
+                                            <div v-else-if="row.latest.C6.value && row.latest.C6.value">{{row.latest.C6.value}}</div>
                                             <div v-else>N/A</div>
                                             <div v-if="row.latest.C6.target" class="text-xs text-lightlabel">({{row.latest.C6.target}})</div>
                                         </div>
 
                                         <div class="px-4 py-2 h-28 border-b border-lightslab">
                                             <div class="xl:hidden text-xs font-bold">C7 - Internal movements</div>
-                                            <div v-if="row.latest.C7.value.length > 60" class="text-xs">{{row.latest.C7.value}}</div>
-                                            <div v-else-if="row.latest.C7.value.length > 30" class="text-sm">{{row.latest.C7.value}}</div>
-                                            <div v-else-if="row.latest.C7.value">{{row.latest.C7.value}}</div>
+                                            <div v-if="row.latest.C7.value && row.latest.C7.value.length > 60" class="text-xs">{{row.latest.C7.value}}</div>
+                                            <div v-else-if="row.latest.C7.value && row.latest.C7.value.length > 30" class="text-sm">{{row.latest.C7.value}}</div>
+                                            <div v-else-if="row.latest.C7.value && row.latest.C7.value">{{row.latest.C7.value}}</div>
                                             <div v-else>N/A</div>
                                             <div v-if="row.latest.C7.target" class="text-xs text-lightlabel">({{row.latest.C7.target}})</div>
                                         </div>
 
                                         <div class="px-4 py-2 h-16 border-b border-lightslab">
                                             <div class="xl:hidden text-xs font-bold">C8 - International travel</div>
-                                            <div v-if="row.latest.C8.value.length > 60" class="text-xs">{{row.latest.C8.value}}</div>
-                                            <div v-else-if="row.latest.C8.value.length > 30" class="text-sm">{{row.latest.C8.value}}</div>
-                                            <div v-else-if="row.latest.C8.value">{{row.latest.C8.value}}</div>
+                                            <div v-if="row.latest.C8.value && row.latest.C8.value.length > 60" class="text-xs">{{row.latest.C8.value}}</div>
+                                            <div v-else-if="row.latest.C8.value && row.latest.C8.value.length > 30" class="text-sm">{{row.latest.C8.value}}</div>
+                                            <div v-else-if="row.latest.C8.value && row.latest.C8.value">{{row.latest.C8.value}}</div>
                                             <div v-else>N/A</div>
                                         </div>
 
@@ -162,18 +162,18 @@
 
                                         <div class="px-4 py-2 h-28 border-b border-lightslab">
                                             <div class="xl:hidden text-xs font-bold">E1 - Income support</div>
-                                            <div v-if="row.latest.E1.value.length > 60" class="text-xs">{{row.latest.E1.value}}</div>
-                                            <div v-else-if="row.latest.E1.value.length > 30" class="text-sm">{{row.latest.E1.value}}</div>
-                                            <div v-else-if="row.latest.E1.value">{{row.latest.E1.value}}</div>
+                                            <div v-if="row.latest.E1.value && row.latest.E1.value.length > 60" class="text-xs">{{row.latest.E1.value}}</div>
+                                            <div v-else-if="row.latest.E1.value && row.latest.E1.value.length > 30" class="text-sm">{{row.latest.E1.value}}</div>
+                                            <div v-else-if="row.latest.E1.value && row.latest.E1.value">{{row.latest.E1.value}}</div>
                                             <div v-else>N/A</div>
                                             <div v-if="row.latest.E1.target" class="text-xs text-lightlabel">({{row.latest.E1.target}})</div>
                                         </div>
 
                                         <div class="px-4 py-2 h-20 border-b border-lightslab">
                                             <div class="xl:hidden text-xs font-bold">E2 - Debt/contract relief</div>
-                                            <div v-if="row.latest.E2.value.length > 60" class="text-xs">{{row.latest.E2.value}}</div>
-                                            <div v-else-if="row.latest.E2.value.length > 30" class="text-sm">{{row.latest.E2.value}}</div>
-                                            <div v-else-if="row.latest.E2.value">{{row.latest.E2.value}}</div>
+                                            <div v-if="row.latest.E2.value && row.latest.E2.value.length > 60" class="text-xs">{{row.latest.E2.value}}</div>
+                                            <div v-else-if="row.latest.E2.value && row.latest.E2.value.length > 30" class="text-sm">{{row.latest.E2.value}}</div>
+                                            <div v-else-if="row.latest.E2.value && row.latest.E2.value">{{row.latest.E2.value}}</div>
                                             <div v-else>N/A</div>
                                         </div>
 
@@ -195,26 +195,26 @@
 
                                         <div class="px-4 py-2 h-24 border-b border-lightslab">
                                             <div class="xl:hidden text-xs font-bold">H1 - Public information campaign</div>
-                                            <div v-if="row.latest.H1.value.length > 60" class="text-xs">{{row.latest.H1.value}}</div>
-                                            <div v-else-if="row.latest.H1.value.length > 30" class="text-sm">{{row.latest.H1.value}}</div>
-                                            <div v-else-if="row.latest.H1.value">{{row.latest.H1.value}}</div>
+                                            <div v-if="row.latest.H1.value && row.latest.H1.value.length > 60" class="text-xs">{{row.latest.H1.value}}</div>
+                                            <div v-else-if="row.latest.H1.value && row.latest.H1.value.length > 30" class="text-sm">{{row.latest.H1.value}}</div>
+                                            <div v-else-if="row.latest.H1.value && row.latest.H1.value">{{row.latest.H1.value}}</div>
                                             <div v-else>N/A</div>
                                             <div v-if="row.latest.H1.target" class="text-xs text-lightlabel">({{row.latest.H1.target}})</div>
                                         </div>
 
                                         <div class="px-4 py-2 h-32 border-b border-lightslab">
                                             <div class="xl:hidden text-xs font-bold">H2 - Testing policy</div>
-                                            <div v-if="row.latest.H2.value.length > 60" class="text-xs">{{row.latest.H2.value}}</div>
-                                            <div v-else-if="row.latest.H2.value.length > 30" class="text-sm">{{row.latest.H2.value}}</div>
-                                            <div v-else-if="row.latest.H2.value">{{row.latest.H2.value}}</div>
+                                            <div v-if="row.latest.H2.value && row.latest.H2.value.length > 60" class="text-xs">{{row.latest.H2.value}}</div>
+                                            <div v-else-if="row.latest.H2.value && row.latest.H2.value.length > 30" class="text-sm">{{row.latest.H2.value}}</div>
+                                            <div v-else-if="row.latest.H2.value && row.latest.H2.value">{{row.latest.H2.value}}</div>
                                             <div v-else>N/A</div>
                                         </div>
 
                                         <div class="px-4 py-2 h-20 border-b border-lightslab">
                                             <div class="xl:hidden text-xs font-bold">H3 - Contact tracing</div>
-                                            <div v-if="row.latest.H3.value.length > 60" class="text-xs">{{row.latest.H3.value}}</div>
-                                            <div v-else-if="row.latest.H3.value.length > 30" class="text-sm">{{row.latest.H3.value}}</div>
-                                            <div v-else-if="row.latest.H3.value">{{row.latest.H3.value}}</div>
+                                            <div v-if="row.latest.H3.value && row.latest.H3.value.length > 60" class="text-xs">{{row.latest.H3.value}}</div>
+                                            <div v-else-if="row.latest.H3.value && row.latest.H3.value.length > 30" class="text-sm">{{row.latest.H3.value}}</div>
+                                            <div v-else-if="row.latest.H3.value && row.latest.H3.value">{{row.latest.H3.value}}</div>
                                             <div v-else>N/A</div>
                                         </div>
 
