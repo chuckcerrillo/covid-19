@@ -19,13 +19,13 @@
                         </div>
                     </div>
 
-                    <ComparePolicies v-else
+                    <ComparePolicies v-else-if="!isMobile || (isMobile && selectedCompareTab === 'all')"
                                      :data="comparePolicies"
                     />
                 </simplebar>
             </div>
             <div v-for="(row,key,index) in uniqueCountries" class="absolute inset-0 bg-hoverslab rounded p-2 xl:p-4 bottom-4.25 xl:bottom-0" v-if="selectedCompareTab.substr(0,row.country.length) === row.country" :key="index">
-                <simplebar class="h-full z-0">
+                <simplebar class="h-full z-0" v-if="!isMobile || (isMobile && selectedCompareTab.substr(0,row.country.length) === row.country)">
                     <div class="my-4">
                         <div class="xl:w-128 text-2xl xl:text-4xl font-bold">{{row.country}}</div>
                         <div v-if="getGovtResponse(row.country)" class="xl:text-6xl text-3xl font-bold">{{getGovtResponse(row.country).latest.si}}</div>
@@ -236,7 +236,17 @@
                 return data;
             },
         },
-
+        computed:
+        {
+            isMobile() {
+                if( screen.width <= 760 ) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
     }
 </script>
 

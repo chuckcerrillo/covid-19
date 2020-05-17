@@ -739,6 +739,15 @@ __webpack_require__.r(__webpack_exports__);
 
       return data;
     }
+  },
+  computed: {
+    isMobile: function isMobile() {
+      if (screen.width <= 760) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 });
 
@@ -2523,9 +2532,12 @@ var render = function() {
                         )
                       ])
                     ])
-                  : _c("ComparePolicies", {
+                  : !_vm.isMobile ||
+                    (_vm.isMobile && _vm.selectedCompareTab === "all")
+                  ? _c("ComparePolicies", {
                       attrs: { data: _vm.comparePolicies }
                     })
+                  : _vm._e()
               ],
               1
             )
@@ -2544,200 +2556,227 @@ var render = function() {
                     "absolute inset-0 bg-hoverslab rounded p-2 xl:p-4 bottom-4.25 xl:bottom-0"
                 },
                 [
-                  _c("simplebar", { staticClass: "h-full z-0" }, [
-                    _c("div", { staticClass: "my-4" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "xl:w-128 text-2xl xl:text-4xl font-bold"
-                        },
-                        [_vm._v(_vm._s(row.country))]
-                      ),
-                      _vm._v(" "),
-                      _vm.getGovtResponse(row.country)
-                        ? _c(
+                  !_vm.isMobile ||
+                  (_vm.isMobile &&
+                    _vm.selectedCompareTab.substr(0, row.country.length) ===
+                      row.country)
+                    ? _c("simplebar", { staticClass: "h-full z-0" }, [
+                        _c("div", { staticClass: "my-4" }, [
+                          _c(
                             "div",
-                            { staticClass: "xl:text-6xl text-3xl font-bold" },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.getGovtResponse(row.country).latest.si
-                                )
-                              )
-                            ]
-                          )
-                        : _c(
-                            "div",
-                            { staticClass: "xl:text-6xl text-3xl font-bold" },
-                            [_vm._v("N/A")]
-                          ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "flex items-center" }, [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "text-lightlabel font-bold tracking-tight"
-                          },
-                          [_vm._v("stringency index")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "xl:hidden ml-2 text-xs text-heading",
-                            on: {
-                              click: function($event) {
-                                _vm.expanded = !_vm.expanded
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                                (info)\n                            "
-                            )
-                          ]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          directives: [
                             {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.expanded,
-                              expression: "expanded"
-                            }
-                          ],
-                          staticClass: "xl:hidden"
-                        },
-                        [
-                          _c(
-                            "div",
-                            { staticClass: "py-2 text-xs xl:text-sm" },
-                            [
-                              _vm._v(
-                                "OxCGRT collects publicly available information on 17 indicators of government response. This information is collected by a team of over 100 volunteers from the Oxford community and is updated continuously."
-                              )
-                            ]
+                              staticClass:
+                                "xl:w-128 text-2xl xl:text-4xl font-bold"
+                            },
+                            [_vm._v(_vm._s(row.country))]
                           ),
                           _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "py-2 text-xs xl:text-sm" },
-                            [
-                              _vm._v(
-                                "Eight of the policy indicators (C1-C8) record information on containment and closure policies, such as school closures and restrictions in movement. Four of the indicators (E1-E4) record economic policies such as income support to citizens or provision of foreign aid. And five indicators (H1-H5) record health system policies such as the Covid-19 testing regime or emergency investments into healthcare."
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "py-2 text-xs xl:text-sm" },
-                            [
-                              _vm._v(
-                                "For a full description of the data and how it is collected, check out the "
-                              ),
-                              _c(
-                                "a",
+                          _vm.getGovtResponse(row.country)
+                            ? _c(
+                                "div",
                                 {
-                                  staticClass:
-                                    "text-orangeslab hover:text-blue-400 hover:underline",
-                                  attrs: {
-                                    target: "_blank",
-                                    href:
-                                      "https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker"
-                                  }
+                                  staticClass: "xl:text-6xl text-3xl font-bold"
                                 },
                                 [
                                   _vm._v(
-                                    "University of Oxford's coronavirus government response tracker (OxCGRT)"
+                                    _vm._s(
+                                      _vm.getGovtResponse(row.country).latest.si
+                                    )
+                                  )
+                                ]
+                              )
+                            : _c(
+                                "div",
+                                {
+                                  staticClass: "xl:text-6xl text-3xl font-bold"
+                                },
+                                [_vm._v("N/A")]
+                              ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "flex items-center" }, [
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "text-lightlabel font-bold tracking-tight"
+                              },
+                              [_vm._v("stringency index")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "xl:hidden ml-2 text-xs text-heading",
+                                on: {
+                                  click: function($event) {
+                                    _vm.expanded = !_vm.expanded
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                (info)\n                            "
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.expanded,
+                                  expression: "expanded"
+                                }
+                              ],
+                              staticClass: "xl:hidden"
+                            },
+                            [
+                              _c(
+                                "div",
+                                { staticClass: "py-2 text-xs xl:text-sm" },
+                                [
+                                  _vm._v(
+                                    "OxCGRT collects publicly available information on 17 indicators of government response. This information is collected by a team of over 100 volunteers from the Oxford community and is updated continuously."
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "py-2 text-xs xl:text-sm" },
+                                [
+                                  _vm._v(
+                                    "Eight of the policy indicators (C1-C8) record information on containment and closure policies, such as school closures and restrictions in movement. Four of the indicators (E1-E4) record economic policies such as income support to citizens or provision of foreign aid. And five indicators (H1-H5) record health system policies such as the Covid-19 testing regime or emergency investments into healthcare."
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "py-2 text-xs xl:text-sm" },
+                                [
+                                  _vm._v(
+                                    "For a full description of the data and how it is collected, check out the "
+                                  ),
+                                  _c(
+                                    "a",
+                                    {
+                                      staticClass:
+                                        "text-orangeslab hover:text-blue-400 hover:underline",
+                                      attrs: {
+                                        target: "_blank",
+                                        href:
+                                          "https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker"
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "University of Oxford's coronavirus government response tracker (OxCGRT)"
+                                      )
+                                    ]
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "py-2 text-xs xl:text-sm" },
+                                [
+                                  _vm._v(
+                                    "A higher position in the Stringency Index does not necessarily mean that a country's response is ‘better’ than others lower on the index."
                                   )
                                 ]
                               )
                             ]
                           ),
                           _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "py-2 text-xs xl:text-sm" },
-                            [
-                              _vm._v(
-                                "A higher position in the Stringency Index does not necessarily mean that a country's response is ‘better’ than others lower on the index."
-                              )
-                            ]
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "hidden xl:block" }, [
-                        _c("div", { staticClass: "py-2 text-xs xl:text-sm" }, [
-                          _vm._v(
-                            "OxCGRT collects publicly available information on 17 indicators of government response. This information is collected by a team of over 100 volunteers from the Oxford community and is updated continuously."
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "py-2 text-xs xl:text-sm" }, [
-                          _vm._v(
-                            "Eight of the policy indicators (C1-C8) record information on containment and closure policies, such as school closures and restrictions in movement. Four of the indicators (E1-E4) record economic policies such as income support to citizens or provision of foreign aid. And five indicators (H1-H5) record health system policies such as the Covid-19 testing regime or emergency investments into healthcare."
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "py-2 text-xs xl:text-sm" }, [
-                          _vm._v(
-                            "For a full description of the data and how it is collected, check out the "
-                          ),
-                          _c(
-                            "a",
-                            {
-                              staticClass:
-                                "text-orangeslab hover:text-blue-400 hover:underline",
-                              attrs: {
-                                target: "_blank",
-                                href:
-                                  "https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker"
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "University of Oxford's coronavirus government response tracker (OxCGRT)"
-                              )
-                            ]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "py-2 text-xs xl:text-sm" }, [
-                          _vm._v(
-                            "A higher position in the Stringency Index does not necessarily mean that a country's response is ‘better’ than others lower on the index."
-                          )
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "flex flex-wrap" },
-                      _vm.getGovtResponse(row.country)
-                        ? _vm._o(
-                            _vm._l(
-                              _vm.getLatestGovtResponse(row.country),
-                              function(policy, key, index) {
-                                return _c("GovtResponse", {
-                                  key: index,
-                                  attrs: { policy: policy }
-                                })
-                              }
+                          _c("div", { staticClass: "hidden xl:block" }, [
+                            _c(
+                              "div",
+                              { staticClass: "py-2 text-xs xl:text-sm" },
+                              [
+                                _vm._v(
+                                  "OxCGRT collects publicly available information on 17 indicators of government response. This information is collected by a team of over 100 volunteers from the Oxford community and is updated continuously."
+                                )
+                              ]
                             ),
-                            0,
-                            index
-                          )
-                        : _vm._e(),
-                      1
-                    )
-                  ])
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "py-2 text-xs xl:text-sm" },
+                              [
+                                _vm._v(
+                                  "Eight of the policy indicators (C1-C8) record information on containment and closure policies, such as school closures and restrictions in movement. Four of the indicators (E1-E4) record economic policies such as income support to citizens or provision of foreign aid. And five indicators (H1-H5) record health system policies such as the Covid-19 testing regime or emergency investments into healthcare."
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "py-2 text-xs xl:text-sm" },
+                              [
+                                _vm._v(
+                                  "For a full description of the data and how it is collected, check out the "
+                                ),
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass:
+                                      "text-orangeslab hover:text-blue-400 hover:underline",
+                                    attrs: {
+                                      target: "_blank",
+                                      href:
+                                        "https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker"
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "University of Oxford's coronavirus government response tracker (OxCGRT)"
+                                    )
+                                  ]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "py-2 text-xs xl:text-sm" },
+                              [
+                                _vm._v(
+                                  "A higher position in the Stringency Index does not necessarily mean that a country's response is ‘better’ than others lower on the index."
+                                )
+                              ]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "flex flex-wrap" },
+                          _vm.getGovtResponse(row.country)
+                            ? _vm._o(
+                                _vm._l(
+                                  _vm.getLatestGovtResponse(row.country),
+                                  function(policy, key, index) {
+                                    return _c("GovtResponse", {
+                                      key: index,
+                                      attrs: { policy: policy }
+                                    })
+                                  }
+                                ),
+                                0,
+                                index
+                              )
+                            : _vm._e(),
+                          1
+                        )
+                      ])
+                    : _vm._e()
                 ],
                 1
               )
