@@ -71,9 +71,8 @@
                                 />
 
 
-                                <div class="h-full relative flex flex-1 pt-8" v-else-if="view === 'charts'">
-                                    <StatsChart :data="getComparisonData()" :full="true" :active="view === 'charts'" />
-                                </div>
+                                <StatsChartMobile v-if="view === 'charts' && isMobile" :data="getComparisonData()" :full="true" :active="view === 'charts'" />
+                                <StatsChart v-else-if="view === 'charts'" :data="getComparisonData()" :full="true" :active="view === 'charts'" />
 
                                 <MapView
                                     v-else-if="view === 'map'"
@@ -102,17 +101,20 @@
     import moment from 'moment'
     import {mapGetters} from 'vuex';
     import SidebarMobile from "../components/SidebarMobile";
+    import DailyView from "./DailyView";
 
     export default {
         name: "Comparison",
         components:{
+            DailyView, // do not lazy load this so we dont' have the weird detached tab thing
             DashboardView: () => import('./DashboardView'),
             MapView: () => import('./MapView'),
-            DailyView: () => import('./DailyView'),
+            // DailyView: () => import('./DailyView'),
             PoliciesView: () => import('./PoliciesView'),
             Sidebar: () => import('../components/Sidebar'),
             SidebarMobile,
             StatsChart: () => import('../components/StatsChart'),
+            StatsChartMobile: () => import('../components/StatsChartMobile'),
             About: () => import('./About'),
             simplebar,
         },
@@ -1049,6 +1051,14 @@
                 }
                 return false;
             },
+            isMobile() {
+                if( screen.width <= 760 ) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
         },
         watch: {
             loaded: function(newvalue)
