@@ -60,7 +60,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="full" class="absolute top-0 right-0 bottom-0 left-0">
+        <div v-if="full" class="absolute top-0 right-0 bottom-0 left-0 m-2">
             <div class="py-4" v-if="settings.controls.menu">
                 <div class="text-xs flex items-start justify-between">
                     <div>
