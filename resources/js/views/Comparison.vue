@@ -1,6 +1,34 @@
 <template>
     <div>
-        <div v-if="!loaded">Loading data</div>
+        <div v-if="!loaded" class="flex items-center justify-center pt-20">
+            <div></div>
+            <div class="bg-slab rounded p-4 px-8">
+                <div class="font-bold text-2xl text-white p-2 text-center">Loading data</div>
+                <div class="p-2 mb-4 text-center"><img src="/img/loader.svg"></div>
+                <div class="flex items-center text-xs">
+                    <div class="w-32">Country list</div>
+                    <div class="text-right text-lightlabel" v-if="countriesStatus !== 'success'">loading</div>
+                    <div class="text-right text-green-400" v-else>done</div>
+                </div>
+                <div class="flex items-center text-xs">
+                    <div class="w-32">Case counts</div>
+                    <div class="text-right text-lightlabel" v-if="countryCasesStatus !== 'success' || stateCasesStatus !== 'success'">loading</div>
+                    <div class="text-right text-green-400" v-else>done</div>
+                </div>
+                <div class="flex items-center text-xs">
+                    <div class="w-32">Government response</div>
+                    <div class="text-right text-lightlabel" v-if="!ajax_loading.oxford">loading</div>
+                    <div class="text-right text-green-400" v-else>done</div>
+                </div>
+                <div class="flex items-center text-xs">
+                    <div class="w-32">Annotations</div>
+                    <div class="text-right text-lightlabel" v-if="!database.loading.annotations">loading</div>
+                    <div class="text-right text-green-400" v-else>done</div>
+                </div>
+            </div>
+            <div></div>
+
+        </div>
         <div v-else class="h-full overflow-hidden relative">
             <div class="relative h-full xl:flex flex-1">
                 <Sidebar
