@@ -111,6 +111,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -123,7 +124,7 @@ __webpack_require__.r(__webpack_exports__);
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     VueSlider: vue_slider_component__WEBPACK_IMPORTED_MODULE_2___default.a
   },
-  props: ['annotations', 'countries_sorted', 'getDaily', 'database'],
+  props: ['annotations', 'countries_sorted', 'getDaily', 'database', 'location'],
   data: function data() {
     return {
       layers: {
@@ -269,7 +270,8 @@ var render = function() {
                   interactive: true,
                   zoom: 0,
                   stops: _vm.options.stops
-                }
+                },
+                location: _vm.location
               }
             })
           ],

@@ -11,7 +11,7 @@
                 </div>
                 <div class="w-full">
                     <simplebar class="absolute bg-hoverslab inset-x-0 bottom-0 top-3 z-10 overflow-x-hidden" style="position:absolute">
-                        <div v-if="ui.section === 'metrics'">
+                        <div v-show="ui.section === 'metrics'">
                             <div class="p-2">Primary Metric</div>
                             <div class="border border-lightslab bg-slab m-1 cursor-pointer p-2 text-xs">
                                 <div @click.stop="ui.primary = !ui.primary" v-if="options.controls.primary">{{getFieldName(options.controls.primary)}}</div>
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-if="ui.section === 'settings'">
+                        <div v-show="ui.section === 'settings'">
                             <div v-if="chartsettings.length == 0" class="p-4 text-xs">
                                 {{section}}
                                 Choose countries or states to begin comparing.
