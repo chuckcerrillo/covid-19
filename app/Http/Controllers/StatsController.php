@@ -5573,4 +5573,13 @@ class StatsController extends Controller
     {
         return new  StateCollection(State::get());
     }
+
+    public function get_ip_location()
+    {
+        $ip = $_SERVER['REMOTE_ADDR'];
+        dump($ip);
+        $url = 'http://ip-api.com/json/' . $ip;
+        $response = file_get_contents($url);
+        dump($response);
+    }
 }
