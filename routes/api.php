@@ -47,3 +47,5 @@ Route::get('/stats/generate_all_countries', 'StatsController@generate_all_countr
 Route::get('/stats/generate_all_countries_daily', 'StatsController@generate_all_countries_daily');
 Route::get('/stats/generate_all_states_daily', 'StatsController@generate_all_states_daily');
 Route::get('/stats/generate_all_daily', 'StatsController@generate_all_daily');
+
+Route::get('/stats/get_ip_location', 'StatsController@get_ip_location');
