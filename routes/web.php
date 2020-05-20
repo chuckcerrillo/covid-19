@@ -59,6 +59,8 @@ Route::get('/statistics/update_database', 'StatsController@update_database');
 Route::get('/statistics/update_json', 'StatsController@update_json');
 Route::get('/statistics/update_all', 'StatsController@update_all');
 
+Route::get('/statistics/get_ip_location', 'StatsController@get_ip_location');
+
 Route::get('{any}', 'AppController@index')
     ->where('any','.*')
     ->name('home');
