@@ -120,7 +120,6 @@
             'countries_sorted',
             'getDaily',
             'database',
-            'location',
         ],
         data()
         {
@@ -143,7 +142,7 @@
                 },
                 playing: false,
                 interval: false,
-
+                location: false,
             }
         },
         created()
@@ -161,6 +160,31 @@
 
                 });
 
+
+            var self = this;
+
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            };
+
+            function success(pos) {
+                var crd = pos.coords;
+
+                console.log('Your current position is:');
+                console.log(`Latitude : ${crd.latitude}`);
+                console.log(`Longitude: ${crd.longitude}`);
+                console.log(`More or less ${crd.accuracy} meters.`);
+
+                self.location = crd;
+            }
+
+            function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+            }
+
+            navigator.geolocation.getCurrentPosition(success, error, options);
         },
         computed:
         {

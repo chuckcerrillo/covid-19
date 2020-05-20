@@ -132,7 +132,7 @@ __webpack_require__.r(__webpack_exports__);
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     VueSlider: vue_slider_component__WEBPACK_IMPORTED_MODULE_2___default.a
   },
-  props: ['annotations', 'countries_sorted', 'getDaily', 'database', 'location'],
+  props: ['annotations', 'countries_sorted', 'getDaily', 'database'],
   data: function data() {
     return {
       layers: {
@@ -152,7 +152,8 @@ __webpack_require__.r(__webpack_exports__);
         }
       },
       playing: false,
-      interval: false
+      interval: false,
+      location: false
     };
   },
   created: function created() {
@@ -165,6 +166,27 @@ __webpack_require__.r(__webpack_exports__);
     axios.get('/api/stats/rankings').then(function (res) {
       _this.ajax.rankings = res.data;
     })["catch"](function (error) {});
+    var self = this;
+    var options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    };
+
+    function success(pos) {
+      var crd = pos.coords;
+      console.log('Your current position is:');
+      console.log("Latitude : ".concat(crd.latitude));
+      console.log("Longitude: ".concat(crd.longitude));
+      console.log("More or less ".concat(crd.accuracy, " meters."));
+      self.location = crd;
+    }
+
+    function error(err) {
+      console.warn("ERROR(".concat(err.code, "): ").concat(err.message));
+    }
+
+    navigator.geolocation.getCurrentPosition(success, error, options);
   },
   computed: {
     dateSliderRange: function dateSliderRange() {
