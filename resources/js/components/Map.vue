@@ -723,7 +723,7 @@
                 handler(newvalue, oldvalue) {
                     console.log('Location has changed, time to update');
                     console.log(newvalue);
-                    map.setCenter([newvalue.longitude, newvalue.latitude]);
+                    this.map.setCenter([newvalue.longitude, newvalue.latitude]);
                 }
             },
         }
