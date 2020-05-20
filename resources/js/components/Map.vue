@@ -156,6 +156,9 @@
                 }
             }
 
+            console.log('location');
+            console.log(this.location);
+
 
             // if(this.options.interactive === false)
             // {
