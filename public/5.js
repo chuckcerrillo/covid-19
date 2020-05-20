@@ -161,6 +161,8 @@ __webpack_require__.r(__webpack_exports__);
     axios.get('/api/stats/rankings').then(function (res) {
       _this.ajax.rankings = res.data;
     })["catch"](function (error) {});
+    console.log('in map view mobile');
+    console.log(location);
   },
   computed: {
     dateSliderRange: function dateSliderRange() {

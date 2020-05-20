@@ -157,6 +157,9 @@
 
                 });
 
+
+            console.log('in map view mobile');
+            console.log(location);
         },
         computed:
         {
