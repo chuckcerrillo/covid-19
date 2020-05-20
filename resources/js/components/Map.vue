@@ -715,6 +715,10 @@
                         if(this.layers[x] === true)
                             this.map.getSource(x).setData(this.geoJson(x));
                     }
+                },
+                location(newvalue)
+                {
+                    map.setCenter([newvalue.longitude, newvalue.latitude]);
                 }
             }
         }
