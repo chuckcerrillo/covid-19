@@ -1,23 +1,64 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[2],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Latest.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Latest.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StatsChartMobile.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/StatsChartMobile.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _charts_LineChart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./charts/LineChart */ "./resources/js/components/charts/LineChart.vue");
 /* harmony import */ var simplebar_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! simplebar-vue */ "./node_modules/simplebar-vue/dist/simplebar-vue.esm.js");
-/* harmony import */ var _FullCountry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FullCountry */ "./resources/js/components/FullCountry.vue");
-/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-slider-component */ "./node_modules/vue-slider-component/dist/vue-slider-component.umd.min.js");
-/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-slider-component/theme/default.css */ "./node_modules/vue-slider-component/theme/default.css");
-/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _MiniChart__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./MiniChart */ "./resources/js/components/MiniChart.vue");
+/* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! simplebar/dist/simplebar.min.css */ "./node_modules/simplebar/dist/simplebar.min.css");
+/* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -178,279 +219,357 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
- // const MiniChart = () => ({
-//     component: import("./MiniChart"),
-//
-// });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "Latest",
+  name: "Comparison",
   components: {
-    MiniChart: _MiniChart__WEBPACK_IMPORTED_MODULE_5__["default"],
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    FullCountry: _FullCountry__WEBPACK_IMPORTED_MODULE_2__["default"],
-    VueSlider: vue_slider_component__WEBPACK_IMPORTED_MODULE_3___default.a
+    LineChart: _charts_LineChart__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ['data', 'settings', 'active'],
   data: function data() {
     return {
-      growth_factor: [],
-      recomputed_data: [],
-      expanded: false,
-      date: '',
-      options: {
-        date: {
-          min: new Date('2020-01-22'),
-          max: false
-        }
+      'gradualDataset': {
+        datasets: false,
+        labels: false
       },
-      range: {
-        start: moment__WEBPACK_IMPORTED_MODULE_0___default()().subtract(30, 'days').format('YYYY-MM-DD'),
-        end: moment__WEBPACK_IMPORTED_MODULE_0___default()().subtract(1, 'days').format('YYYY-MM-DD')
+      'options': {
+        'mode': 'chronological',
+        'controls': {
+          'primary': 'deltaConfirmed',
+          'secondary': '',
+          'scaleType': 'linear',
+          'menu': true
+        },
+        'chartsettings': [],
+        colors: [{
+          bg: 'rgba(102,14,255,0.5)',
+          border: 'rgba(102,14,255,1)'
+        }, {
+          bg: 'rgba(183,148,244,0.5)',
+          border: 'rgba(183,148,244,1)'
+        }, {
+          bg: 'rgba(246,135,179,0.5)',
+          border: 'rgba(246,135,179,1)'
+        }, {
+          bg: 'rgba(252,129,129,0.5)',
+          border: 'rgba(252,129,129,1)'
+        }, {
+          bg: 'rgba(255,36,36,0.5)',
+          border: 'rgba(255,36,36,1)'
+        }, {
+          bg: 'rgba(158,86,0,0.5)',
+          border: 'rgba(158,86,0,1)'
+        }, {
+          bg: 'rgba(247,139,10,0.5)',
+          border: 'rgba(247,139,10,1)'
+        }, {
+          bg: 'rgba(228,197,16,0.5)',
+          border: 'rgba(228,197,16,1)'
+        }, {
+          bg: 'rgba(104,211,145,0.5)',
+          border: 'rgba(104,211,145,1)'
+        }, {
+          bg: 'rgba(79,209,197,0.5)',
+          border: 'rgba(79,209,197,1)'
+        }, {
+          bg: 'rgba(99,179,237,0.5)',
+          border: 'rgba(99,179,237,1)'
+        }, {
+          bg: 'rgba(127,156,245,0.5)',
+          border: 'rgba(127,156,245,1)'
+        }, {
+          bg: 'rgba(3,65,255,0.5)',
+          border: 'rgba(3,65,255,1)'
+        }, {
+          bg: 'rgba(23,47,82,0.5)',
+          border: 'rgba(23,47,82,1)'
+        }, {
+          bg: 'rgba(113,128,150,0.5)',
+          border: 'rgba(113,128,150,1)'
+        }],
+        'background': [{
+          primary: 'rgba(38,73,146,1)',
+          secondary: 'rgba(207,79,41,0.5)',
+          borderPrimary: 'rgba(38,73,146,0.1)',
+          borderSecondary: 'rgba(207,79,41,1)'
+        }, {
+          primary: 'rgba(57,132,182,1)',
+          secondary: 'rgba(233,126,59,0.5)',
+          borderPrimary: 'rgba(57,132,182,1)',
+          borderSecondary: 'rgba(233,126,59,1)'
+        }, {
+          primary: 'rgba(90,186,209,1)',
+          secondary: 'rgba(243,179,85,0.5)',
+          borderPrimary: 'rgba(90,186,209,1)',
+          borderSecondary: 'rgba(243,179,85,1)'
+        }, {
+          primary: 'rgba(56,182,36,1)',
+          secondary: 'rgba(106,205,90,0.5)',
+          borderPrimary: 'rgba(56,182,36,1)',
+          borderSecondary: 'rgba(106,205,90,1)'
+        }, {
+          primary: 'rgba(192,36,36,1)',
+          secondary: 'rgba(205,90,90,0.5)',
+          borderPrimary: 'rgba(192,36,36,1)',
+          borderSecondary: 'rgba(205,90,90,1)'
+        }]
       },
-      graphReady: false
+      ui: {
+        'primary': false,
+        'secondary': false,
+        'settings': false,
+        'colordropdown': {
+          show: false,
+          id: false
+        },
+        section: 'metrics'
+      },
+      'graphControls': {
+        'x': [['chronological', 'Chronological'], ['from1', 'From first case'], ['from100', 'From 100 cases'], ['from1death', 'From first death']],
+        'y': [['confirmed', 'Confirmed cases'], ['deltaConfirmed', 'Daily confirmed cases'], ['deaths', 'Confirmed deaths'], ['deltaDeaths', 'Daily confirmed deaths'], ['recovered', 'Confirmed recoveries'], ['active', 'Active cases'], ['deltaRecovered', 'Daily confirmed recoveries'], ['average', 'Average new cases (5 day spread)'], ['growthFactor', 'Growth factor']],
+        'scaleType': [['logarithmic', 'Logarithmic'], ['linear', 'Linear']]
+      },
+      stats: {}
     };
   },
-  created: function created() {
-    this.prepare();
-    var self = this;
-    setTimeout(function () {
-      self.graphReady = true;
-    }, 200);
-  },
+  props: ['data', 'full', 'config', 'active'],
   methods: {
-    prepare: function prepare() {
-      if (this.data[0] && this.data[0].daily) {
-        this.date = this.data[0].daily[this.data[0].daily.length - 1].date;
-        this.range.end = _.clone(this.date);
+    setColor: function setColor(name, color) {
+      this.addSetting(name, color);
+      this.ui.colordropdown.show = false;
+    },
+    toggleColorDropdown: function toggleColorDropdown(name, event) {
+      if (this.ui.colordropdown.id == name) {
+        this.ui.colordropdown.show = !this.ui.colordropdown.show;
+      } else {
+        this.ui.colordropdown.id = name;
+        this.ui.colordropdown.show = true;
       }
 
-      this.options.date.max = this.date;
+      event.stopPropagation();
     },
-    toggleExpand: function toggleExpand() {
-      this.expanded = !this.expanded;
-    },
-    remove: function remove(item) {
-      this.$emit('removeCompare', item);
-    },
-    getBiggestValue: function getBiggestValue(field, value) {
-      var result = false;
+    addSetting: function addSetting(name, settings) {
       var data = [];
+      var current = this.options.chartsettings;
+      var found = false;
 
-      for (var x in this.comparison) {
-        var row = this.comparison[x];
+      var getRandomIntInclusive = function getRandomIntInclusive(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+      }; // Copy over locations that are still used
 
-        if (field == 'confirmed') {
-          data.push(row.latest.c);
-        } else if (field == 'deaths') {
-          data.push(row.latest.d);
-        } else if (field == 'recovered') {
-          data.push(row.latest.r);
-        } else if (field == 'active') {
-          data.push(row.latest.a);
-        } else if (field == 'confirmedDelta') {
-          data.push(row.latest.delta.c);
-        } else if (field == 'deathsDelta') {
-          data.push(row.latest.delta.d);
-        } else if (field == 'recoveredDelta') {
-          data.push(row.latest.delta.r);
-        } else if (field == 'population') {
-          data.push(row.population);
-        } else if (field == 'confirmedCapita') {
-          data.push(row.latest.capita.c);
-        } else if (field == 'deathsCapita') {
-          data.push(row.latest.capita.d);
-        } else if (field == 'recoveredCapita') {
-          data.push(row.latest.capita.r);
-        } else if (field == 'confirmedAverage') {
-          data.push(row.latest.average.c);
-        } else if (field == 'confirmedGrowth') {
-          data.push(row.latest.growth.c);
-        } else if (field == 'stringencyIndex') {
-          data.push(row.latest.stringencyindex);
-        }
-      }
-
-      if (data.length > 1 && value && Math.max.apply(Math, data) == value) {
-        result = true;
-      }
-
-      return result;
-    },
-    dataset: function dataset(x) {
-      var data = [];
-
-      if (x >= 0 && this.data && this.data[x]) {
-        data.push(_.clone(this.data[x]));
-      }
-
-      return data;
-    }
-  },
-  computed: {
-    dateRange: {
-      get: function get() {
-        var data = [_.clone(this.range.start), _.clone(this.range.end)];
-        return data;
-      },
-      set: function set(newvalue) {
-        this.range.start = newvalue[0];
-        this.range.end = newvalue[1];
-      }
-    },
-    config: function config() {
-      return {
-        'absolute': this.settings && this.settings.absolute ? this.settings.absolute : false,
-        'solo': this.settings && this.settings.solo ? this.settings.solo : false
-      };
-    },
-    comparison: function comparison() {
-      var data = [];
-      var date = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.date).format('YYYY-MM-DD');
 
       for (var x in this.data) {
-        var row = {};
-        row.latest = {
-          c: 0,
-          d: 0,
-          r: 0,
-          a: 0,
-          delta: {
-            c: 0,
-            d: 0,
-            r: 0,
-            a: 0
-          },
-          capita: {
-            c: 0,
-            d: 0,
-            r: 0,
-            a: 0
-          },
-          percent: {
-            c: 0,
-            d: 0,
-            r: 0,
-            a: 0
-          },
-          average: {
-            c: 0,
-            d: 0,
-            r: 0,
-            a: 0
-          },
-          growth: {
-            c: 0,
-            d: 0,
-            r: 0,
-            a: 0
-          },
-          stringencyindex: 0
-        };
-        row.name = this.data[x].name;
-        row.population = this.data[x].population;
-
-        for (var y in this.data[x].daily) {
-          if (date === this.data[x].daily[y].date) {
-            row.latest = this.data[x].daily[y];
+        for (var y in current) {
+          if (current[y].name == this.data[x].name.full) {
+            data.push(current[y]);
             break;
           }
         }
+      } // Check if we are adding a new location
 
-        data.push(_.clone(row));
+
+      if (data.length > 0) {
+        for (var y in data) {
+          if (data[y].name == name) {
+            found = y;
+            break;
+          }
+        }
       }
 
-      return data;
-    },
-    dateSliderRange: function dateSliderRange() {
-      Date.prototype.addDays = function (days) {
-        var date = new Date(this.valueOf());
-        date.setDate(date.getDate() + days);
-        return date;
-      };
+      if (!found) {
+        var random1 = getRandomIntInclusive(1, this.options.colors.length) - 1;
+        var random2 = getRandomIntInclusive(1, this.options.colors.length) - 1;
+        var scaleType = {
+          primary: 'linear',
+          secondary: 'linear'
+        };
 
-      var date1 = new Date('2020-01-01');
-      var date2 = new Date();
-      date2.setDate(date2.getDate() - 1);
-      var daysTotal = (date2.getTime() - date1.getTime()) / (1000 * 3600 * 24);
+        if (data.length > 0) {
+          scaleType.primary = data[0].primary.scale;
+          scaleType.secondary = data[0].secondary.scale;
+        }
+
+        data.push({
+          name: name,
+          primary: {
+            color: this.options.colors[random1].bg,
+            border: this.options.colors[random1].border,
+            type: 'bar',
+            scale: scaleType.primary
+          },
+          secondary: {
+            color: this.options.colors[random2].bg,
+            border: this.options.colors[random2].border,
+            type: 'line',
+            scale: scaleType.secondary
+          }
+        });
+      } else {
+        if (settings && settings.primary && settings.primary.color) {
+          data[found].primary.color = settings.primary.color;
+        }
+
+        if (settings && settings.primary && settings.primary.border) {
+          data[found].primary.border = settings.primary.border;
+        }
+
+        if (settings && settings.primary && settings.primary.type) {
+          data[found].primary.type = settings.primary.type;
+        }
+
+        if (settings && settings.primary && settings.primary.scale) {
+          data[found].primary.scale = settings.primary.scale;
+
+          for (var x in data) {
+            data[x].primary.scale = settings.primary.scale;
+          }
+        }
+
+        if (settings && settings.secondary && settings.secondary.color) {
+          data[found].secondary.color = settings.secondary.color;
+        }
+
+        if (settings && settings.secondary && settings.secondary.border) {
+          data[found].secondary.border = settings.secondary.border;
+        }
+
+        if (settings && settings.secondary && settings.secondary.type) {
+          data[found].secondary.type = settings.secondary.type;
+        }
+
+        if (settings && settings.secondary && settings.secondary.scale) {
+          data[found].secondary.scale = settings.secondary.scale;
+
+          for (var x in data) {
+            data[x].secondary.scale = settings.secondary.scale;
+          }
+        }
+      }
+
+      this.options.chartsettings = data;
+    },
+    getFieldName: function getFieldName(key) {
+      if (key) {
+        for (var x in this.graphControls['y']) {
+          if (this.graphControls['y'][x][0] == key) {
+            return this.graphControls['y'][x][1];
+          }
+        }
+      }
+
+      return '';
+    },
+    selectedMode: function selectedMode(key) {
+      if (key == this.options.mode) {
+        return true;
+      }
+
+      return false;
+    },
+    selectMode: function selectMode(key) {
+      this.options.mode = key;
+    },
+    selectedScaleType: function selectedScaleType(key) {
+      if (key == this.options.controls.scaleType) {
+        return true;
+      }
+
+      return false;
+    },
+    selectScaleType: function selectScaleType(key) {
+      this.options.controls.scaleType = key;
+    },
+    selectField: function selectField(key, level) {
+      if (level) {
+        this.options.controls[level] = key;
+      }
+
+      this.ui[level] = false;
+    },
+    selectedField: function selectedField(key, level) {
+      if (level) {
+        if (this.options.controls[level] == key) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+    getLabels: function getLabels() {
       var data = [];
 
-      for (var x = 0; x < daysTotal; x++) {
-        data.push(moment__WEBPACK_IMPORTED_MODULE_0___default()(date1.addDays(x)).format('YYYY-MM-DD'));
+      for (var x in this.data) {}
+
+      return data;
+    },
+    getRows: function getRows(options) {
+      for (var x in this.data) {
+        var country = this.data[x];
+      }
+    },
+    resetDropdowns: function resetDropdowns() {
+      this.ui.primary = false;
+      this.ui.secondary = false;
+      this.ui.settings = false;
+    }
+  },
+  computed: {
+    chartsettings: function chartsettings() {
+      var data = [];
+
+      for (var x in this.data) {
+        this.addSetting(this.data[x].name.full);
+      }
+
+      return this.options.chartsettings;
+    },
+    settings: function settings() {
+      return _objectSpread({}, this.options, {}, this.config);
+    },
+    xAxis: function xAxis() {
+      return [this.options.mode];
+    },
+    yAxis: function yAxis() {
+      var data = [];
+      if (this.options.controls.primary) data.push(this.options.controls.primary);
+      if (this.options.controls.secondary) data.push(this.options.controls.secondary);
+      return data;
+    },
+    comparison: function comparison() {
+      return this.data;
+    },
+    full_stats: function full_stats() {
+      var data = _.cloneDeep(this.data);
+
+      for (var x in data) {}
+
+      return data;
+    },
+    dataset: function dataset() {
+      var xAxis = this.xAxis,
+          yAxis = this.yAxis,
+          data = false;
+
+      if (this.options.mode == 'chronological') {
+        data = _.clone(this.datasetChronological);
+      } else if (this.options.mode == 'from1' || this.options.mode == 'from100' || this.options.mode == 'from1death') {
+        data = _.clone(this.datasetCaseCount);
       }
 
       return data;
-    }
-  },
-  watch: {
-    date: function date(newValue, oldValue) {
-      if (typeof newValue != 'string') {
-        this.date = moment__WEBPACK_IMPORTED_MODULE_0___default()(newValue).format('YYYY-MM-DD');
-      }
     },
-    range: function range(newvalue) {
-      if (typeof newvalue.start != 'string') {
-        this.range.start = moment__WEBPACK_IMPORTED_MODULE_0___default()(newvalue.start).format('YYYY-MM-DD');
-        this.range.end = moment__WEBPACK_IMPORTED_MODULE_0___default()(newvalue.end).format('YYYY-MM-DD');
-      }
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MiniChart.vue?vue&type=script&lang=js&":
-/*!********************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MiniChart.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-var LineChart = function LineChart() {
-  return {
-    component: Promise.resolve(/*! import() */).then(__webpack_require__.bind(null, /*! ./charts/LineChart */ "./resources/js/components/charts/LineChart.vue"))
-  };
-};
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "MiniChart",
-  components: {
-    LineChart: LineChart
-  },
-  props: ['minValue', 'maxValue', 'data', 'minDate', 'maxDate', 'active'],
-  data: function data() {
-    return {
-      yAxis: ['deltaConfirmed'],
-      dataReady: false
-    };
-  },
-  methods: {
-    dataset: function dataset() {
+    datasetChronological: function datasetChronological() {
       var data = {
         labels: [],
         datasets: []
       },
           options,
-          content = []; // OPTIONS
+          key,
+          content = [],
+          background = this.options.background; // OPTIONS
 
       options = {
         responsive: true,
@@ -458,14 +577,12 @@ var LineChart = function LineChart() {
         hoverMode: 'index',
         stacked: false,
         legend: {
-          display: false
-        },
-        title: {
-          display: false
+          labels: {
+            fontColor: '#2c3531'
+          }
         },
         scales: {
           xAxes: [{
-            display: false,
             ticks: {
               fontColor: '#2c3531',
               callback: function callback(dataLabel, index) {
@@ -474,6 +591,30 @@ var LineChart = function LineChart() {
             }
           }],
           yAxes: []
+        },
+        plugins: {
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'xy'
+            },
+            zoom: {
+              enabled: true,
+              mode: 'xy'
+            }
+          }
+        },
+        watermark: {
+          image: '/img/logo/logo-text.png',
+          width: 100,
+          height: 129,
+          x: 30,
+          y: 50,
+          opacity: 0.1,
+          alignX: "right",
+          alignY: "bottom",
+          alignToChartArea: false,
+          position: "back"
         }
       };
       var count = 0;
@@ -492,35 +633,34 @@ var LineChart = function LineChart() {
         for (var y in stats) {
           var date = stats[y].date;
 
-          if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format('YYYY-MM-DD') < start) {
-            start = moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format('YYYY-MM-DD');
+          if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD') < start) {
+            start = moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD');
           }
 
-          if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format('YYYY-MM-DD') > end) {
-            end = moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format('YYYY-MM-DD');
+          if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD') > end) {
+            end = moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD');
           }
         }
-      }
+      } // Assemble content
 
-      if (this.minDate) {
-        start = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.minDate).format('YYYY-MM-DD');
-      }
 
-      if (this.maxDate) {
-        end = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.maxDate).format('YYYY-MM-DD');
-      }
-
-      data.labels.push('2019-12-31'); // Assemble content
-
-      for (var x = 0; x <= moment__WEBPACK_IMPORTED_MODULE_0___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_0___default()(start), 'days'); x++) {
-        var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_0___default()(start).add(x, 'days').format('YYYY-MM-DD'));
+      for (var x = 0; x <= moment__WEBPACK_IMPORTED_MODULE_3___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_3___default()(start), 'days'); x++) {
+        var current_date = _.clone(moment__WEBPACK_IMPORTED_MODULE_3___default()(start).add(x, 'days').format('YYYY-MM-DD'));
 
         data.labels.push(current_date);
 
         for (var y = 0; y < this.data.length; y++) {
           if (!content[y]) {
             content.push({
-              deltaConfirmed: []
+              confirmed: [],
+              deaths: [],
+              recovered: [],
+              active: [],
+              deltaConfirmed: [],
+              deltaDeaths: [],
+              deltaRecovered: [],
+              average: [],
+              growthFactor: []
             });
           }
 
@@ -531,26 +671,46 @@ var LineChart = function LineChart() {
             for (var z in stats) {
               var row = stats[z];
 
-              if (moment__WEBPACK_IMPORTED_MODULE_0___default()(row.date).format('YYYY-MM-DD') === current_date) {
-                if (row.delta.c >= 0) content[y].deltaConfirmed.push(row.delta.c);else content[y].deltaConfirmed.push(0);
+              if (moment__WEBPACK_IMPORTED_MODULE_3___default()(row.date).format('YYYY-MM-DD') === current_date) {
+                content[y].confirmed.push(row.c);
+                content[y].deaths.push(row.d);
+                content[y].recovered.push(row.r);
+                content[y].active.push(row.a);
+                content[y].deltaConfirmed.push(row.delta.c);
+                content[y].deltaDeaths.push(row.delta.d);
+                content[y].deltaRecovered.push(row.delta.r);
+                content[y].average.push(Math.round(row.average.c * 100) / 100);
+                content[y].growthFactor.push(Math.round(row.growth.c * 100) / 100);
                 found = true;
               }
             } // If today's data is missing, use previous day's
 
 
             if (!found) {
-              if (content[y] && content[y].confirmed && content[y].confirmed.length > 0) {
+              if (content[y].confirmed.length > 0) {
+                content[y].confirmed.push(content[y].confirmed.slice(-1));
+                content[y].deaths.push(content[y].deaths.slice(-1));
+                content[y].recovered.push(content[y].recovered.slice(-1));
+                content[y].active.push(content[y].active.slice(-1));
                 content[y].deltaConfirmed.push(content[y].deltaConfirmed.slice(-1));
+                content[y].deltaDeaths.push(content[y].deltaDeaths.slice(-1));
+                content[y].deltaRecovered.push(content[y].deltaRecovered.slice(-1));
+                content[y].average.push(content[y].average.slice(-1));
+                content[y].growthFactor.push(content[y].growthFactor.slice(-1));
               } else {
+                content[y].confirmed.push(0);
+                content[y].deaths.push(0);
+                content[y].recovered.push(0);
+                content[y].active.push(0);
                 content[y].deltaConfirmed.push(0);
+                content[y].deltaDeaths.push(0);
+                content[y].deltaRecovered.push(0);
+                content[y].average.push(0);
+                content[y].growthFactor.push(0);
               }
             }
           }
         }
-      }
-
-      if (data.labels.length <= 1) {
-        data.labels.push('2020-01-01');
       }
 
       var position = '',
@@ -572,42 +732,175 @@ var LineChart = function LineChart() {
             border = 'borderSecondary';
           }
 
-          if (this.yAxis[y] == 'deltaConfirmed') {
-            var datavalues = [0, 0];
-
-            if (content && content[x] && content[x].deltaConfirmed) {
-              if (content[x].deltaConfirmed.length > 0) {
-                datavalues = [0];
-
-                for (var z in content[x].deltaConfirmed) {
-                  datavalues.push(content[x].deltaConfirmed[z]);
-                }
-              } else {
-                datavalues = content[x].deltaConfirmed;
-              }
-            }
-
+          if (this.yAxis[y] == 'confirmed') {
             data.datasets.push({
-              label: 'New cases per day ',
-              type: 'line',
-              backgroundColor: 'white',
-              borderColor: 'white',
-              // borderDash: [10, 5],
-              display: false,
-              borderWidth: 1,
-              pointRadius: 0,
+              label: 'Confirmed (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
               fill: false,
-              data: datavalues,
+              data: _.clone(content[x].confirmed),
+              yAxisID: 'y-confirmed'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Confirmed'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-confirmed',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deaths') {
+            data.datasets.push({
+              label: 'Deaths (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.clone(content[x].deaths),
+              yAxisID: 'y-deaths'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Deaths'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-deaths',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'recovered') {
+            data.datasets.push({
+              label: 'Recovered (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.clone(content[x].recovered),
+              yAxisID: 'y-recovered'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Recovered'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-recovered',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'active') {
+            data.datasets.push({
+              label: 'Active (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.clone(content[x].active),
+              yAxisID: 'y-active'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Active'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-active',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deltaConfirmed') {
+            data.datasets.push({
+              label: 'New cases per day (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.clone(content[x].deltaConfirmed),
               yAxisID: 'y-deltaConfirmed'
             });
             options.scales.yAxes.push({
               responsive: true,
               scaleLabel: {
-                display: false,
+                display: true,
                 labelString: 'New cases per day'
               },
-              type: 'linear',
-              display: false,
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
               position: position,
               id: 'y-deltaConfirmed',
               // grid line settings
@@ -616,7 +909,633 @@ var LineChart = function LineChart() {
 
               },
               ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deltaDeaths') {
+            data.datasets.push({
+              label: 'New deaths per day (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.clone(content[x].deltaDeaths),
+              yAxisID: 'y-deltaDeaths'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
                 display: true,
+                labelString: 'New deaths per day'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-deltaDeaths',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deltaRecovered') {
+            data.datasets.push({
+              label: 'New recoveries per day (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.clone(content[x].deltaRecovered),
+              yAxisID: 'y-deltaRecovered'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'New recoveries per day'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-deltaRecovered',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'average') {
+            data.datasets.push({
+              label: 'Average growth (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.clone(content[x].average),
+              yAxisID: 'y-average'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Average growth'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-average',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'growthFactor') {
+            data.datasets.push({
+              label: 'Growth factor (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.clone(content[x].growthFactor),
+              yAxisID: 'y-growthFactor'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Growth Factor'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-growthFactor',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  return tick.toLocaleString();
+                }
+              }
+            });
+          }
+        }
+      }
+
+      return {
+        data: data,
+        options: options
+      };
+    },
+    datasetCaseCount: function datasetCaseCount() {
+      var data = {
+        labels: [],
+        datasets: []
+      },
+          options,
+          key,
+          totalDays = 0,
+          content = [],
+          background = this.options.background; // OPTIONS
+
+      options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        hoverMode: 'index',
+        stacked: false,
+        legend: {
+          labels: {
+            fontColor: '#2c3531'
+          }
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              fontColor: '#2c3531',
+              callback: function callback(dataLabel, index) {
+                return index % 4 === 0 ? dataLabel : '';
+              }
+            }
+          }],
+          yAxes: []
+        },
+        plugins: {
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'xy'
+            },
+            zoom: {
+              enabled: true,
+              mode: 'xy'
+            }
+          }
+        },
+        watermark: {
+          image: '/img/logo/logo-text.png',
+          x: 100,
+          y: 70,
+          width: 194,
+          height: 250,
+          opacity: 0.1,
+          alignX: "right",
+          alignY: "bottom",
+          alignToChartArea: false,
+          position: "back"
+        }
+      };
+      var count = 0;
+
+      for (var x in this.data) {
+        count++;
+      } // Exit if there are no countries to compare
+
+
+      if (count == 0) return data; // Assemble content
+
+      for (var country_index = 0; country_index < this.data.length; country_index++) {
+        var start = false;
+
+        for (var x in this.data[country_index].daily) {
+          var row = this.data[country_index].daily[x]; // We haven't started logging yet
+
+          if (!start) {
+            if (this.options.mode == 'from1' && parseInt(row.c) >= 1) {
+              start = true;
+            } else if (this.options.mode == 'from100' && parseInt(row.c) >= 100) {
+              start = true;
+            } else if (this.options.mode == 'from1death' && parseInt(row.d) >= 1) {
+              start = true;
+            }
+          } // Now let's get ready to log
+
+
+          if (start) {
+            // Initialise this new row
+            if (!content[x]) {
+              content.push({
+                confirmed: [],
+                deaths: [],
+                recovered: [],
+                active: [],
+                deltaConfirmed: [],
+                deltaDeaths: [],
+                deltaRecovered: [],
+                average: [],
+                growthFactor: []
+              });
+            }
+
+            content[country_index].confirmed.push(row.c);
+            content[country_index].deaths.push(row.d);
+            content[country_index].recovered.push(row.r);
+            content[country_index].active.push(row.a);
+            content[country_index].deltaConfirmed.push(row.delta.c);
+            content[country_index].deltaDeaths.push(row.delta.d);
+            content[country_index].deltaRecovered.push(row.delta.r);
+            content[country_index].average.push(Math.round(row.average.c * 100) / 100);
+            content[country_index].growthFactor.push(Math.round(row.growth.c * 100) / 100);
+          }
+        }
+
+        if (totalDays < content[country_index].confirmed.length) {
+          totalDays = content[country_index].confirmed.length;
+        }
+      }
+
+      for (var x = 1; x <= totalDays; x++) {
+        data.labels.push('Day ' + x);
+      }
+
+      var position = '',
+          chartType = '',
+          metric = '',
+          border = ''; // Assemble labels
+
+      for (var x = 0; x < this.data.length; x++) {
+        for (var y in this.yAxis) {
+          if (y == 0) {
+            position = 'left';
+            chartType = 'bar';
+            metric = 'primary';
+            border = 'borderPrimary';
+          } else {
+            position = 'right';
+            chartType = 'bar';
+            metric = 'secondary';
+            border = 'borderSecondary';
+          }
+
+          if (this.yAxis[y] == 'confirmed') {
+            data.datasets.push({
+              label: 'Confirmed (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.cloneDeep(content[x].confirmed),
+              yAxisID: 'y-confirmed'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Confirmed'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-confirmed',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deaths') {
+            data.datasets.push({
+              label: 'Deaths (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.cloneDeep(content[x].deaths),
+              yAxisID: 'y-deaths'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Deaths'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-deaths',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'recovered') {
+            data.datasets.push({
+              label: 'Recovered (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.cloneDeep(content[x].recovered),
+              yAxisID: 'y-recovered'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Recovered'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-recovered',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'active') {
+            data.datasets.push({
+              label: 'Active (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.cloneDeep(content[x].active),
+              yAxisID: 'y-active'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Active'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-active',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deltaConfirmed') {
+            data.datasets.push({
+              label: 'New cases per day (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.cloneDeep(content[x].deltaConfirmed),
+              yAxisID: 'y-deltaConfirmed'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'New cases per day'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-deltaConfirmed',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deltaDeaths') {
+            data.datasets.push({
+              label: 'New deaths per day (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.cloneDeep(content[x].deltaDeaths),
+              yAxisID: 'y-deltaDeaths'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'New deaths per day'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-deltaDeaths',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'deltaRecovered') {
+            data.datasets.push({
+              label: 'New recoveries per day (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.cloneDeep(content[x].deltaRecovered),
+              yAxisID: 'y-deltaRecovered'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'New recoveries per day'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-deltaRecovered',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'average') {
+            data.datasets.push({
+              label: 'Average growth (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.cloneDeep(content[x].average),
+              yAxisID: 'y-average'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Average growth'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-average',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
+                fontColor: '#2c3531',
+                callback: function callback(tick, index, ticks) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                    return tick.toLocaleString();
+                  }
+                }
+              }
+            });
+          } else if (this.yAxis[y] == 'growthFactor') {
+            data.datasets.push({
+              label: 'Growth factor (' + this.data[x].name.full + ')',
+              type: this.options.chartsettings[x][metric].type,
+              backgroundColor: this.options.chartsettings[x][metric].color,
+              borderColor: this.options.chartsettings[x][metric].border,
+              borderDash: [10, 5],
+              borderWidth: 2,
+              pointRadius: 5,
+              fill: false,
+              data: _.cloneDeep(content[x].growthFactor),
+              yAxisID: 'y-growthFactor'
+            });
+            options.scales.yAxes.push({
+              responsive: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Growth factor'
+              },
+              type: this.options.chartsettings[x][metric].scale,
+              display: true,
+              position: position,
+              id: 'y-growthFactor',
+              // grid line settings
+              gridLines: {
+                drawOnChartArea: false // only want the grid lines for one axis to show up
+
+              },
+              ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
                   if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
@@ -634,1189 +1553,15 @@ var LineChart = function LineChart() {
         options: options
       };
     }
-  },
-  created: function created() {
-    var self = this; // setTimeout(function(){
-
-    self.dataset();
-    self.dataReady = true; // },10)
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/DailyView.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/DailyView.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_Daily__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Daily */ "./resources/js/components/Daily.vue");
-/* harmony import */ var _components_Latest__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Latest */ "./resources/js/components/Latest.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "DailyView",
-  props: ['selectedCompareTab', 'options', 'compareLength', 'comparisonData', 'compare', 'view'],
-  components: {
-    Daily: _components_Daily__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Latest: _components_Latest__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  methods: {
-    removeCompare: function removeCompare(item) {
-      var found = this.findCompare(item);
-
-      if (found) {
-        var key = item.country + item.state;
-        delete this.compare[found];
-
-        if (key === this.selectedCompareTab) {
-          this.updateSelected(this.getLastCompareItem());
-        }
-      }
-
-      this.$emit('updateCompare', this.compare);
-    },
-    findCompare: function findCompare(item) {
-      var found = false;
-
-      for (var x in this.compare) {
-        if (this.compare[x].country === item.country) {
-          if (this.compare[x].state === item.state) {
-            found = x;
-            break;
-          }
-        }
-      }
-
-      return found;
-    },
-    updateSelected: function updateSelected(key) {
-      this.$emit('updateSelected', key);
-    },
-    getLastCompareItem: function getLastCompareItem() {
-      var last = false;
-
-      var compare = _.cloneDeep(this.compare);
-
-      for (var x in compare) {
-        if (compare[x]) last = x;
-      }
-
-      return last;
-    },
-    getCompareLength: function getCompareLength() {
-      var count = 0;
-
-      for (var x in this.compare) {
-        if (this.compare[x]) count++;
-      }
-
-      return count;
-    }
-  },
-  computed: {
-    isMobile: function isMobile() {
-      if (screen.width <= 760) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Latest.vue?vue&type=style&index=0&lang=css&":
-/*!************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Latest.vue?vue&type=style&index=0&lang=css& ***!
-  \************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, ".inner-scrollbar .simplebar-track.simplebar-horizontal {\n  visibility: hidden !important;\n}\r\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Latest.vue?vue&type=style&index=0&lang=css&":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Latest.vue?vue&type=style&index=0&lang=css& ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./Latest.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Latest.vue?vue&type=style&index=0&lang=css&");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Latest.vue?vue&type=template&id=730f2232&":
-/*!*********************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Latest.vue?vue&type=template&id=730f2232& ***!
-  \*********************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "h-full" }, [
-    _c("div", { staticClass: "m-2 xl:m-4" }, [
-      _c(
-        "div",
-        { staticClass: "my-2 py-2 pb-4 px-4 bg-slab-primary rounded" },
-        [
-          _c("span", { staticClass: "font-bold" }, [_vm._v("Select date")]),
-          _vm._v(" "),
-          _c(
-            "v-date-picker",
-            {
-              attrs: {
-                mode: "range",
-                "min-date": _vm.options.date.min,
-                "max-date": _vm.options.date.max,
-                masks: {
-                  data: ["YYYY-MM-DD", "YYYY/MM/DD"],
-                  input: ["YYYY-MM-DD", "YYYY/MM/DD"]
-                },
-                popover: { placement: "bottom", visibility: "click" }
-              },
-              model: {
-                value: _vm.range,
-                callback: function($$v) {
-                  _vm.range = $$v
-                },
-                expression: "range"
-              }
-            },
-            [
-              _c(
-                "button",
-                {
-                  staticClass:
-                    "p-2 hover:bg-lightlabel text-white rounded focus:outline-none"
-                },
-                [
-                  _c(
-                    "svg",
-                    {
-                      staticClass: "w-4 h-4 fill-current",
-                      attrs: {
-                        xmlns: "http://www.w3.org/2000/svg",
-                        viewBox: "0 0 20 20"
-                      }
-                    },
-                    [
-                      _c("path", {
-                        attrs: {
-                          d:
-                            "M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z"
-                        }
-                      })
-                    ]
-                  )
-                ]
-              )
-            ]
-          ),
-          _vm._v(
-            " " +
-              _vm._s(_vm.moment(_vm.date).format("YYYY-MM-DD")) +
-              "\n                "
-          ),
-          _c("vue-slider", {
-            attrs: { data: _vm.dateSliderRange, lazy: true, adsorb: true },
-            model: {
-              value: _vm.dateRange,
-              callback: function($$v) {
-                _vm.dateRange = $$v
-              },
-              expression: "dateRange"
-            }
-          })
-        ],
-        1
-      )
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass:
-          "absolute left-0 right-0 bottom-4.25 xl:bottom-0 m-2 xl:m-4 top-5.5",
-        staticStyle: { position: "absolute" }
-      },
-      [
-        _c(
-          "simplebar",
-          { staticClass: "w-full h-full" },
-          [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "flex justify-start rounded-t z-10 relative bg-slab-primary",
-                class:
-                  "min-w-" +
-                  _vm.comparison.length * 32 +
-                  " xl:min-w-" +
-                  (_vm.comparison.length * 64 + 36)
-              },
-              [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "hidden xl:block bg-slab-primary border-lightslab w-36 text-xs font-bold flex-shrink-0"
-                  },
-                  [
-                    _c("div", { staticClass: "px-4 py-2 h-12" }),
-                    _vm._v(" "),
-                    _c("div", {
-                      staticClass: "px-4 py-2 h-8 border-b border-slab"
-                    })
-                  ]
-                ),
-                _vm._v(" "),
-                _vm._l(_vm.comparison, function(row, key, index) {
-                  return _c(
-                    "div",
-                    {
-                      key: key,
-                      staticClass:
-                        "border-l flex-shrink-0\n                        border-lightslab w-32 xl:w-64"
-                    },
-                    [
-                      _c("div", { staticClass: "w-full" }, [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "px-4 py-2 text-sm xl:text-2xl xl:h-12 bg-slab-primary"
-                          },
-                          [
-                            _c(
-                              "div",
-                              { staticClass: "truncate ... font-bold" },
-                              [_vm._v(_vm._s(row.name.country))]
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "text-xs xl:text-base px-4 py-2 font-bold xl:h-8 border-b border-lightslab bg-slab-primary text-xs"
-                          },
-                          [
-                            row.name.state
-                              ? _c("div", [_vm._v(_vm._s(row.name.state))])
-                              : _c("div")
-                          ]
-                        )
-                      ])
-                    ]
-                  )
-                }),
-                _vm._v(" "),
-                _c("div", {
-                  staticClass: "px-4 py-2 xl:h-20 border-l border-lightslab"
-                })
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c(
-              "simplebar",
-              {
-                staticClass:
-                  "inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0 top-3.5 xl:top-5 overflow-x-show w-full",
-                class:
-                  "min-w-" +
-                  _vm.comparison.length * 32 +
-                  " xl:min-w-" +
-                  (_vm.comparison.length * 64 + 36),
-                staticStyle: { position: "absolute" }
-              },
-              [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "flex justify-start rounded-t z-10 relative bg-slab"
-                  },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "hidden xl:block bg-slab-primary border-b border-lightslab w-36 text-xs font-bold flex-shrink-0"
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "px-4 py-2 h-32 border-b border-slab"
-                          },
-                          [_vm._v("New cases per day")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "px-4 py-2 h-16 border-b border-slab"
-                          },
-                          [_vm._v("Confirmed")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "px-4 py-2 h-16 border-b border-slab"
-                          },
-                          [_vm._v("Deaths")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "px-4 py-2 h-16 border-b border-slab"
-                          },
-                          [_vm._v("Recovered")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "px-4 py-2 h-24 border-b border-slab"
-                          },
-                          [_vm._v("Active")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "px-4 py-2 h-12 border-b border-slab"
-                          },
-                          [_vm._v("New Cases")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "px-4 py-2 h-12 border-b border-slab"
-                          },
-                          [_vm._v("New Deaths")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "px-4 py-2 h-12 border-b border-slab"
-                          },
-                          [_vm._v("New Recovered")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "px-4 py-2 h-12 border-b border-slab"
-                          },
-                          [_vm._v("Population")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "px-4 py-2 h-16 border-b border-slab"
-                          },
-                          [_vm._v("Confirmed Per 1M population")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "px-4 py-2 h-16 border-b border-slab"
-                          },
-                          [_vm._v("Deaths Per 1M population")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "px-4 py-2 h-16 border-b border-slab"
-                          },
-                          [_vm._v("Recovered Per 1M population")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "px-4 py-2 h-12 border-b border-slab"
-                          },
-                          [_vm._v("5D Ave")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "px-4 py-2 h-12 border-b border-slab"
-                          },
-                          [_vm._v("Growth Factor")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "px-4 py-2 h-12" }, [
-                          _vm._v("Stringency Index")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "flex-shrink-0 flex" },
-                      [
-                        _vm._l(_vm.comparison, function(row, key, index) {
-                          return _c(
-                            "div",
-                            {
-                              key: index,
-                              staticClass:
-                                "border-l border-b border-lightslab flex-shrink-0 w-32 xl:w-64"
-                            },
-                            [
-                              _c(
-                                "div",
-                                {
-                                  class: index % 2 == 1 ? "bg-slab-primary" : ""
-                                },
-                                [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "w-full text-xs xl:text-base"
-                                    },
-                                    [
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "p-2 h-24 xl:h-32 border-b border-lightslab"
-                                        },
-                                        [
-                                          _vm.active && _vm.graphReady
-                                            ? _c("MiniChart", {
-                                                attrs: {
-                                                  data: _vm.dataset(key),
-                                                  minDate: _vm.range.start,
-                                                  maxDate: _vm.range.end,
-                                                  active: _vm.active
-                                                }
-                                              })
-                                            : _vm._e()
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "px-4 py-2 h-16 border-b border-lightslab",
-                                          class: _vm.getBiggestValue(
-                                            "confirmed",
-                                            row.latest.c
-                                          )
-                                            ? "bg-darkslab"
-                                            : ""
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm._f("numeralFormat")(
-                                                  isNaN(row.latest.c)
-                                                    ? 0
-                                                    : row.latest.c
-                                                )
-                                              )
-                                          ),
-                                          _c("br"),
-                                          _vm._v(" "),
-                                          row.latest.percent.c > 0
-                                            ? _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "text-xs text-red-400"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "(+" +
-                                                      _vm._s(
-                                                        _vm._f("numeralFormat")(
-                                                          row.latest.percent.c,
-                                                          "0.0%"
-                                                        )
-                                                      ) +
-                                                      ")"
-                                                  )
-                                                ]
-                                              )
-                                            : _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "text-xs text-green-400"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "(" +
-                                                      _vm._s(
-                                                        _vm._f("numeralFormat")(
-                                                          row.latest.percent.c,
-                                                          "0.0%"
-                                                        )
-                                                      ) +
-                                                      ")"
-                                                  )
-                                                ]
-                                              )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "px-4 py-2 h-16 border-b border-lightslab",
-                                          class: _vm.getBiggestValue(
-                                            "deaths",
-                                            row.latest.d
-                                          )
-                                            ? "bg-darkslab"
-                                            : ""
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm._f("numeralFormat")(
-                                                  isNaN(row.latest.d)
-                                                    ? 0
-                                                    : row.latest.d
-                                                )
-                                              )
-                                          ),
-                                          _c("br"),
-                                          _vm._v(" "),
-                                          row.latest.percent.d > 0
-                                            ? _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "text-xs text-red-400"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "(+" +
-                                                      _vm._s(
-                                                        _vm._f("numeralFormat")(
-                                                          row.latest.percent.d,
-                                                          "0.0%"
-                                                        )
-                                                      ) +
-                                                      ")"
-                                                  )
-                                                ]
-                                              )
-                                            : _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "text-xs text-green-400"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "(" +
-                                                      _vm._s(
-                                                        _vm._f("numeralFormat")(
-                                                          row.latest.percent.d,
-                                                          "0.0%"
-                                                        )
-                                                      ) +
-                                                      ")"
-                                                  )
-                                                ]
-                                              )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "px-4 py-2 h-16 border-b border-lightslab",
-                                          class: _vm.getBiggestValue(
-                                            "recovered",
-                                            row.latest.r
-                                          )
-                                            ? "bg-darkslab"
-                                            : ""
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm._f("numeralFormat")(
-                                                  isNaN(row.latest.r)
-                                                    ? 0
-                                                    : row.latest.r
-                                                )
-                                              )
-                                          ),
-                                          _c("br"),
-                                          _vm._v(" "),
-                                          row.latest.percent.r > 0
-                                            ? _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "text-xs text-green-400"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "(+" +
-                                                      _vm._s(
-                                                        _vm._f("numeralFormat")(
-                                                          row.latest.percent.r,
-                                                          "0.0%"
-                                                        )
-                                                      ) +
-                                                      ")"
-                                                  )
-                                                ]
-                                              )
-                                            : row.latest.percent.r == 0
-                                            ? _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "text-xs text-green-400"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "(" +
-                                                      _vm._s(
-                                                        _vm._f("numeralFormat")(
-                                                          row.latest.percent.r,
-                                                          "0.0%"
-                                                        )
-                                                      ) +
-                                                      ")"
-                                                  )
-                                                ]
-                                              )
-                                            : _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "text-xs text-red-400"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "(" +
-                                                      _vm._s(
-                                                        _vm._f("numeralFormat")(
-                                                          row.latest.percent.r,
-                                                          "0.0%"
-                                                        )
-                                                      ) +
-                                                      ")"
-                                                  )
-                                                ]
-                                              )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "px-4 py-2 h-24 border-b border-lightslab",
-                                          class: _vm.getBiggestValue(
-                                            "active",
-                                            row.latest.a
-                                          )
-                                            ? "bg-darkslab"
-                                            : ""
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm._f("numeralFormat")(
-                                                  isNaN(row.latest.a)
-                                                    ? 0
-                                                    : row.latest.a
-                                                )
-                                              )
-                                          ),
-                                          _c("br"),
-                                          _vm._v(" "),
-                                          row.latest.delta.a < 0
-                                            ? _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "text-xs text-green-400"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "(" +
-                                                      _vm._s(
-                                                        _vm._f("numeralFormat")(
-                                                          row.latest.delta.a
-                                                        )
-                                                      ) +
-                                                      ")"
-                                                  )
-                                                ]
-                                              )
-                                            : row.latest.delta.a == 0
-                                            ? _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "text-xs text-green-400"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "(" +
-                                                      _vm._s(
-                                                        _vm._f("numeralFormat")(
-                                                          row.latest.delta.a
-                                                        )
-                                                      ) +
-                                                      ")"
-                                                  )
-                                                ]
-                                              )
-                                            : _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "text-xs text-red-400"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "(+" +
-                                                      _vm._s(
-                                                        _vm._f("numeralFormat")(
-                                                          row.latest.delta.a
-                                                        )
-                                                      ) +
-                                                      ")"
-                                                  )
-                                                ]
-                                              ),
-                                          _c("br"),
-                                          _vm._v(" "),
-                                          _c(
-                                            "span",
-                                            {
-                                              staticClass:
-                                                "text-xs text-blue-400"
-                                            },
-                                            [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm._f("numeralFormat")(
-                                                    row.latest.a /
-                                                      row.latest.population,
-                                                    "0.000%"
-                                                  )
-                                                ) + " of total population"
-                                              )
-                                            ]
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "px-4 py-2 h-12 border-b border-lightslab",
-                                          class: _vm.getBiggestValue(
-                                            "confirmedDelta",
-                                            row.latest.delta.c
-                                          )
-                                            ? "bg-darkslab"
-                                            : ""
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm._f("numeralFormat")(
-                                                  row.latest.delta.c
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "px-4 py-2 h-12 border-b border-lightslab",
-                                          class: _vm.getBiggestValue(
-                                            "deathsDelta",
-                                            row.latest.delta.d
-                                          )
-                                            ? "bg-darkslab"
-                                            : ""
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm._f("numeralFormat")(
-                                                  row.latest.delta.d
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "px-4 py-2 h-12 border-b border-lightslab",
-                                          class: _vm.getBiggestValue(
-                                            "recoveredDelta",
-                                            row.latest.delta.r
-                                          )
-                                            ? "bg-darkslab"
-                                            : ""
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm._f("numeralFormat")(
-                                                  row.latest.delta.r
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "px-4 py-2 h-12 border-b border-lightslab",
-                                          class: _vm.getBiggestValue(
-                                            "population",
-                                            row.population
-                                          )
-                                            ? "bg-darkslab"
-                                            : ""
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm._f("numeralFormat")(
-                                                  row.population,
-                                                  "0,000"
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "px-4 py-2 h-16 border-b border-lightslab",
-                                          class: _vm.getBiggestValue(
-                                            "confirmedCapita",
-                                            row.latest.capita.c
-                                          )
-                                            ? "bg-darkslab"
-                                            : ""
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm._f("numeralFormat")(
-                                                  row.latest.capita.c,
-                                                  "0,000.00"
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "px-4 py-2 h-16 border-b border-lightslab",
-                                          class: _vm.getBiggestValue(
-                                            "deathsCapita",
-                                            row.latest.capita.d
-                                          )
-                                            ? "bg-darkslab"
-                                            : ""
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm._f("numeralFormat")(
-                                                  row.latest.capita.d,
-                                                  "0,000.00"
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "px-4 py-2 h-16 border-b border-lightslab",
-                                          class: _vm.getBiggestValue(
-                                            "recoveredCapita",
-                                            row.latest.capita.r
-                                          )
-                                            ? "bg-darkslab"
-                                            : ""
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm._f("numeralFormat")(
-                                                  row.latest.capita.r,
-                                                  "0,000.00"
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "px-4 py-2 h-12 border-b border-lightslab",
-                                          class: _vm.getBiggestValue(
-                                            "confirmedAverage",
-                                            row.latest.average.c
-                                          )
-                                            ? "bg-darkslab"
-                                            : ""
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm._f("numeralFormat")(
-                                                  row.latest.average.c,
-                                                  "0,000.0"
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "px-4 py-2 h-12 border-b border-lightslab",
-                                          class: _vm.getBiggestValue(
-                                            "confirmedGrowth",
-                                            row.latest.growth.c
-                                          )
-                                            ? "bg-darkslab"
-                                            : ""
-                                        },
-                                        [
-                                          row.latest.growth.c > 1
-                                            ? _c(
-                                                "span",
-                                                { staticClass: "text-red-400" },
-                                                [
-                                                  _vm._v(
-                                                    _vm._s(
-                                                      _vm._f("numeralFormat")(
-                                                        row.latest.growth.c,
-                                                        "0.00"
-                                                      )
-                                                    )
-                                                  )
-                                                ]
-                                              )
-                                            : _c(
-                                                "span",
-                                                {
-                                                  staticClass: "text-green-400"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    _vm._s(
-                                                      _vm._f("numeralFormat")(
-                                                        row.latest.growth.c,
-                                                        "0.00"
-                                                      )
-                                                    )
-                                                  )
-                                                ]
-                                              )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass: "px-4 py-2 h-12",
-                                          class: _vm.getBiggestValue(
-                                            "stringencyIndex",
-                                            row.latest.stringencyindex
-                                          )
-                                            ? "bg-darkslab"
-                                            : ""
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm._f("numeralFormat")(
-                                                  row.latest.stringencyindex,
-                                                  "0.00"
-                                                )
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ]
-                                      )
-                                    ]
-                                  )
-                                ]
-                              )
-                            ]
-                          )
-                        }),
-                        _vm._v(" "),
-                        _c("div", {
-                          staticClass: "border-l border-lightslab h-240"
-                        })
-                      ],
-                      2
-                    )
-                  ]
-                )
-              ]
-            )
-          ],
-          1
-        )
-      ],
-      1
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MiniChart.vue?vue&type=template&id=350f5f28&scoped=true&":
-/*!************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MiniChart.vue?vue&type=template&id=350f5f28&scoped=true& ***!
-  \************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StatsChartMobile.vue?vue&type=template&id=601239ec&scoped=true&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/StatsChartMobile.vue?vue&type=template&id=601239ec&scoped=true& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1830,25 +1575,1146 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "h-full" },
+    {
+      staticClass: "absolute top-0 left-0 right-0 bottom-4",
+      on: {
+        click: function($event) {
+          return _vm.resetDropdowns()
+        }
+      }
+    },
     [
       _c(
-        "keep-alive",
+        "div",
+        {
+          staticClass:
+            "absolute inset-x-0 top-0 bottom-3 bg-slab flex items-start",
+          class: _vm.ui.settings ? "z-10" : "w-64 z-0 hidden",
+          on: {
+            click: function($event) {
+              $event.stopPropagation()
+              return false($event)
+            }
+          }
+        },
         [
-          _vm.active && _vm.dataReady
-            ? _c("LineChart", {
-                staticClass: "rounded h-full",
-                attrs: {
-                  data: _vm.dataset().data,
-                  options: _vm.dataset().options
+          _c("div", [
+            _c(
+              "div",
+              { staticClass: "flex items-center justify-between mb-2" },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass: "rounded m-2 mx-1 p-2 px-4 text-xs",
+                    class: _vm.ui.section === "metrics" ? "bg-hoverslab" : "",
+                    on: {
+                      click: function($event) {
+                        _vm.ui.section = "metrics"
+                      }
+                    }
+                  },
+                  [_vm._v("Metrics")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "rounded m-2 mx-1 p-2 px-4 text-xs",
+                    class: _vm.ui.section === "settings" ? "bg-hoverslab" : "",
+                    on: {
+                      click: function($event) {
+                        _vm.ui.section = "settings"
+                      }
+                    }
+                  },
+                  [_vm._v("Chart Settings")]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "w-full" },
+              [
+                _c(
+                  "simplebar",
+                  {
+                    staticClass:
+                      "absolute bg-hoverslab inset-x-0 bottom-0 top-3 z-10 overflow-x-hidden",
+                    staticStyle: { position: "absolute" }
+                  },
+                  [
+                    _vm.ui.section === "metrics"
+                      ? _c("div", [
+                          _c("div", { staticClass: "p-2" }, [
+                            _vm._v("Primary Metric")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "border border-lightslab bg-slab m-1 cursor-pointer p-2 text-xs"
+                            },
+                            [
+                              _vm.options.controls.primary
+                                ? _c(
+                                    "div",
+                                    {
+                                      on: {
+                                        click: function($event) {
+                                          $event.stopPropagation()
+                                          _vm.ui.primary = !_vm.ui.primary
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.getFieldName(
+                                            _vm.options.controls.primary
+                                          )
+                                        )
+                                      )
+                                    ]
+                                  )
+                                : _c(
+                                    "div",
+                                    {
+                                      on: {
+                                        click: function($event) {
+                                          $event.stopPropagation()
+                                          _vm.ui.primary = !_vm.ui.primary
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Select primary metric")]
+                                  )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "p-2" }, [
+                            _vm._v("Secondary Metric")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "border border-lightslab bg-slab m-1 cursor-pointer p-2 text-xs"
+                            },
+                            [
+                              _vm.options.controls.secondary
+                                ? _c(
+                                    "div",
+                                    {
+                                      on: {
+                                        click: function($event) {
+                                          $event.stopPropagation()
+                                          _vm.ui.secondary = !_vm.ui.secondary
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.getFieldName(
+                                            _vm.options.controls.secondary
+                                          )
+                                        )
+                                      )
+                                    ]
+                                  )
+                                : _c(
+                                    "div",
+                                    {
+                                      on: {
+                                        click: function($event) {
+                                          $event.stopPropagation()
+                                          _vm.ui.secondary = !_vm.ui.secondary
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Select secondary metric")]
+                                  )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "p-2" }, [
+                            _vm._v("Time mode")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "p-2" }, [
+                            _c(
+                              "div",
+                              { staticClass: "flex text-xs" },
+                              _vm._l(_vm.graphControls.x, function(row) {
+                                return _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "p-2 border border-lightslab m-1 cursor-pointer",
+                                    class: _vm.selectedMode(row[0])
+                                      ? "bg-lightslab"
+                                      : "",
+                                    on: {
+                                      click: function($event) {
+                                        $event.stopPropagation()
+                                        return _vm.selectMode(row[0])
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(row[1]) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              }),
+                              0
+                            )
+                          ])
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.ui.section === "settings"
+                      ? _c(
+                          "div",
+                          [
+                            _vm.chartsettings.length == 0
+                              ? _c("div", { staticClass: "p-4 text-xs" }, [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.section) +
+                                      "\n                            Choose countries or states to begin comparing.\n                        "
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm._l(_vm.chartsettings, function(
+                              row,
+                              key,
+                              index
+                            ) {
+                              return _c(
+                                "div",
+                                {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.chartsettings.length > 0,
+                                      expression: "chartsettings.length > 0"
+                                    }
+                                  ],
+                                  key: key,
+                                  staticClass: "p-2 w-full"
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "font-bold text-sm p-2 bg-slab-primary rounded-t"
+                                    },
+                                    [_vm._v(_vm._s(row.name))]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "flex text-xs flex-1 bg-slab"
+                                    },
+                                    [
+                                      _c("div", { staticClass: "w-24 p-2" }),
+                                      _vm._v(" "),
+                                      _c("div", { staticClass: "w-32 p-2" }, [
+                                        _vm._v("Primary Metric")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("div", { staticClass: "w-32 p-2" }, [
+                                        _vm._v("Secondary Metric")
+                                      ])
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "flex text-xs items-center flex-1 bg-slab"
+                                    },
+                                    [
+                                      _c("div", { staticClass: "w-24 p-2" }, [
+                                        _vm._v("Colour")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("div", { staticClass: "w-32 p-2" }, [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "p-1 border border-gray-500"
+                                          },
+                                          [
+                                            _c("div", {
+                                              staticClass: "p-2",
+                                              style:
+                                                "background: " +
+                                                row.primary.border,
+                                              on: {
+                                                click: function($event) {
+                                                  $event.stopPropagation()
+                                                  return _vm.toggleColorDropdown(
+                                                    row.name + "primary",
+                                                    $event
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "p-1 absolute inset-x-0 inset-y-0 z-10 bg-lightslab",
+                                            class:
+                                              _vm.ui.colordropdown.id ==
+                                                row.name + "primary" &&
+                                              _vm.ui.colordropdown.show
+                                                ? ""
+                                                : "hidden"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "m-1 my-4 text-base font-bold"
+                                              },
+                                              [_vm._v("Pick a colour")]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "flex flex-wrap items-center justify-start"
+                                              },
+                                              _vm._l(
+                                                _vm.options.colors,
+                                                function(color, key, index) {
+                                                  return _c("div", {
+                                                    staticClass:
+                                                      "cursor-pointer w-20 m-1 border border-lightlabel p-4",
+                                                    style:
+                                                      "background: " +
+                                                      color.border,
+                                                    on: {
+                                                      click: function($event) {
+                                                        $event.stopPropagation()
+                                                        return _vm.setColor(
+                                                          row.name,
+                                                          {
+                                                            primary: {
+                                                              color: color.bg,
+                                                              border:
+                                                                color.border
+                                                            }
+                                                          }
+                                                        )
+                                                      }
+                                                    }
+                                                  })
+                                                }
+                                              ),
+                                              0
+                                            )
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("div", { staticClass: "w-32 p-2" }, [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "p-1 border border-gray-500"
+                                          },
+                                          [
+                                            _c("div", {
+                                              staticClass: "p-2",
+                                              style:
+                                                "background: " +
+                                                row.secondary.border,
+                                              on: {
+                                                click: function($event) {
+                                                  $event.stopPropagation()
+                                                  return _vm.toggleColorDropdown(
+                                                    row.name + "secondary",
+                                                    $event
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "p-1 absolute inset-x-0 inset-y-0 z-10 bg-lightslab",
+                                            class:
+                                              _vm.ui.colordropdown.id ==
+                                                row.name + "secondary" &&
+                                              _vm.ui.colordropdown.show
+                                                ? ""
+                                                : "hidden"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "m-1 my-4 text-base font-bold"
+                                              },
+                                              [_vm._v("Pick a colour")]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "flex flex-wrap items-center justify-start"
+                                              },
+                                              _vm._l(
+                                                _vm.options.colors,
+                                                function(color, key, index) {
+                                                  return _c("div", {
+                                                    staticClass:
+                                                      "cursor-pointer w-20 m-1 border border-lightlabel p-2",
+                                                    style:
+                                                      "background: " +
+                                                      color.border,
+                                                    on: {
+                                                      click: function($event) {
+                                                        $event.stopPropagation()
+                                                        return _vm.setColor(
+                                                          row.name,
+                                                          {
+                                                            secondary: {
+                                                              color: color.bg,
+                                                              border:
+                                                                color.border
+                                                            }
+                                                          }
+                                                        )
+                                                      }
+                                                    }
+                                                  })
+                                                }
+                                              ),
+                                              0
+                                            )
+                                          ]
+                                        )
+                                      ])
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "flex text-xs items-center flex-1 bg-slab"
+                                    },
+                                    [
+                                      _c("div", { staticClass: "w-24 p-2" }, [
+                                        _vm._v("Chart Type")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "w-32 flex p-1" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "cursor-pointer border rounded p-2 px-3 m-1",
+                                              class:
+                                                row.primary.type == "bar"
+                                                  ? "bg-blue-400 border-blue-400 text-white"
+                                                  : "border-gray-500 ",
+                                              on: {
+                                                click: function($event) {
+                                                  $event.stopPropagation()
+                                                  return _vm.addSetting(
+                                                    row.name,
+                                                    { primary: { type: "bar" } }
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("Bar")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "cursor-pointer border rounded p-2 px-3 ml-0 m-1",
+                                              class:
+                                                row.primary.type == "line"
+                                                  ? "bg-blue-400 border-blue-400  text-white"
+                                                  : "border-gray-500 ",
+                                              on: {
+                                                click: function($event) {
+                                                  $event.stopPropagation()
+                                                  return _vm.addSetting(
+                                                    row.name,
+                                                    {
+                                                      primary: { type: "line" }
+                                                    }
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("Line")]
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "w-32 flex p-1" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "cursor-pointer border rounded p-2 px-3 m-1",
+                                              class:
+                                                row.secondary.type == "bar"
+                                                  ? "bg-blue-400 border-blue-400 text-white"
+                                                  : "border-gray-500 ",
+                                              on: {
+                                                click: function($event) {
+                                                  $event.stopPropagation()
+                                                  return _vm.addSetting(
+                                                    row.name,
+                                                    {
+                                                      secondary: { type: "bar" }
+                                                    }
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("Bar")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "cursor-pointer border rounded p-2 px-3 ml-0 m-1",
+                                              class:
+                                                row.secondary.type == "line"
+                                                  ? "bg-blue-400 border-blue-400  text-white"
+                                                  : "border-gray-500 ",
+                                              on: {
+                                                click: function($event) {
+                                                  $event.stopPropagation()
+                                                  return _vm.addSetting(
+                                                    row.name,
+                                                    {
+                                                      secondary: {
+                                                        type: "line"
+                                                      }
+                                                    }
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("Line")]
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "flex text-xs items-center flex-1 bg-slab rounded-b"
+                                    },
+                                    [
+                                      _c("div", { staticClass: "w-24 p-2" }, [
+                                        _vm._v("Scale Type")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "w-32 flex p-1" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "cursor-pointer border rounded p-2 m-1",
+                                              class:
+                                                row.primary.scale == "linear"
+                                                  ? "bg-blue-400 border-blue-400 text-white"
+                                                  : "border-gray-500 ",
+                                              on: {
+                                                click: function($event) {
+                                                  $event.stopPropagation()
+                                                  return _vm.addSetting(
+                                                    row.name,
+                                                    {
+                                                      primary: {
+                                                        scale: "linear"
+                                                      }
+                                                    }
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("Linear")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "cursor-pointer border rounded p-2 m-1",
+                                              class:
+                                                row.primary.scale ==
+                                                "logarithmic"
+                                                  ? "bg-blue-400 border-blue-400  text-white"
+                                                  : "border-gray-500 ",
+                                              on: {
+                                                click: function($event) {
+                                                  $event.stopPropagation()
+                                                  return _vm.addSetting(
+                                                    row.name,
+                                                    {
+                                                      primary: {
+                                                        scale: "logarithmic"
+                                                      }
+                                                    }
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("Log")]
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "w-32 flex p-1" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "cursor-pointer border rounded p-2 m-1",
+                                              class:
+                                                row.secondary.scale == "linear"
+                                                  ? "bg-blue-400 border-blue-400 text-white"
+                                                  : "border-gray-500 ",
+                                              on: {
+                                                click: function($event) {
+                                                  $event.stopPropagation()
+                                                  return _vm.addSetting(
+                                                    row.name,
+                                                    {
+                                                      secondary: {
+                                                        scale: "linear"
+                                                      }
+                                                    }
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("Linear")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "cursor-pointer border rounded p-2 ml-0 m-1",
+                                              class:
+                                                row.secondary.scale ==
+                                                "logarithmic"
+                                                  ? "bg-blue-400 border-blue-400  text-white"
+                                                  : "border-gray-500 ",
+                                              on: {
+                                                click: function($event) {
+                                                  $event.stopPropagation()
+                                                  return _vm.addSetting(
+                                                    row.name,
+                                                    {
+                                                      secondary: {
+                                                        scale: "logarithmic"
+                                                      }
+                                                    }
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("Log")]
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                ]
+                              )
+                            })
+                          ],
+                          2
+                        )
+                      : _vm._e()
+                  ]
+                )
+              ],
+              1
+            )
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _vm.ui.primary
+        ? _c(
+            "div",
+            {
+              staticClass:
+                "absolute z-20 inset-x-0 inset-y-0 p-2 bg-slab text-xs"
+            },
+            [
+              _vm._l(_vm.graphControls.y, function(row) {
+                return _c(
+                  "div",
+                  {
+                    staticClass: "p-2 m-1 hover:bg-hoverslab",
+                    on: {
+                      click: function($event) {
+                        $event.stopPropagation()
+                        return _vm.selectField(row[0], "primary")
+                      }
+                    }
+                  },
+                  [_vm._v("\n            " + _vm._s(row[1]) + "\n        ")]
+                )
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "absolute bottom-0 m-2 p-2 inset-x-0 bg-hoverslab text-center",
+                  on: {
+                    click: function($event) {
+                      $event.stopPropagation()
+                      _vm.ui.primary = false
+                    }
+                  }
+                },
+                [_vm._v("Back")]
+              )
+            ],
+            2
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.ui.secondary
+        ? _c(
+            "div",
+            {
+              staticClass:
+                "absolute z-20 inset-x-0 inset-y-0 p-2 bg-slab text-xs"
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "p-2 m-1 hover:bg-hoverslab",
+                  on: {
+                    click: function($event) {
+                      return _vm.selectField("", "secondary")
+                    }
+                  }
+                },
+                [_vm._v("None")]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.graphControls.y, function(row) {
+                return _c(
+                  "div",
+                  {
+                    staticClass: "p-2 m-1 hover:bg-hoverslab",
+                    on: {
+                      click: function($event) {
+                        $event.stopPropagation()
+                        return _vm.selectField(row[0], "secondary")
+                      }
+                    }
+                  },
+                  [_vm._v("\n            " + _vm._s(row[1]) + "\n        ")]
+                )
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "absolute bottom-0 p-4 inset-x-0 bg-hoverslab text-center",
+                  on: {
+                    click: function($event) {
+                      $event.stopPropagation()
+                      _vm.ui.secondary = false
+                    }
+                  }
+                },
+                [_vm._v("Back")]
+              )
+            ],
+            2
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.full
+        ? _c("div", { staticClass: "absolute top-0 right-0 bottom-3 left-0" }, [
+            _vm.settings.controls.menu && false
+              ? _c("div", { staticClass: "py-4" }, [
+                  _c(
+                    "div",
+                    { staticClass: "text-xs flex items-start justify-between" },
+                    [
+                      _c("div", [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "hover:bg-lightlabel p-2 border border-lightlabel m-2 cursor-pointer",
+                            class: _vm.ui.settings ? "bg-lightlabel" : "",
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.ui.settings = !_vm.ui.settings
+                              }
+                            }
+                          },
+                          [_vm._v("Chart Settings")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "flex items-center" }, [
+                        _c("div", { staticClass: "mr-2" }, [_vm._v("Metrics")]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "flex border border-hoverslab bg-hoverslab m-1 cursor-pointer p-2 relative"
+                          },
+                          [
+                            _vm.options.controls.primary
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass: "w-32 truncate ...",
+                                    on: {
+                                      click: function($event) {
+                                        $event.stopPropagation()
+                                        _vm.ui.primary = !_vm.ui.primary
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.getFieldName(
+                                          _vm.options.controls.primary
+                                        )
+                                      )
+                                    )
+                                  ]
+                                )
+                              : _c(
+                                  "div",
+                                  {
+                                    staticClass: "w-32",
+                                    on: {
+                                      click: function($event) {
+                                        $event.stopPropagation()
+                                        _vm.ui.primary = !_vm.ui.primary
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Select primary metric")]
+                                ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value: _vm.ui.primary,
+                                    expression: "ui.primary"
+                                  }
+                                ],
+                                staticClass:
+                                  "absolute z-10 bg-slab border-hoverslab shadow w-44 right-0 top-0 p-2 border border-hoverslab"
+                              },
+                              _vm._l(_vm.graphControls.y, function(row) {
+                                return _c(
+                                  "div",
+                                  {
+                                    staticClass: "p-2 m-1 hover:bg-hoverslab",
+                                    on: {
+                                      click: function($event) {
+                                        $event.stopPropagation()
+                                        return _vm.selectField(
+                                          row[0],
+                                          "primary"
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(row[1]) +
+                                        "\n                            "
+                                    )
+                                  ]
+                                )
+                              }),
+                              0
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "flex border border-hoverslab bg-hoverslab m-1 mr-0 cursor-pointer p-2 relative"
+                          },
+                          [
+                            _vm.options.controls.secondary
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass: "w-32 truncate ...",
+                                    on: {
+                                      click: function($event) {
+                                        $event.stopPropagation()
+                                        _vm.ui.secondary = !_vm.ui.secondary
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.getFieldName(
+                                          _vm.options.controls.secondary
+                                        )
+                                      )
+                                    )
+                                  ]
+                                )
+                              : _c(
+                                  "div",
+                                  {
+                                    staticClass: "w-32",
+                                    on: {
+                                      click: function($event) {
+                                        $event.stopPropagation()
+                                        _vm.ui.secondary = !_vm.ui.secondary
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Select secondary metric")]
+                                ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value: _vm.ui.secondary,
+                                    expression: "ui.secondary"
+                                  }
+                                ],
+                                staticClass:
+                                  "absolute z-10 bg-slab border-hoverslab shadow w-44 right-0 top-0 p-2 border border-hoverslab"
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "p-2 m-1 hover:bg-hoverslab",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.selectField("", "secondary")
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("None")]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(_vm.graphControls.y, function(row) {
+                                  return _c(
+                                    "div",
+                                    {
+                                      staticClass: "p-2 m-1 hover:bg-hoverslab",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.selectField(
+                                            row[0],
+                                            "secondary"
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(row[1]) +
+                                          "\n                            "
+                                      )
+                                    ]
+                                  )
+                                })
+                              ],
+                              2
+                            )
+                          ]
+                        )
+                      ])
+                    ]
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "absolute inset-x-0 inset-y-0" },
+              [
+                _vm.active && _vm.data.length > 0
+                  ? _c("LineChart", {
+                      staticClass:
+                        "bg-heading rounded absolute top-0 bottom-0 right-0 left-0 m-2 p-2",
+                      attrs: {
+                        data: _vm.dataset.data,
+                        options: _vm.dataset.options
+                      }
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.settings.controls.menu && false
+                  ? _c(
+                      "div",
+                      {
+                        staticClass:
+                          "text-xs absolute left-0 right-0 bottom-0 h-12 flex items-start justify-between"
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "flex items-center justify-start" },
+                          [
+                            _c("div", { staticClass: "mx-2" }, [
+                              _vm._v("Time mode")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "flex" },
+                              _vm._l(_vm.graphControls.x, function(row) {
+                                return _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "p-2 border border-lightslab m-1 cursor-pointer",
+                                    class: _vm.selectedMode(row[0])
+                                      ? "bg-lightslab"
+                                      : "",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.selectMode(row[0])
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                            " +
+                                        _vm._s(row[1]) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              }),
+                              0
+                            )
+                          ]
+                        )
+                      ]
+                    )
+                  : _vm._e()
+              ],
+              1
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.ui.settings
+        ? _c(
+            "div",
+            {
+              staticClass:
+                "absolute bottom-0 inset-x-0 text-center p-4 bg-hoverslab text-xs",
+              on: {
+                click: function($event) {
+                  $event.stopPropagation()
+                  _vm.ui.settings = !_vm.ui.settings
                 }
-              })
-            : _vm._e()
-        ],
-        1
-      )
-    ],
-    1
+              }
+            },
+            [_vm._v("Chart Settings")]
+          )
+        : _c(
+            "div",
+            {
+              staticClass:
+                "absolute bottom-0 inset-x-0 text-center p-4 bg-slab text-xs",
+              on: {
+                click: function($event) {
+                  $event.stopPropagation()
+                  _vm.ui.settings = !_vm.ui.settings
+                }
+              }
+            },
+            [_vm._v("Close")]
+          )
+    ]
   )
 }
 var staticRenderFns = []
@@ -1858,193 +2724,17 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/DailyView.vue?vue&type=template&id=a09de962&scoped=true&":
-/*!*******************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/DailyView.vue?vue&type=template&id=a09de962&scoped=true& ***!
-  \*******************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "h-full relative" }, [
-    _c(
-      "div",
-      {
-        staticClass:
-          "absolute top-0 right-0 bottom-0 left-0 bg-hoverslab rounded",
-        staticStyle: { bottom: "32px" }
-      },
-      [
-        _c(
-          "div",
-          {
-            staticClass: "h-full",
-            class: _vm.selectedCompareTab !== "all" ? "hidden" : ""
-          },
-          [
-            _vm.getCompareLength() === 0
-              ? _c("div", { staticClass: "m-4" }, [
-                  _vm._v(
-                    "\n                Select up to " +
-                      _vm._s(_vm.options.compare_limit) +
-                      " countries or states to begin comparing.\n            "
-                  )
-                ])
-              : _vm.getCompareLength() > 0 &&
-                (!_vm.isMobile ||
-                  (_vm.isMobile && _vm.selectedCompareTab === "all"))
-              ? _c("Latest", {
-                  attrs: {
-                    data: _vm.comparisonData,
-                    active:
-                      _vm.view === "daily" && _vm.selectedCompareTab === "all"
-                  }
-                })
-              : _vm._e()
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _vm._l(_vm.compare, function(row, key, index) {
-          return _vm.getCompareLength() > 0
-            ? _c("div", { key: key }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "h-full",
-                    class: _vm.selectedCompareTab != key ? "hidden" : ""
-                  },
-                  [
-                    _c("Daily", {
-                      attrs: {
-                        data: _vm.comparisonData[index],
-                        settings: { absolute: true, solo: false }
-                      },
-                      on: { removeCompare: _vm.removeCompare }
-                    })
-                  ],
-                  1
-                )
-              ])
-            : _vm._e()
-        })
-      ],
-      2
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./resources/js/components/Latest.vue":
-/*!********************************************!*\
-  !*** ./resources/js/components/Latest.vue ***!
-  \********************************************/
+/***/ "./resources/js/components/StatsChartMobile.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/StatsChartMobile.vue ***!
+  \******************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Latest_vue_vue_type_template_id_730f2232___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Latest.vue?vue&type=template&id=730f2232& */ "./resources/js/components/Latest.vue?vue&type=template&id=730f2232&");
-/* harmony import */ var _Latest_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Latest.vue?vue&type=script&lang=js& */ "./resources/js/components/Latest.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _Latest_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Latest.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/Latest.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _Latest_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Latest_vue_vue_type_template_id_730f2232___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Latest_vue_vue_type_template_id_730f2232___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/Latest.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/Latest.vue?vue&type=script&lang=js&":
-/*!*********************************************************************!*\
-  !*** ./resources/js/components/Latest.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Latest_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Latest.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Latest.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Latest_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/Latest.vue?vue&type=style&index=0&lang=css&":
-/*!*****************************************************************************!*\
-  !*** ./resources/js/components/Latest.vue?vue&type=style&index=0&lang=css& ***!
-  \*****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Latest_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./Latest.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Latest.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Latest_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Latest_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Latest_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Latest_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Latest_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
-/***/ "./resources/js/components/Latest.vue?vue&type=template&id=730f2232&":
-/*!***************************************************************************!*\
-  !*** ./resources/js/components/Latest.vue?vue&type=template&id=730f2232& ***!
-  \***************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Latest_vue_vue_type_template_id_730f2232___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Latest.vue?vue&type=template&id=730f2232& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Latest.vue?vue&type=template&id=730f2232&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Latest_vue_vue_type_template_id_730f2232___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Latest_vue_vue_type_template_id_730f2232___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/js/components/MiniChart.vue":
-/*!***********************************************!*\
-  !*** ./resources/js/components/MiniChart.vue ***!
-  \***********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _MiniChart_vue_vue_type_template_id_350f5f28_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MiniChart.vue?vue&type=template&id=350f5f28&scoped=true& */ "./resources/js/components/MiniChart.vue?vue&type=template&id=350f5f28&scoped=true&");
-/* harmony import */ var _MiniChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MiniChart.vue?vue&type=script&lang=js& */ "./resources/js/components/MiniChart.vue?vue&type=script&lang=js&");
+/* harmony import */ var _StatsChartMobile_vue_vue_type_template_id_601239ec_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StatsChartMobile.vue?vue&type=template&id=601239ec&scoped=true& */ "./resources/js/components/StatsChartMobile.vue?vue&type=template&id=601239ec&scoped=true&");
+/* harmony import */ var _StatsChartMobile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StatsChartMobile.vue?vue&type=script&lang=js& */ "./resources/js/components/StatsChartMobile.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -2054,119 +2744,50 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _MiniChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _MiniChart_vue_vue_type_template_id_350f5f28_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _MiniChart_vue_vue_type_template_id_350f5f28_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _StatsChartMobile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _StatsChartMobile_vue_vue_type_template_id_601239ec_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _StatsChartMobile_vue_vue_type_template_id_601239ec_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "350f5f28",
+  "601239ec",
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/MiniChart.vue"
+component.options.__file = "resources/js/components/StatsChartMobile.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/MiniChart.vue?vue&type=script&lang=js&":
-/*!************************************************************************!*\
-  !*** ./resources/js/components/MiniChart.vue?vue&type=script&lang=js& ***!
-  \************************************************************************/
+/***/ "./resources/js/components/StatsChartMobile.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/StatsChartMobile.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MiniChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./MiniChart.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MiniChart.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MiniChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StatsChartMobile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./StatsChartMobile.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StatsChartMobile.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StatsChartMobile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/MiniChart.vue?vue&type=template&id=350f5f28&scoped=true&":
-/*!******************************************************************************************!*\
-  !*** ./resources/js/components/MiniChart.vue?vue&type=template&id=350f5f28&scoped=true& ***!
-  \******************************************************************************************/
+/***/ "./resources/js/components/StatsChartMobile.vue?vue&type=template&id=601239ec&scoped=true&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/StatsChartMobile.vue?vue&type=template&id=601239ec&scoped=true& ***!
+  \*************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MiniChart_vue_vue_type_template_id_350f5f28_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./MiniChart.vue?vue&type=template&id=350f5f28&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MiniChart.vue?vue&type=template&id=350f5f28&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MiniChart_vue_vue_type_template_id_350f5f28_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StatsChartMobile_vue_vue_type_template_id_601239ec_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./StatsChartMobile.vue?vue&type=template&id=601239ec&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StatsChartMobile.vue?vue&type=template&id=601239ec&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StatsChartMobile_vue_vue_type_template_id_601239ec_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MiniChart_vue_vue_type_template_id_350f5f28_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/js/views/DailyView.vue":
-/*!******************************************!*\
-  !*** ./resources/js/views/DailyView.vue ***!
-  \******************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _DailyView_vue_vue_type_template_id_a09de962_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DailyView.vue?vue&type=template&id=a09de962&scoped=true& */ "./resources/js/views/DailyView.vue?vue&type=template&id=a09de962&scoped=true&");
-/* harmony import */ var _DailyView_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DailyView.vue?vue&type=script&lang=js& */ "./resources/js/views/DailyView.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _DailyView_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _DailyView_vue_vue_type_template_id_a09de962_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _DailyView_vue_vue_type_template_id_a09de962_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  "a09de962",
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/views/DailyView.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/views/DailyView.vue?vue&type=script&lang=js&":
-/*!*******************************************************************!*\
-  !*** ./resources/js/views/DailyView.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DailyView_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./DailyView.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/DailyView.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DailyView_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/views/DailyView.vue?vue&type=template&id=a09de962&scoped=true&":
-/*!*************************************************************************************!*\
-  !*** ./resources/js/views/DailyView.vue?vue&type=template&id=a09de962&scoped=true& ***!
-  \*************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DailyView_vue_vue_type_template_id_a09de962_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./DailyView.vue?vue&type=template&id=a09de962&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/DailyView.vue?vue&type=template&id=a09de962&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DailyView_vue_vue_type_template_id_a09de962_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DailyView_vue_vue_type_template_id_a09de962_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StatsChartMobile_vue_vue_type_template_id_601239ec_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

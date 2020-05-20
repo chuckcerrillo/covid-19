@@ -2,78 +2,127 @@
 <template>
     <div class="absolute top-0 left-0 right-0 bottom-4" v-on:click="resetDropdowns()">
         <!--        <div class="absolute top-0 right-0 bottom-0 left-0 bg-red-400"></div>-->
+
         <div class="absolute inset-x-0 top-0 bottom-3 bg-slab flex items-start" :class="ui.settings ? 'z-10':'w-64 z-0 hidden'" @click.stop="false">
             <div>
-                <div class="font-bold text-base p-2 mb-2">Chart Settings</div>
+                <div class="flex items-center justify-between mb-2">
+                    <div @click="ui.section='metrics'" class="rounded m-2 mx-1 p-2 px-4 text-xs" :class="ui.section==='metrics' ? 'bg-hoverslab': ''">Metrics</div>
+                    <div @click="ui.section='settings'" class="rounded m-2 mx-1 p-2 px-4 text-xs" :class="ui.section==='settings' ? 'bg-hoverslab': ''">Chart Settings</div>
+                </div>
                 <div class="w-full">
                     <simplebar class="absolute bg-hoverslab inset-x-0 bottom-0 top-3 z-10 overflow-x-hidden" style="position:absolute">
-                        <div v-if="chartsettings.length == 0" class="p-4 text-xs">
-                            Choose countries or states to begin comparing.
+                        <div v-if="ui.section === 'metrics'">
+                            <div class="p-2">Primary Metric</div>
+                            <div class="border border-lightslab bg-slab m-1 cursor-pointer p-2 text-xs">
+                                <div @click.stop="ui.primary = !ui.primary" v-if="options.controls.primary">{{getFieldName(options.controls.primary)}}</div>
+                                <div @click.stop="ui.primary = !ui.primary" v-else>Select primary metric</div>
+                            </div>
+                            <div class="p-2">Secondary Metric</div>
+                            <div class="border border-lightslab bg-slab m-1 cursor-pointer p-2 text-xs">
+                                <div @click.stop="ui.secondary = !ui.secondary" v-if="options.controls.secondary">{{getFieldName(options.controls.secondary)}}</div>
+                                <div @click.stop="ui.secondary = !ui.secondary" v-else>Select secondary metric</div>
+                            </div>
+
+                            <div class="p-2">Time mode</div>
+                            <div class="p-2">
+                                <div class="flex text-xs">
+                                    <div
+                                        v-for="row in graphControls.x"
+                                        class="p-2 border border-lightslab m-1 cursor-pointer"
+                                        :class="selectedMode(row[0]) ? 'bg-lightslab':''"
+                                        v-on:click.stop="selectMode(row[0])"
+                                    >
+                                        {{row[1]}}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div v-show="chartsettings.length > 0" v-for="(row,key,index) in chartsettings" :key="key" class="p-2 w-full">
-                            <div class="font-bold text-sm p-2 bg-slab-primary rounded-t">{{row.name}}</div>
-
-                            <div class="flex text-xs flex-1 bg-slab">
-                                <div class="w-24 p-2"></div>
-                                <div class="w-32 p-2">Primary Metric</div>
-                                <div class="w-32 p-2">Secondary Metric</div>
+                        <div v-if="ui.section === 'settings'">
+                            <div v-if="chartsettings.length == 0" class="p-4 text-xs">
+                                {{section}}
+                                Choose countries or states to begin comparing.
                             </div>
+                            <div v-show="chartsettings.length > 0" v-for="(row,key,index) in chartsettings" :key="key" class="p-2 w-full">
+                                <div class="font-bold text-sm p-2 bg-slab-primary rounded-t">{{row.name}}</div>
 
-                            <div class="flex text-xs items-center flex-1 bg-slab">
-                                <div class="w-24 p-2">Colour</div>
-                                <div class="w-32 p-2">
-                                    <div class="p-1 border border-gray-500">
-                                        <div v-on:click.stop="toggleColorDropdown(row.name+'primary', $event)" class="p-2" :style="'background: ' + row.primary.border"></div>
+                                <div class="flex text-xs flex-1 bg-slab">
+                                    <div class="w-24 p-2"></div>
+                                    <div class="w-32 p-2">Primary Metric</div>
+                                    <div class="w-32 p-2">Secondary Metric</div>
+                                </div>
+
+                                <div class="flex text-xs items-center flex-1 bg-slab">
+                                    <div class="w-24 p-2">Colour</div>
+                                    <div class="w-32 p-2">
+                                        <div class="p-1 border border-gray-500">
+                                            <div v-on:click.stop="toggleColorDropdown(row.name+'primary', $event)" class="p-2" :style="'background: ' + row.primary.border"></div>
+                                        </div>
+                                        <div class="p-1 absolute inset-x-0 inset-y-0 z-10 bg-lightslab" :class="ui.colordropdown.id == (row.name + 'primary') && ui.colordropdown.show ? '' : 'hidden'">
+                                            <div class="m-1 my-4 text-base font-bold">Pick a colour</div>
+                                            <div class="flex flex-wrap items-center justify-start">
+                                                <div v-for="(color,key,index) in options.colors" v-on:click.stop="setColor(row.name,{primary: { color: color.bg, border: color.border}})" class="cursor-pointer w-20 m-1 border border-lightlabel p-4" :style="'background: ' + color.border"></div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="p-1 absolute inset-x-0 inset-y-0 z-10 bg-lightslab" :class="ui.colordropdown.id == (row.name + 'primary') && ui.colordropdown.show ? '' : 'hidden'">
-                                        <div class="m-1 my-4 text-base font-bold">Pick a colour</div>
-                                        <div class="flex flex-wrap items-center justify-start">
-                                            <div v-for="(color,key,index) in options.colors" v-on:click.stop="setColor(row.name,{primary: { color: color.bg, border: color.border}})" class="cursor-pointer w-20 m-1 border border-lightlabel p-4" :style="'background: ' + color.border"></div>
+                                    <div class="w-32 p-2">
+                                        <div class="p-1 border border-gray-500">
+                                            <div v-on:click.stop="toggleColorDropdown(row.name+'secondary',$event)" class="p-2" :style="'background: ' + row.secondary.border"></div>
+                                        </div>
+                                        <div class="p-1 absolute inset-x-0 inset-y-0 z-10 bg-lightslab" :class="ui.colordropdown.id == (row.name + 'secondary') && ui.colordropdown.show ? '' : 'hidden'">
+                                            <div class="m-1 my-4 text-base font-bold">Pick a colour</div>
+                                            <div class="flex flex-wrap items-center justify-start">
+                                                <div v-for="(color,key,index) in options.colors" v-on:click.stop="setColor(row.name,{secondary: { color: color.bg, border: color.border}})" class="cursor-pointer w-20 m-1 border border-lightlabel p-2" :style="'background: ' + color.border"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="w-32 p-2">
-                                    <div class="p-1 border border-gray-500">
-                                        <div v-on:click.stop="toggleColorDropdown(row.name+'secondary',$event)" class="p-2" :style="'background: ' + row.secondary.border"></div>
+
+                                <div class="flex text-xs items-center flex-1 bg-slab">
+                                    <div class="w-24 p-2">Chart Type</div>
+                                    <div class="w-32 flex p-1">
+                                        <div v-on:click.stop="addSetting(row.name,{primary:{type: 'bar'}})" class="cursor-pointer border rounded p-2 px-3 m-1" :class="row.primary.type == 'bar'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Bar</div>
+                                        <div v-on:click.stop="addSetting(row.name,{primary:{type: 'line'}})" class="cursor-pointer border rounded p-2 px-3 ml-0 m-1" :class="row.primary.type == 'line'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Line</div>
                                     </div>
-                                    <div class="p-1 absolute inset-x-0 inset-y-0 z-10 bg-lightslab" :class="ui.colordropdown.id == (row.name + 'secondary') && ui.colordropdown.show ? '' : 'hidden'">
-                                        <div class="m-1 my-4 text-base font-bold">Pick a colour</div>
-                                        <div class="flex flex-wrap items-center justify-start">
-                                            <div v-for="(color,key,index) in options.colors" v-on:click.stop="setColor(row.name,{secondary: { color: color.bg, border: color.border}})" class="cursor-pointer w-20 m-1 border border-lightlabel p-2" :style="'background: ' + color.border"></div>
-                                        </div>
+                                    <div class="w-32 flex p-1">
+                                        <div v-on:click.stop="addSetting(row.name,{secondary:{type: 'bar'}})" class="cursor-pointer border rounded p-2 px-3 m-1" :class="row.secondary.type == 'bar'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Bar</div>
+                                        <div v-on:click.stop="addSetting(row.name,{secondary:{type: 'line'}})" class="cursor-pointer border rounded p-2 px-3 ml-0 m-1" :class="row.secondary.type == 'line'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Line</div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="flex text-xs items-center flex-1 bg-slab">
-                                <div class="w-24 p-2">Chart Type</div>
-                                <div class="w-32 flex p-1">
-                                    <div v-on:click.stop="addSetting(row.name,{primary:{type: 'bar'}})" class="cursor-pointer border rounded p-2 px-3 m-1" :class="row.primary.type == 'bar'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Bar</div>
-                                    <div v-on:click.stop="addSetting(row.name,{primary:{type: 'line'}})" class="cursor-pointer border rounded p-2 px-3 ml-0 m-1" :class="row.primary.type == 'line'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Line</div>
+                                <div class="flex text-xs items-center flex-1 bg-slab rounded-b">
+                                    <div class="w-24 p-2">Scale Type</div>
+                                    <div class="w-32 flex p-1">
+                                        <div v-on:click.stop="addSetting(row.name,{primary:{scale: 'linear'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.scale == 'linear'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Linear</div>
+                                        <div v-on:click.stop="addSetting(row.name,{primary:{scale: 'logarithmic'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.scale == 'logarithmic'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Log</div>
+                                    </div>
+                                    <div class="w-32 flex p-1">
+                                        <div v-on:click.stop="addSetting(row.name,{secondary:{scale: 'linear'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.secondary.scale == 'linear'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Linear</div>
+                                        <div v-on:click.stop="addSetting(row.name,{secondary:{scale: 'logarithmic'}})" class="cursor-pointer border rounded p-2 ml-0 m-1" :class="row.secondary.scale == 'logarithmic'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Log</div>
+                                    </div>
                                 </div>
-                                <div class="w-32 flex p-1">
-                                    <div v-on:click.stop="addSetting(row.name,{secondary:{type: 'bar'}})" class="cursor-pointer border rounded p-2 px-3 m-1" :class="row.secondary.type == 'bar'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Bar</div>
-                                    <div v-on:click.stop="addSetting(row.name,{secondary:{type: 'line'}})" class="cursor-pointer border rounded p-2 px-3 ml-0 m-1" :class="row.secondary.type == 'line'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Line</div>
-                                </div>
-                            </div>
 
-                            <div class="flex text-xs items-center flex-1 bg-slab rounded-b">
-                                <div class="w-24 p-2">Scale Type</div>
-                                <div class="w-32 flex p-1">
-                                    <div v-on:click.stop="addSetting(row.name,{primary:{scale: 'linear'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.scale == 'linear'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Linear</div>
-                                    <div v-on:click.stop="addSetting(row.name,{primary:{scale: 'logarithmic'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.primary.scale == 'logarithmic'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Log</div>
-                                </div>
-                                <div class="w-32 flex p-1">
-                                    <div v-on:click.stop="addSetting(row.name,{secondary:{scale: 'linear'}})" class="cursor-pointer border rounded p-2 m-1" :class="row.secondary.scale == 'linear'?'bg-blue-400 border-blue-400 text-white':'border-gray-500 '">Linear</div>
-                                    <div v-on:click.stop="addSetting(row.name,{secondary:{scale: 'logarithmic'}})" class="cursor-pointer border rounded p-2 ml-0 m-1" :class="row.secondary.scale == 'logarithmic'?'bg-blue-400 border-blue-400  text-white':'border-gray-500 '">Log</div>
-                                </div>
                             </div>
-
                         </div>
                     </simplebar>
                 </div>
             </div>
         </div>
+
+
+        <div v-if="ui.primary" class="absolute z-20 inset-x-0 inset-y-0 p-2 bg-slab text-xs">
+            <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" @click.stop="selectField(row[0],'primary')">
+                {{row[1]}}
+            </div>
+            <div class="absolute bottom-0 m-2 p-2 inset-x-0 bg-hoverslab text-center" @click.stop="ui.primary = false">Back</div>
+        </div>
+        <div v-if="ui.secondary" class="absolute z-20 inset-x-0 inset-y-0 p-2 bg-slab text-xs">
+            <div class="p-2 m-1 hover:bg-hoverslab"  @click="selectField('','secondary')">None</div>
+            <div v-for="row in graphControls.y" class="p-2 m-1 hover:bg-hoverslab" @click.stop="selectField(row[0],'secondary')">
+                {{row[1]}}
+            </div>
+            <div class="absolute bottom-0 p-4 inset-x-0 bg-hoverslab text-center" @click.stop="ui.secondary = false">Back</div>
+        </div>
+
         <div v-if="full" class="absolute top-0 right-0 bottom-3 left-0">
             <div class="py-4" v-if="settings.controls.menu && false">
                 <div class="text-xs flex items-start justify-between">
@@ -279,6 +328,7 @@
                         show: false,
                         id: false,
                     },
+                    section: 'metrics'
 
                 },
                 'graphControls' : {
