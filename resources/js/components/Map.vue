@@ -18,7 +18,8 @@
             'rankings',
             'enable',
             'settings',
-            'layers'
+            'layers',
+            'location',
         ],
         data(){
             return {
