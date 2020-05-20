@@ -4,7 +4,7 @@
             <router-link to="/" class="flex items-center"><img src="/img/logo/logo-140.png" style="height:40px" />
                 <div class="xl:w-128 py-2 px-2 font-bold mx-2">COVID-19 Tracker <sup class="font-normal">beta</sup></div>
             </router-link>
-            <div class="xl:hidden">
+            <div class="hidden xl:hidden">
                 <svg class="text-lightlabel h-8 fill-current" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 28 28">
                     <g>
                         <path d="M25.66,1.84H2.34a.51.51,0,0,0-.5.5V7.7a.5.5,0,0,0,.5.5H25.66a.5.5,0,0,0,.5-.5V2.34A.51.51,0,0,0,25.66,1.84Zm-.5,5.36H2.84V2.84H25.16Z"/><path d="M25.66,10.82H2.34a.5.5,0,0,0-.5.5v5.36a.5.5,0,0,0,.5.5H25.66a.5.5,0,0,0,.5-.5V11.32A.5.5,0,0,0,25.66,10.82Zm-.5,5.36H2.84V11.82H25.16Z"/><path d="M25.66,19.8H2.34a.5.5,0,0,0-.5.5v5.36a.51.51,0,0,0,.5.5H25.66a.51.51,0,0,0,.5-.5V20.3A.5.5,0,0,0,25.66,19.8Zm-.5,5.36H2.84V20.8H25.16Z"/>

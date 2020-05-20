@@ -215,7 +215,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 
@@ -1807,9 +1806,7 @@ var render = function() {
                         _vm.chartsettings.length == 0
                           ? _c("div", { staticClass: "p-4 text-xs" }, [
                               _vm._v(
-                                "\n                            " +
-                                  _vm._s(_vm.section) +
-                                  "\n                            Choose countries or states to begin comparing.\n                        "
+                                "\n                            Choose countries or states to begin comparing.\n                        "
                               )
                             ])
                           : _vm._e(),
