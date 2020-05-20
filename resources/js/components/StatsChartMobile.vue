@@ -39,7 +39,6 @@
                         </div>
                         <div v-show="ui.section === 'settings'">
                             <div v-if="chartsettings.length == 0" class="p-4 text-xs">
-                                {{section}}
                                 Choose countries or states to begin comparing.
                             </div>
                             <div v-show="chartsettings.length > 0" v-for="(row,key,index) in chartsettings" :key="key" class="p-2 w-full">

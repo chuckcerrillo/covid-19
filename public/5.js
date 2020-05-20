@@ -170,11 +170,11 @@ __webpack_require__.r(__webpack_exports__);
     };
 
     function success(pos) {
-      var crd = pos.coords;
-      console.log('Your current position is:');
-      console.log("Latitude : ".concat(crd.latitude));
-      console.log("Longitude: ".concat(crd.longitude));
-      console.log("More or less ".concat(crd.accuracy, " meters."));
+      var crd = pos.coords; // console.log('Your current position is:');
+      // console.log(`Latitude : ${crd.latitude}`);
+      // console.log(`Longitude: ${crd.longitude}`);
+      // console.log(`More or less ${crd.accuracy} meters.`);
+
       self.location = crd;
     }
 
