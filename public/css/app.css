@@ -11963,6 +11963,13 @@ video {
   left: 0;
 }
 
+.inset-1 {
+  top: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+}
+
 .inset-3 {
   top: 3rem;
   right: 3rem;
@@ -12055,6 +12062,16 @@ video {
 .inset-x-0 {
   right: 0;
   left: 0;
+}
+
+.inset-y-1 {
+  top: 1rem;
+  bottom: 1rem;
+}
+
+.inset-x-1 {
+  right: 1rem;
+  left: 1rem;
 }
 
 .inset-y-3 {
@@ -12191,6 +12208,22 @@ video {
 
 .left-0 {
   left: 0;
+}
+
+.top-1 {
+  top: 1rem;
+}
+
+.right-1 {
+  right: 1rem;
+}
+
+.bottom-1 {
+  bottom: 1rem;
+}
+
+.left-1 {
+  left: 1rem;
 }
 
 .top-3 {
@@ -28372,6 +28405,13 @@ video {
     left: 0;
   }
 
+  .\31 440\:inset-1 {
+    top: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+  }
+
   .\31 440\:inset-3 {
     top: 3rem;
     right: 3rem;
@@ -28464,6 +28504,16 @@ video {
   .\31 440\:inset-x-0 {
     right: 0;
     left: 0;
+  }
+
+  .\31 440\:inset-y-1 {
+    top: 1rem;
+    bottom: 1rem;
+  }
+
+  .\31 440\:inset-x-1 {
+    right: 1rem;
+    left: 1rem;
   }
 
   .\31 440\:inset-y-3 {
@@ -28600,6 +28650,22 @@ video {
 
   .\31 440\:left-0 {
     left: 0;
+  }
+
+  .\31 440\:top-1 {
+    top: 1rem;
+  }
+
+  .\31 440\:right-1 {
+    right: 1rem;
+  }
+
+  .\31 440\:bottom-1 {
+    bottom: 1rem;
+  }
+
+  .\31 440\:left-1 {
+    left: 1rem;
   }
 
   .\31 440\:top-3 {
@@ -44782,6 +44848,13 @@ video {
     left: 0;
   }
 
+  .sm\:inset-1 {
+    top: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+  }
+
   .sm\:inset-3 {
     top: 3rem;
     right: 3rem;
@@ -44874,6 +44947,16 @@ video {
   .sm\:inset-x-0 {
     right: 0;
     left: 0;
+  }
+
+  .sm\:inset-y-1 {
+    top: 1rem;
+    bottom: 1rem;
+  }
+
+  .sm\:inset-x-1 {
+    right: 1rem;
+    left: 1rem;
   }
 
   .sm\:inset-y-3 {
@@ -45010,6 +45093,22 @@ video {
 
   .sm\:left-0 {
     left: 0;
+  }
+
+  .sm\:top-1 {
+    top: 1rem;
+  }
+
+  .sm\:right-1 {
+    right: 1rem;
+  }
+
+  .sm\:bottom-1 {
+    bottom: 1rem;
+  }
+
+  .sm\:left-1 {
+    left: 1rem;
   }
 
   .sm\:top-3 {
@@ -61192,6 +61291,13 @@ video {
     left: 0;
   }
 
+  .md\:inset-1 {
+    top: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+  }
+
   .md\:inset-3 {
     top: 3rem;
     right: 3rem;
@@ -61284,6 +61390,16 @@ video {
   .md\:inset-x-0 {
     right: 0;
     left: 0;
+  }
+
+  .md\:inset-y-1 {
+    top: 1rem;
+    bottom: 1rem;
+  }
+
+  .md\:inset-x-1 {
+    right: 1rem;
+    left: 1rem;
   }
 
   .md\:inset-y-3 {
@@ -61420,6 +61536,22 @@ video {
 
   .md\:left-0 {
     left: 0;
+  }
+
+  .md\:top-1 {
+    top: 1rem;
+  }
+
+  .md\:right-1 {
+    right: 1rem;
+  }
+
+  .md\:bottom-1 {
+    bottom: 1rem;
+  }
+
+  .md\:left-1 {
+    left: 1rem;
   }
 
   .md\:top-3 {
@@ -77602,6 +77734,13 @@ video {
     left: 0;
   }
 
+  .lg\:inset-1 {
+    top: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+  }
+
   .lg\:inset-3 {
     top: 3rem;
     right: 3rem;
@@ -77694,6 +77833,16 @@ video {
   .lg\:inset-x-0 {
     right: 0;
     left: 0;
+  }
+
+  .lg\:inset-y-1 {
+    top: 1rem;
+    bottom: 1rem;
+  }
+
+  .lg\:inset-x-1 {
+    right: 1rem;
+    left: 1rem;
   }
 
   .lg\:inset-y-3 {
@@ -77830,6 +77979,22 @@ video {
 
   .lg\:left-0 {
     left: 0;
+  }
+
+  .lg\:top-1 {
+    top: 1rem;
+  }
+
+  .lg\:right-1 {
+    right: 1rem;
+  }
+
+  .lg\:bottom-1 {
+    bottom: 1rem;
+  }
+
+  .lg\:left-1 {
+    left: 1rem;
   }
 
   .lg\:top-3 {
@@ -94012,6 +94177,13 @@ video {
     left: 0;
   }
 
+  .xl\:inset-1 {
+    top: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+  }
+
   .xl\:inset-3 {
     top: 3rem;
     right: 3rem;
@@ -94104,6 +94276,16 @@ video {
   .xl\:inset-x-0 {
     right: 0;
     left: 0;
+  }
+
+  .xl\:inset-y-1 {
+    top: 1rem;
+    bottom: 1rem;
+  }
+
+  .xl\:inset-x-1 {
+    right: 1rem;
+    left: 1rem;
   }
 
   .xl\:inset-y-3 {
@@ -94240,6 +94422,22 @@ video {
 
   .xl\:left-0 {
     left: 0;
+  }
+
+  .xl\:top-1 {
+    top: 1rem;
+  }
+
+  .xl\:right-1 {
+    right: 1rem;
+  }
+
+  .xl\:bottom-1 {
+    bottom: 1rem;
+  }
+
+  .xl\:left-1 {
+    left: 1rem;
   }
 
   .xl\:top-3 {
@@ -110422,6 +110620,13 @@ video {
     left: 0;
   }
 
+  .fullhd\:inset-1 {
+    top: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+  }
+
   .fullhd\:inset-3 {
     top: 3rem;
     right: 3rem;
@@ -110514,6 +110719,16 @@ video {
   .fullhd\:inset-x-0 {
     right: 0;
     left: 0;
+  }
+
+  .fullhd\:inset-y-1 {
+    top: 1rem;
+    bottom: 1rem;
+  }
+
+  .fullhd\:inset-x-1 {
+    right: 1rem;
+    left: 1rem;
   }
 
   .fullhd\:inset-y-3 {
@@ -110650,6 +110865,22 @@ video {
 
   .fullhd\:left-0 {
     left: 0;
+  }
+
+  .fullhd\:top-1 {
+    top: 1rem;
+  }
+
+  .fullhd\:right-1 {
+    right: 1rem;
+  }
+
+  .fullhd\:bottom-1 {
+    bottom: 1rem;
+  }
+
+  .fullhd\:left-1 {
+    left: 1rem;
   }
 
   .fullhd\:top-3 {
@@ -126832,6 +127063,13 @@ video {
     left: 0;
   }
 
+  .wqhd\:inset-1 {
+    top: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+  }
+
   .wqhd\:inset-3 {
     top: 3rem;
     right: 3rem;
@@ -126924,6 +127162,16 @@ video {
   .wqhd\:inset-x-0 {
     right: 0;
     left: 0;
+  }
+
+  .wqhd\:inset-y-1 {
+    top: 1rem;
+    bottom: 1rem;
+  }
+
+  .wqhd\:inset-x-1 {
+    right: 1rem;
+    left: 1rem;
   }
 
   .wqhd\:inset-y-3 {
@@ -127060,6 +127308,22 @@ video {
 
   .wqhd\:left-0 {
     left: 0;
+  }
+
+  .wqhd\:top-1 {
+    top: 1rem;
+  }
+
+  .wqhd\:right-1 {
+    right: 1rem;
+  }
+
+  .wqhd\:bottom-1 {
+    bottom: 1rem;
+  }
+
+  .wqhd\:left-1 {
+    left: 1rem;
   }
 
   .wqhd\:top-3 {
@@ -143242,6 +143506,13 @@ video {
     left: 0;
   }
 
+  .\34k\:inset-1 {
+    top: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+  }
+
   .\34k\:inset-3 {
     top: 3rem;
     right: 3rem;
@@ -143334,6 +143605,16 @@ video {
   .\34k\:inset-x-0 {
     right: 0;
     left: 0;
+  }
+
+  .\34k\:inset-y-1 {
+    top: 1rem;
+    bottom: 1rem;
+  }
+
+  .\34k\:inset-x-1 {
+    right: 1rem;
+    left: 1rem;
   }
 
   .\34k\:inset-y-3 {
@@ -143470,6 +143751,22 @@ video {
 
   .\34k\:left-0 {
     left: 0;
+  }
+
+  .\34k\:top-1 {
+    top: 1rem;
+  }
+
+  .\34k\:right-1 {
+    right: 1rem;
+  }
+
+  .\34k\:bottom-1 {
+    bottom: 1rem;
+  }
+
+  .\34k\:left-1 {
+    left: 1rem;
   }
 
   .\34k\:top-3 {

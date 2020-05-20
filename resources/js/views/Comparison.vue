@@ -25,7 +25,7 @@
                     v-on:removeAllCompare="removeAllCompare"
                 />
 
-                <div class="absolute inset-x-0 bottom-0 xl:m-4 xl:ml-0 xl:w-full xl:overflow-hidden xl:relative xl:top-auto top-3.1" :class="view === 'dashboard' || view === 'about' || view === 'map' ? 'ml-4': ''">
+                <div class="absolute inset-x-0 bottom-0 xl:m-4 xl:ml-0 xl:w-full xl:overflow-hidden xl:relative xl:top-auto" :class="view === 'dashboard' || view === 'about' || view === 'map' ? 'top-0 xl:ml-4': 'top-3.1'">
                     <div class="bg-slab xl:rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col xl:p-4">
                         <div class="absolute top-0 right-0 bottom-0 left-0 pt-2 xl:p-4">
                             <simplebar v-if="view != 'charts' && view != 'dashboard' && view != 'about' && view != 'map'" class="text-xs w-full">
@@ -46,7 +46,7 @@
                                 </div>
                             </simplebar>
 
-                            <keep-alive include="DashboardView,PoliciesView,MapView,StatsChart,LineChart">
+                            <keep-alive include="DashboardView,PoliciesView,MapView,MapViewMobile,StatsChart,StatsChartMobile,LineChart">
                                 <PoliciesView
                                     class="policies-view"
                                     v-if="view === 'response'"
@@ -74,6 +74,13 @@
                                 <StatsChartMobile v-if="view === 'charts' && isMobile" :data="getComparisonData()" :full="true" :active="view === 'charts'" />
                                 <StatsChart v-else-if="view === 'charts'" :data="getComparisonData()" :full="true" :active="view === 'charts'" />
 
+                                <MapViewMobile
+                                    v-if="view === 'map' && isMobile"
+                                    :countries_sorted="countries_sorted"
+                                    :annotations="getAnnotations()"
+                                    :getDaily="getDaily()"
+                                    :database="database"
+                                />
                                 <MapView
                                     v-else-if="view === 'map'"
                                     :countries_sorted="countries_sorted"
@@ -81,6 +88,7 @@
                                     :getDaily="getDaily()"
                                     :database="database"
                                 />
+
 
                             </keep-alive>
                             <div class="h-full relative flex flex-1" v-if="view === 'about'">
@@ -109,6 +117,7 @@
             DailyView, // do not lazy load this so we dont' have the weird detached tab thing
             DashboardView: () => import('./DashboardView'),
             MapView: () => import('./MapView'),
+            MapViewMobile: () => import('./MapViewMobile'),
             // DailyView: () => import('./DailyView'),
             PoliciesView: () => import('./PoliciesView'),
             Sidebar: () => import('../components/Sidebar'),
