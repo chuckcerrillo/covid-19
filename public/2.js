@@ -1628,7 +1628,7 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("Chart Settings")]
+                  [_vm._v("Colours and Scales")]
                 )
               ]
             ),

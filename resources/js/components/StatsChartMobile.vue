@@ -7,7 +7,7 @@
             <div>
                 <div class="flex items-center justify-between mb-2">
                     <div @click="ui.section='metrics'" class="rounded m-2 mx-1 p-2 px-4 text-xs" :class="ui.section==='metrics' ? 'bg-hoverslab': ''">Metrics</div>
-                    <div @click="ui.section='settings'" class="rounded m-2 mx-1 p-2 px-4 text-xs" :class="ui.section==='settings' ? 'bg-hoverslab': ''">Chart Settings</div>
+                    <div @click="ui.section='settings'" class="rounded m-2 mx-1 p-2 px-4 text-xs" :class="ui.section==='settings' ? 'bg-hoverslab': ''">Colours and Scales</div>
                 </div>
                 <div class="w-full">
                     <simplebar class="absolute bg-hoverslab inset-x-0 bottom-0 top-3 z-10 overflow-x-hidden" style="position:absolute">
