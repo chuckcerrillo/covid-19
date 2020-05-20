@@ -1645,647 +1645,609 @@ var render = function() {
                     staticStyle: { position: "absolute" }
                   },
                   [
-                    _vm.ui.section === "metrics"
-                      ? _c("div", [
-                          _c("div", { staticClass: "p-2" }, [
-                            _vm._v("Primary Metric")
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "border border-lightslab bg-slab m-1 cursor-pointer p-2 text-xs"
-                            },
-                            [
-                              _vm.options.controls.primary
-                                ? _c(
-                                    "div",
-                                    {
-                                      on: {
-                                        click: function($event) {
-                                          $event.stopPropagation()
-                                          _vm.ui.primary = !_vm.ui.primary
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _vm._v(
-                                        _vm._s(
-                                          _vm.getFieldName(
-                                            _vm.options.controls.primary
-                                          )
-                                        )
-                                      )
-                                    ]
-                                  )
-                                : _c(
-                                    "div",
-                                    {
-                                      on: {
-                                        click: function($event) {
-                                          $event.stopPropagation()
-                                          _vm.ui.primary = !_vm.ui.primary
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("Select primary metric")]
-                                  )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "p-2" }, [
-                            _vm._v("Secondary Metric")
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "border border-lightslab bg-slab m-1 cursor-pointer p-2 text-xs"
-                            },
-                            [
-                              _vm.options.controls.secondary
-                                ? _c(
-                                    "div",
-                                    {
-                                      on: {
-                                        click: function($event) {
-                                          $event.stopPropagation()
-                                          _vm.ui.secondary = !_vm.ui.secondary
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _vm._v(
-                                        _vm._s(
-                                          _vm.getFieldName(
-                                            _vm.options.controls.secondary
-                                          )
-                                        )
-                                      )
-                                    ]
-                                  )
-                                : _c(
-                                    "div",
-                                    {
-                                      on: {
-                                        click: function($event) {
-                                          $event.stopPropagation()
-                                          _vm.ui.secondary = !_vm.ui.secondary
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("Select secondary metric")]
-                                  )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "p-2" }, [
-                            _vm._v("Time mode")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "p-2" }, [
-                            _c(
-                              "div",
-                              { staticClass: "flex text-xs" },
-                              _vm._l(_vm.graphControls.x, function(row) {
-                                return _c(
+                    _c(
+                      "div",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.ui.section === "metrics",
+                            expression: "ui.section === 'metrics'"
+                          }
+                        ]
+                      },
+                      [
+                        _c("div", { staticClass: "p-2" }, [
+                          _vm._v("Primary Metric")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "border border-lightslab bg-slab m-1 cursor-pointer p-2 text-xs"
+                          },
+                          [
+                            _vm.options.controls.primary
+                              ? _c(
                                   "div",
                                   {
-                                    staticClass:
-                                      "p-2 border border-lightslab m-1 cursor-pointer",
-                                    class: _vm.selectedMode(row[0])
-                                      ? "bg-lightslab"
-                                      : "",
                                     on: {
                                       click: function($event) {
                                         $event.stopPropagation()
-                                        return _vm.selectMode(row[0])
+                                        _vm.ui.primary = !_vm.ui.primary
                                       }
                                     }
                                   },
                                   [
                                     _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(row[1]) +
-                                        "\n                                "
+                                      _vm._s(
+                                        _vm.getFieldName(
+                                          _vm.options.controls.primary
+                                        )
+                                      )
                                     )
                                   ]
                                 )
-                              }),
-                              0
-                            )
-                          ])
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.ui.section === "settings"
-                      ? _c(
+                              : _c(
+                                  "div",
+                                  {
+                                    on: {
+                                      click: function($event) {
+                                        $event.stopPropagation()
+                                        _vm.ui.primary = !_vm.ui.primary
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Select primary metric")]
+                                )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "p-2" }, [
+                          _vm._v("Secondary Metric")
+                        ]),
+                        _vm._v(" "),
+                        _c(
                           "div",
+                          {
+                            staticClass:
+                              "border border-lightslab bg-slab m-1 cursor-pointer p-2 text-xs"
+                          },
                           [
-                            _vm.chartsettings.length == 0
-                              ? _c("div", { staticClass: "p-4 text-xs" }, [
-                                  _vm._v(
-                                    "\n                            " +
-                                      _vm._s(_vm.section) +
-                                      "\n                            Choose countries or states to begin comparing.\n                        "
-                                  )
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm._l(_vm.chartsettings, function(
-                              row,
-                              key,
-                              index
-                            ) {
+                            _vm.options.controls.secondary
+                              ? _c(
+                                  "div",
+                                  {
+                                    on: {
+                                      click: function($event) {
+                                        $event.stopPropagation()
+                                        _vm.ui.secondary = !_vm.ui.secondary
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.getFieldName(
+                                          _vm.options.controls.secondary
+                                        )
+                                      )
+                                    )
+                                  ]
+                                )
+                              : _c(
+                                  "div",
+                                  {
+                                    on: {
+                                      click: function($event) {
+                                        $event.stopPropagation()
+                                        _vm.ui.secondary = !_vm.ui.secondary
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Select secondary metric")]
+                                )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "p-2" }, [
+                          _vm._v("Time mode")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "p-2" }, [
+                          _c(
+                            "div",
+                            { staticClass: "flex text-xs" },
+                            _vm._l(_vm.graphControls.x, function(row) {
                               return _c(
                                 "div",
                                 {
-                                  directives: [
-                                    {
-                                      name: "show",
-                                      rawName: "v-show",
-                                      value: _vm.chartsettings.length > 0,
-                                      expression: "chartsettings.length > 0"
+                                  staticClass:
+                                    "p-2 border border-lightslab m-1 cursor-pointer",
+                                  class: _vm.selectedMode(row[0])
+                                    ? "bg-lightslab"
+                                    : "",
+                                  on: {
+                                    click: function($event) {
+                                      $event.stopPropagation()
+                                      return _vm.selectMode(row[0])
                                     }
-                                  ],
-                                  key: key,
-                                  staticClass: "p-2 w-full"
+                                  }
                                 },
                                 [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "font-bold text-sm p-2 bg-slab-primary rounded-t"
-                                    },
-                                    [_vm._v(_vm._s(row.name))]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "flex text-xs flex-1 bg-slab"
-                                    },
-                                    [
-                                      _c("div", { staticClass: "w-24 p-2" }),
-                                      _vm._v(" "),
-                                      _c("div", { staticClass: "w-32 p-2" }, [
-                                        _vm._v("Primary Metric")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("div", { staticClass: "w-32 p-2" }, [
-                                        _vm._v("Secondary Metric")
-                                      ])
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "flex text-xs items-center flex-1 bg-slab"
-                                    },
-                                    [
-                                      _c("div", { staticClass: "w-24 p-2" }, [
-                                        _vm._v("Colour")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("div", { staticClass: "w-32 p-2" }, [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "p-1 border border-gray-500"
-                                          },
-                                          [
-                                            _c("div", {
-                                              staticClass: "p-2",
-                                              style:
-                                                "background: " +
-                                                row.primary.border,
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  return _vm.toggleColorDropdown(
-                                                    row.name + "primary",
-                                                    $event
-                                                  )
-                                                }
-                                              }
-                                            })
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "p-1 absolute inset-x-0 inset-y-0 z-10 bg-lightslab",
-                                            class:
-                                              _vm.ui.colordropdown.id ==
-                                                row.name + "primary" &&
-                                              _vm.ui.colordropdown.show
-                                                ? ""
-                                                : "hidden"
-                                          },
-                                          [
-                                            _c(
-                                              "div",
-                                              {
-                                                staticClass:
-                                                  "m-1 my-4 text-base font-bold"
-                                              },
-                                              [_vm._v("Pick a colour")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "div",
-                                              {
-                                                staticClass:
-                                                  "flex flex-wrap items-center justify-start"
-                                              },
-                                              _vm._l(
-                                                _vm.options.colors,
-                                                function(color, key, index) {
-                                                  return _c("div", {
-                                                    staticClass:
-                                                      "cursor-pointer w-20 m-1 border border-lightlabel p-4",
-                                                    style:
-                                                      "background: " +
-                                                      color.border,
-                                                    on: {
-                                                      click: function($event) {
-                                                        $event.stopPropagation()
-                                                        return _vm.setColor(
-                                                          row.name,
-                                                          {
-                                                            primary: {
-                                                              color: color.bg,
-                                                              border:
-                                                                color.border
-                                                            }
-                                                          }
-                                                        )
-                                                      }
-                                                    }
-                                                  })
-                                                }
-                                              ),
-                                              0
-                                            )
-                                          ]
-                                        )
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("div", { staticClass: "w-32 p-2" }, [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "p-1 border border-gray-500"
-                                          },
-                                          [
-                                            _c("div", {
-                                              staticClass: "p-2",
-                                              style:
-                                                "background: " +
-                                                row.secondary.border,
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  return _vm.toggleColorDropdown(
-                                                    row.name + "secondary",
-                                                    $event
-                                                  )
-                                                }
-                                              }
-                                            })
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "p-1 absolute inset-x-0 inset-y-0 z-10 bg-lightslab",
-                                            class:
-                                              _vm.ui.colordropdown.id ==
-                                                row.name + "secondary" &&
-                                              _vm.ui.colordropdown.show
-                                                ? ""
-                                                : "hidden"
-                                          },
-                                          [
-                                            _c(
-                                              "div",
-                                              {
-                                                staticClass:
-                                                  "m-1 my-4 text-base font-bold"
-                                              },
-                                              [_vm._v("Pick a colour")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "div",
-                                              {
-                                                staticClass:
-                                                  "flex flex-wrap items-center justify-start"
-                                              },
-                                              _vm._l(
-                                                _vm.options.colors,
-                                                function(color, key, index) {
-                                                  return _c("div", {
-                                                    staticClass:
-                                                      "cursor-pointer w-20 m-1 border border-lightlabel p-2",
-                                                    style:
-                                                      "background: " +
-                                                      color.border,
-                                                    on: {
-                                                      click: function($event) {
-                                                        $event.stopPropagation()
-                                                        return _vm.setColor(
-                                                          row.name,
-                                                          {
-                                                            secondary: {
-                                                              color: color.bg,
-                                                              border:
-                                                                color.border
-                                                            }
-                                                          }
-                                                        )
-                                                      }
-                                                    }
-                                                  })
-                                                }
-                                              ),
-                                              0
-                                            )
-                                          ]
-                                        )
-                                      ])
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "flex text-xs items-center flex-1 bg-slab"
-                                    },
-                                    [
-                                      _c("div", { staticClass: "w-24 p-2" }, [
-                                        _vm._v("Chart Type")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "w-32 flex p-1" },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "cursor-pointer border rounded p-2 px-3 m-1",
-                                              class:
-                                                row.primary.type == "bar"
-                                                  ? "bg-blue-400 border-blue-400 text-white"
-                                                  : "border-gray-500 ",
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  return _vm.addSetting(
-                                                    row.name,
-                                                    { primary: { type: "bar" } }
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Bar")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "cursor-pointer border rounded p-2 px-3 ml-0 m-1",
-                                              class:
-                                                row.primary.type == "line"
-                                                  ? "bg-blue-400 border-blue-400  text-white"
-                                                  : "border-gray-500 ",
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  return _vm.addSetting(
-                                                    row.name,
-                                                    {
-                                                      primary: { type: "line" }
-                                                    }
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Line")]
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "w-32 flex p-1" },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "cursor-pointer border rounded p-2 px-3 m-1",
-                                              class:
-                                                row.secondary.type == "bar"
-                                                  ? "bg-blue-400 border-blue-400 text-white"
-                                                  : "border-gray-500 ",
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  return _vm.addSetting(
-                                                    row.name,
-                                                    {
-                                                      secondary: { type: "bar" }
-                                                    }
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Bar")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "cursor-pointer border rounded p-2 px-3 ml-0 m-1",
-                                              class:
-                                                row.secondary.type == "line"
-                                                  ? "bg-blue-400 border-blue-400  text-white"
-                                                  : "border-gray-500 ",
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  return _vm.addSetting(
-                                                    row.name,
-                                                    {
-                                                      secondary: {
-                                                        type: "line"
-                                                      }
-                                                    }
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Line")]
-                                          )
-                                        ]
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "flex text-xs items-center flex-1 bg-slab rounded-b"
-                                    },
-                                    [
-                                      _c("div", { staticClass: "w-24 p-2" }, [
-                                        _vm._v("Scale Type")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "w-32 flex p-1" },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "cursor-pointer border rounded p-2 m-1",
-                                              class:
-                                                row.primary.scale == "linear"
-                                                  ? "bg-blue-400 border-blue-400 text-white"
-                                                  : "border-gray-500 ",
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  return _vm.addSetting(
-                                                    row.name,
-                                                    {
-                                                      primary: {
-                                                        scale: "linear"
-                                                      }
-                                                    }
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Linear")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "cursor-pointer border rounded p-2 m-1",
-                                              class:
-                                                row.primary.scale ==
-                                                "logarithmic"
-                                                  ? "bg-blue-400 border-blue-400  text-white"
-                                                  : "border-gray-500 ",
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  return _vm.addSetting(
-                                                    row.name,
-                                                    {
-                                                      primary: {
-                                                        scale: "logarithmic"
-                                                      }
-                                                    }
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Log")]
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "w-32 flex p-1" },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "cursor-pointer border rounded p-2 m-1",
-                                              class:
-                                                row.secondary.scale == "linear"
-                                                  ? "bg-blue-400 border-blue-400 text-white"
-                                                  : "border-gray-500 ",
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  return _vm.addSetting(
-                                                    row.name,
-                                                    {
-                                                      secondary: {
-                                                        scale: "linear"
-                                                      }
-                                                    }
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Linear")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "cursor-pointer border rounded p-2 ml-0 m-1",
-                                              class:
-                                                row.secondary.scale ==
-                                                "logarithmic"
-                                                  ? "bg-blue-400 border-blue-400  text-white"
-                                                  : "border-gray-500 ",
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  return _vm.addSetting(
-                                                    row.name,
-                                                    {
-                                                      secondary: {
-                                                        scale: "logarithmic"
-                                                      }
-                                                    }
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Log")]
-                                          )
-                                        ]
-                                      )
-                                    ]
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(row[1]) +
+                                      "\n                                "
                                   )
                                 ]
                               )
-                            })
-                          ],
-                          2
-                        )
-                      : _vm._e()
+                            }),
+                            0
+                          )
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.ui.section === "settings",
+                            expression: "ui.section === 'settings'"
+                          }
+                        ]
+                      },
+                      [
+                        _vm.chartsettings.length == 0
+                          ? _c("div", { staticClass: "p-4 text-xs" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.section) +
+                                  "\n                            Choose countries or states to begin comparing.\n                        "
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm._l(_vm.chartsettings, function(row, key, index) {
+                          return _c(
+                            "div",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.chartsettings.length > 0,
+                                  expression: "chartsettings.length > 0"
+                                }
+                              ],
+                              key: key,
+                              staticClass: "p-2 w-full"
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "font-bold text-sm p-2 bg-slab-primary rounded-t"
+                                },
+                                [_vm._v(_vm._s(row.name))]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "flex text-xs flex-1 bg-slab" },
+                                [
+                                  _c("div", { staticClass: "w-24 p-2" }),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "w-32 p-2" }, [
+                                    _vm._v("Primary Metric")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "w-32 p-2" }, [
+                                    _vm._v("Secondary Metric")
+                                  ])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "flex text-xs items-center flex-1 bg-slab"
+                                },
+                                [
+                                  _c("div", { staticClass: "w-24 p-2" }, [
+                                    _vm._v("Colour")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "w-32 p-2" }, [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "p-1 border border-gray-500"
+                                      },
+                                      [
+                                        _c("div", {
+                                          staticClass: "p-2",
+                                          style:
+                                            "background: " + row.primary.border,
+                                          on: {
+                                            click: function($event) {
+                                              $event.stopPropagation()
+                                              return _vm.toggleColorDropdown(
+                                                row.name + "primary",
+                                                $event
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "p-1 absolute inset-x-0 inset-y-0 z-10 bg-lightslab",
+                                        class:
+                                          _vm.ui.colordropdown.id ==
+                                            row.name + "primary" &&
+                                          _vm.ui.colordropdown.show
+                                            ? ""
+                                            : "hidden"
+                                      },
+                                      [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "m-1 my-4 text-base font-bold"
+                                          },
+                                          [_vm._v("Pick a colour")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "flex flex-wrap items-center justify-start"
+                                          },
+                                          _vm._l(_vm.options.colors, function(
+                                            color,
+                                            key,
+                                            index
+                                          ) {
+                                            return _c("div", {
+                                              staticClass:
+                                                "cursor-pointer w-20 m-1 border border-lightlabel p-4",
+                                              style:
+                                                "background: " + color.border,
+                                              on: {
+                                                click: function($event) {
+                                                  $event.stopPropagation()
+                                                  return _vm.setColor(
+                                                    row.name,
+                                                    {
+                                                      primary: {
+                                                        color: color.bg,
+                                                        border: color.border
+                                                      }
+                                                    }
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          }),
+                                          0
+                                        )
+                                      ]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "w-32 p-2" }, [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "p-1 border border-gray-500"
+                                      },
+                                      [
+                                        _c("div", {
+                                          staticClass: "p-2",
+                                          style:
+                                            "background: " +
+                                            row.secondary.border,
+                                          on: {
+                                            click: function($event) {
+                                              $event.stopPropagation()
+                                              return _vm.toggleColorDropdown(
+                                                row.name + "secondary",
+                                                $event
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "p-1 absolute inset-x-0 inset-y-0 z-10 bg-lightslab",
+                                        class:
+                                          _vm.ui.colordropdown.id ==
+                                            row.name + "secondary" &&
+                                          _vm.ui.colordropdown.show
+                                            ? ""
+                                            : "hidden"
+                                      },
+                                      [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "m-1 my-4 text-base font-bold"
+                                          },
+                                          [_vm._v("Pick a colour")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "flex flex-wrap items-center justify-start"
+                                          },
+                                          _vm._l(_vm.options.colors, function(
+                                            color,
+                                            key,
+                                            index
+                                          ) {
+                                            return _c("div", {
+                                              staticClass:
+                                                "cursor-pointer w-20 m-1 border border-lightlabel p-2",
+                                              style:
+                                                "background: " + color.border,
+                                              on: {
+                                                click: function($event) {
+                                                  $event.stopPropagation()
+                                                  return _vm.setColor(
+                                                    row.name,
+                                                    {
+                                                      secondary: {
+                                                        color: color.bg,
+                                                        border: color.border
+                                                      }
+                                                    }
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          }),
+                                          0
+                                        )
+                                      ]
+                                    )
+                                  ])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "flex text-xs items-center flex-1 bg-slab"
+                                },
+                                [
+                                  _c("div", { staticClass: "w-24 p-2" }, [
+                                    _vm._v("Chart Type")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "w-32 flex p-1" }, [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "cursor-pointer border rounded p-2 px-3 m-1",
+                                        class:
+                                          row.primary.type == "bar"
+                                            ? "bg-blue-400 border-blue-400 text-white"
+                                            : "border-gray-500 ",
+                                        on: {
+                                          click: function($event) {
+                                            $event.stopPropagation()
+                                            return _vm.addSetting(row.name, {
+                                              primary: { type: "bar" }
+                                            })
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Bar")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "cursor-pointer border rounded p-2 px-3 ml-0 m-1",
+                                        class:
+                                          row.primary.type == "line"
+                                            ? "bg-blue-400 border-blue-400  text-white"
+                                            : "border-gray-500 ",
+                                        on: {
+                                          click: function($event) {
+                                            $event.stopPropagation()
+                                            return _vm.addSetting(row.name, {
+                                              primary: { type: "line" }
+                                            })
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Line")]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "w-32 flex p-1" }, [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "cursor-pointer border rounded p-2 px-3 m-1",
+                                        class:
+                                          row.secondary.type == "bar"
+                                            ? "bg-blue-400 border-blue-400 text-white"
+                                            : "border-gray-500 ",
+                                        on: {
+                                          click: function($event) {
+                                            $event.stopPropagation()
+                                            return _vm.addSetting(row.name, {
+                                              secondary: { type: "bar" }
+                                            })
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Bar")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "cursor-pointer border rounded p-2 px-3 ml-0 m-1",
+                                        class:
+                                          row.secondary.type == "line"
+                                            ? "bg-blue-400 border-blue-400  text-white"
+                                            : "border-gray-500 ",
+                                        on: {
+                                          click: function($event) {
+                                            $event.stopPropagation()
+                                            return _vm.addSetting(row.name, {
+                                              secondary: { type: "line" }
+                                            })
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Line")]
+                                    )
+                                  ])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "flex text-xs items-center flex-1 bg-slab rounded-b"
+                                },
+                                [
+                                  _c("div", { staticClass: "w-24 p-2" }, [
+                                    _vm._v("Scale Type")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "w-32 flex p-1" }, [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "cursor-pointer border rounded p-2 m-1",
+                                        class:
+                                          row.primary.scale == "linear"
+                                            ? "bg-blue-400 border-blue-400 text-white"
+                                            : "border-gray-500 ",
+                                        on: {
+                                          click: function($event) {
+                                            $event.stopPropagation()
+                                            return _vm.addSetting(row.name, {
+                                              primary: { scale: "linear" }
+                                            })
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Linear")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "cursor-pointer border rounded p-2 m-1",
+                                        class:
+                                          row.primary.scale == "logarithmic"
+                                            ? "bg-blue-400 border-blue-400  text-white"
+                                            : "border-gray-500 ",
+                                        on: {
+                                          click: function($event) {
+                                            $event.stopPropagation()
+                                            return _vm.addSetting(row.name, {
+                                              primary: { scale: "logarithmic" }
+                                            })
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Log")]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "w-32 flex p-1" }, [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "cursor-pointer border rounded p-2 m-1",
+                                        class:
+                                          row.secondary.scale == "linear"
+                                            ? "bg-blue-400 border-blue-400 text-white"
+                                            : "border-gray-500 ",
+                                        on: {
+                                          click: function($event) {
+                                            $event.stopPropagation()
+                                            return _vm.addSetting(row.name, {
+                                              secondary: { scale: "linear" }
+                                            })
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Linear")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "cursor-pointer border rounded p-2 ml-0 m-1",
+                                        class:
+                                          row.secondary.scale == "logarithmic"
+                                            ? "bg-blue-400 border-blue-400  text-white"
+                                            : "border-gray-500 ",
+                                        on: {
+                                          click: function($event) {
+                                            $event.stopPropagation()
+                                            return _vm.addSetting(row.name, {
+                                              secondary: {
+                                                scale: "logarithmic"
+                                              }
+                                            })
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Log")]
+                                    )
+                                  ])
+                                ]
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    )
                   ]
                 )
               ],
