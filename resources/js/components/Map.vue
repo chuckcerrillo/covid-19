@@ -716,10 +716,10 @@
                             this.map.getSource(x).setData(this.geoJson(x));
                     }
                 },
-                location(newvalue)
-                {
-                    map.setCenter([newvalue.longitude, newvalue.latitude]);
-                }
+            },
+            location(newvalue)
+            {
+                map.setCenter([newvalue.longitude, newvalue.latitude]);
             }
         }
     }
