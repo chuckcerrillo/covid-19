@@ -144,6 +144,7 @@
             });
             this.map = map;
             map.setZoom(this.options.zoom);
+
             map.setCenter([6.679687499992383, 34.597041516152586]);
 
 
@@ -176,6 +177,12 @@
             map.on('load',function(){
                 self.mapReady = true;
                 self.setLayers(self.layers);
+                if(self.location)
+                {
+                    console.log('Set location to');
+                    console.log(self.location);
+                    map.setCenter([self.location.longitude, self.location.latitude]);
+                }
             })
         },
         methods:

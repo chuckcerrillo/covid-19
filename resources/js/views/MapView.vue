@@ -18,6 +18,7 @@
                                     :rankings="ajax.rankings"
                                     :layers="layers"
                                     :settings="{interactive:true,zoom:1.5,stops: options.stops}"
+                                    :location="location"
                                 />
                             </keep-alive>
                         </div>
@@ -118,7 +119,8 @@
             'annotations',
             'countries_sorted',
             'getDaily',
-            'database'
+            'database',
+            'location',
         ],
         data()
         {
