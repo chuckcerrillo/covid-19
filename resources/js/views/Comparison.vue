@@ -4,7 +4,8 @@
             <div></div>
             <div class="bg-slab rounded p-4 px-8">
                 <div class="font-bold text-2xl text-white p-2 text-center">Loading data</div>
-                <div class="p-2 mb-4 text-center"><img src="/img/loader.svg"></div>
+<!--                <div class="p-2 mb-4 text-center"><img src="/img/loader.svg"></div>-->
+                <div class="p-2 mb-4 text-center"><img src="/img/loading.gif"></div>
                 <div class="flex items-center text-xs">
                     <div class="w-32">Country list</div>
                     <div class="text-right text-lightlabel" v-if="countriesStatus !== 'success'">loading</div>
