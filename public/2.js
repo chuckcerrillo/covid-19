@@ -210,6 +210,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2610,7 +2613,11 @@ var render = function() {
                         options: _vm.dataset.options
                       }
                     })
-                  : _vm._e(),
+                  : _c("div", { staticClass: "p-4" }, [
+                      _vm._v(
+                        "\n                Select countries to compare.\n            "
+                      )
+                    ]),
                 _vm._v(" "),
                 _vm.settings.controls.menu && false
                   ? _c(

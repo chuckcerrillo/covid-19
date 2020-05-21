@@ -171,6 +171,9 @@
                            class="bg-heading rounded absolute top-0 bottom-0 right-0 left-0 m-2 p-2"
                            v-if="active && data.length > 0"
                 />
+                <div v-else class="p-4">
+                    Select countries to compare.
+                </div>
                 <div class="text-xs absolute left-0 right-0 bottom-0 h-12 flex items-start justify-between" v-if="settings.controls.menu && false">
                     <div class="flex items-center justify-start">
                         <div class="mx-2">Time mode</div>

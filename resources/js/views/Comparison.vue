@@ -243,6 +243,7 @@
                 },
                 ajax_loading: {
                     oxford: false,
+                    final: false,
                 },
                 user: {
                     location: false,
@@ -1133,7 +1134,16 @@
             },
             loaded()
             {
-                if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success' && this.ajax_loading.oxford)
+                console.log(this.ajax_loading);
+                if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success' && this.ajax_loading.oxford && !this.ajax_loading.final)
+                {
+                    var self = this;
+                    setTimeout(function(){
+                        self.ajax_loading.final = true;
+                        self.loaded = true;
+                    },100);
+                }
+                else if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success' && this.ajax_loading.oxford && this.ajax_loading.final)
                 {
                     return true;
                 }
