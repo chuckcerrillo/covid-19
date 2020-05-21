@@ -32,6 +32,12 @@
             <div class="m-2 text-2xl font-bold">Changelog:</div>
             <simplebar class="p-2 rounded bg-slab-primary absolute inset-x-0" style="position:absolute; bottom: 1rem; top: 6rem;">
                 <div class="m2 text-sm">
+                    <div class="font-bold">2020-05-15</div>
+                    <ul class="list-disc ml-8 mr-4">
+                        <li>All new mobile layout. The comparison tool is now viewable in mobile. It's currently sharing the same back-end as the desktop version so there's still room for performance improvements.</li>
+                        <li>Fixed issues with the date slider. At times of day the slider is initialising with the wrong date range.</li>
+                        <li>Added a new loading screen.</li>
+                    </ul>
 
                     <div class="font-bold">2020-05-15</div>
                     <ul class="list-disc ml-8 mr-4">
