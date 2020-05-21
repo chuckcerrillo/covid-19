@@ -77,26 +77,34 @@
                                      :class="index % 2 == 1 ? 'bg-slab-primary' : ''">
 
                                     <div class="w-full text-xs xl:text-base">
-
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">New cases per day</div>
                                         <div class="p-2 h-24 xl:h-32 border-b border-lightslab">
                                             <MiniChart v-if="active && graphReady" :data="dataset(key)" :minDate="range.start" :maxDate="range.end" :active="active" />
                                         </div>
+
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">Confirmed cases</div>
                                         <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('confirmed',row.latest.c) ? 'bg-darkslab':''">
                                             {{ isNaN(row.latest.c) ? 0 : row.latest.c | numeralFormat}}<br />
                                             <span class="text-xs text-red-400" v-if="row.latest.percent.c > 0">(+{{row.latest.percent.c| numeralFormat('0.0%')}})</span>
                                             <span class="text-xs text-green-400" v-else>({{row.latest.percent.c | numeralFormat('0.0%')}})</span>
                                         </div>
+
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">Deaths</div>
                                         <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('deaths',row.latest.d) ? 'bg-darkslab':''">
                                             {{ isNaN(row.latest.d) ? 0 : row.latest.d | numeralFormat}}<br />
                                             <span class="text-xs text-red-400" v-if="row.latest.percent.d > 0">(+{{row.latest.percent.d| numeralFormat('0.0%')}})</span>
                                             <span class="text-xs text-green-400" v-else>({{row.latest.percent.d | numeralFormat('0.0%')}})</span>
                                         </div>
+
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">Recovered</div>
                                         <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('recovered',row.latest.r) ? 'bg-darkslab':''">
                                             {{ isNaN(row.latest.r) ? 0 : row.latest.r | numeralFormat}}<br />
                                             <span class="text-xs text-green-400" v-if="row.latest.percent.r > 0">(+{{row.latest.percent.r | numeralFormat('0.0%')}})</span>
                                             <span class="text-xs text-green-400" v-else-if="row.latest.percent.r == 0">({{row.latest.percent.r | numeralFormat('0.0%')}})</span>
                                             <span class="text-xs text-red-400" v-else>({{row.latest.percent.r | numeralFormat('0.0%')}})</span>
                                         </div>
+
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">Active</div>
                                         <div class="px-4 py-2 h-24 border-b border-lightslab" :class="getBiggestValue('active',row.latest.a) ? 'bg-darkslab':''">
                                             {{ (isNaN(row.latest.a) ? 0 : row.latest.a) | numeralFormat}}<br />
                                             <span class="text-xs text-green-400" v-if="row.latest.delta.a < 0">({{row.latest.delta.a| numeralFormat}})</span>
@@ -104,41 +112,61 @@
                                             <span class="text-xs text-red-400" v-else>(+{{row.latest.delta.a| numeralFormat}})</span><br />
                                             <span class="text-xs text-blue-400">{{row.latest.a / row.latest.population | numeralFormat('0.000%')}} of total population</span>
                                         </div>
+
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">New cases</div>
                                         <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('confirmedDelta',row.latest.delta.c) ? 'bg-darkslab':''">
                                             {{row.latest.delta.c| numeralFormat}}
                                         </div>
+
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">New deaths</div>
                                         <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('deathsDelta',row.latest.delta.d) ? 'bg-darkslab':''">
                                             {{row.latest.delta.d| numeralFormat}}
                                         </div>
+
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">New recovered</div>
                                         <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('recoveredDelta',row.latest.delta.r) ? 'bg-darkslab':''">
                                             {{row.latest.delta.r| numeralFormat}}
                                         </div>
+
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">Population</div>
                                         <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('population',row.population) ? 'bg-darkslab':''">
                                             {{row.population | numeralFormat('0,000')}}
                                         </div>
+
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">Confirmed per 1M pop</div>
                                         <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('confirmedCapita',row.latest.capita.c) ? 'bg-darkslab':''">
                                             {{row.latest.capita.c | numeralFormat('0,000.00')}}
                                         </div>
+
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">Deaths per 1M pop</div>
                                         <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('deathsCapita',row.latest.capita.d) ? 'bg-darkslab':''">
                                             {{row.latest.capita.d | numeralFormat('0,000.00')}}
                                         </div>
+
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">Recovered per 1M pop</div>
                                         <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('recoveredCapita',row.latest.capita.r) ? 'bg-darkslab':''">
                                             {{row.latest.capita.r | numeralFormat('0,000.00')}}
                                         </div>
+
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">5 days average</div>
                                         <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('confirmedAverage',row.latest.average.c) ? 'bg-darkslab':''">
                                             {{row.latest.average.c | numeralFormat('0,000.0')}}
                                         </div>
+
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">Growth factor</div>
                                         <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('confirmedGrowth',row.latest.growth.c) ? 'bg-darkslab':''">
                                             <span class="text-red-400" v-if="row.latest.growth.c > 1">{{row.latest.growth.c | numeralFormat('0.00')}}</span>
                                             <span class="text-green-400" v-else>{{row.latest.growth.c | numeralFormat('0.00')}}</span>
                                         </div>
+
+                                        <div class="p-2 xl:hidden font-bold text-lightlabel">Stringency index</div>
                                         <div class="px-4 py-2 h-12" :class="getBiggestValue('stringencyIndex',row.latest.stringencyindex) ? 'bg-darkslab':''">
                                             {{row.latest.stringencyindex | numeralFormat('0.00')}}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="border-l border-lightslab h-240"></div>
+                            <div class="border-l border-lightslab h-364 xl:h-240"></div>
                         </div>
                     </div>
                 </simplebar>
@@ -209,6 +237,16 @@
             setTimeout(function(){
                 self.graphReady = true;
             },200)
+        },
+        mounted()
+        {
+            console.log('data');
+            console.log(this.data);
+            if(this.data && this.data.length > 0)
+            {
+                this.range.end = _.clone(this.data[0].daily[this.data[0].daily.length - 1].date);
+                this.range.start = moment(this.range.end).subtract(30,'days').format('YYYY-MM-DD');
+            }
         },
         methods: {
             prepare()

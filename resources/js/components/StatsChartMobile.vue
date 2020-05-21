@@ -3,7 +3,7 @@
     <div class="absolute top-0 left-0 right-0 bottom-4" v-on:click="resetDropdowns()">
         <!--        <div class="absolute top-0 right-0 bottom-0 left-0 bg-red-400"></div>-->
 
-        <div class="absolute inset-x-0 top-0 bottom-3 bg-slab flex items-start" :class="ui.settings ? 'z-10':'w-64 z-0 hidden'" @click.stop="false">
+        <div class="absolute inset-x-0 top-0 bottom-3 bg-slab flex items-start" :class="ui.settings ? 'z-10':'w-64 z-0 hidden'" @click.stop="">
             <div>
                 <div class="flex items-center justify-between mb-2">
                     <div @click="ui.section='metrics'" class="rounded m-2 mx-1 p-2 px-4 text-xs" :class="ui.section==='metrics' ? 'bg-hoverslab': ''">Metrics</div>
@@ -41,6 +41,7 @@
                             <div v-if="chartsettings.length == 0" class="p-4 text-xs">
                                 Choose countries or states to begin comparing.
                             </div>
+
                             <div v-show="chartsettings.length > 0" v-for="(row,key,index) in chartsettings" :key="key" class="p-2 w-full">
                                 <div class="font-bold text-sm p-2 bg-slab-primary rounded-t">{{row.name}}</div>
 
@@ -170,6 +171,9 @@
                            class="bg-heading rounded absolute top-0 bottom-0 right-0 left-0 m-2 p-2"
                            v-if="active && data.length > 0"
                 />
+                <div v-else class="p-4">
+                    Select countries to compare.
+                </div>
                 <div class="text-xs absolute left-0 right-0 bottom-0 h-12 flex items-start justify-between" v-if="settings.controls.menu && false">
                     <div class="flex items-center justify-start">
                         <div class="mx-2">Time mode</div>
@@ -356,6 +360,35 @@
                 stats: {}
             }
         },
+        mounted()
+        {
+            if(this.config)
+            {
+                if(this.config.mode)
+                {
+                    this.options.mode = this.config.mode;
+                }
+
+                if(this.config.settings)
+                {
+                    console.log('chart settings is not empty');
+                    console.log(this.config.settings);
+                    this.options.chartsettings = _.cloneDeep(this.config.settings);
+                }
+
+                if(this.config.fields)
+                {
+                    if(this.config.fields.primary)
+                    {
+                        this.ui.primary = this.config.fields.primary;
+                    }
+                    if(this.config.fields.secondary)
+                    {
+                        this.ui.primary = this.config.fields.secondary;
+                    }
+                }
+            }
+        },
         props: [
             'data',
             'full',
@@ -500,6 +533,8 @@
                 }
 
                 this.options.chartsettings = data;
+
+                this.$emit('updateChartSettings',_.cloneDeep(this.options.chartsettings));
             },
             getFieldName(key)
             {
@@ -526,6 +561,7 @@
             selectMode(key)
             {
                 this.options.mode = key;
+                this.$emit('updateChartMode',_.clone(this.options.mode));
             },
             selectedScaleType(key)
             {
@@ -546,6 +582,8 @@
                     this.options.controls[level] = key;
                 }
                 this.ui[level] = false;
+
+                this.$emit('updateChartFields',{primary:this.options.controls.primary,secondary:this.options.controls.secondary});
             },
             selectedField(key,level)
             {
@@ -586,18 +624,31 @@
             chartsettings()
             {
                 var data = [];
-                for(var x in this.data)
+                if(!this.config.settings)
                 {
-                    this.addSetting(this.data[x].name.full);
+                    for(var x in this.data)
+                    {
+                        this.addSetting(this.data[x].name.full);
+                    }
+                }
+                else
+                {
+                    this.options.chartsettings = this.config.settings;
                 }
                 return this.options.chartsettings;
             },
             settings()
             {
-                return {...this.options, ...this.config};
+                return this.options;
             },
             xAxis()
             {
+                if(this.config && this.config.mode)
+                {
+                    this.options.mode = this.config.mode;
+                }
+                console.log('Xaxis');
+                console.log(this.options.mode)
                 return [
                     this.options.mode
                 ];
@@ -606,6 +657,16 @@
             {
                 var data = [];
 
+                if(this.config && this.config.fields)
+                {
+                    if(this.config.fields.primary)
+                        this.options.controls.primary = this.config.fields.primary;
+                    if(this.config.fields.secondary)
+                        this.options.controls.secondary = this.config.fields.secondary;
+                }
+                console.log('Yaxis');
+                console.log(this.config.fields);
+                console.log(this.options.controls)
                 if(this.options.controls.primary)
                     data.push(this.options.controls.primary);
                 if(this.options.controls.secondary)
@@ -852,9 +913,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.clone(content[x].confirmed),
                                     yAxisID: 'y-confirmed'
@@ -900,9 +961,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.clone(content[x].deaths),
                                     yAxisID: 'y-deaths'
@@ -947,9 +1008,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.clone(content[x].recovered),
                                     yAxisID: 'y-recovered'
@@ -994,9 +1055,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.clone(content[x].active),
                                     yAxisID: 'y-active'
@@ -1041,9 +1102,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.clone(content[x].deltaConfirmed),
                                     yAxisID: 'y-deltaConfirmed'
@@ -1088,9 +1149,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.clone(content[x].deltaDeaths),
                                     yAxisID: 'y-deltaDeaths'
@@ -1135,9 +1196,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.clone(content[x].deltaRecovered),
                                     yAxisID: 'y-deltaRecovered'
@@ -1182,9 +1243,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.clone(content[x].average),
                                     yAxisID: 'y-average'
@@ -1229,9 +1290,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.clone(content[x].growthFactor),
                                     yAxisID: 'y-growthFactor'
@@ -1448,9 +1509,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.cloneDeep(content[x].confirmed),
                                     yAxisID: 'y-confirmed'
@@ -1496,9 +1557,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.cloneDeep(content[x].deaths),
                                     yAxisID: 'y-deaths'
@@ -1543,9 +1604,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.cloneDeep(content[x].recovered),
                                     yAxisID: 'y-recovered'
@@ -1590,9 +1651,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.cloneDeep(content[x].active),
                                     yAxisID: 'y-active'
@@ -1637,9 +1698,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.cloneDeep(content[x].deltaConfirmed),
                                     yAxisID: 'y-deltaConfirmed'
@@ -1684,9 +1745,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.cloneDeep(content[x].deltaDeaths),
                                     yAxisID: 'y-deltaDeaths'
@@ -1731,9 +1792,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.cloneDeep(content[x].deltaRecovered),
                                     yAxisID: 'y-deltaRecovered'
@@ -1778,9 +1839,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.cloneDeep(content[x].average),
                                     yAxisID: 'y-average'
@@ -1825,9 +1886,9 @@
                                     type: this.options.chartsettings[x][metric].type,
                                     backgroundColor: this.options.chartsettings[x][metric].color,
                                     borderColor: this.options.chartsettings[x][metric].border,
-                                    borderDash: [10, 5],
-                                    borderWidth: 2,
-                                    pointRadius: 5,
+
+                                    borderWidth: 1,
+                                    pointRadius: 0,
                                     fill: false,
                                     data: _.cloneDeep(content[x].growthFactor),
                                     yAxisID: 'y-growthFactor'

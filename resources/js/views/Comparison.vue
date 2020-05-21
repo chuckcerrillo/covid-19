@@ -74,7 +74,7 @@
                                 </div>
                             </simplebar>
 
-                            <keep-alive include="DashboardView,PoliciesView,MapView,MapViewMobile,StatsChart,StatsChartMobile,LineChart">
+                            <keep-alive include="DashboardView,PoliciesView,MapView,MapViewMobile,StatsChart,StatsChartMobile,LineChart,LineChartMobile">
                                 <PoliciesView
                                     class="policies-view"
                                     v-if="view === 'response'"
@@ -99,8 +99,26 @@
                                 />
 
 
-                                <StatsChartMobile v-if="view === 'charts' && isMobile" :data="getComparisonData()" :full="true" :active="view === 'charts'" />
-                                <StatsChart v-else-if="view === 'charts'" :data="getComparisonData()" :full="true" :active="view === 'charts'" />
+                                <StatsChartMobile
+                                    v-if="view === 'charts' && isMobile"
+                                    :data="getComparisonData()"
+                                    :config="ui.chart"
+                                    :full="true"
+                                    :active="view === 'charts'"
+                                    v-on:updateChartSettings="updateChartSettings"
+                                    v-on:updateChartMode="updateChartMode"
+                                    v-on:updateChartFields="updateChartFields"
+                                />
+                                <StatsChart
+                                    v-else-if="view === 'charts'"
+                                    :data="getComparisonData()"
+                                    :config="ui.chart"
+                                    :full="true"
+                                    :active="view === 'charts'"
+                                    v-on:updateChartSettings="updateChartSettings"
+                                    v-on:updateChartMode="updateChartMode"
+                                    v-on:updateChartFields="updateChartFields"
+                                />
 
                                 <MapViewMobile
                                     v-if="view === 'map' && isMobile"
@@ -214,27 +232,57 @@
                             'order' : 'desc',
                         }
                     },
-                    'chart' : {}
+                    'chart' : {
+                        settings: false,
+                        mode: false,
+                        fields: false,
+                    }
                 },
                 layers : {
                     confirmed: false
                 },
                 ajax_loading: {
                     oxford: false,
+                    final: false,
                 },
                 user: {
                     location: false,
-                }
+                },
             }
         },
         methods:{
+            updateChartSettings(settings)
+            {
+                this.ui.chart.settings = _.clone(settings);
+
+                console.log('new chart settings');
+                console.log(this.ui.chart);
+            },
+            updateChartMode(mode)
+            {
+                this.ui.chart.mode = _.clone(mode);
+                console.log('new chart settings');
+                console.log(this.ui.chart);
+            },
+            updateChartFields(fields)
+            {
+                this.ui.chart.fields = _.clone(fields);
+                console.log('new chart settings');
+                console.log(this.ui.chart);
+            },
             processGovtResponse()
             {
+                var self = this;
                 for (var x in this.countries)
                 {
                     var country = _.clone(this.countries[x].name);
                     var response = _.clone(this.getGovtResponse(country));
-                    this.database.processed.oxford[country] = response;
+
+                    setTimeout(function(){
+                        self.database.processed.oxford[country] = response;
+                    },1)
+
+
                 }
             },
             getGovtResponse(country)
@@ -1086,7 +1134,16 @@
             },
             loaded()
             {
-                if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success' && this.ajax_loading.oxford)
+                console.log(this.ajax_loading);
+                if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success' && this.ajax_loading.oxford && !this.ajax_loading.final)
+                {
+                    var self = this;
+                    setTimeout(function(){
+                        self.ajax_loading.final = true;
+                        self.loaded = true;
+                    },100);
+                }
+                else if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success' && this.ajax_loading.oxford && this.ajax_loading.final)
                 {
                     return true;
                 }
