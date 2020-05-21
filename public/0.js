@@ -281,6 +281,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -449,6 +450,13 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return data;
+    },
+    isMobile: function isMobile() {
+      if (screen.width <= 760) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
   watch: {
@@ -770,7 +778,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".inner-scrollbar .simplebar-track.simplebar-horizontal {\n  visibility: hidden !important;\n}\r\n", ""]);
+exports.push([module.i, ".inner-scrollbar .simplebar-track.simplebar-horizontal {\n  visibility: hidden !important;\n}\n", ""]);
 
 // exports
 
@@ -827,7 +835,9 @@ var render = function() {
       "div",
       { staticClass: "m-2 xl:m-4 py-2 pb-4 px-4 bg-slab-primary rounded" },
       [
-        _c("span", { staticClass: "font-bold" }, [_vm._v("Select date")]),
+        _c("span", { staticClass: "font-bold" }, [
+          _vm._v("Select date " + _vm._s(_vm.isMobile))
+        ]),
         _vm._v(" "),
         _c(
           "v-date-picker",
@@ -918,7 +928,11 @@ var render = function() {
               {
                 staticClass:
                   "flex justify-start rounded-t z-10 relative bg-slab-primary",
-                staticStyle: { "min-width": "75rem" }
+                style:
+                  "min-width: " +
+                  (_vm.isMobile
+                    ? 0.0625 + _vm.data.length * 16 + "rem"
+                    : 9 + _vm.data.length * 16 + "rem")
               },
               [
                 _c(
@@ -988,7 +1002,8 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("div", {
-                  staticClass: "px-4 py-2 xl:h-36 border-l border-lightslab"
+                  staticClass:
+                    "hidden xl:block px-4 py-2 xl:h-36 border-l border-lightslab"
                 })
               ],
               2
@@ -999,8 +1014,12 @@ var render = function() {
               {
                 staticClass:
                   "inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0 top-5.85 xl:top-9",
-                staticStyle: { "min-width": "75rem", position: "absolute" },
-                style: "min-width: " + (9 + _vm.data.length * 16) + "em",
+                staticStyle: { position: "absolute" },
+                style:
+                  "min-width: " +
+                  (_vm.isMobile
+                    ? 0.0625 + _vm.data.length * 16 + "rem"
+                    : 9 + _vm.data.length * 16 + "rem"),
                 attrs: { "data-simplebar-auto-hide": "false" }
               },
               [

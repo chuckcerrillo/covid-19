@@ -15,12 +15,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+//
 //
 //
 //
@@ -331,6 +326,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       stats: {}
     };
   },
+  mounted: function mounted() {
+    if (this.config) {
+      if (this.config.mode) {
+        this.options.mode = this.config.mode;
+      }
+
+      if (this.config.settings) {
+        console.log('chart settings is not empty');
+        console.log(this.config.settings);
+        this.options.chartsettings = _.cloneDeep(this.config.settings);
+      }
+
+      if (this.config.fields) {
+        if (this.config.fields.primary) {
+          this.ui.primary = this.config.fields.primary;
+        }
+
+        if (this.config.fields.secondary) {
+          this.ui.primary = this.config.fields.secondary;
+        }
+      }
+    }
+  },
   props: ['data', 'full', 'config', 'active'],
   methods: {
     setColor: function setColor(name, color) {
@@ -449,6 +467,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       this.options.chartsettings = data;
+      this.$emit('updateChartSettings', _.cloneDeep(this.options.chartsettings));
     },
     getFieldName: function getFieldName(key) {
       if (key) {
@@ -470,6 +489,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     selectMode: function selectMode(key) {
       this.options.mode = key;
+      this.$emit('updateChartMode', _.clone(this.options.mode));
     },
     selectedScaleType: function selectedScaleType(key) {
       if (key == this.options.controls.scaleType) {
@@ -487,6 +507,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       this.ui[level] = false;
+      this.$emit('updateChartFields', {
+        primary: this.options.controls.primary,
+        secondary: this.options.controls.secondary
+      });
     },
     selectedField: function selectedField(key, level) {
       if (level) {
@@ -519,20 +543,39 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     chartsettings: function chartsettings() {
       var data = [];
 
-      for (var x in this.data) {
-        this.addSetting(this.data[x].name.full);
+      if (!this.config.settings) {
+        for (var x in this.data) {
+          this.addSetting(this.data[x].name.full);
+        }
+      } else {
+        this.options.chartsettings = this.config.settings;
       }
 
       return this.options.chartsettings;
     },
     settings: function settings() {
-      return _objectSpread({}, this.options, {}, this.config);
+      return this.options;
     },
     xAxis: function xAxis() {
+      if (this.config && this.config.mode) {
+        this.options.mode = this.config.mode;
+      }
+
+      console.log('Xaxis');
+      console.log(this.options.mode);
       return [this.options.mode];
     },
     yAxis: function yAxis() {
       var data = [];
+
+      if (this.config && this.config.fields) {
+        if (this.config.fields.primary) this.options.controls.primary = this.config.fields.primary;
+        if (this.config.fields.secondary) this.options.controls.secondary = this.config.fields.secondary;
+      }
+
+      console.log('Yaxis');
+      console.log(this.config.fields);
+      console.log(this.options.controls);
       if (this.options.controls.primary) data.push(this.options.controls.primary);
       if (this.options.controls.secondary) data.push(this.options.controls.secondary);
       return data;
@@ -737,9 +780,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.clone(content[x].confirmed),
               yAxisID: 'y-confirmed'
@@ -774,9 +816,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.clone(content[x].deaths),
               yAxisID: 'y-deaths'
@@ -811,9 +852,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.clone(content[x].recovered),
               yAxisID: 'y-recovered'
@@ -848,9 +888,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.clone(content[x].active),
               yAxisID: 'y-active'
@@ -885,9 +924,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.clone(content[x].deltaConfirmed),
               yAxisID: 'y-deltaConfirmed'
@@ -922,9 +960,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.clone(content[x].deltaDeaths),
               yAxisID: 'y-deltaDeaths'
@@ -959,9 +996,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.clone(content[x].deltaRecovered),
               yAxisID: 'y-deltaRecovered'
@@ -996,9 +1032,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.clone(content[x].average),
               yAxisID: 'y-average'
@@ -1033,9 +1068,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.clone(content[x].growthFactor),
               yAxisID: 'y-growthFactor'
@@ -1216,9 +1250,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.cloneDeep(content[x].confirmed),
               yAxisID: 'y-confirmed'
@@ -1253,9 +1286,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.cloneDeep(content[x].deaths),
               yAxisID: 'y-deaths'
@@ -1290,9 +1322,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.cloneDeep(content[x].recovered),
               yAxisID: 'y-recovered'
@@ -1327,9 +1358,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.cloneDeep(content[x].active),
               yAxisID: 'y-active'
@@ -1364,9 +1394,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.cloneDeep(content[x].deltaConfirmed),
               yAxisID: 'y-deltaConfirmed'
@@ -1401,9 +1430,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.cloneDeep(content[x].deltaDeaths),
               yAxisID: 'y-deltaDeaths'
@@ -1438,9 +1466,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.cloneDeep(content[x].deltaRecovered),
               yAxisID: 'y-deltaRecovered'
@@ -1475,9 +1502,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.cloneDeep(content[x].average),
               yAxisID: 'y-average'
@@ -1512,9 +1538,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: this.options.chartsettings[x][metric].type,
               backgroundColor: this.options.chartsettings[x][metric].color,
               borderColor: this.options.chartsettings[x][metric].border,
-              borderDash: [10, 5],
-              borderWidth: 2,
-              pointRadius: 5,
+              borderWidth: 1,
+              pointRadius: 0,
               fill: false,
               data: _.cloneDeep(content[x].growthFactor),
               yAxisID: 'y-growthFactor'
@@ -1592,7 +1617,6 @@ var render = function() {
           on: {
             click: function($event) {
               $event.stopPropagation()
-              return false($event)
             }
           }
         },

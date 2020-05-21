@@ -1,7 +1,7 @@
 <template>
     <div class="h-full">
         <div class="m-2 xl:m-4 py-2 pb-4 px-4 bg-slab-primary rounded">
-            <span class="font-bold">Select date</span>
+            <span class="font-bold">Select date {{isMobile}}</span>
             <v-date-picker
                 v-model="date"
                 :min-date="options.date.min"
@@ -21,7 +21,7 @@
         </div>
         <div class="absolute top-5.5 left-0 right-0 bottom-4.25 xl:bottom-0 m-2 xl:m-4" style="position:absolute; top: 5.5rem">
             <simplebar data-simplebar-auto-hide="false" class="w-full h-full">
-                <div class="flex justify-start rounded-t z-10 relative bg-slab-primary" style="min-width: 75rem;">
+                <div class="flex justify-start rounded-t z-10 relative bg-slab-primary" :style="'min-width: ' + (isMobile ?  (0.0625 + (data.length * 16)) + 'rem' : 9 + (data.length * 16) + 'rem')">
                     <div class="hidden xl:block bg-slab-primary border-lightslab w-36 text-xs font-bold flex-shrink-0">
                         <div class="px-4 py-2 h-20"></div>
                         <div class="px-4 py-2">Stringency Index</div>
@@ -42,9 +42,10 @@
                             </div>
                         </div>
                      </div>
-                    <div class="px-4 py-2 xl:h-36 border-l border-lightslab"></div>
+                    <div class="hidden xl:block px-4 py-2 xl:h-36 border-l border-lightslab"></div>
                 </div>
-                <simplebar data-simplebar-auto-hide="false" class="inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0 top-5.85 xl:top-9" style="min-width: 75rem; position: absolute;" :style="'min-width: ' + (9 + (data.length * 16)) + 'em'">
+
+                <simplebar data-simplebar-auto-hide="false" class="inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0 top-5.85 xl:top-9" style="position: absolute;" :style="'min-width: ' + (isMobile ?  (0.0625 + (data.length * 16)) + 'rem' : 9 + (data.length * 16) + 'rem')">
                     <div class="flex justify-start rounded-t z-10 relative bg-slab">
                         <div class="hidden xl:block bg-slab-primary justify-start items-end border-b border-lightslab w-36 text-xs font-bold flex-shrink-0">
                             <div class="px-4 py-2 h-16 bg-darkslab border-b border-slab">Containment and closure</div>
@@ -478,6 +479,14 @@
                     data.push(moment(date1.addDays(x)).format('YYYY-MM-DD'));
                 }
                 return data;
+            },
+            isMobile() {
+                if( screen.width <= 760 ) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
         },
 

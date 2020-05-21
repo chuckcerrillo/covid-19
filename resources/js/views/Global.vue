@@ -24,7 +24,7 @@
 
                     <div class="global_stats absolute z-20  inset-0 sm:left-0 sm:inset-y-0 sm:w-1/2 sm:ml-16 flex items-center content-center justify-center">
                         <div>
-                            <div class="text-shadow rounded-xl p-2 px-8 pb-8 mb-64 sm:mb-0" style="background: rgba(0,0,0,0.5)">
+                            <div class="text-shadow rounded-xl p-2 px-8 pb-8 mb-68 sm:mb-0" style="background: rgba(0,0,0,0.5)">
                                 <div class="p-4 xl:p-0 xl:flex items-center justify-center text-center">
                                     <div class="text-5xl xl:mr-4 xl:text-7xl xl:text-9xl font-bold text-white">{{summary.active | numeralFormat}}</div>
                                     <div>
@@ -47,8 +47,14 @@
                                     </div>
                                 </div>
 
-
+                                <div class="xl:hidden mt-4">
+                                    <router-link to="/comparison" class="text-lightlabel hover:text-white cursor-pointer">
+                                        <div class="font-bold p-2 px-4 bg-black rounded-lg text-center">Go to the comparison panel</div>
+                                    </router-link>
+                                </div>
                             </div>
+
+
                             <div class="hidden xl:flex text-baseslab items-center justify-start mt-2" style="">
                                 <router-link to="/comparison" class="flex text-lightlabel hover:text-white cursor-pointer rounded-lg p-2 px-4" style="background: rgba(0,0,0,0.8)">
                                     <div class="text-3xl font-bold mr-4 mt-1">Go to the comparison panel</div>
@@ -57,7 +63,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="text-shadow absolute inset-x-0 sm:inset-x-auto bottom-0 mb-28 sm:mb-0 sm:inset-y-0 sm:right-0 sm:flex items-center justify-center sm:w-128 text-center">
+                    <div class="text-shadow absolute inset-x-0 sm:inset-x-auto bottom-0 mb-12 sm:mb-0 sm:inset-y-0 sm:right-0 sm:flex items-center justify-center sm:w-128 text-center">
                         <div class="text-center">
                             <div class="text-center"><img src="/img/logo/logo-140.png" class="w-16 inline sm:w-auto" /></div>
                             <div class="text-xs sm:text-sm font-normal text-heading rounded">
