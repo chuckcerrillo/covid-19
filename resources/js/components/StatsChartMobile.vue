@@ -1,4 +1,3 @@
-<script src="../store/modules/state.js"></script>
 <template>
     <div class="absolute top-0 left-0 right-0 bottom-4" v-on:click="resetDropdowns()">
         <!--        <div class="absolute top-0 right-0 bottom-0 left-0 bg-red-400"></div>-->
@@ -371,8 +370,6 @@
 
                 if(this.config.settings)
                 {
-                    console.log('chart settings is not empty');
-                    console.log(this.config.settings);
                     this.options.chartsettings = _.cloneDeep(this.config.settings);
                 }
 
@@ -624,7 +621,8 @@
             chartsettings()
             {
                 var data = [];
-                if(!this.config.settings)
+
+                if(!this.config.settings || (this.config.settings && this.config.settings.length !== this.data.length))
                 {
                     for(var x in this.data)
                     {
@@ -647,8 +645,6 @@
                 {
                     this.options.mode = this.config.mode;
                 }
-                console.log('Xaxis');
-                console.log(this.options.mode)
                 return [
                     this.options.mode
                 ];
@@ -664,9 +660,6 @@
                     if(this.config.fields.secondary)
                         this.options.controls.secondary = this.config.fields.secondary;
                 }
-                console.log('Yaxis');
-                console.log(this.config.fields);
-                console.log(this.options.controls)
                 if(this.options.controls.primary)
                     data.push(this.options.controls.primary);
                 if(this.options.controls.secondary)

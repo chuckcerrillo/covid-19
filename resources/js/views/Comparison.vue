@@ -254,21 +254,14 @@
             updateChartSettings(settings)
             {
                 this.ui.chart.settings = _.clone(settings);
-
-                console.log('new chart settings');
-                console.log(this.ui.chart);
             },
             updateChartMode(mode)
             {
                 this.ui.chart.mode = _.clone(mode);
-                console.log('new chart settings');
-                console.log(this.ui.chart);
             },
             updateChartFields(fields)
             {
                 this.ui.chart.fields = _.clone(fields);
-                console.log('new chart settings');
-                console.log(this.ui.chart);
             },
             processGovtResponse()
             {
@@ -394,7 +387,6 @@
                     var row = {};
                     row.name = this.getUniqueCountriesCompare()[x].country;
                     // row.latest = this.getLatestGovtResponse(row.name);
-                    console.log(this.getGovtResponse(row.name));
 
                     if(this.getGovtResponse(row.name))
                     {
@@ -419,8 +411,6 @@
             {
 
                 var key = this.database.raw.raw_oxford.key;
-                console.log('latest');
-                console.log(policy);
                 for(var x in policy.latest)
                 {
                     var row = policy.latest[x];
@@ -1134,7 +1124,6 @@
             },
             loaded()
             {
-                console.log(this.ajax_loading);
                 if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success' && this.ajax_loading.oxford && !this.ajax_loading.final)
                 {
                     var self = this;

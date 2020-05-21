@@ -367,6 +367,33 @@
             'config',
             'active',
         ],
+        mounted()
+        {
+            if(this.config)
+            {
+                if(this.config.mode)
+                {
+                    this.options.mode = this.config.mode;
+                }
+
+                if(this.config.settings)
+                {
+                    this.options.chartsettings = _.cloneDeep(this.config.settings);
+                }
+
+                if(this.config.fields)
+                {
+                    if(this.config.fields.primary)
+                    {
+                        this.ui.primary = this.config.fields.primary;
+                    }
+                    if(this.config.fields.secondary)
+                    {
+                        this.ui.primary = this.config.fields.secondary;
+                    }
+                }
+            }
+        },
         methods: {
             setColor(name,color)
             {
@@ -505,6 +532,7 @@
                 }
 
                 this.options.chartsettings = data;
+                this.$emit('updateChartSettings',_.cloneDeep(data));
             },
             getFieldName(key)
             {
@@ -531,6 +559,7 @@
             selectMode(key)
             {
                 this.options.mode = key;
+                this.$emit('updateChartMode',_.clone(this.options.mode));
             },
             selectedScaleType(key)
             {
@@ -551,6 +580,8 @@
                     this.options.controls[level] = key;
                 }
                 this.ui[level] = false;
+
+                this.$emit('updateChartFields',{primary:this.options.controls.primary,secondary:this.options.controls.secondary});
             },
             selectedField(key,level)
             {
@@ -591,18 +622,30 @@
             chartsettings()
             {
                 var data = [];
-                for(var x in this.data)
+
+                if(!this.config.settings || (this.config.settings && this.config.settings.length !== this.data.length))
                 {
-                    this.addSetting(this.data[x].name.full);
+                    for(var x in this.data)
+                    {
+                        this.addSetting(this.data[x].name.full);
+                    }
+                }
+                else
+                {
+                    this.options.chartsettings = this.config.settings;
                 }
                 return this.options.chartsettings;
             },
             settings()
             {
-                return {...this.options, ...this.config};
+                return this.options;
             },
             xAxis()
             {
+                if(this.config && this.config.mode)
+                {
+                    this.options.mode = this.config.mode;
+                }
                 return [
                     this.options.mode
                 ];
@@ -611,6 +654,13 @@
             {
                 var data = [];
 
+                if(this.config && this.config.fields)
+                {
+                    if(this.config.fields.primary)
+                        this.options.controls.primary = this.config.fields.primary;
+                    if(this.config.fields.secondary)
+                        this.options.controls.secondary = this.config.fields.secondary;
+                }
                 if(this.options.controls.primary)
                     data.push(this.options.controls.primary);
                 if(this.options.controls.secondary)
