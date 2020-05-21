@@ -157,9 +157,6 @@
                 }
             }
 
-            console.log('location');
-            console.log(this.location);
-
 
             // if(this.options.interactive === false)
             // {
@@ -183,8 +180,6 @@
                 self.setLayers(self.layers);
                 if(self.location)
                 {
-                    console.log('Set location to');
-                    console.log(self.location);
                     map.setCenter([self.location.longitude, self.location.latitude]);
                 }
             })
@@ -721,8 +716,6 @@
                 immediate: true,
                 deep: true,
                 handler(newvalue, oldvalue) {
-                    console.log('Location has changed, time to update');
-                    console.log(newvalue);
                     this.map.setCenter([newvalue.longitude, newvalue.latitude]);
                 }
             },

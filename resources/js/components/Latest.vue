@@ -240,20 +240,19 @@
         },
         mounted()
         {
-            console.log('data');
-            console.log(this.data);
             if(this.data && this.data.length > 0)
             {
-                this.range.end = _.clone(this.data[0].daily[this.data[0].daily.length - 1].date);
+                this.range.end = _.clone(this.data[0].daily[this.data[0].daily.length - 2].date);
                 this.range.start = moment(this.range.end).subtract(30,'days').format('YYYY-MM-DD');
             }
+
         },
         methods: {
             prepare()
             {
                 if(this.data[0] && this.data[0].daily)
                 {
-                    this.date = this.data[0].daily[this.data[0].daily.length - 1].date;
+                    this.date = this.data[0].daily[this.data[0].daily.length - 2].date;
                     this.range.end = _.clone(this.date);
                 }
                 this.options.date.max = this.date;
