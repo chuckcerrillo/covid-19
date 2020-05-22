@@ -12047,6 +12047,13 @@ video {
   left: 5.5rem;
 }
 
+.inset-5\.625 {
+  top: 5.625rem;
+  right: 5.625rem;
+  bottom: 5.625rem;
+  left: 5.625rem;
+}
+
 .inset-5\.85 {
   top: 5.85rem;
   right: 5.85rem;
@@ -12182,6 +12189,16 @@ video {
 .inset-x-5\.5 {
   right: 5.5rem;
   left: 5.5rem;
+}
+
+.inset-y-5\.625 {
+  top: 5.625rem;
+  bottom: 5.625rem;
+}
+
+.inset-x-5\.625 {
+  right: 5.625rem;
+  left: 5.625rem;
 }
 
 .inset-y-5\.85 {
@@ -12400,6 +12417,22 @@ video {
 
 .left-5\.5 {
   left: 5.5rem;
+}
+
+.top-5\.625 {
+  top: 5.625rem;
+}
+
+.right-5\.625 {
+  right: 5.625rem;
+}
+
+.bottom-5\.625 {
+  bottom: 5.625rem;
+}
+
+.left-5\.625 {
+  left: 5.625rem;
 }
 
 .top-5\.85 {
@@ -13922,20 +13955,8 @@ video {
   font-size: 4rem;
 }
 
-.text-7xl {
-  font-size: 5rem;
-}
-
-.text-8xl {
-  font-size: 6rem;
-}
-
-.text-9xl {
-  font-size: 7rem;
-}
-
-.text-10xl {
-  font-size: 8rem;
+.text-xss {
+  font-size: 0.7rem;
 }
 
 .italic {
@@ -28489,6 +28510,13 @@ video {
     left: 5.5rem;
   }
 
+  .\31 440\:inset-5\.625 {
+    top: 5.625rem;
+    right: 5.625rem;
+    bottom: 5.625rem;
+    left: 5.625rem;
+  }
+
   .\31 440\:inset-5\.85 {
     top: 5.85rem;
     right: 5.85rem;
@@ -28624,6 +28652,16 @@ video {
   .\31 440\:inset-x-5\.5 {
     right: 5.5rem;
     left: 5.5rem;
+  }
+
+  .\31 440\:inset-y-5\.625 {
+    top: 5.625rem;
+    bottom: 5.625rem;
+  }
+
+  .\31 440\:inset-x-5\.625 {
+    right: 5.625rem;
+    left: 5.625rem;
   }
 
   .\31 440\:inset-y-5\.85 {
@@ -28842,6 +28880,22 @@ video {
 
   .\31 440\:left-5\.5 {
     left: 5.5rem;
+  }
+
+  .\31 440\:top-5\.625 {
+    top: 5.625rem;
+  }
+
+  .\31 440\:right-5\.625 {
+    right: 5.625rem;
+  }
+
+  .\31 440\:bottom-5\.625 {
+    bottom: 5.625rem;
+  }
+
+  .\31 440\:left-5\.625 {
+    left: 5.625rem;
   }
 
   .\31 440\:top-5\.85 {
@@ -30364,20 +30418,8 @@ video {
     font-size: 4rem;
   }
 
-  .\31 440\:text-7xl {
-    font-size: 5rem;
-  }
-
-  .\31 440\:text-8xl {
-    font-size: 6rem;
-  }
-
-  .\31 440\:text-9xl {
-    font-size: 7rem;
-  }
-
-  .\31 440\:text-10xl {
-    font-size: 8rem;
+  .\31 440\:text-xss {
+    font-size: 0.7rem;
   }
 
   .\31 440\:italic {
@@ -44932,6 +44974,13 @@ video {
     left: 5.5rem;
   }
 
+  .sm\:inset-5\.625 {
+    top: 5.625rem;
+    right: 5.625rem;
+    bottom: 5.625rem;
+    left: 5.625rem;
+  }
+
   .sm\:inset-5\.85 {
     top: 5.85rem;
     right: 5.85rem;
@@ -45067,6 +45116,16 @@ video {
   .sm\:inset-x-5\.5 {
     right: 5.5rem;
     left: 5.5rem;
+  }
+
+  .sm\:inset-y-5\.625 {
+    top: 5.625rem;
+    bottom: 5.625rem;
+  }
+
+  .sm\:inset-x-5\.625 {
+    right: 5.625rem;
+    left: 5.625rem;
   }
 
   .sm\:inset-y-5\.85 {
@@ -45285,6 +45344,22 @@ video {
 
   .sm\:left-5\.5 {
     left: 5.5rem;
+  }
+
+  .sm\:top-5\.625 {
+    top: 5.625rem;
+  }
+
+  .sm\:right-5\.625 {
+    right: 5.625rem;
+  }
+
+  .sm\:bottom-5\.625 {
+    bottom: 5.625rem;
+  }
+
+  .sm\:left-5\.625 {
+    left: 5.625rem;
   }
 
   .sm\:top-5\.85 {
@@ -46807,20 +46882,8 @@ video {
     font-size: 4rem;
   }
 
-  .sm\:text-7xl {
-    font-size: 5rem;
-  }
-
-  .sm\:text-8xl {
-    font-size: 6rem;
-  }
-
-  .sm\:text-9xl {
-    font-size: 7rem;
-  }
-
-  .sm\:text-10xl {
-    font-size: 8rem;
+  .sm\:text-xss {
+    font-size: 0.7rem;
   }
 
   .sm\:italic {
@@ -61375,6 +61438,13 @@ video {
     left: 5.5rem;
   }
 
+  .md\:inset-5\.625 {
+    top: 5.625rem;
+    right: 5.625rem;
+    bottom: 5.625rem;
+    left: 5.625rem;
+  }
+
   .md\:inset-5\.85 {
     top: 5.85rem;
     right: 5.85rem;
@@ -61510,6 +61580,16 @@ video {
   .md\:inset-x-5\.5 {
     right: 5.5rem;
     left: 5.5rem;
+  }
+
+  .md\:inset-y-5\.625 {
+    top: 5.625rem;
+    bottom: 5.625rem;
+  }
+
+  .md\:inset-x-5\.625 {
+    right: 5.625rem;
+    left: 5.625rem;
   }
 
   .md\:inset-y-5\.85 {
@@ -61728,6 +61808,22 @@ video {
 
   .md\:left-5\.5 {
     left: 5.5rem;
+  }
+
+  .md\:top-5\.625 {
+    top: 5.625rem;
+  }
+
+  .md\:right-5\.625 {
+    right: 5.625rem;
+  }
+
+  .md\:bottom-5\.625 {
+    bottom: 5.625rem;
+  }
+
+  .md\:left-5\.625 {
+    left: 5.625rem;
   }
 
   .md\:top-5\.85 {
@@ -63250,20 +63346,8 @@ video {
     font-size: 4rem;
   }
 
-  .md\:text-7xl {
-    font-size: 5rem;
-  }
-
-  .md\:text-8xl {
-    font-size: 6rem;
-  }
-
-  .md\:text-9xl {
-    font-size: 7rem;
-  }
-
-  .md\:text-10xl {
-    font-size: 8rem;
+  .md\:text-xss {
+    font-size: 0.7rem;
   }
 
   .md\:italic {
@@ -77818,6 +77902,13 @@ video {
     left: 5.5rem;
   }
 
+  .lg\:inset-5\.625 {
+    top: 5.625rem;
+    right: 5.625rem;
+    bottom: 5.625rem;
+    left: 5.625rem;
+  }
+
   .lg\:inset-5\.85 {
     top: 5.85rem;
     right: 5.85rem;
@@ -77953,6 +78044,16 @@ video {
   .lg\:inset-x-5\.5 {
     right: 5.5rem;
     left: 5.5rem;
+  }
+
+  .lg\:inset-y-5\.625 {
+    top: 5.625rem;
+    bottom: 5.625rem;
+  }
+
+  .lg\:inset-x-5\.625 {
+    right: 5.625rem;
+    left: 5.625rem;
   }
 
   .lg\:inset-y-5\.85 {
@@ -78171,6 +78272,22 @@ video {
 
   .lg\:left-5\.5 {
     left: 5.5rem;
+  }
+
+  .lg\:top-5\.625 {
+    top: 5.625rem;
+  }
+
+  .lg\:right-5\.625 {
+    right: 5.625rem;
+  }
+
+  .lg\:bottom-5\.625 {
+    bottom: 5.625rem;
+  }
+
+  .lg\:left-5\.625 {
+    left: 5.625rem;
   }
 
   .lg\:top-5\.85 {
@@ -79693,20 +79810,8 @@ video {
     font-size: 4rem;
   }
 
-  .lg\:text-7xl {
-    font-size: 5rem;
-  }
-
-  .lg\:text-8xl {
-    font-size: 6rem;
-  }
-
-  .lg\:text-9xl {
-    font-size: 7rem;
-  }
-
-  .lg\:text-10xl {
-    font-size: 8rem;
+  .lg\:text-xss {
+    font-size: 0.7rem;
   }
 
   .lg\:italic {
@@ -94261,6 +94366,13 @@ video {
     left: 5.5rem;
   }
 
+  .xl\:inset-5\.625 {
+    top: 5.625rem;
+    right: 5.625rem;
+    bottom: 5.625rem;
+    left: 5.625rem;
+  }
+
   .xl\:inset-5\.85 {
     top: 5.85rem;
     right: 5.85rem;
@@ -94396,6 +94508,16 @@ video {
   .xl\:inset-x-5\.5 {
     right: 5.5rem;
     left: 5.5rem;
+  }
+
+  .xl\:inset-y-5\.625 {
+    top: 5.625rem;
+    bottom: 5.625rem;
+  }
+
+  .xl\:inset-x-5\.625 {
+    right: 5.625rem;
+    left: 5.625rem;
   }
 
   .xl\:inset-y-5\.85 {
@@ -94614,6 +94736,22 @@ video {
 
   .xl\:left-5\.5 {
     left: 5.5rem;
+  }
+
+  .xl\:top-5\.625 {
+    top: 5.625rem;
+  }
+
+  .xl\:right-5\.625 {
+    right: 5.625rem;
+  }
+
+  .xl\:bottom-5\.625 {
+    bottom: 5.625rem;
+  }
+
+  .xl\:left-5\.625 {
+    left: 5.625rem;
   }
 
   .xl\:top-5\.85 {
@@ -96136,20 +96274,8 @@ video {
     font-size: 4rem;
   }
 
-  .xl\:text-7xl {
-    font-size: 5rem;
-  }
-
-  .xl\:text-8xl {
-    font-size: 6rem;
-  }
-
-  .xl\:text-9xl {
-    font-size: 7rem;
-  }
-
-  .xl\:text-10xl {
-    font-size: 8rem;
+  .xl\:text-xss {
+    font-size: 0.7rem;
   }
 
   .xl\:italic {
@@ -110704,6 +110830,13 @@ video {
     left: 5.5rem;
   }
 
+  .fullhd\:inset-5\.625 {
+    top: 5.625rem;
+    right: 5.625rem;
+    bottom: 5.625rem;
+    left: 5.625rem;
+  }
+
   .fullhd\:inset-5\.85 {
     top: 5.85rem;
     right: 5.85rem;
@@ -110839,6 +110972,16 @@ video {
   .fullhd\:inset-x-5\.5 {
     right: 5.5rem;
     left: 5.5rem;
+  }
+
+  .fullhd\:inset-y-5\.625 {
+    top: 5.625rem;
+    bottom: 5.625rem;
+  }
+
+  .fullhd\:inset-x-5\.625 {
+    right: 5.625rem;
+    left: 5.625rem;
   }
 
   .fullhd\:inset-y-5\.85 {
@@ -111057,6 +111200,22 @@ video {
 
   .fullhd\:left-5\.5 {
     left: 5.5rem;
+  }
+
+  .fullhd\:top-5\.625 {
+    top: 5.625rem;
+  }
+
+  .fullhd\:right-5\.625 {
+    right: 5.625rem;
+  }
+
+  .fullhd\:bottom-5\.625 {
+    bottom: 5.625rem;
+  }
+
+  .fullhd\:left-5\.625 {
+    left: 5.625rem;
   }
 
   .fullhd\:top-5\.85 {
@@ -112579,20 +112738,8 @@ video {
     font-size: 4rem;
   }
 
-  .fullhd\:text-7xl {
-    font-size: 5rem;
-  }
-
-  .fullhd\:text-8xl {
-    font-size: 6rem;
-  }
-
-  .fullhd\:text-9xl {
-    font-size: 7rem;
-  }
-
-  .fullhd\:text-10xl {
-    font-size: 8rem;
+  .fullhd\:text-xss {
+    font-size: 0.7rem;
   }
 
   .fullhd\:italic {
@@ -127147,6 +127294,13 @@ video {
     left: 5.5rem;
   }
 
+  .wqhd\:inset-5\.625 {
+    top: 5.625rem;
+    right: 5.625rem;
+    bottom: 5.625rem;
+    left: 5.625rem;
+  }
+
   .wqhd\:inset-5\.85 {
     top: 5.85rem;
     right: 5.85rem;
@@ -127282,6 +127436,16 @@ video {
   .wqhd\:inset-x-5\.5 {
     right: 5.5rem;
     left: 5.5rem;
+  }
+
+  .wqhd\:inset-y-5\.625 {
+    top: 5.625rem;
+    bottom: 5.625rem;
+  }
+
+  .wqhd\:inset-x-5\.625 {
+    right: 5.625rem;
+    left: 5.625rem;
   }
 
   .wqhd\:inset-y-5\.85 {
@@ -127500,6 +127664,22 @@ video {
 
   .wqhd\:left-5\.5 {
     left: 5.5rem;
+  }
+
+  .wqhd\:top-5\.625 {
+    top: 5.625rem;
+  }
+
+  .wqhd\:right-5\.625 {
+    right: 5.625rem;
+  }
+
+  .wqhd\:bottom-5\.625 {
+    bottom: 5.625rem;
+  }
+
+  .wqhd\:left-5\.625 {
+    left: 5.625rem;
   }
 
   .wqhd\:top-5\.85 {
@@ -129022,20 +129202,8 @@ video {
     font-size: 4rem;
   }
 
-  .wqhd\:text-7xl {
-    font-size: 5rem;
-  }
-
-  .wqhd\:text-8xl {
-    font-size: 6rem;
-  }
-
-  .wqhd\:text-9xl {
-    font-size: 7rem;
-  }
-
-  .wqhd\:text-10xl {
-    font-size: 8rem;
+  .wqhd\:text-xss {
+    font-size: 0.7rem;
   }
 
   .wqhd\:italic {
@@ -143590,6 +143758,13 @@ video {
     left: 5.5rem;
   }
 
+  .\34k\:inset-5\.625 {
+    top: 5.625rem;
+    right: 5.625rem;
+    bottom: 5.625rem;
+    left: 5.625rem;
+  }
+
   .\34k\:inset-5\.85 {
     top: 5.85rem;
     right: 5.85rem;
@@ -143725,6 +143900,16 @@ video {
   .\34k\:inset-x-5\.5 {
     right: 5.5rem;
     left: 5.5rem;
+  }
+
+  .\34k\:inset-y-5\.625 {
+    top: 5.625rem;
+    bottom: 5.625rem;
+  }
+
+  .\34k\:inset-x-5\.625 {
+    right: 5.625rem;
+    left: 5.625rem;
   }
 
   .\34k\:inset-y-5\.85 {
@@ -143943,6 +144128,22 @@ video {
 
   .\34k\:left-5\.5 {
     left: 5.5rem;
+  }
+
+  .\34k\:top-5\.625 {
+    top: 5.625rem;
+  }
+
+  .\34k\:right-5\.625 {
+    right: 5.625rem;
+  }
+
+  .\34k\:bottom-5\.625 {
+    bottom: 5.625rem;
+  }
+
+  .\34k\:left-5\.625 {
+    left: 5.625rem;
   }
 
   .\34k\:top-5\.85 {
@@ -145465,20 +145666,8 @@ video {
     font-size: 4rem;
   }
 
-  .\34k\:text-7xl {
-    font-size: 5rem;
-  }
-
-  .\34k\:text-8xl {
-    font-size: 6rem;
-  }
-
-  .\34k\:text-9xl {
-    font-size: 7rem;
-  }
-
-  .\34k\:text-10xl {
-    font-size: 8rem;
+  .\34k\:text-xss {
+    font-size: 0.7rem;
   }
 
   .\34k\:italic {

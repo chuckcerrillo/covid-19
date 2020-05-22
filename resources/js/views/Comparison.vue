@@ -64,11 +64,11 @@
                         <div class="absolute top-0 right-0 bottom-0 left-0 pt-2 xl:p-4">
                             <simplebar v-if="view != 'charts' && view != 'dashboard' && view != 'about' && view != 'map'" class="text-xs w-full">
                                 <div class="w-full flex items-center justify-start relative">
-                                    <div @click="updateSelected('all')" class="w-28 flex-shrink-0 cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == 'all' ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
-                                        Comparison
+                                    <div @click="updateSelected('all')" class="flex-shrink-0 cursor-pointer relative rounded rounded-b-none py-2 px-4 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == 'all' ? 'bg-hoverslab' : 'bg-slab-primary'">
+                                        Compare
                                     </div>
                                     <div v-if="row" v-for="(row,key,index) in compare" :key="key">
-                                        <div @click="updateSelected(key)" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
+                                        <div @click="updateSelected(key)" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 xl:pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
                                             {{getCompareLength() > 0 && row.state ? row.state + ' - ' : ''}}
                                             {{getCompareLength() > 0 ? row.country : '(none)'}}
                                             <div v-on:click.stop="removeCompare({country: row.country,state: row.state})" class="hidden xl:block text-lightlabel text-xs absolute top-0 right-0 m-2 px-2 pb-1 rounded hover:text-heading hover:bg-lightlabel">x</div>
@@ -288,8 +288,8 @@
                 var self = this;
                 for (var x in this.countries)
                 {
-                    var country = _.clone(this.countries[x].name);
-                    var response = _.clone(this.getGovtResponse(country));
+                    var country = _.cloneDeep(this.countries[x].name);
+                    var response = _.cloneDeep(this.getGovtResponse(country));
 
                     // setTimeout(function(){
                         self.database.processed.oxford[country] = response;

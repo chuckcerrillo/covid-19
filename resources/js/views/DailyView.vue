@@ -26,7 +26,7 @@
 
 <script>
     import Daily from "../components/Daily";
-    import Latest from "../components/Latest";
+    import Latest from "../components/CompareDaily";
     export default {
         name: "DailyView",
         props: [

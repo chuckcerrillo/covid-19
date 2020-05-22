@@ -119,6 +119,7 @@
                 var count = 0;
                 for(var x in this.compare)
                 {
+                    if(this.compare[x])
                     count++;
                 }
                 return count;
