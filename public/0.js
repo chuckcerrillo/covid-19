@@ -2610,8 +2610,8 @@ var render = function() {
         ),
         _vm._v(" "),
         _vm._l(_vm.uniqueCountries, function(row, key, index) {
-          return _vm.selectedCompareTab.substr(0, row.country.length) ===
-            row.country
+          return row.country &&
+            _vm.selectedCompareTab.substr(0, row.country.length) === row.country
             ? _c(
                 "div",
                 {

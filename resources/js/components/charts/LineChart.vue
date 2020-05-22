@@ -10,7 +10,11 @@
         mounted () {
             this.addPlugin(zoom);
             this.addPlugin(watermark);
-            this.renderLineChart();
+            var self = this;
+            setTimeout(function()
+            {
+                self.renderLineChart();
+            },10);
         },
         computed: {
             chartData: function() {
@@ -44,7 +48,7 @@
                 }
 
             },
-            renderLineChart(){
+            async renderLineChart(){
                 var self = this;
                 var options = self.options;
                 var offset = 0;
@@ -61,13 +65,13 @@
                     var items = _.clone(self.chartData.datasets[x].data.slice(offset,offset+20));
                     while(items.length > 0)
                     {
-                        for(var y in items)
+                        for(var item of items)
                         {
-                            chartData.datasets[x].data.push(_.clone(items[y]));
+                            chartData.datasets[x].data.push(_.clone(item));
                         }
                         offset += items.length;
-                        items = self.chartData.datasets[x].data.slice(offset,offset+20);
-                        self.renderChart(chartData,options);
+                        items = self.chartData.datasets[x].data.slice(offset,offset+10);
+                        await self.renderChart(chartData,options);
                     }
                 }
             },
@@ -168,7 +172,9 @@
                 {
                     // true means something changed
                     // self._data._chart.update();
-                    self.renderLineChart();
+                    setTimeout(function(){
+                        self.renderLineChart();
+                    },10)
                 }
             }
         }

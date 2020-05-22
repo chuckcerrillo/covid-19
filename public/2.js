@@ -799,7 +799,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -835,7 +835,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -871,7 +871,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -907,7 +907,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -943,7 +943,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -979,7 +979,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -1015,7 +1015,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -1051,7 +1051,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -1269,7 +1269,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -1305,7 +1305,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -1341,7 +1341,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -1377,7 +1377,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -1413,7 +1413,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -1449,7 +1449,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -1485,7 +1485,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -1521,7 +1521,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }
@@ -1557,7 +1557,7 @@ __webpack_require__.r(__webpack_exports__);
               ticks: {
                 fontColor: '#2c3531',
                 callback: function callback(tick, index, ticks) {
-                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5) {
+                  if (tick.toString().substr(0, 1) == 1 || tick.toString().substr(0, 1) == 5 || tick.toString() == 0) {
                     return tick.toLocaleString();
                   }
                 }

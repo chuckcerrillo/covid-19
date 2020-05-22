@@ -32,6 +32,11 @@
         </div>
         <div v-else class="h-full overflow-hidden relative">
             <div class="relative h-full xl:flex flex-1">
+                <div class="absolute top-0 left-0 bg-white text-black p-4 z-20 hidden">
+                    <div>Test</div>
+                    <div @click="log_debug('policies')">Policies</div>
+                    <div @click="log_debug('process_policies')">Process policies</div>
+                </div>
                 <Sidebar
                     class="hidden xl:flex"
                     :class="view === 'dashboard' || view === 'about' || view === 'map'? 'hidden' : ''"
@@ -62,7 +67,7 @@
                                     <div @click="updateSelected('all')" class="w-28 flex-shrink-0 cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == 'all' ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
                                         Comparison
                                     </div>
-                                    <div v-for="(row,key,index) in compare" :key="key">
+                                    <div v-if="row" v-for="(row,key,index) in compare" :key="key">
                                         <div @click="updateSelected(key)" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
                                             {{getCompareLength() > 0 && row.state ? row.state + ' - ' : ''}}
                                             {{getCompareLength() > 0 ? row.country : '(none)'}}
@@ -75,7 +80,7 @@
                                 </div>
                             </simplebar>
 
-                            <keep-alive include="DashboardView,PoliciesView,MapView,MapViewMobile,StatsChart,StatsChartMobile,LineChart,LineChartMobile">
+                            <keep-alive include="DashboardView,MapView,MapViewMobile,StatsChart,StatsChartMobile,LineChart,LineChartMobile">
                                 <PoliciesView
                                     class="policies-view"
                                     v-if="view === 'response'"
@@ -185,6 +190,11 @@
         },
         mounted()
         {
+
+            if(this.isMobile)
+            {
+                this.options.compare_limit = 5;
+            }
             // alert('mounted');
             // // Assemble data for everything and prepopulate the processed array
 
@@ -217,7 +227,7 @@
                     'table' : 'daily',
                 },
                 'options' : {
-                    'compare_limit' : 5,
+                    'compare_limit' : 10,
                 },
                 'comparison' : [],
 
@@ -252,6 +262,17 @@
             }
         },
         methods:{
+            log_debug(item)
+            {
+                if(item === 'policies')
+                {
+                    console.log(this.database.processed);
+                }
+                if(item === 'process_policies')
+                {
+                    this.processGovtResponse();
+                }
+            },
             updateChartSettings(settings)
             {
                 this.ui.chart.settings = _.clone(settings);
@@ -272,9 +293,9 @@
                     var country = _.clone(this.countries[x].name);
                     var response = _.clone(this.getGovtResponse(country));
 
-                    setTimeout(function(){
+                    // setTimeout(function(){
                         self.database.processed.oxford[country] = response;
-                    },1)
+                    // },1)
 
 
                 }
@@ -530,6 +551,7 @@
                 var compareName = this.getCompareName(source).full;
                 if(this.database.processed.dataset[compareName])
                 {
+                    console.log('Found ' + compareName + ' in processed data');
                     return this.database.processed.dataset[compareName];
                 }
                 return false;
@@ -655,7 +677,7 @@
                 var found = false;
                 for(var x in this.compare)
                 {
-                    if(this.compare[x].country == item.country)
+                    if(this.compare[x] && this.compare[x].country == item.country)
                     {
 
                         if(this.compare[x].state == item.state)
@@ -671,7 +693,8 @@
             {
                 for(var x in this.compare)
                 {
-                    delete this.compare[x];
+                    // delete this.compare[x];
+                    this.compare[x] = false;
                 }
                 this.updateSelected('all')
                 this.$emit('updateCompare',this.compare);
@@ -682,7 +705,8 @@
                 if(found)
                 {
                     var key = item.country + item.state;
-                    delete this.compare[found];
+                    // delete this.compare[found];
+                    this.compare[found] = false;
                     if(key == this.selectedCompareTab)
                     {
                         this.updateSelected(this.getLastCompareItem());

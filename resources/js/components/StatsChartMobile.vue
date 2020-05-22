@@ -937,6 +937,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -984,6 +985,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1031,6 +1033,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1078,6 +1081,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1125,6 +1129,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1172,6 +1177,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1219,6 +1225,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1266,6 +1273,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1533,6 +1541,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1580,6 +1589,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1627,6 +1637,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1674,6 +1685,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1721,6 +1733,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1768,6 +1781,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1815,6 +1829,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1862,6 +1877,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1909,6 +1925,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
