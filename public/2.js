@@ -9,12 +9,13 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _charts_LineChart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./charts/LineChart */ "./resources/js/components/charts/LineChart.vue");
+/* harmony import */ var _charts_LineChartMobile__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./charts/LineChartMobile */ "./resources/js/components/charts/LineChartMobile.vue");
 /* harmony import */ var simplebar_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! simplebar-vue */ "./node_modules/simplebar-vue/dist/simplebar-vue.esm.js");
 /* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! simplebar/dist/simplebar.min.css */ "./node_modules/simplebar/dist/simplebar.min.css");
 /* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
+//
 //
 //
 //
@@ -220,7 +221,7 @@ __webpack_require__.r(__webpack_exports__);
   name: "Comparison",
   components: {
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    LineChart: _charts_LineChart__WEBPACK_IMPORTED_MODULE_0__["default"]
+    LineChart: _charts_LineChartMobile__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
     return {
@@ -1577,6 +1578,247 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/charts/LineChartMobile.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/charts/LineChartMobile.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
+/* harmony import */ var chartjs_plugin_zoom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! chartjs-plugin-zoom */ "./node_modules/chartjs-plugin-zoom/dist/chartjs-plugin-zoom.js");
+/* harmony import */ var chartjs_plugin_zoom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_zoom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var chartjs_plugin_watermark__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! chartjs-plugin-watermark */ "./node_modules/chartjs-plugin-watermark/src/chart.plugin.watermark.js");
+/* harmony import */ var chartjs_plugin_watermark__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_watermark__WEBPACK_IMPORTED_MODULE_3__);
+
+
+function _createForOfIteratorHelper(o) { if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) { var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var it, normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_1__["Line"],
+  name: "LineChartMobile",
+  props: ['data', 'options', 'active'],
+  mounted: function mounted() {
+    this.addPlugin(chartjs_plugin_zoom__WEBPACK_IMPORTED_MODULE_2___default.a);
+    this.addPlugin(chartjs_plugin_watermark__WEBPACK_IMPORTED_MODULE_3___default.a);
+    var self = this;
+    setTimeout(function () {
+      self.renderLineChart();
+    }, 10);
+  },
+  computed: {
+    chartData: function chartData() {
+      if (this.data) return this.data;
+      return [];
+    }
+  },
+  methods: {
+    repopulate: function repopulate(data) {
+      var self = this,
+          x = 0;
+
+      if (data.data.labels && data.data.labels.length > 0) {
+        for (var x in data.data.datasets) {
+          var items = data.data.datasets[x].data.splice(0, 20);
+          self.gradualDataset.datasets[x].data = self.gradualDataset.datasets[x].data.concat(items);
+        }
+
+        var items = data.data.labels.splice(0, 20);
+        this.gradualDataset.labels = this.gradualDataset.labels.concat(items);
+      }
+
+      if (data.data.labels.length > 0) {
+        setTimeout(function () {
+          self.repopulate(data);
+        }, 50);
+      }
+    },
+    renderLineChart: function renderLineChart() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var self, options, offset, chartData, x, items, _iterator, _step, item;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (_this.active) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return", false);
+
+              case 2:
+                self = _this;
+                options = self.options;
+                offset = 0;
+                chartData = _.cloneDeep(self.chartData);
+
+                for (x in chartData.datasets) {
+                  chartData.datasets[x].data = [];
+                }
+
+                _context.t0 = _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.keys(self.chartData.datasets);
+
+              case 8:
+                if ((_context.t1 = _context.t0()).done) {
+                  _context.next = 23;
+                  break;
+                }
+
+                x = _context.t1.value;
+                offset = 0;
+                items = _.clone(self.chartData.datasets[x].data.slice(offset, offset + 20));
+
+              case 12:
+                if (!(items.length > 0)) {
+                  _context.next = 21;
+                  break;
+                }
+
+                _iterator = _createForOfIteratorHelper(items);
+
+                try {
+                  for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                    item = _step.value;
+                    chartData.datasets[x].data.push(_.clone(item));
+                  }
+                } catch (err) {
+                  _iterator.e(err);
+                } finally {
+                  _iterator.f();
+                }
+
+                offset += items.length;
+                items = self.chartData.datasets[x].data.slice(offset, offset + 10);
+                _context.next = 19;
+                return self.renderChart(chartData, options);
+
+              case 19:
+                _context.next = 12;
+                break;
+
+              case 21:
+                _context.next = 8;
+                break;
+
+              case 23:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    compareValues: function compareValues(oldValue, newValue) {
+      if (oldValue && newValue) {
+        // Obvious ones first, the number of countries
+        if (oldValue.datasets && newValue.datasets && oldValue.datasets.length !== newValue.datasets.length) {
+          return true;
+        } // The amount of days / items
+
+
+        for (var x in oldValue.datasets) {
+          if (oldValue.datasets[x] && newValue.datasets[x]) {
+            // Chart settings
+            if (oldValue.datasets[x].backgroundColor !== newValue.datasets[x].backgroundColor) {
+              return true;
+            }
+
+            if (oldValue.datasets[x].borderColor !== newValue.datasets[x].borderColor) {
+              return true;
+            }
+
+            if (oldValue.datasets[x].borderDash !== newValue.datasets[x].borderDash) {
+              return true;
+            }
+
+            if (oldValue.datasets[x].borderWidth !== newValue.datasets[x].borderWidth) {
+              return true;
+            }
+
+            if (oldValue.datasets[x].fill !== newValue.datasets[x].fill) {
+              return true;
+            }
+
+            if (oldValue.datasets[x].pointRadius !== newValue.datasets[x].pointRadius) {
+              return true;
+            }
+
+            if (oldValue.datasets[x].type !== newValue.datasets[x].type) {
+              return true;
+            }
+
+            if (oldValue.datasets[x].label && newValue.datasets[x].label && oldValue.datasets[x].label !== newValue.datasets[x].label) {
+              return true;
+            }
+
+            if (oldValue.labels && newValue.labels) {
+              if (oldValue.labels.length !== newValue.labels.length) {
+                return true;
+              }
+
+              for (var y in oldValue.labels) {
+                if (newValue.labels[y] && oldValue.labels[y] !== newValue.labels[y]) {
+                  return true;
+                }
+              }
+            }
+
+            if (oldValue.datasets[x].data && newValue.datasets[x].data) {
+              if (oldValue.datasets[x].data.length !== newValue.datasets[x].data.length) {
+                return true;
+              }
+
+              for (var y in oldValue.datasets[x].data) {
+                if (newValue.datasets[x].data[y]) {
+                  if (oldValue.datasets[x].data[y] !== newValue.datasets[x].data[y]) {
+                    return false;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      return false;
+    }
+  },
+  watch: {
+    data: function data(newValue, oldValue) {
+      var self = this;
+
+      if (self.compareValues(oldValue, newValue)) {
+        // true means something changed
+        // self._data._chart.update();
+        setTimeout(function () {
+          self.renderLineChart();
+        }, 10);
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StatsChartMobile.vue?vue&type=template&id=601239ec&scoped=true&":
 /*!*******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/StatsChartMobile.vue?vue&type=template&id=601239ec&scoped=true& ***!
@@ -2602,7 +2844,8 @@ var render = function() {
                         "bg-heading rounded absolute top-0 bottom-0 right-0 left-0 m-2 p-2",
                       attrs: {
                         data: _vm.dataset.data,
-                        options: _vm.dataset.options
+                        options: _vm.dataset.options,
+                        active: _vm.active
                       }
                     })
                   : _c("div", { staticClass: "p-4" }, [
@@ -2772,6 +3015,56 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StatsChartMobile_vue_vue_type_template_id_601239ec_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/components/charts/LineChartMobile.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/components/charts/LineChartMobile.vue ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LineChartMobile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LineChartMobile.vue?vue&type=script&lang=js& */ "./resources/js/components/charts/LineChartMobile.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  _LineChartMobile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"],
+  render,
+  staticRenderFns,
+  false,
+  null,
+  "62805ebd",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/charts/LineChartMobile.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/charts/LineChartMobile.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/charts/LineChartMobile.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChartMobile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LineChartMobile.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/charts/LineChartMobile.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChartMobile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ })
 

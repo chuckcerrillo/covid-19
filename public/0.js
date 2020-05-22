@@ -282,6 +282,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -396,38 +397,40 @@ __webpack_require__.r(__webpack_exports__);
       var data = [];
 
       for (var x in this.data) {
-        var policies = _.clone(this.data[x]);
+        if (this.data[x]) {
+          var policies = _.clone(this.data[x]);
 
-        var row = {
-          'name': policies.name,
-          'stringencyindex': 'N/A',
-          'latest': {}
-        };
+          var row = {
+            'name': policies.name,
+            'stringencyindex': 'N/A',
+            'latest': {}
+          };
 
-        if (policies && policies.daily) {
-          for (var y in policies.daily) {
-            if (this.date === policies.daily[y].date) {
-              row.latest = _.clone(policies.daily[y].latest);
-              row.stringencyindex = policies.daily[y].stringencyindex;
-              break;
+          if (policies && policies.daily) {
+            for (var y in policies.daily) {
+              if (this.date === policies.daily[y].date) {
+                row.latest = _.clone(policies.daily[y].latest);
+                row.stringencyindex = policies.daily[y].stringencyindex;
+                break;
+              }
             }
           }
-        }
 
-        var list = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'E1', 'E2', 'E3', 'E4', 'H1', 'H2', 'H3', 'H4', 'H5', 'M1'];
+          var list = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'E1', 'E2', 'E3', 'E4', 'H1', 'H2', 'H3', 'H4', 'H5', 'M1'];
 
-        for (var y in list) {
-          var field = list[y];
+          for (var y in list) {
+            var field = list[y];
 
-          if (!row.latest[field]) {
-            row.latest[field] = {
-              value: false,
-              target: false
-            };
+            if (!row.latest[field]) {
+              row.latest[field] = {
+                value: false,
+                target: false
+              };
+            }
           }
-        }
 
-        data.push(row);
+          data.push(row);
+        }
       }
 
       return data;
@@ -1224,1083 +1227,1170 @@ var render = function() {
                       { staticClass: "flex-shrink-0 flex" },
                       [
                         _vm._l(_vm.comparison, function(row, key, index) {
-                          return _c(
-                            "div",
-                            {
-                              key: index,
-                              staticClass:
-                                "border-l border-b border-lightslab flex-shrink-0 w-64"
-                            },
-                            [
-                              _c(
+                          return row
+                            ? _c(
                                 "div",
                                 {
-                                  class: index % 2 == 1 ? "bg-slab-primary" : ""
+                                  key: index,
+                                  staticClass:
+                                    "border-l border-b border-lightslab flex-shrink-0 w-64"
                                 },
                                 [
-                                  _c("div", { staticClass: "w-full" }, [
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 xl:h-16 bg-darkslab border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          { staticClass: "xl:hidden text-xs" },
-                                          [_vm._v("Containment and closure")]
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-24 border-b border-lightslab"
-                                      },
-                                      [
+                                  _c(
+                                    "div",
+                                    {
+                                      class:
+                                        index % 2 == 1 ? "bg-slab-primary" : ""
+                                    },
+                                    [
+                                      _c("div", { staticClass: "w-full" }, [
                                         _c(
                                           "div",
                                           {
                                             staticClass:
-                                              "xl:hidden text-xs font-bold"
-                                          },
-                                          [_vm._v("C1 - Schools")]
-                                        ),
-                                        _vm._v(" "),
-                                        row.latest.C1.value &&
-                                        row.latest.C1.value.length > 60
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-xs" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C1.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C1.value &&
-                                            row.latest.C1.value.length > 30
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-sm" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C1.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C1.value &&
-                                            row.latest.C1.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                _vm._s(row.latest.C1.value)
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")]),
-                                        _vm._v(" "),
-                                        row.latest.C1.target
-                                          ? _c(
-                                              "div",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-lightlabel"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      row.latest.C1.target
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                          : _vm._e()
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-24 border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "xl:hidden text-xs font-bold"
-                                          },
-                                          [_vm._v("C2 - Workplaces")]
-                                        ),
-                                        _vm._v(" "),
-                                        row.latest.C2.value &&
-                                        row.latest.C2.value.length > 60
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-xs" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C2.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C2.value &&
-                                            row.latest.C2.value.length > 30
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-sm" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C2.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C2.value &&
-                                            row.latest.C2.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                _vm._s(row.latest.C2.value)
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")]),
-                                        _vm._v(" "),
-                                        row.latest.C2.target
-                                          ? _c(
-                                              "div",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-lightlabel"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      row.latest.C2.target
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                          : _vm._e()
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-24 border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "xl:hidden text-xs font-bold"
-                                          },
-                                          [_vm._v("C3 - Public events")]
-                                        ),
-                                        _vm._v(" "),
-                                        row.latest.C3.value &&
-                                        row.latest.C3.value.length > 60
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-xs" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C3.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C3.value &&
-                                            row.latest.C3.value.length > 30
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-sm" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C3.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C3.value &&
-                                            row.latest.C3.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                _vm._s(row.latest.C3.value)
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")]),
-                                        _vm._v(" "),
-                                        row.latest.C3.target
-                                          ? _c(
-                                              "div",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-lightlabel"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      row.latest.C3.target
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                          : _vm._e()
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-24 border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "xl:hidden text-xs font-bold"
+                                              "px-4 py-2 xl:h-16 bg-darkslab border-b border-lightslab"
                                           },
                                           [
-                                            _vm._v(
-                                              "C4 - Restrictions on gatherings"
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "xl:hidden text-xs"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "Containment and closure"
+                                                )
+                                              ]
                                             )
                                           ]
                                         ),
                                         _vm._v(" "),
-                                        row.latest.C4.value &&
-                                        row.latest.C4.value.length > 60
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-xs" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C4.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C4.value &&
-                                            row.latest.C4.value.length > 30
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-sm" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C4.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C4.value &&
-                                            row.latest.C4.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                _vm._s(row.latest.C4.value)
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")]),
-                                        _vm._v(" "),
-                                        row.latest.C4.target
-                                          ? _c(
-                                              "div",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-lightlabel"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      row.latest.C4.target
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                          : _vm._e()
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-28 border-b border-lightslab"
-                                      },
-                                      [
                                         _c(
                                           "div",
                                           {
                                             staticClass:
-                                              "xl:hidden text-xs font-bold"
-                                          },
-                                          [_vm._v("C5 - Public transport")]
-                                        ),
-                                        _vm._v(" "),
-                                        row.latest.C5.value &&
-                                        row.latest.C5.value.length > 60
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-xs" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C5.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C5.value &&
-                                            row.latest.C5.value.length > 30
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-sm" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C5.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C5.value &&
-                                            row.latest.C5.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                _vm._s(row.latest.C5.value)
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")]),
-                                        _vm._v(" "),
-                                        row.latest.C5.target
-                                          ? _c(
-                                              "div",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-lightlabel"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      row.latest.C5.target
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                          : _vm._e()
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-28 border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "xl:hidden text-xs font-bold"
-                                          },
-                                          [_vm._v("C6 - Stay at home")]
-                                        ),
-                                        _vm._v(" "),
-                                        row.latest.C6.value &&
-                                        row.latest.C6.value.length > 60
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-xs" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C6.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C6.value &&
-                                            row.latest.C6.value.length > 30
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-sm" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C6.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C6.value &&
-                                            row.latest.C6.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                _vm._s(row.latest.C6.value)
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")]),
-                                        _vm._v(" "),
-                                        row.latest.C6.target
-                                          ? _c(
-                                              "div",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-lightlabel"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      row.latest.C6.target
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                          : _vm._e()
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-28 border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "xl:hidden text-xs font-bold"
-                                          },
-                                          [_vm._v("C7 - Internal movements")]
-                                        ),
-                                        _vm._v(" "),
-                                        row.latest.C7.value &&
-                                        row.latest.C7.value.length > 60
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-xs" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C7.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C7.value &&
-                                            row.latest.C7.value.length > 30
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-sm" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C7.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C7.value &&
-                                            row.latest.C7.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                _vm._s(row.latest.C7.value)
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")]),
-                                        _vm._v(" "),
-                                        row.latest.C7.target
-                                          ? _c(
-                                              "div",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-lightlabel"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      row.latest.C7.target
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                          : _vm._e()
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-16 border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "xl:hidden text-xs font-bold"
-                                          },
-                                          [_vm._v("C8 - International travel")]
-                                        ),
-                                        _vm._v(" "),
-                                        row.latest.C8.value &&
-                                        row.latest.C8.value.length > 60
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-xs" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C8.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C8.value &&
-                                            row.latest.C8.value.length > 30
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-sm" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.C8.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.C8.value &&
-                                            row.latest.C8.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                _vm._s(row.latest.C8.value)
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")])
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 xl:h-16 bg-darkslab border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          { staticClass: "xl:hidden text-xs" },
-                                          [_vm._v("Economic response")]
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-28 border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "xl:hidden text-xs font-bold"
-                                          },
-                                          [_vm._v("E1 - Income support")]
-                                        ),
-                                        _vm._v(" "),
-                                        row.latest.E1.value &&
-                                        row.latest.E1.value.length > 60
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-xs" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.E1.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.E1.value &&
-                                            row.latest.E1.value.length > 30
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-sm" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.E1.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.E1.value &&
-                                            row.latest.E1.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                _vm._s(row.latest.E1.value)
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")]),
-                                        _vm._v(" "),
-                                        row.latest.E1.target
-                                          ? _c(
-                                              "div",
-                                              {
-                                                staticClass:
-                                                  "text-xs text-lightlabel"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      row.latest.E1.target
-                                                    ) +
-                                                    ")"
-                                                )
-                                              ]
-                                            )
-                                          : _vm._e()
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-20 border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "xl:hidden text-xs font-bold"
-                                          },
-                                          [_vm._v("E2 - Debt/contract relief")]
-                                        ),
-                                        _vm._v(" "),
-                                        row.latest.E2.value &&
-                                        row.latest.E2.value.length > 60
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-xs" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.E2.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.E2.value &&
-                                            row.latest.E2.value.length > 30
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-sm" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.E2.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.E2.value &&
-                                            row.latest.E2.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                _vm._s(row.latest.E2.value)
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")])
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-20 border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "xl:hidden text-xs font-bold"
-                                          },
-                                          [_vm._v("E3 - Fiscal measures")]
-                                        ),
-                                        _vm._v(" "),
-                                        row.latest.E3.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                "US$" +
-                                                  _vm._s(
-                                                    _vm._f("numeralFormat")(
-                                                      row.latest.E3.value,
-                                                      "0,000.00"
-                                                    )
-                                                  )
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")])
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-20 border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "xl:hidden text-xs font-bold"
-                                          },
-                                          [_vm._v("E4 - International support")]
-                                        ),
-                                        _vm._v(" "),
-                                        row.latest.E4.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                "US$" +
-                                                  _vm._s(
-                                                    _vm._f("numeralFormat")(
-                                                      row.latest.E4.value,
-                                                      "0,000.00"
-                                                    )
-                                                  )
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")])
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 xl:h-16 bg-darkslab border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          { staticClass: "xl:hidden text-xs" },
-                                          [_vm._v("Health systems")]
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-24 border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "xl:hidden text-xs font-bold"
+                                              "px-4 py-2 h-24 border-b border-lightslab"
                                           },
                                           [
-                                            _vm._v(
-                                              "H1 - Public information campaign"
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [_vm._v("C1 - Schools")]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.C1.value &&
+                                            row.latest.C1.value.length > 60
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-xs" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C1.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C1.value &&
+                                                row.latest.C1.value.length > 30
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-sm" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C1.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C1.value &&
+                                                row.latest.C1.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(row.latest.C1.value)
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")]),
+                                            _vm._v(" "),
+                                            row.latest.C1.target
+                                              ? _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "text-xs text-lightlabel"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "(" +
+                                                        _vm._s(
+                                                          row.latest.C1.target
+                                                        ) +
+                                                        ")"
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-24 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [_vm._v("C2 - Workplaces")]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.C2.value &&
+                                            row.latest.C2.value.length > 60
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-xs" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C2.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C2.value &&
+                                                row.latest.C2.value.length > 30
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-sm" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C2.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C2.value &&
+                                                row.latest.C2.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(row.latest.C2.value)
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")]),
+                                            _vm._v(" "),
+                                            row.latest.C2.target
+                                              ? _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "text-xs text-lightlabel"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "(" +
+                                                        _vm._s(
+                                                          row.latest.C2.target
+                                                        ) +
+                                                        ")"
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-24 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [_vm._v("C3 - Public events")]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.C3.value &&
+                                            row.latest.C3.value.length > 60
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-xs" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C3.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C3.value &&
+                                                row.latest.C3.value.length > 30
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-sm" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C3.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C3.value &&
+                                                row.latest.C3.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(row.latest.C3.value)
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")]),
+                                            _vm._v(" "),
+                                            row.latest.C3.target
+                                              ? _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "text-xs text-lightlabel"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "(" +
+                                                        _vm._s(
+                                                          row.latest.C3.target
+                                                        ) +
+                                                        ")"
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-24 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "C4 - Restrictions on gatherings"
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.C4.value &&
+                                            row.latest.C4.value.length > 60
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-xs" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C4.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C4.value &&
+                                                row.latest.C4.value.length > 30
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-sm" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C4.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C4.value &&
+                                                row.latest.C4.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(row.latest.C4.value)
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")]),
+                                            _vm._v(" "),
+                                            row.latest.C4.target
+                                              ? _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "text-xs text-lightlabel"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "(" +
+                                                        _vm._s(
+                                                          row.latest.C4.target
+                                                        ) +
+                                                        ")"
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-28 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [_vm._v("C5 - Public transport")]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.C5.value &&
+                                            row.latest.C5.value.length > 60
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-xs" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C5.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C5.value &&
+                                                row.latest.C5.value.length > 30
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-sm" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C5.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C5.value &&
+                                                row.latest.C5.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(row.latest.C5.value)
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")]),
+                                            _vm._v(" "),
+                                            row.latest.C5.target
+                                              ? _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "text-xs text-lightlabel"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "(" +
+                                                        _vm._s(
+                                                          row.latest.C5.target
+                                                        ) +
+                                                        ")"
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-28 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [_vm._v("C6 - Stay at home")]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.C6.value &&
+                                            row.latest.C6.value.length > 60
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-xs" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C6.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C6.value &&
+                                                row.latest.C6.value.length > 30
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-sm" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C6.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C6.value &&
+                                                row.latest.C6.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(row.latest.C6.value)
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")]),
+                                            _vm._v(" "),
+                                            row.latest.C6.target
+                                              ? _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "text-xs text-lightlabel"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "(" +
+                                                        _vm._s(
+                                                          row.latest.C6.target
+                                                        ) +
+                                                        ")"
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-28 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "C7 - Internal movements"
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.C7.value &&
+                                            row.latest.C7.value.length > 60
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-xs" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C7.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C7.value &&
+                                                row.latest.C7.value.length > 30
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-sm" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C7.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C7.value &&
+                                                row.latest.C7.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(row.latest.C7.value)
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")]),
+                                            _vm._v(" "),
+                                            row.latest.C7.target
+                                              ? _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "text-xs text-lightlabel"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "(" +
+                                                        _vm._s(
+                                                          row.latest.C7.target
+                                                        ) +
+                                                        ")"
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-16 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "C8 - International travel"
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.C8.value &&
+                                            row.latest.C8.value.length > 60
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-xs" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C8.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C8.value &&
+                                                row.latest.C8.value.length > 30
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-sm" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.C8.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.C8.value &&
+                                                row.latest.C8.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(row.latest.C8.value)
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")])
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 xl:h-16 bg-darkslab border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "xl:hidden text-xs"
+                                              },
+                                              [_vm._v("Economic response")]
                                             )
                                           ]
                                         ),
                                         _vm._v(" "),
-                                        row.latest.H1.value &&
-                                        row.latest.H1.value.length > 60
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-xs" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.H1.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.H1.value &&
-                                            row.latest.H1.value.length > 30
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-sm" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.H1.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.H1.value &&
-                                            row.latest.H1.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                _vm._s(row.latest.H1.value)
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")]),
-                                        _vm._v(" "),
-                                        row.latest.H1.target
-                                          ? _c(
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-28 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
                                               "div",
                                               {
                                                 staticClass:
-                                                  "text-xs text-lightlabel"
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [_vm._v("E1 - Income support")]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.E1.value &&
+                                            row.latest.E1.value.length > 60
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-xs" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.E1.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.E1.value &&
+                                                row.latest.E1.value.length > 30
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-sm" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.E1.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.E1.value &&
+                                                row.latest.E1.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(row.latest.E1.value)
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")]),
+                                            _vm._v(" "),
+                                            row.latest.E1.target
+                                              ? _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "text-xs text-lightlabel"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "(" +
+                                                        _vm._s(
+                                                          row.latest.E1.target
+                                                        ) +
+                                                        ")"
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-20 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
                                               },
                                               [
                                                 _vm._v(
-                                                  "(" +
-                                                    _vm._s(
-                                                      row.latest.H1.target
-                                                    ) +
-                                                    ")"
+                                                  "E2 - Debt/contract relief"
                                                 )
                                               ]
-                                            )
-                                          : _vm._e()
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-32 border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "xl:hidden text-xs font-bold"
-                                          },
-                                          [_vm._v("H2 - Testing policy")]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.E2.value &&
+                                            row.latest.E2.value.length > 60
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-xs" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.E2.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.E2.value &&
+                                                row.latest.E2.value.length > 30
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-sm" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.E2.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.E2.value &&
+                                                row.latest.E2.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(row.latest.E2.value)
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")])
+                                          ]
                                         ),
                                         _vm._v(" "),
-                                        row.latest.H2.value &&
-                                        row.latest.H2.value.length > 60
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-xs" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.H2.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.H2.value &&
-                                            row.latest.H2.value.length > 30
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-sm" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.H2.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.H2.value &&
-                                            row.latest.H2.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                _vm._s(row.latest.H2.value)
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")])
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-20 border-b border-lightslab"
-                                      },
-                                      [
                                         _c(
                                           "div",
                                           {
                                             staticClass:
-                                              "xl:hidden text-xs font-bold"
-                                          },
-                                          [_vm._v("H3 - Contact tracing")]
-                                        ),
-                                        _vm._v(" "),
-                                        row.latest.H3.value &&
-                                        row.latest.H3.value.length > 60
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-xs" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.H3.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.H3.value &&
-                                            row.latest.H3.value.length > 30
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-sm" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.H3.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.H3.value &&
-                                            row.latest.H3.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                _vm._s(row.latest.H3.value)
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")])
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-20 border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "xl:hidden text-xs font-bold"
+                                              "px-4 py-2 h-20 border-b border-lightslab"
                                           },
                                           [
-                                            _vm._v(
-                                              "H4 - Emergency healthcare investment"
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [_vm._v("E3 - Fiscal measures")]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.E3.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    "US$" +
+                                                      _vm._s(
+                                                        _vm._f("numeralFormat")(
+                                                          row.latest.E3.value,
+                                                          "0,000.00"
+                                                        )
+                                                      )
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")])
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-20 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "E4 - International support"
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.E4.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    "US$" +
+                                                      _vm._s(
+                                                        _vm._f("numeralFormat")(
+                                                          row.latest.E4.value,
+                                                          "0,000.00"
+                                                        )
+                                                      )
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")])
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 xl:h-16 bg-darkslab border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "xl:hidden text-xs"
+                                              },
+                                              [_vm._v("Health systems")]
                                             )
                                           ]
                                         ),
                                         _vm._v(" "),
-                                        row.latest.H4.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                "US$" +
-                                                  _vm._s(
-                                                    _vm._f("numeralFormat")(
-                                                      row.latest.H4.value,
-                                                      "0,000.00"
-                                                    )
-                                                  )
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")])
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-20 border-b border-lightslab"
-                                      },
-                                      [
                                         _c(
                                           "div",
                                           {
                                             staticClass:
-                                              "xl:hidden text-xs font-bold"
+                                              "px-4 py-2 h-24 border-b border-lightslab"
                                           },
                                           [
-                                            _vm._v(
-                                              "H5 - COVID-19 vaccine investment"
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "H1 - Public information campaign"
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.H1.value &&
+                                            row.latest.H1.value.length > 60
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-xs" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.H1.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.H1.value &&
+                                                row.latest.H1.value.length > 30
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-sm" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.H1.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.H1.value &&
+                                                row.latest.H1.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(row.latest.H1.value)
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")]),
+                                            _vm._v(" "),
+                                            row.latest.H1.target
+                                              ? _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "text-xs text-lightlabel"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "(" +
+                                                        _vm._s(
+                                                          row.latest.H1.target
+                                                        ) +
+                                                        ")"
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-32 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [_vm._v("H2 - Testing policy")]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.H2.value &&
+                                            row.latest.H2.value.length > 60
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-xs" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.H2.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.H2.value &&
+                                                row.latest.H2.value.length > 30
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-sm" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.H2.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.H2.value &&
+                                                row.latest.H2.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(row.latest.H2.value)
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")])
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-20 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [_vm._v("H3 - Contact tracing")]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.H3.value &&
+                                            row.latest.H3.value.length > 60
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-xs" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.H3.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.H3.value &&
+                                                row.latest.H3.value.length > 30
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-sm" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.H3.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.H3.value &&
+                                                row.latest.H3.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(row.latest.H3.value)
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")])
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-20 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "H4 - Emergency healthcare investment"
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.H4.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    "US$" +
+                                                      _vm._s(
+                                                        _vm._f("numeralFormat")(
+                                                          row.latest.H4.value,
+                                                          "0,000.00"
+                                                        )
+                                                      )
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")])
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-20 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "H5 - COVID-19 vaccine investment"
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.H5.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    "US$" +
+                                                      _vm._s(
+                                                        _vm._f("numeralFormat")(
+                                                          row.latest.H5.value,
+                                                          "0,000.00"
+                                                        )
+                                                      )
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")])
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 xl:h-16 bg-darkslab border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "xl:hidden text-xs"
+                                              },
+                                              [_vm._v("Miscellaneous")]
                                             )
                                           ]
                                         ),
                                         _vm._v(" "),
-                                        row.latest.H5.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                "US$" +
-                                                  _vm._s(
-                                                    _vm._f("numeralFormat")(
-                                                      row.latest.H5.value,
-                                                      "0,000.00"
-                                                    )
-                                                  )
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")])
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 xl:h-16 bg-darkslab border-b border-lightslab"
-                                      },
-                                      [
                                         _c(
                                           "div",
-                                          { staticClass: "xl:hidden text-xs" },
-                                          [_vm._v("Miscellaneous")]
+                                          {
+                                            staticClass:
+                                              "px-4 py-2 h-24 border-b border-lightslab"
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "xl:hidden text-xs font-bold"
+                                              },
+                                              [_vm._v("M1 - Other responses")]
+                                            ),
+                                            _vm._v(" "),
+                                            row.latest.M1.value.length > 60
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-xs" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.M1.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.M1.value.length > 30
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "text-sm" },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        row.latest.M1.value
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              : row.latest.M1.value
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(row.latest.M1.value)
+                                                  )
+                                                ])
+                                              : _c("div", [_vm._v("N/A")])
+                                          ]
                                         )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-4 py-2 h-24 border-b border-lightslab"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
-                                            staticClass:
-                                              "xl:hidden text-xs font-bold"
-                                          },
-                                          [_vm._v("M1 - Other responses")]
-                                        ),
-                                        _vm._v(" "),
-                                        row.latest.M1.value.length > 60
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-xs" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.M1.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.M1.value.length > 30
-                                          ? _c(
-                                              "div",
-                                              { staticClass: "text-sm" },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(row.latest.M1.value)
-                                                )
-                                              ]
-                                            )
-                                          : row.latest.M1.value
-                                          ? _c("div", [
-                                              _vm._v(
-                                                _vm._s(row.latest.M1.value)
-                                              )
-                                            ])
-                                          : _c("div", [_vm._v("N/A")])
-                                      ]
-                                    )
-                                  ])
+                                      ])
+                                    ]
+                                  )
                                 ]
                               )
-                            ]
-                          )
+                            : _vm._e()
                         }),
                         _vm._v(" "),
                         _c("div", {

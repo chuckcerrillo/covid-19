@@ -73,9 +73,10 @@
                         </div>
                         <div class="flex-shrink-0 flex">
                             <div
-                                 class="border-l border-b border-lightslab flex-shrink-0 w-64"
+                                v-if="row"
+                                class="border-l border-b border-lightslab flex-shrink-0 w-64"
                                 v-for="(row, key, index) in comparison"
-                                 :key="index"
+                                :key="index"
                             >
                                 <div class=""
                                      :class="index % 2 == 1 ? 'bg-slab-primary' : ''">
@@ -417,43 +418,46 @@
                 var data = [];
                 for(var x in this.data)
                 {
-                    var policies = _.clone(this.data[x]);
-                    var row = {
-                        'name': policies.name,
-                        'stringencyindex' : 'N/A',
-                        'latest' : {},
-                    };
-
-                    if(policies && policies.daily)
+                    if(this.data[x])
                     {
+                        var policies = _.clone(this.data[x]);
+                        var row = {
+                            'name': policies.name,
+                            'stringencyindex' : 'N/A',
+                            'latest' : {},
+                        };
 
-                        for(var y in policies.daily)
+                        if(policies && policies.daily)
                         {
-                            if(this.date === policies.daily[y].date)
+
+                            for(var y in policies.daily)
                             {
-                                row.latest = _.clone(policies.daily[y].latest);
-                                row.stringencyindex = policies.daily[y].stringencyindex;
-                                break;
+                                if(this.date === policies.daily[y].date)
+                                {
+                                    row.latest = _.clone(policies.daily[y].latest);
+                                    row.stringencyindex = policies.daily[y].stringencyindex;
+                                    break;
+                                }
                             }
+
+
                         }
 
-
-                    }
-
-                    var list = ['C1','C2','C3','C4','C5','C6','C7','C8','E1','E2','E3','E4','H1','H2','H3','H4','H5','M1'];
-                    for(var y in list)
-                    {
-                        var field = list[y];
-
-                        if(!row.latest[field])
+                        var list = ['C1','C2','C3','C4','C5','C6','C7','C8','E1','E2','E3','E4','H1','H2','H3','H4','H5','M1'];
+                        for(var y in list)
                         {
-                            row.latest[field] = {
-                                value: false,
-                                target: false,
+                            var field = list[y];
+
+                            if(!row.latest[field])
+                            {
+                                row.latest[field] = {
+                                    value: false,
+                                    target: false,
+                                }
                             }
                         }
+                        data.push(row);
                     }
-                    data.push(row);
                 }
 
                 return data;

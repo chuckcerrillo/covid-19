@@ -1,7 +1,7 @@
 <template>
     <div>
         <div
-            class="flex cursor-pointer items-center h-8"
+            class="flex cursor-pointer items-center h-12 xl:h-8"
             :class="
                 (config.dashboard ? 'justify-center ' : '')
                 +
@@ -35,7 +35,7 @@
             (isSelected(data.name,row.name) ? 'bg-orangeslab' : 'bg-heading-secondary')
             "
         >
-            <div class="w-4 p-2 m-1 ml-0"></div>
+            <div class="w-4 p-2 m-1 ml-0 h-12 xl:h-auto"></div>
             <div @click="selectCountry(data['name'],row['name'])" class="w-32 px-2">
                 <div>{{row['name']}}</div>
             </div>

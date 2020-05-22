@@ -167,6 +167,7 @@
             <div class="absolute inset-x-0 inset-y-0">
                 <LineChart :data="dataset.data"
                            :options="dataset.options"
+                           :active="active"
                            class="bg-heading rounded absolute top-0 bottom-0 right-0 left-0 m-2 p-2"
                            v-if="active && data.length > 0"
                 />
@@ -196,7 +197,7 @@
 </template>
 
 <script>
-    import LineChart from "./charts/LineChart";
+    import LineChart from "./charts/LineChartMobile";
     import simplebar from 'simplebar-vue';
     import 'simplebar/dist/simplebar.min.css';
     import moment from 'moment';
