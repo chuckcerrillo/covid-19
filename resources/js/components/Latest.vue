@@ -46,9 +46,9 @@
                             </div>
                         </div>
                      </div>
-                    <div class="px-4 py-2 xl:h-20 border-l border-lightslab"></div>
+                    <div class="hidden xl:block px-4 py-2 xl:h-20 border-l border-lightslab"></div>
                 </div>
-                <simplebar class="inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0 top-3.5 xl:top-5 overflow-x-show w-full" style="position: absolute;" :class="'min-w-' + (comparison.length*32) + ' xl:min-w-' + (comparison.length*64+36)">
+                <simplebar class="inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0 top-3.25 xl:top-5 overflow-x-show w-full" style="position: absolute;" :class="'min-w-' + (comparison.length*32) + ' xl:min-w-' + (comparison.length*64+36)">
                     <div class="flex justify-start rounded-t z-10 relative bg-slab">
                         <div class="hidden xl:block bg-slab-primary border-b border-lightslab w-36 text-xs font-bold flex-shrink-0">
                             <div class="px-4 py-2 h-32 border-b border-slab">New cases per day</div>
@@ -69,7 +69,7 @@
                         </div>
                         <div class="flex-shrink-0 flex">
                             <div
-                                class="border-l border-b border-lightslab flex-shrink-0 w-32 xl:w-64"
+                                class="xl:border-l border-b border-lightslab flex-shrink-0 w-32 xl:w-64"
                                 v-for="(row, key, index) in comparison"
                                 :key="index"
                             >
@@ -166,7 +166,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="border-l border-lightslab h-364 xl:h-240"></div>
+                            <div class="hidden xl:block border-l border-lightslab h-364 xl:h-240"></div>
                         </div>
                     </div>
                 </simplebar>

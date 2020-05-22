@@ -193,10 +193,8 @@
 
             if(this.isMobile)
             {
-                this.options.compare_limit = 5;
+                this.options.compare_limit = 3;
             }
-            // alert('mounted');
-            // // Assemble data for everything and prepopulate the processed array
 
             axios.get('/api/stats/annotations')
                 .then(res => {
@@ -393,10 +391,13 @@
                     data = [];
                 for(var x in this.compare)
                 {
-                    if(countries.indexOf(this.compare[x].country) === -1)
+                    if(this.compare[x])
                     {
-                        countries.push(this.compare[x].country);
-                        data.push(this.compare[x]);
+                        if(countries.indexOf(this.compare[x].country) === -1)
+                        {
+                            countries.push(this.compare[x].country);
+                            data.push(this.compare[x]);
+                        }
                     }
                 }
                 return data;
@@ -406,26 +407,29 @@
                 var data = [];
                 for(var x in this.getUniqueCountriesCompare())
                 {
-                    var row = {};
-                    row.name = this.getUniqueCountriesCompare()[x].country;
-                    // row.latest = this.getLatestGovtResponse(row.name);
+                    if(this.getUniqueCountriesCompare()[x])
+                    {
+                        var row = {};
+                        row.name = this.getUniqueCountriesCompare()[x].country;
+                        // row.latest = this.getLatestGovtResponse(row.name);
 
-                    if(this.getGovtResponse(row.name))
-                    {
-                        row.stringencyindex = this.getGovtResponse(row.name).latest.si;
-                        var daily = [];
-                        for(var y in this.getGovtResponse(row.name).daily)
+                        if(this.getGovtResponse(row.name))
                         {
-                            daily.push(_.clone(this.translateGovtResponse(this.getGovtResponse(row.name).daily[y])))
+                            row.stringencyindex = this.getGovtResponse(row.name).latest.si;
+                            var daily = [];
+                            for(var y in this.getGovtResponse(row.name).daily)
+                            {
+                                daily.push(_.clone(this.translateGovtResponse(this.getGovtResponse(row.name).daily[y])))
+                            }
+                            row.daily = daily;
                         }
-                        row.daily = daily;
+                        else
+                        {
+                            row.stringencyindex = 'N/A';
+                            row.daily = {};
+                        }
+                        data.push(_.clone(row));
                     }
-                    else
-                    {
-                        row.stringencyindex = 'N/A';
-                        row.daily = {};
-                    }
-                    data.push(_.clone(row));
                 }
                 return data;
             },
