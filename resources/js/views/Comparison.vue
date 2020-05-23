@@ -236,7 +236,7 @@
                     'table' : 'daily',
                 },
                 'options' : {
-                    'compare_limit' : 3,
+                    'compare_limit' : 10,
                 },
                 'comparison' : [],
 
