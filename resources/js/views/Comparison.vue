@@ -106,7 +106,8 @@
 
 
                                 <StatsChartMobile
-                                    v-if="view === 'charts' && isMobile"
+                                    v-if="isMobile"
+                                    v-show="view === 'charts'"
                                     :data="getComparisonData()"
                                     :config="ui.chart"
                                     :full="true"
@@ -116,7 +117,8 @@
                                     v-on:updateChartFields="updateChartFields"
                                 />
                                 <StatsChart
-                                    v-else-if="view === 'charts'"
+                                    v-else
+                                    v-show="view === 'charts'"
                                     :data="getComparisonData()"
                                     :config="ui.chart"
                                     :full="true"

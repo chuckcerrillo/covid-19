@@ -110,12 +110,45 @@
                            v-if="active && data.length > 0"
                 />
                 <div class="text-xs absolute left-0 right-0 bottom-0 h-12 flex items-start justify-between" v-if="settings.controls.menu">
-                    <div class="flex items-center justify-start">
-                        <div class="mx-2">Time mode</div>
-                        <div class="flex">
+                    <div class="flex flex-1 items-center justify-start">
+                        <div class="mx-2 flex-shrink-0 w-16">Time mode</div>
+                        <div class="flex flex-1">
+                            <div
+                                class="p-2 border border-lightslab m-1 cursor-pointer flex-shrink-0"
+                                :class="selectedMode('chronological') ? 'bg-lightslab':''"
+                                @click="selectMode('chronological')"
+                            >Chronological</div>
+
+                            <div
+                                v-if="selectedMode('chronological')"
+                                class="border w-full px-2 m-1 flex flex-1 items-center justify-start"
+                            >
+                                <span class="flex-shrink-0 font-bold">Select date</span>
+                                <v-date-picker
+                                    class="flex-shrink-0"
+                                    mode="range"
+                                    v-model="range"
+                                    :min-date="options.date.min"
+                                    :max-date="options.date.max"
+                                    :masks="{ data: ['YYYY-MM-DD', 'YYYY/MM/DD'],input: ['YYYY-MM-DD', 'YYYY/MM/DD'] }"
+                                    :popover="{ placement: 'bottom', visibility: 'click' }">
+                                <button class="p-2 hover:bg-lightlabel text-white rounded focus:outline-none flex-shrink-0">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                        class="w-4 h-4 fill-current">
+                                        <path d="M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z" />
+                                    </svg>
+                                </button>
+                                </v-date-picker>
+                                <div class="flex-shrink-0">{{moment(range.start).format('YYYY-MM-DD')}} to {{moment(range.end).format('YYYY-MM-DD')}}</div>
+                                <vue-slider style="width: 100%" class="mx-2" v-model="dateRange" :data="dateSliderRange" :lazy="true" :adsorb="true" />
+                            </div>
+
                             <div
                                 v-for="row in graphControls.x"
-                                class="p-2 border border-lightslab m-1 cursor-pointer"
+                                v-if="row[0] !== 'chronological'"
+                                class="p-2 border border-lightslab m-1 cursor-pointer flex-shrink-0"
                                 :class="selectedMode(row[0]) ? 'bg-lightslab':''"
                                 @click="selectMode(row[0])"
                             >
@@ -200,6 +233,7 @@
 
 <script>
     import LineChart from "./charts/LineChart";
+    import VueSlider from 'vue-slider-component'
     import simplebar from 'simplebar-vue';
     import 'simplebar/dist/simplebar.min.css';
     import moment from 'moment';
@@ -208,6 +242,7 @@
         components:{
             simplebar,
             LineChart,
+            VueSlider,
         },
         data(){
             return {
@@ -216,6 +251,10 @@
                     labels: false,
                 },
                 'options' : {
+                    date: {
+                        min: new Date('2020-01-22'),
+                        max: false,
+                    },
                     'mode': 'chronological',
 
                     'controls' : {
@@ -358,7 +397,12 @@
                         ['linear','Linear'],
                     ]
                 },
-                stats: {}
+                stats: {},
+                date: '',
+                range: {
+                    start: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+                    end: moment().subtract(1, 'days').format('YYYY-MM-DD')
+                },
             }
         },
         props: [
@@ -392,6 +436,12 @@
                         this.ui.primary = this.config.fields.secondary;
                     }
                 }
+            }
+
+            if(this.data && this.data.length > 0)
+            {
+                this.range.end = _.clone(this.data[0].daily[this.data[0].daily.length - 2].date);
+                this.range.start = moment(this.range.end).subtract(30,'days').format('YYYY-MM-DD');
             }
         },
         methods: {
@@ -619,6 +669,44 @@
             },
         },
         computed: {
+            dateRange:
+            {
+                get()
+                {
+                    var data = [
+                        _.clone(this.range.start),
+                        _.clone(this.range.end),
+                    ]
+                    return data;
+                },
+                set(newvalue)
+                {
+                    this.range.start = newvalue[0];
+                    this.range.end = newvalue[1];
+                }
+            },
+            dateSliderRange()
+            {
+                Date.prototype.addDays = function(days) {
+                    var date = new Date(this.valueOf());
+                    date.setDate(date.getDate() + days);
+                    return date;
+                }
+
+
+                var date1 = new Date('2020-01-01');
+                var date2 = new Date();
+                date2.setDate(date2.getDate() - 1);
+
+                var daysTotal = (date2.getTime() - date1.getTime()) / (1000*3600*24);
+                var data = [];
+
+                for(var x = 0; x<daysTotal; x++)
+                {
+                    data.push(moment(date1.addDays(x)).format('YYYY-MM-DD'));
+                }
+                return data;
+            },
             chartsettings()
             {
                 var data = [];
@@ -774,23 +862,35 @@
 
                 var start = '', end = '';
                 // Get start and end dates
-                for(var x in this.data)
-                {
-                    var stats = this.data[x].daily;
-                    for(var y in stats)
-                    {
-                        var date = stats[y].date;
-                        if(start.length === 0 || moment(date).format('YYYY-MM-DD') < start)
-                        {
-                            start = moment(date).format('YYYY-MM-DD');
-                        }
 
-                        if(end.length === 0 || moment(date).format('YYYY-MM-DD') > end)
+
+                if(this.range && this.range.start && this.range.end)
+                {
+                    start = this.range.start;
+                    end = this.range.end;
+                }
+
+                else
+                {
+                    for(var x in this.data)
+                    {
+                        var stats = this.data[x].daily;
+                        for(var y in stats)
                         {
-                            end = moment(date).format('YYYY-MM-DD');
+                            var date = stats[y].date;
+                            if(start.length === 0 || moment(date).format('YYYY-MM-DD') < start)
+                            {
+                                start = moment(date).format('YYYY-MM-DD');
+                            }
+
+                            if(end.length === 0 || moment(date).format('YYYY-MM-DD') > end)
+                            {
+                                end = moment(date).format('YYYY-MM-DD');
+                            }
                         }
                     }
                 }
+
 
 
                 // Assemble content
@@ -1945,6 +2045,23 @@
                 };
             },
         },
+        watch: {
+            date: function(newValue,oldValue)
+            {
+                if(typeof(newValue) != 'string')
+                {
+                    this.date = moment(newValue).format('YYYY-MM-DD');
+                }
+            },
+            range: function(newvalue)
+            {
+                if(typeof(newvalue.start) != 'string')
+                {
+                    this.range.start = moment(newvalue.start).format('YYYY-MM-DD');
+                    this.range.end = moment(newvalue.end).format('YYYY-MM-DD');
+                }
+            }
+        }
     }
 </script>
 
