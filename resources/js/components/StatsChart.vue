@@ -902,6 +902,8 @@
                 }
 
 
+                console.log('DATA---');
+                console.log(this.data);
 
                 // Assemble content
                 for(var x = 0; x <= moment(end).diff(moment(start),'days'); x++)
@@ -932,7 +934,7 @@
                             );
                         }
 
-                        if(this.data[y].daily)
+                        if(this.data[y] && this.data[y].daily)
                         {
 
                             var found = false;
@@ -997,6 +999,10 @@
                 // Assemble labels
                 for(var x = 0; x < this.data.length; x++)
                 {
+                    if(!this.data[x])
+                    {
+                        continue;
+                    }
                     for(var y in this.yAxis)
                     {
                         if (y == 0)
