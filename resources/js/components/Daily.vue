@@ -70,7 +70,7 @@
         <div v-if="isMobile" class="h-full">
             <div class="rounded bg-darkslab p-2 inline-block m-2" @click="show_daily = !show_daily">Show daily breakdown</div>
 
-            <div v-if="show_daily" class="fixed inset-x-0 top-0 bottom-4.25 z-20 bg-baseslab">
+            <div v-if="show_daily" class="fixed inset-x-0 top-3.5 bottom-4.25 z-20 bg-baseslab">
                 <div @click="show_daily = false" class="inline-block p-2 px-4 bg-hoverslab rounded m-2 text-xs">Back</div>
                 <div class="absolute top-3 bottom-0 inset-x-0">
                     <simplebar data-simplebar-auto-hide="false" class="w-full h-full">
