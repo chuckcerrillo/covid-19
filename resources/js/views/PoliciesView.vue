@@ -2,7 +2,6 @@
     <div class="h-full relative">
         <div class="absolute top-0 left-0 right-0 bottom-0 rounded bg-hoverslab" style="bottom:2rem;">
             <!-- comparison tab -->
-            {{selectedCompareTab}} --- {{selectedTab}}
             <div class="h-full relative" :class="selectedTab != 'all' ? 'hidden' : ''">
                 <simplebar class="h-full overflow-x-hidden">
                     <div v-if="compareLength == 0">
@@ -129,7 +128,7 @@
                     return date;
                 }
 
-                var data = [],
+                var data = {},
                     temp = {};
 
                 var date1 = new Date(start_date);
@@ -162,14 +161,14 @@
                                 target: daily[new_date].policies[y].t,
                             }
                         }
-                        data.push(_.clone(row));
+                        data[new_date] = _.clone(row);
                         temp = _.clone(row);
                     }
                     else
                     {
                         row = _.clone(temp);
                         row.date = new_date;
-                        data.push(row);
+                        data[new_date] = _.clone(row);
                     }
 
                 }

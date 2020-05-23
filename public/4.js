@@ -314,6 +314,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -363,50 +365,6 @@ __webpack_require__.r(__webpack_exports__);
     remove: function remove(item) {
       this.$emit('removeCompare', item);
     },
-    getBiggestValue: function getBiggestValue(field, value) {
-      var result = false;
-      var data = [];
-
-      for (var x in this.comparison) {
-        var row = this.comparison[x];
-
-        if (field == 'confirmed') {
-          data.push(row.latest.c);
-        } else if (field == 'deaths') {
-          data.push(row.latest.d);
-        } else if (field == 'recovered') {
-          data.push(row.latest.r);
-        } else if (field == 'active') {
-          data.push(row.latest.a);
-        } else if (field == 'confirmedDelta') {
-          data.push(row.latest.delta.c);
-        } else if (field == 'deathsDelta') {
-          data.push(row.latest.delta.d);
-        } else if (field == 'recoveredDelta') {
-          data.push(row.latest.delta.r);
-        } else if (field == 'population') {
-          data.push(row.population);
-        } else if (field == 'confirmedCapita') {
-          data.push(row.latest.capita.c);
-        } else if (field == 'deathsCapita') {
-          data.push(row.latest.capita.d);
-        } else if (field == 'recoveredCapita') {
-          data.push(row.latest.capita.r);
-        } else if (field == 'confirmedAverage') {
-          data.push(row.latest.average.c);
-        } else if (field == 'confirmedGrowth') {
-          data.push(row.latest.growth.c);
-        } else if (field == 'stringencyIndex') {
-          data.push(row.latest.stringencyindex);
-        }
-      }
-
-      if (data.length > 1 && value && Math.max.apply(Math, data) == value) {
-        result = true;
-      }
-
-      return result;
-    },
     dataset: function dataset(x) {
       var data = [];
 
@@ -425,6 +383,8 @@ __webpack_require__.r(__webpack_exports__);
       };
     },
     comparison: function comparison() {
+      console.log('data');
+      console.log(this.data);
       var data = [];
 
       for (var x in this.data) {
@@ -438,19 +398,14 @@ __webpack_require__.r(__webpack_exports__);
           };
 
           if (policies && policies.daily) {
-            for (var y in policies.daily) {
-              if (this.date === policies.daily[y].date) {
-                row.latest = _.cloneDeep(policies.daily[y].latest);
-                row.stringencyindex = policies.daily[y].stringencyindex;
-                break;
-              }
-            }
+            row.latest = _.cloneDeep(policies.daily[this.date].latest);
+            row.stringencyindex = _.clone(policies.daily[this.date].stringencyindex);
           }
 
           var list = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'E1', 'E2', 'E3', 'E4', 'H1', 'H2', 'H3', 'H4', 'H5', 'M1'];
 
           for (var y in list) {
-            var field = list[y];
+            var field = _.clone(list[y]);
 
             if (!row.latest[field]) {
               row.latest[field] = {
@@ -460,7 +415,7 @@ __webpack_require__.r(__webpack_exports__);
             }
           }
 
-          data.push(row);
+          data.push(_.cloneDeep(row));
         }
       }
 
@@ -648,7 +603,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -693,7 +647,7 @@ __webpack_require__.r(__webpack_exports__);
         return date;
       };
 
-      var data = [],
+      var data = {},
           temp = {};
       var date1 = new Date(start_date);
       var date2 = new Date(end_date);
@@ -722,12 +676,12 @@ __webpack_require__.r(__webpack_exports__);
             };
           }
 
-          data.push(_.clone(row));
+          data[new_date] = _.clone(row);
           temp = _.clone(row);
         } else {
           row = _.clone(temp);
           row.date = new_date;
-          data.push(row);
+          data[new_date] = _.clone(row);
         }
       }
 
@@ -883,9 +837,7 @@ var render = function() {
       "div",
       { staticClass: "m-2 xl:m-4 py-2 pb-4 px-4 bg-slab-primary rounded" },
       [
-        _c("span", { staticClass: "font-bold" }, [
-          _vm._v("Select date " + _vm._s(_vm.isMobile))
-        ]),
+        _c("span", { staticClass: "font-bold" }, [_vm._v("Select date")]),
         _vm._v(" "),
         _c(
           "v-date-picker",
@@ -3072,13 +3024,6 @@ var render = function() {
         staticStyle: { bottom: "2rem" }
       },
       [
-        _vm._v(
-          "\n            " +
-            _vm._s(_vm.selectedCompareTab) +
-            " --- " +
-            _vm._s(_vm.selectedTab) +
-            "\n            "
-        ),
         _c(
           "div",
           {

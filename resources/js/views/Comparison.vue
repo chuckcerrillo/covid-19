@@ -315,7 +315,7 @@
                 {
                     if(this.database && this.database.processed && this.database.processed.oxford && this.database.processed.oxford[country])
                     {
-                        return this.database.processed.oxford[country];
+                        return _.cloneDeep(this.database.processed.oxford[country]);
                     }
                     if(this.database.raw.raw_oxford && this.database.raw.raw_oxford.latest && this.database.raw.raw_oxford.latest[country])
                     {
@@ -336,7 +336,7 @@
                     return date;
                 }
 
-                var data = [],
+                var data = {},
                     temp = {};
 
                 var date1 = new Date(start_date);
@@ -369,14 +369,14 @@
                                 target: daily[new_date].policies[y].t,
                             }
                         }
-                        data.push(_.clone(row));
+                        data[new_date] = _.clone(row);
                         temp = _.cloneDeep(row);
                     }
                     else
                     {
                         row = _.clone(temp);
                         row.date = new_date;
-                        data.push(row);
+                        data[new_date] = _.clone(row);
                     }
 
                 }
@@ -422,24 +422,25 @@
                     {
                         var row = {};
                         row.name = this.getUniqueCountriesCompare()[x].country;
+                        row.daily = {};
                         // row.latest = this.getLatestGovtResponse(row.name);
 
-                        if(this.getGovtResponse(row.name))
+                        var response = _.cloneDeep(this.getGovtResponse(row.name));
+
+                        if(response)
                         {
-                            row.stringencyindex = this.getGovtResponse(row.name).latest.si;
-                            var daily = [];
-                            for(var y in this.getGovtResponse(row.name).daily)
+                            row.stringencyindex = _.clone(response.latest.si);
+                            for(var temp_date in response.daily)
                             {
-                                daily.push(_.clone(this.translateGovtResponse(this.getGovtResponse(row.name).daily[y])))
+                                row.daily[temp_date] = _.cloneDeep(this.translateGovtResponse(response.daily[temp_date]));
                             }
-                            row.daily = daily;
                         }
                         else
                         {
                             row.stringencyindex = 'N/A';
                             row.daily = {};
                         }
-                        data.push(_.clone(row));
+                        data.push(_.cloneDeep(row));
                     }
                 }
                 return data;
@@ -450,10 +451,10 @@
                 var key = this.database.raw.raw_oxford.key;
                 for(var x in policy.latest)
                 {
-                    var row = policy.latest[x];
+                    var row = _.cloneDeep(policy.latest[x]);
 
                     var target = '';
-                    var value = row.value;
+                    var value = _.clone(row.value);
                     if(key && key[x] && key[x].values)
                     {
                         var help = key[x].values;
@@ -467,7 +468,7 @@
                     {
                         if(key[x].targets && key[x].targets.length > 0)
                         {
-                            target = 'Scope: ' + key[x].targets[row.target];
+                            target = 'Scope: ' + _.clone(key[x].targets[row.target]);
                         }
                         else
                         {
@@ -481,18 +482,18 @@
                             }
                         }
                     }
-                    if(row.value && row.value.length == 0)
+                    if(row.value && row.value.length === 0)
                     {
                         value = '';
                         target = '';
                     }
                     else if(key[x] && key[x].type == 'lookup')
                     {
-                        value = key[x].values[parseInt(row.value)];
+                        value = _.clone(key[x].values[parseInt(row.value)]);
                     }
                     else
                     {
-                        value = row.value;
+                        value = _.clone(row.value);
                     }
 
                     policy.latest[x] = {
@@ -507,7 +508,7 @@
                         date: policy.date,
                     };
                 }
-                return _.clone(policy);
+                return _.cloneDeep(policy);
             },
             getGlobalDayNotes(date)
             {
