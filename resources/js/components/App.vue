@@ -18,6 +18,7 @@
 <!--        'comparisonCharts'-->
 <!--        ]"-->
 <!--        include="comparisonDashboard,DashboardView,Map"-->
+        <keep-alive include="MapView,MapViewMobile,StatsChart,StatsChartMobile,LineChart">
             <router-view
                 v-on:updateCompare="updateCompare"
                 v-on:updateSelected="updateSelected"
@@ -25,9 +26,9 @@
                 v-on:saveProcessedData="saveProcessedData"
                 v-on:updateGovtResponse="updateGovtResponse"
                 :mode="mode"
-
                 class="fixed xl:pt-0 top-0 left-0 right-0 bottom-0" :class="inComparison()?'pt-14 xl:pt-0 xl:mt-14':''" :loading="database.loading" :database="database">
             </router-view>
+        </keep-alive>
 <!--            :key="$route.fullPath"-->
         <MobileNav
             class="xl:hidden fixed bottom-0 inset-x-0 z-0"
@@ -63,7 +64,7 @@
                     processed: {
                         'global' : {},
                         'countries': {},
-                        'compare' : {},
+                        'compare' : [],
                         'dataset' : {},
                         'oxford' : {},
                         'annotations' : {},
@@ -78,6 +79,7 @@
                         'oxford' : false,
                     },
                 },
+                compare: [],
             }
         },
         components: {
@@ -119,7 +121,7 @@
             },
             updateCompare(compare)
             {
-                var data = {};
+                var data = [];
                 for(var x in compare)
                 {
                     data[x] = compare[x];

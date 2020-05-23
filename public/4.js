@@ -313,6 +313,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -645,13 +646,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "PoliciesView",
-  props: ['selectedCompareTab', 'uniqueCountries', 'comparePolicies', 'compareLength', 'database', 'countries'],
+  props: ['selectedCompareTab', 'uniqueCountries', 'comparePolicies', 'compareLength', 'database', 'countries', 'compare'],
   data: function data() {
     return {
       expanded: false
@@ -793,6 +797,17 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         return false;
       }
+    },
+    selectedTab: function selectedTab() {
+      var selected = 'all';
+
+      if (this.compare && this.compare.length > 0) {
+        if (this.selectedCompareTab !== false && this.compare[this.selectedCompareTab]) {
+          selected = _.clone(this.compare[this.selectedCompareTab].country);
+        }
+      }
+
+      return selected;
     }
   }
 });
@@ -984,54 +999,56 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _vm._l(_vm.comparison, function(row, key, index) {
-                  return _c(
-                    "div",
-                    {
-                      key: key,
-                      staticClass:
-                        "border-l flex-shrink-0\n                        border-lightslab w-32 xl:w-64"
-                    },
-                    [
-                      _c("div", { staticClass: "w-full" }, [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "px-4 py-2 text-sm xl:text-2xl xl:h-12 bg-slab-primary"
-                          },
-                          [
+                  return row
+                    ? _c(
+                        "div",
+                        {
+                          key: key,
+                          staticClass:
+                            "border-l flex-shrink-0\n                        border-lightslab w-32 xl:w-64"
+                        },
+                        [
+                          _c("div", { staticClass: "w-full" }, [
                             _c(
                               "div",
-                              { staticClass: "truncate ... font-bold" },
-                              [_vm._v(_vm._s(row.name))]
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "px-4 py-2 xl:h-24 text-2xl xl:text-5xl font-bold"
-                          },
-                          [
-                            !isNaN(row.stringencyindex)
-                              ? _c("div", [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm._f("numeralFormat")(
-                                        row.stringencyindex,
-                                        "0.00"
+                              {
+                                staticClass:
+                                  "px-4 py-2 text-sm xl:text-2xl xl:h-12 bg-slab-primary"
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "truncate ... font-bold" },
+                                  [_vm._v(_vm._s(row.name))]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "px-4 py-2 xl:h-24 text-2xl xl:text-5xl font-bold"
+                              },
+                              [
+                                !isNaN(row.stringencyindex)
+                                  ? _c("div", [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm._f("numeralFormat")(
+                                            row.stringencyindex,
+                                            "0.00"
+                                          )
+                                        )
                                       )
-                                    )
-                                  )
-                                ])
-                              : _c("div", [_vm._v("N/A")])
-                          ]
-                        )
-                      ])
-                    ]
-                  )
+                                    ])
+                                  : _c("div", [_vm._v("N/A")])
+                              ]
+                            )
+                          ])
+                        ]
+                      )
+                    : _vm._e()
                 }),
                 _vm._v(" "),
                 _c("div", {
@@ -1049,9 +1066,9 @@ var render = function() {
                   "inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0 top-5.625 xl:top-9",
                 class:
                   "min-w-" +
-                  _vm.data.length * 32 +
+                  _vm.comparison.length * 32 +
                   " xl:min-w-" +
-                  (_vm.data.length * 64 + 36),
+                  (_vm.comparison.length * 64 + 36),
                 staticStyle: { position: "absolute" },
                 attrs: { "data-simplebar-auto-hide": "false" }
               },
@@ -3055,11 +3072,18 @@ var render = function() {
         staticStyle: { bottom: "2rem" }
       },
       [
+        _vm._v(
+          "\n            " +
+            _vm._s(_vm.selectedCompareTab) +
+            " --- " +
+            _vm._s(_vm.selectedTab) +
+            "\n            "
+        ),
         _c(
           "div",
           {
             staticClass: "h-full relative",
-            class: _vm.selectedCompareTab != "all" ? "hidden" : ""
+            class: _vm.selectedTab != "all" ? "hidden" : ""
           },
           [
             _c(
@@ -3143,8 +3167,7 @@ var render = function() {
         ),
         _vm._v(" "),
         _vm._l(_vm.uniqueCountries, function(row, key, index) {
-          return row.country &&
-            _vm.selectedCompareTab.substr(0, row.country.length) === row.country
+          return row.country && _vm.selectedTab === row.country
             ? _c(
                 "div",
                 {
@@ -3154,9 +3177,7 @@ var render = function() {
                 },
                 [
                   !_vm.isMobile ||
-                  (_vm.isMobile &&
-                    _vm.selectedCompareTab.substr(0, row.country.length) ===
-                      row.country)
+                  (_vm.isMobile && _vm.selectedTab === row.country)
                     ? _c("simplebar", { staticClass: "h-full z-0" }, [
                         _c("div", { staticClass: "my-4" }, [
                           _c(

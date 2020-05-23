@@ -29,6 +29,7 @@
                     <div
                         class="border-l flex-shrink-0
                         border-lightslab w-32 xl:w-64"
+                        v-if="row"
                         v-for="(row, key, index) in comparison"
                         :key="key"
                     >
@@ -45,7 +46,7 @@
                     <div class="hidden xl:block px-4 py-2 xl:h-36 border-l border-lightslab"></div>
                 </div>
 
-                <simplebar data-simplebar-auto-hide="false" class="inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0 top-5.625 xl:top-9" style="position: absolute;" :class="'min-w-' + (data.length*32) + ' xl:min-w-' + (data.length*64+36)">
+                <simplebar data-simplebar-auto-hide="false" class="inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0 top-5.625 xl:top-9" style="position: absolute;" :class="'min-w-' + (comparison.length*32) + ' xl:min-w-' + (comparison.length*64+36)">
                     <div class="flex justify-start rounded-t z-10 relative bg-slab">
                         <div class="hidden xl:block bg-slab-primary justify-start items-end border-b border-lightslab w-36 text-xs font-bold flex-shrink-0">
                             <div class="px-4 py-2 h-16 bg-darkslab border-b border-slab">Containment and closure</div>

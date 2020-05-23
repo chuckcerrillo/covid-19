@@ -33,6 +33,7 @@
                     <div
                         class="border-l flex-shrink-0
                         border-lightslab w-32 xl:w-64"
+                        v-if="row"
                         v-for="(row, key, index) in comparison"
                         :key="key"
                     >
@@ -69,7 +70,8 @@
                         </div>
                         <div class="flex-shrink-0 flex">
                             <div
-                                class="xl:border-l border-b border-lightslab flex-shrink-0 w-32 xl:w-64"
+                                class="xl:border-l border-b border-lightslab flex-shrink-0 w-32 xl:w-64 test-here"
+                                v-if="row"
                                 v-for="(row, key, index) in comparison"
                                 :key="index"
                             >
@@ -242,18 +244,31 @@
         {
             if(this.data && this.data.length > 0)
             {
-                this.range.end = _.clone(this.data[0].daily[this.data[0].daily.length - 2].date);
-                this.range.start = moment(this.range.end).subtract(30,'days').format('YYYY-MM-DD');
+                for(var x in this.data)
+                {
+                    if(this.data[x])
+                    {
+                        this.range.end = _.clone(this.data[x].daily[this.data[x].daily.length - 2].date);
+                        this.range.start = moment(this.range.end).subtract(30,'days').format('YYYY-MM-DD');
+                        break;
+                    }
+                }
+
             }
 
         },
         methods: {
             prepare()
             {
-                if(this.data[0] && this.data[0].daily)
+
+                for(var x in this.data)
                 {
-                    this.date = this.data[0].daily[this.data[0].daily.length - 2].date;
-                    this.range.end = _.clone(this.date);
+                    if(this.data[x])
+                    {
+                        this.date = this.data[x].daily[this.data[x].daily.length - 2].date;
+                        this.range.end = _.clone(this.date);
+                        break;
+                    }
                 }
                 this.options.date.max = this.date;
             },
@@ -272,6 +287,10 @@
 
                 for(var x in this.comparison)
                 {
+                    if(!this.comparison[x])
+                    {
+                        continue;
+                    }
                     var row = this.comparison[x];
 
                     if(field == 'confirmed')
@@ -343,7 +362,7 @@
                 var data = [];
                 if(x >= 0 && this.data && this.data[x])
                 {
-                    data.push(_.clone(this.data[x]));
+                    data.push(_.cloneDeep(this.data[x]));
                 }
                 return data;
             },
@@ -377,6 +396,11 @@
                 var date = moment(this.date).format('YYYY-MM-DD');
                 for(var x in this.data)
                 {
+                    if(!this.data[x])
+                    {
+                        data.push(false);
+                        continue;
+                    }
                     var row = {};
                     row.latest = {
                         c: 0,
@@ -425,7 +449,7 @@
                             break;
                         }
                     }
-                    data.push(_.clone(row));
+                    data.push(_.cloneDeep(row));
                 }
 
                 return data;

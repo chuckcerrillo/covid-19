@@ -48,7 +48,7 @@ export default new VueRouter({
         {
             // About
             path: '/about', name: 'about',
-            component: () => import('./views/About'),
+            component: Comparison,
             meta: {title: 'About'}
         },
     ]

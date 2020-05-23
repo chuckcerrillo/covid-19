@@ -120,6 +120,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -278,6 +279,7 @@ var render = function() {
     "div",
     { staticClass: "h-full relative w-full" },
     [
+      _vm._v("\n    /this is th  map\n    "),
       _c(
         "keep-alive",
         [

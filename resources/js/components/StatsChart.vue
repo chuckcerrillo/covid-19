@@ -480,10 +480,13 @@
                 {
                     for(var y in current)
                     {
-                        if(current[y].name == this.data[x].name.full)
+                        if(this.data[x])
                         {
-                            data.push(current[y]);
-                            break;
+                            if(current[y].name == this.data[x].name.full)
+                            {
+                                data.push(current[y]);
+                                break;
+                            }
                         }
                     }
                 }
@@ -715,7 +718,10 @@
                 {
                     for(var x in this.data)
                     {
-                        this.addSetting(this.data[x].name.full);
+                        if(this.data[x])
+                        {
+                            this.addSetting(this.data[x].name.full);
+                        }
                     }
                 }
                 else
@@ -874,6 +880,10 @@
                 {
                     for(var x in this.data)
                     {
+                        if(!this.data[x])
+                        {
+                            continue;
+                        }
                         var stats = this.data[x].daily;
                         for(var y in stats)
                         {
@@ -901,6 +911,10 @@
                     data.labels.push(current_date);
                     for(var y = 0; y < this.data.length; y++)
                     {
+                        if(!this.data[y])
+                        {
+                            continue;
+                        }
                         if(!content[y])
                         {
                             content.push(

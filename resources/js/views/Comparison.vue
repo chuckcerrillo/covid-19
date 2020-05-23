@@ -39,7 +39,7 @@
                 </div>
                 <Sidebar
                     class="hidden xl:flex"
-                    :class="view === 'dashboard' || view === 'about' || view === 'map'? 'hidden' : ''"
+                    :class="view === 'dashboard' || view === 'about' || view === 'map'? 'xl:hidden' : ''"
                     :global="global()"
                     :sort_stats="sort_stats"
                     :countriesIndex="countriesIndex"
@@ -49,7 +49,7 @@
                 />
                 <SidebarMobile
                     class="xl:hidden"
-                    :class="view === 'dashboard' || view === 'about' || view === 'map'? 'hidden' : ''"
+                    :class="view === 'dashboard' || view === 'about' || view === 'map'? 'xl:hidden' : ''"
                     :global="global()"
                     :sort_stats="sort_stats"
                     :countriesIndex="countriesIndex"
@@ -61,7 +61,7 @@
 
                 <div class="absolute inset-x-0 bottom-0 xl:m-4 xl:ml-0 xl:w-full xl:overflow-hidden xl:relative xl:top-auto" :class="view === 'dashboard' || view === 'about' || view === 'map' ? 'top-0 xl:ml-4': 'top-3.1'">
                     <div class="bg-slab xl:rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col xl:p-4">
-                        <div class="absolute top-0 right-0 bottom-0 left-0 pt-2 xl:p-4">
+                        <div class="absolute top-0 right-0 bottom-0 left-0 pt-2 xl:p-4 content-area">
                             <simplebar v-if="view != 'charts' && view != 'dashboard' && view != 'about' && view != 'map'" class="text-xs w-full">
                                 <div class="w-full flex items-center justify-start relative">
                                     <div @click="updateSelected('all')" class="flex-shrink-0 cursor-pointer relative rounded rounded-b-none py-2 px-4 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == 'all' ? 'bg-hoverslab' : 'bg-slab-primary'">
@@ -80,21 +80,23 @@
                                 </div>
                             </simplebar>
 
-                            <keep-alive include="DashboardView,MapView,MapViewMobile,StatsChart,StatsChartMobile,LineChart,LineChartMobile">
+<!--                            <keep-alive include="DashboardView,MapView,MapViewMobile,StatsChart,StatsChartMobile,LineChart,LineChartMobile">-->
                                 <PoliciesView
                                     class="policies-view"
                                     v-if="view === 'response'"
                                     :selectedCompareTab="selectedCompareTab"
                                     :comparePolicies="comparePolicies()"
                                     :uniqueCountries="getUniqueCountriesCompare()"
+                                    :compare="compare"
                                     :compareLength="getCompareLength()"
                                     :database="database"
                                     :countries="countries_sorted"
                                     v-on:updateGovtResponse="updateGovtResponse"
                                 />
 
+                            <keep-alive>
                                 <DailyView
-                                    v-else-if="view === 'daily'"
+                                    v-if="view === 'daily'"
                                     :selectedCompareTab="selectedCompareTab"
                                     :options="options"
                                     :comparisonData="getComparisonData()"
@@ -103,8 +105,9 @@
                                     v-on:updateCompare="emitCompare"
                                     v-on:updateSelected="updateSelected"
                                 />
+                            </keep-alive>
 
-
+                            <keep-alive>
                                 <StatsChartMobile
                                     v-if="isMobile"
                                     v-show="view === 'charts'"
@@ -127,7 +130,9 @@
                                     v-on:updateChartMode="updateChartMode"
                                     v-on:updateChartFields="updateChartFields"
                                 />
+                            </keep-alive>
 
+                            <keep-alive>
                                 <MapViewMobile
                                     v-if="view === 'map' && isMobile"
                                     :countries_sorted="countries_sorted"
@@ -143,9 +148,9 @@
                                     :database="database"
 
                                 />
-
-
                             </keep-alive>
+
+<!--                            </keep-alive>-->
                             <div class="h-full relative flex flex-1" v-if="view === 'about'">
                                 <About />
                             </div>
@@ -165,15 +170,19 @@
     import {mapGetters} from 'vuex';
     import SidebarMobile from "../components/SidebarMobile";
     import DailyView from "./DailyView";
+    import MapView from "./MapView";
+    import MapViewMobile from "./MapViewMobile";
 
     export default {
         name: "Comparison",
         components:{
             DailyView, // do not lazy load this so we dont' have the weird detached tab thing
             DashboardView: () => import('./DashboardView'),
-            MapView: () => import('./MapView'),
-            MapViewMobile: () => import('./MapViewMobile'),
+            // MapView: () => import('./MapView'),
+            // MapViewMobile: () => import('./MapViewMobile'),
             // DailyView: () => import('./DailyView'),
+            MapView,
+            MapViewMobile,
             PoliciesView: () => import('./PoliciesView'),
             Sidebar: () => import('../components/Sidebar'),
             SidebarMobile,
@@ -227,7 +236,7 @@
                     'table' : 'daily',
                 },
                 'options' : {
-                    'compare_limit' : 10,
+                    'compare_limit' : 3,
                 },
                 'comparison' : [],
 
@@ -557,7 +566,6 @@
                 var compareName = this.getCompareName(source).full;
                 if(this.database.processed.dataset[compareName])
                 {
-                    console.log('Found ' + compareName + ' in processed data');
                     return this.database.processed.dataset[compareName];
                 }
                 return false;
@@ -656,6 +664,10 @@
                     {
                         row = this.assembleDataset(this.database.processed.compare[x])
                         data.push(row);
+                    }
+                    else
+                    {
+                        data.push(false);
                     }
                 }
                 return data;
@@ -889,7 +901,8 @@
                     // Add new item
                     if(this.getCompareLength() < this.options.compare_limit)
                     {
-                        this.compare[country+state] = {country: country, state: state};
+                        // this.compare[country+state] = {country: country, state: state};
+                        this.compare.push({country: country, state: state})
                     }
 
                     // this.updateSelected(this.getLastCompareItem());
@@ -1097,6 +1110,8 @@
                 {
                     this.ui.content.selectedTab = 'dashboard';
                 }
+                console.log('view');
+                console.log(this.ui.content.selectedTab);
                 return this.ui.content.selectedTab;
             },
             loading()

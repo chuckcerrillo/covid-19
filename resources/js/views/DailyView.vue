@@ -12,10 +12,11 @@
                 />
             </div>
             <div v-if="getCompareLength() > 0" v-for="(row,key,index) in compare" class="" :key="key">
-                <div class="h-full" :class="selectedCompareTab != key ? 'hidden' : ''">
+                <div class="h-full" :class="selectedCompareTab !== key ? 'hidden' : ''">
                     <Daily
+                        v-if="row"
                         v-on:removeCompare="removeCompare"
-                        :data="comparisonData[index]"
+                        :data="comparisonData[key]"
                         :settings="{absolute:true, solo:false}"
                     />
                 </div>
@@ -49,7 +50,7 @@
                 if(found)
                 {
                     var key = item.country + item.state;
-                    delete this.compare[found];
+                    this.compare[found] = false;
                     if(key === this.selectedCompareTab)
                     {
                         this.updateSelected(this.getLastCompareItem());
