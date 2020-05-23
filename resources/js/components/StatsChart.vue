@@ -901,10 +901,6 @@
                     }
                 }
 
-
-                console.log('DATA---');
-                console.log(this.data);
-
                 // Assemble content
                 for(var x = 0; x <= moment(end).diff(moment(start),'days'); x++)
                 {
