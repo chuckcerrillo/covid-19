@@ -2,7 +2,8 @@
     <div class="h-full relative">
         <div class="absolute top-0 left-0 right-0 bottom-0 rounded bg-hoverslab" style="bottom:2rem;">
             <!-- comparison tab -->
-            <div class="h-full relative" :class="selectedCompareTab != 'all' ? 'hidden' : ''">
+            {{selectedCompareTab}} --- {{selectedTab}}
+            <div class="h-full relative" :class="selectedTab != 'all' ? 'hidden' : ''">
                 <simplebar class="h-full overflow-x-hidden">
                     <div v-if="compareLength == 0">
                         <div class="p-2 xl:p-4">
@@ -24,8 +25,10 @@
                     />
                 </simplebar>
             </div>
-            <div v-for="(row,key,index) in uniqueCountries" class="absolute inset-0 bg-hoverslab rounded p-2 xl:p-4 bottom-4.25 xl:bottom-0" v-if="row.country && selectedCompareTab.substr(0,row.country.length) === row.country" :key="index">
-                <simplebar class="h-full z-0" v-if="!isMobile || (isMobile && selectedCompareTab.substr(0,row.country.length) === row.country)">
+
+
+            <div v-for="(row,key,index) in uniqueCountries" class="absolute inset-0 bg-hoverslab rounded p-2 xl:p-4 bottom-4.25 xl:bottom-0" v-if="row.country && selectedTab === row.country" :key="index">
+                <simplebar class="h-full z-0" v-if="!isMobile || (isMobile && selectedTab === row.country)">
                     <div class="my-4">
                         <div class="xl:w-128 text-2xl xl:text-4xl font-bold">{{row.country}}</div>
                         <div v-if="getGovtResponse(row.country)" class="xl:text-6xl text-3xl font-bold">{{getGovtResponse(row.country).latest.si}}</div>
@@ -82,6 +85,7 @@
             'compareLength',
             'database',
             'countries',
+            'compare',
         ],
         data(){
             return {
@@ -253,6 +257,18 @@
                 else {
                     return false;
                 }
+            },
+            selectedTab()
+            {
+                var selected = 'all';
+                if(this.compare && this.compare.length > 0)
+                {
+                    if(this.selectedCompareTab !== false && this.compare[this.selectedCompareTab])
+                    {
+                        selected = _.clone(this.compare[this.selectedCompareTab].country);
+                    }
+                }
+                return selected;
             }
         }
     }
