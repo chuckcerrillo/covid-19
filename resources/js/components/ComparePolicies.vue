@@ -1,7 +1,7 @@
 <template>
     <div class="h-full">
         <div class="m-2 xl:m-4 py-2 pb-4 px-4 bg-slab-primary rounded">
-            <span class="font-bold">Select date {{isMobile}}</span>
+            <span class="font-bold">Select date</span>
             <v-date-picker
                 v-model="date"
                 :min-date="options.date.min"
@@ -19,6 +19,7 @@
             </v-date-picker> {{moment(date).format('YYYY-MM-DD')}}
             <vue-slider v-model="date" :data="dateSliderRange" :lazy="true" :adsorb="true" />
         </div>
+<!--        <div class="absolute top-9 right-0 w-128 text-xs bg-hoverslab z-20">{{comparison}}</div>-->
         <div class="absolute top-5.5 left-0 right-0 bottom-4.25 xl:bottom-0 m-2 xl:m-4" style="position:absolute; top: 5.5rem">
             <simplebar data-simplebar-auto-hide="false" class="w-full h-full">
                 <div class="flex justify-start rounded-t z-10 relative bg-slab-primary" :class="'min-w-' + (comparison.length*32) + ' xl:min-w-' + (comparison.length*64+36)">
@@ -90,6 +91,7 @@
 
                                         <div class="px-4 py-2 h-24 border-b border-lightslab">
                                             <div class="xl:hidden text-xss text-lightlabel xl:text-xs font-bold">C1 - Schools</div>
+<!--                                            <div class="text-xss">{{row.latest}}</div>-->
                                             <div v-if="row.latest.C1.value && isMobile" class="text-xs">{{row.latest.C1.value}}</div>
                                             <div v-else-if="row.latest.C1.value && row.latest.C1.value.length > 60" class="text-xs">{{row.latest.C1.value}}</div>
                                             <div v-else-if="row.latest.C1.value && row.latest.C1.value.length > 30" class="text-sm">{{row.latest.C1.value}}</div>
@@ -353,79 +355,6 @@
             {
                 this.$emit('removeCompare',item);
             },
-            getBiggestValue(field,value)
-            {
-                var result = false;
-                var data = [];
-
-                for(var x in this.comparison)
-                {
-                    var row = this.comparison[x];
-
-                    if(field == 'confirmed')
-                    {
-                        data.push(row.latest.c);
-                    }
-                    else if(field == 'deaths')
-                    {
-                        data.push(row.latest.d);
-                    }
-                    else if(field == 'recovered')
-                    {
-                        data.push(row.latest.r);
-                    }
-                    else if(field == 'active')
-                    {
-                        data.push(row.latest.a);
-                    }
-                    else if(field == 'confirmedDelta')
-                    {
-                        data.push(row.latest.delta.c);
-                    }
-                    else if(field == 'deathsDelta')
-                    {
-                        data.push(row.latest.delta.d);
-                    }
-                    else if(field == 'recoveredDelta')
-                    {
-                        data.push(row.latest.delta.r);
-                    }
-                    else if(field == 'population')
-                    {
-                        data.push(row.population);
-                    }
-                    else if(field == 'confirmedCapita')
-                    {
-                        data.push(row.latest.capita.c);
-                    }
-                    else if(field == 'deathsCapita')
-                    {
-                        data.push(row.latest.capita.d);
-                    }
-                    else if(field == 'recoveredCapita')
-                    {
-                        data.push(row.latest.capita.r);
-                    }
-                    else if(field == 'confirmedAverage')
-                    {
-                        data.push(row.latest.average.c);
-                    }
-                    else if(field == 'confirmedGrowth')
-                    {
-                        data.push(row.latest.growth.c);
-                    }
-                    else if(field == 'stringencyIndex')
-                    {
-                        data.push(row.latest.stringencyindex);
-                    }
-                }
-
-                if(data.length > 1 && value && Math.max(...data) == value)
-                {
-                    result = true;
-                }
-                return result;
-            },
             dataset(x)
             {
                 var data = [];
@@ -446,6 +375,8 @@
             },
             comparison()
             {
+                console.log('data');
+                console.log(this.data);
                 var data = [];
                 for(var x in this.data)
                 {
@@ -461,23 +392,17 @@
                         if(policies && policies.daily)
                         {
 
-                            for(var y in policies.daily)
-                            {
-                                if(this.date === policies.daily[y].date)
-                                {
-                                    row.latest = _.cloneDeep(policies.daily[y].latest);
-                                    row.stringencyindex = policies.daily[y].stringencyindex;
-                                    break;
-                                }
-                            }
 
+
+                            row.latest = _.cloneDeep(policies.daily[this.date].latest);
+                            row.stringencyindex = _.clone(policies.daily[this.date].stringencyindex);
 
                         }
 
                         var list = ['C1','C2','C3','C4','C5','C6','C7','C8','E1','E2','E3','E4','H1','H2','H3','H4','H5','M1'];
                         for(var y in list)
                         {
-                            var field = list[y];
+                            var field = _.clone(list[y]);
 
                             if(!row.latest[field])
                             {
@@ -487,7 +412,7 @@
                                 }
                             }
                         }
-                        data.push(row);
+                        data.push(_.cloneDeep(row));
                     }
                 }
 
