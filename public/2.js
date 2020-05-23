@@ -15,6 +15,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(simplebar_dist_simplebar_min_css__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-slider-component */ "./node_modules/vue-slider-component/dist/vue-slider-component.umd.min.js");
+/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component__WEBPACK_IMPORTED_MODULE_4__);
 //
 //
 //
@@ -213,6 +215,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -221,7 +251,8 @@ __webpack_require__.r(__webpack_exports__);
   name: "Comparison",
   components: {
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    LineChart: _charts_LineChartMobile__WEBPACK_IMPORTED_MODULE_0__["default"]
+    LineChart: _charts_LineChartMobile__WEBPACK_IMPORTED_MODULE_0__["default"],
+    VueSlider: vue_slider_component__WEBPACK_IMPORTED_MODULE_4___default.a
   },
   data: function data() {
     return {
@@ -230,6 +261,10 @@ __webpack_require__.r(__webpack_exports__);
         labels: false
       },
       'options': {
+        date: {
+          min: new Date('2020-01-22'),
+          max: false
+        },
         'mode': 'chronological',
         'controls': {
           'primary': 'deltaConfirmed',
@@ -326,7 +361,12 @@ __webpack_require__.r(__webpack_exports__);
         'y': [['confirmed', 'Confirmed cases'], ['deltaConfirmed', 'Daily confirmed cases'], ['deaths', 'Confirmed deaths'], ['deltaDeaths', 'Daily confirmed deaths'], ['recovered', 'Confirmed recoveries'], ['active', 'Active cases'], ['deltaRecovered', 'Daily confirmed recoveries'], ['average', 'Average new cases (5 day spread)'], ['growthFactor', 'Growth factor']],
         'scaleType': [['logarithmic', 'Logarithmic'], ['linear', 'Linear']]
       },
-      stats: {}
+      stats: {},
+      date: '',
+      range: {
+        start: moment__WEBPACK_IMPORTED_MODULE_3___default()().subtract(30, 'days').format('YYYY-MM-DD'),
+        end: moment__WEBPACK_IMPORTED_MODULE_3___default()().subtract(1, 'days').format('YYYY-MM-DD')
+      }
     };
   },
   mounted: function mounted() {
@@ -348,6 +388,11 @@ __webpack_require__.r(__webpack_exports__);
           this.ui.primary = this.config.fields.secondary;
         }
       }
+    }
+
+    if (this.data && this.data.length > 0) {
+      this.range.end = _.clone(this.data[0].daily[this.data[0].daily.length - 2].date);
+      this.range.start = moment__WEBPACK_IMPORTED_MODULE_3___default()(this.range.end).subtract(30, 'days').format('YYYY-MM-DD');
     }
   },
   props: ['data', 'full', 'config', 'active'],
@@ -541,6 +586,35 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
+    dateRange: {
+      get: function get() {
+        var data = [_.clone(this.range.start), _.clone(this.range.end)];
+        return data;
+      },
+      set: function set(newvalue) {
+        this.range.start = newvalue[0];
+        this.range.end = newvalue[1];
+      }
+    },
+    dateSliderRange: function dateSliderRange() {
+      Date.prototype.addDays = function (days) {
+        var date = new Date(this.valueOf());
+        date.setDate(date.getDate() + days);
+        return date;
+      };
+
+      var date1 = new Date('2020-01-01');
+      var date2 = new Date();
+      date2.setDate(date2.getDate() - 1);
+      var daysTotal = (date2.getTime() - date1.getTime()) / (1000 * 3600 * 24);
+      var data = [];
+
+      for (var x = 0; x < daysTotal; x++) {
+        data.push(moment__WEBPACK_IMPORTED_MODULE_3___default()(date1.addDays(x)).format('YYYY-MM-DD'));
+      }
+
+      return data;
+    },
     chartsettings: function chartsettings() {
       var data = [];
 
@@ -665,18 +739,23 @@ __webpack_require__.r(__webpack_exports__);
       var start = '',
           end = ''; // Get start and end dates
 
-      for (var x in this.data) {
-        var stats = this.data[x].daily;
+      if (this.range && this.range.start && this.range.end) {
+        start = this.range.start;
+        end = this.range.end;
+      } else {
+        for (var x in this.data) {
+          var stats = this.data[x].daily;
 
-        for (var y in stats) {
-          var date = stats[y].date;
+          for (var y in stats) {
+            var date = stats[y].date;
 
-          if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD') < start) {
-            start = moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD');
-          }
+            if (start.length === 0 || moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD') < start) {
+              start = moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD');
+            }
 
-          if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD') > end) {
-            end = moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD');
+            if (end.length === 0 || moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD') > end) {
+              end = moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('YYYY-MM-DD');
+            }
           }
         }
       } // Assemble content
@@ -1573,6 +1652,19 @@ __webpack_require__.r(__webpack_exports__);
         options: options
       };
     }
+  },
+  watch: {
+    date: function date(newValue, oldValue) {
+      if (typeof newValue != 'string') {
+        this.date = moment__WEBPACK_IMPORTED_MODULE_3___default()(newValue).format('YYYY-MM-DD');
+      }
+    },
+    range: function range(newvalue) {
+      if (typeof newvalue.start != 'string') {
+        this.range.start = moment__WEBPACK_IMPORTED_MODULE_3___default()(newvalue.start).format('YYYY-MM-DD');
+        this.range.end = moment__WEBPACK_IMPORTED_MODULE_3___default()(newvalue.end).format('YYYY-MM-DD');
+      }
+    }
   }
 });
 
@@ -2046,7 +2138,124 @@ var render = function() {
                               )
                             }),
                             0
-                          )
+                          ),
+                          _vm._v(" "),
+                          _vm.selectedMode("chronological")
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "w-full px-2 m-1 flex flex-1 text-xs items-center justify-start"
+                                },
+                                [
+                                  _c(
+                                    "span",
+                                    { staticClass: "flex-shrink-0 font-bold" },
+                                    [_vm._v("Select date")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-date-picker",
+                                    {
+                                      staticClass: "flex-shrink-0",
+                                      attrs: {
+                                        mode: "range",
+                                        "min-date": _vm.options.date.min,
+                                        "max-date": _vm.options.date.max,
+                                        masks: {
+                                          data: ["YYYY-MM-DD", "YYYY/MM/DD"],
+                                          input: ["YYYY-MM-DD", "YYYY/MM/DD"]
+                                        },
+                                        popover: {
+                                          placement: "bottom",
+                                          visibility: "click"
+                                        }
+                                      },
+                                      model: {
+                                        value: _vm.range,
+                                        callback: function($$v) {
+                                          _vm.range = $$v
+                                        },
+                                        expression: "range"
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "p-2 hover:bg-lightlabel text-white rounded focus:outline-none flex-shrink-0"
+                                        },
+                                        [
+                                          _c(
+                                            "svg",
+                                            {
+                                              staticClass:
+                                                "w-4 h-4 fill-current",
+                                              attrs: {
+                                                xmlns:
+                                                  "http://www.w3.org/2000/svg",
+                                                viewBox: "0 0 20 20"
+                                              }
+                                            },
+                                            [
+                                              _c("path", {
+                                                attrs: {
+                                                  d:
+                                                    "M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z"
+                                                }
+                                              })
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "flex-shrink-0" }, [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm
+                                          .moment(_vm.range.start)
+                                          .format("YYYY-MM-DD")
+                                      ) +
+                                        " to " +
+                                        _vm._s(
+                                          _vm
+                                            .moment(_vm.range.end)
+                                            .format("YYYY-MM-DD")
+                                        )
+                                    )
+                                  ])
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.selectedMode("chronological")
+                            ? _c(
+                                "div",
+                                { staticClass: "p-2" },
+                                [
+                                  _c("vue-slider", {
+                                    staticStyle: { width: "100%" },
+                                    attrs: {
+                                      data: _vm.dateSliderRange,
+                                      lazy: true,
+                                      adsorb: true
+                                    },
+                                    model: {
+                                      value: _vm.dateRange,
+                                      callback: function($$v) {
+                                        _vm.dateRange = $$v
+                                      },
+                                      expression: "dateRange"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            : _vm._e()
                         ])
                       ]
                     ),
