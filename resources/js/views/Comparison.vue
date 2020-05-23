@@ -111,7 +111,7 @@
                                 <StatsChartMobile
                                     v-if="isMobile"
                                     v-show="view === 'charts'"
-                                    :data="getComparisonData()"
+                                    :data="getChartData()"
                                     :config="ui.chart"
                                     :full="true"
                                     :active="view === 'charts'"
@@ -122,7 +122,7 @@
                                 <StatsChart
                                     v-else
                                     v-show="view === 'charts'"
-                                    :data="getComparisonData()"
+                                    :data="getChartData()"
                                     :config="ui.chart"
                                     :full="true"
                                     :active="view === 'charts'"
@@ -236,7 +236,7 @@
                     'table' : 'daily',
                 },
                 'options' : {
-                    'compare_limit' : 3,
+                    'compare_limit' : 10,
                 },
                 'comparison' : [],
 
@@ -668,6 +668,22 @@
                     else
                     {
                         data.push(false);
+                    }
+                }
+                return data;
+            },
+            getChartData()
+            {
+                var data = [],
+                    row = [];
+
+
+                for(var x in this.database.processed.compare)
+                {
+                    if(this.database.processed.compare[x])
+                    {
+                        row = this.assembleDataset(this.database.processed.compare[x])
+                        data.push(row);
                     }
                 }
                 return data;
