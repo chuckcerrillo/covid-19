@@ -81,7 +81,9 @@
                                     <div class="w-full text-xs xl:text-base">
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">New cases per day</div>
                                         <div class="p-2 h-24 xl:h-32 border-b border-lightslab">
-                                            <MiniChart v-if="active && graphReady" v-once :data="dataset(key)" :minDate="range.start" :maxDate="range.end" :active="active" />
+                                            <keep-alive>
+                                            <MiniChart v-if="active && graphReady" :data="dataset(key)" :minDate="range.start" :maxDate="range.end" :active="active" />
+                                            </keep-alive>
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">Confirmed cases</div>
