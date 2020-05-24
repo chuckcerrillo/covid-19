@@ -35,11 +35,11 @@
                         <div class="flex items-center">
                             <div class="text-lightlabel font-bold tracking-tight">stringency index</div>
                             <div class="xl:hidden ml-2 text-xs text-heading" @click="expanded = !expanded">
-                                <!--                                <svg class="h-4 fill-current" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 28 28">-->
-                                <!--                                    <g>-->
-                                <!--                                        <path d="M14,1.86A12.14,12.14,0,1,0,26.14,14,12.15,12.15,0,0,0,14,1.86Zm0,23.28A11.14,11.14,0,1,1,25.14,14,11.16,11.16,0,0,1,14,25.14Z"/><path d="M14,11.51a.74.74,0,0,0-.46.14.43.43,0,0,0-.18.34V20.4a.48.48,0,0,0,.19.36.67.67,0,0,0,.45.16.72.72,0,0,0,.46-.16.46.46,0,0,0,.2-.36V12a.44.44,0,0,0-.19-.34A.79.79,0,0,0,14,11.51Z"/><path d="M14,7.08a.93.93,0,0,0-.64.24.77.77,0,0,0-.26.58.78.78,0,0,0,.26.58.89.89,0,0,0,.64.25.82.82,0,0,0,.61-.25.81.81,0,0,0,.25-.58.79.79,0,0,0-.25-.58A.85.85,0,0,0,14,7.08Z"/>-->
-                                <!--                                    </g>-->
-                                <!--                                </svg>-->
+<!--                                <svg class="h-4 fill-current" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 28 28">-->
+<!--                                    <g>-->
+<!--                                        <path d="M14,1.86A12.14,12.14,0,1,0,26.14,14,12.15,12.15,0,0,0,14,1.86Zm0,23.28A11.14,11.14,0,1,1,25.14,14,11.16,11.16,0,0,1,14,25.14Z"/><path d="M14,11.51a.74.74,0,0,0-.46.14.43.43,0,0,0-.18.34V20.4a.48.48,0,0,0,.19.36.67.67,0,0,0,.45.16.72.72,0,0,0,.46-.16.46.46,0,0,0,.2-.36V12a.44.44,0,0,0-.19-.34A.79.79,0,0,0,14,11.51Z"/><path d="M14,7.08a.93.93,0,0,0-.64.24.77.77,0,0,0-.26.58.78.78,0,0,0,.26.58.89.89,0,0,0,.64.25.82.82,0,0,0,.61-.25.81.81,0,0,0,.25-.58.79.79,0,0,0-.25-.58A.85.85,0,0,0,14,7.08Z"/>-->
+<!--                                    </g>-->
+<!--                                </svg>-->
                                 (info)
                             </div>
                         </div>
@@ -248,28 +248,28 @@
             },
         },
         computed:
-            {
-                isMobile() {
-                    if( screen.width <= 760 ) {
-                        return true;
-                    }
-                    else {
-                        return false;
-                    }
-                },
-                selectedTab()
-                {
-                    var selected = 'all';
-                    if(this.compare && this.compare.length > 0)
-                    {
-                        if(this.selectedCompareTab !== false && this.compare[this.selectedCompareTab])
-                        {
-                            selected = _.clone(this.compare[this.selectedCompareTab].country);
-                        }
-                    }
-                    return selected;
+        {
+            isMobile() {
+                if( screen.width <= 760 ) {
+                    return true;
                 }
+                else {
+                    return false;
+                }
+            },
+            selectedTab()
+            {
+                var selected = 'all';
+                if(this.compare && this.compare.length > 0)
+                {
+                    if(this.selectedCompareTab !== false && this.compare[this.selectedCompareTab])
+                    {
+                        selected = _.clone(this.compare[this.selectedCompareTab].country);
+                    }
+                }
+                return selected;
             }
+        }
     }
 </script>
 

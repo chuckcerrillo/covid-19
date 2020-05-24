@@ -448,7 +448,7 @@ var render = function() {
   return _c("div", { staticClass: "flex flex-col" }, [
     _c(
       "div",
-      { staticClass: "m-4 mb-0 overflow-hidden bg-lightslab rounded h-56 p-4" },
+      { staticClass: "m-4 mb-0 overflow-hidden bg-lightslab rounded p-4 h-56" },
       [
         _c("div", { staticClass: "text-2xl tracking-tight font-bold" }, [
           _vm._v("Global tally")

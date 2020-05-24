@@ -780,7 +780,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".inner-scrollbar .simplebar-track.simplebar-horizontal {\n  visibility: hidden !important;\n}\n", ""]);
+exports.push([module.i, ".inner-scrollbar .simplebar-track.simplebar-horizontal {\n  visibility: hidden !important;\n}\r\n", ""]);
 
 // exports
 
@@ -890,7 +890,9 @@ var render = function() {
           ]
         ),
         _vm._v(
-          " " + _vm._s(_vm.moment(_vm.date).format("YYYY-MM-DD")) + "\n        "
+          " " +
+            _vm._s(_vm.moment(_vm.date).format("YYYY-MM-DD")) +
+            "\n            "
         ),
         _c("vue-slider", {
           attrs: { data: _vm.dateSliderRange, lazy: true, adsorb: true },
@@ -955,7 +957,7 @@ var render = function() {
                         {
                           key: key,
                           staticClass:
-                            "border-l flex-shrink-0\n                    border-lightslab w-32 xl:w-64"
+                            "border-l flex-shrink-0\n                        border-lightslab w-32 xl:w-64"
                         },
                         [
                           _c("div", { staticClass: "w-full" }, [
@@ -2844,8 +2846,8 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "py-1 w-100" }, [
-    _c("div", { staticClass: "rounded bg-slab-primary mr-4 h-44" }, [
-      _c("div", { staticClass: "w-full h-full p-2 relative" }, [
+    _c("div", { staticClass: "rounded bg-slab-primary xl:mr-4 xl:h-44" }, [
+      _c("div", { staticClass: "w-full h-full pb-8 xl:pb-2 p-2 relative" }, [
         _c("div", { staticClass: "font-bold mb-4 text-lightlabel" }, [
           _c("span", { staticClass: "uppercase" }, [
             _vm._v(_vm._s(_vm.policy.id))
@@ -2869,10 +2871,10 @@ var render = function() {
               _vm._v(_vm._s(_vm.policy.value))
             ])
           : _vm.policy.value.length > 15
-          ? _c("div", { staticClass: "font-bold text-2xl" }, [
+          ? _c("div", { staticClass: "font-bold xl:text-2xl" }, [
               _vm._v(_vm._s(_vm.policy.value))
             ])
-          : _c("div", { staticClass: "text-3xl font-bold" }, [
+          : _c("div", { staticClass: "xl:text-3xl font-bold" }, [
               _vm._v(_vm._s(_vm.policy.value))
             ]),
         _vm._v(" "),
@@ -2897,7 +2899,7 @@ var render = function() {
           "div",
           {
             staticClass:
-              "fixed top-0 left-0 bottom-0 right-0 flex items-center justify-center z-30",
+              "fixed top-0 left-0 bottom-0 right-0 flex items-center justify-center z-40",
             staticStyle: { background: "rgba(0,0,0,0.5)" }
           },
           [
@@ -2913,7 +2915,8 @@ var render = function() {
             _c(
               "div",
               {
-                staticClass: "bg-slab rounded p-4 relative z-10 w-1/2",
+                staticClass:
+                  "bg-slab rounded p-4 relative z-10 w-full m-6 xl:m-0 xl:w-1/2",
                 staticStyle: { "max-width": "800px" }
               },
               [
@@ -2934,7 +2937,9 @@ var render = function() {
                 _vm.policy.id == "H5"
                   ? _c(
                       "div",
-                      { staticClass: "text-3xl text-white font-bold" },
+                      {
+                        staticClass: "text-2xl xl:text-3xl text-white font-bold"
+                      },
                       [
                         _vm._v(
                           "US$" +
@@ -3174,7 +3179,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                            (info)\n                        "
+                                  "\n                                (info)\n                            "
                                 )
                               ]
                             )

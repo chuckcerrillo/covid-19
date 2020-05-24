@@ -19,7 +19,7 @@
             </v-date-picker> {{moment(date).format('YYYY-MM-DD')}}
             <vue-slider v-model="date" :data="dateSliderRange" :lazy="true" :adsorb="true" />
         </div>
-        <!--        <div class="absolute top-9 right-0 w-128 text-xs bg-hoverslab z-20">{{comparison}}</div>-->
+<!--        <div class="absolute top-9 right-0 w-128 text-xs bg-hoverslab z-20">{{comparison}}</div>-->
         <div class="absolute top-5.5 left-0 right-0 bottom-4.25 xl:bottom-0 m-2 xl:m-4" style="position:absolute; top: 5.5rem">
             <simplebar data-simplebar-auto-hide="false" class="w-full h-full">
                 <div class="flex justify-start rounded-t z-10 relative bg-slab-primary" :class="'min-w-' + (comparison.length*32) + ' xl:min-w-' + (comparison.length*64+36)">
@@ -43,7 +43,7 @@
                                 <div v-else>N/A</div>
                             </div>
                         </div>
-                    </div>
+                     </div>
                     <div class="hidden xl:block px-4 py-2 xl:h-36 border-l border-lightslab"></div>
                 </div>
 
@@ -91,7 +91,7 @@
 
                                         <div class="px-4 py-2 h-24 border-b border-lightslab">
                                             <div class="xl:hidden text-xss text-lightlabel xl:text-xs font-bold">C1 - Schools</div>
-                                            <!--                                            <div class="text-xss">{{row.latest}}</div>-->
+<!--                                            <div class="text-xss">{{row.latest}}</div>-->
                                             <div v-if="row.latest.C1.value && isMobile" class="text-xs">{{row.latest.C1.value}}</div>
                                             <div v-else-if="row.latest.C1.value && row.latest.C1.value.length > 60" class="text-xs">{{row.latest.C1.value}}</div>
                                             <div v-else-if="row.latest.C1.value && row.latest.C1.value.length > 30" class="text-sm">{{row.latest.C1.value}}</div>
@@ -290,10 +290,10 @@
 
 
 
-        <!--        <FullCountry v-if="expanded"-->
-        <!--                     :data="recomputed"-->
-        <!--                    v-on:close="toggleExpand"-->
-        <!--        />-->
+<!--        <FullCountry v-if="expanded"-->
+<!--                     :data="recomputed"-->
+<!--                    v-on:close="toggleExpand"-->
+<!--        />-->
     </div>
 </template>
 
@@ -463,7 +463,7 @@
 </script>
 
 <style>
-    .inner-scrollbar .simplebar-track.simplebar-horizontal {
-        visibility: hidden !important;
-    }
+.inner-scrollbar .simplebar-track.simplebar-horizontal {
+    visibility: hidden !important;
+}
 </style>

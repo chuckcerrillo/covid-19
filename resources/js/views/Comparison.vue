@@ -5,7 +5,7 @@
             <div class="bg-slab rounded p-4 px-8 w-80 flex flex-col items-center justify-center">
                 <div v-if="countriesStatus == 'success' && countryCasesStatus == 'success' && stateCasesStatus == 'success' && ajax_loading.oxford" class="font-bold text-2xl text-white p-2 text-center">Launching...</div>
                 <div v-else class="font-bold text-2xl text-white p-2 text-center">Downloading data...</div>
-                <!--                <div class="p-2 mb-4 text-center"><img src="/img/loader.svg"></div>-->
+<!--                <div class="p-2 mb-4 text-center"><img src="/img/loader.svg"></div>-->
                 <div class="p-2 mb-4 text-center"><img src="/img/loading.gif"></div>
                 <div class="flex items-center text-xs w-44">
                     <div class="w-32">Country list</div>
@@ -81,30 +81,30 @@
                                 </div>
                             </simplebar>
 
-                            <!--                            <keep-alive include="DashboardView,MapView,MapViewMobile,StatsChart,StatsChartMobile,LineChart,LineChartMobile">-->
-                            <PoliciesView
-                                class="policies-view"
-                                v-if="view === 'response'"
-                                :selectedCompareTab="selectedCompareTab"
-                                :comparePolicies="comparePolicies()"
-                                :uniqueCountries="getUniqueCountriesCompare()"
-                                :compare="compare"
-                                :compareLength="getCompareLength()"
-                                :database="database"
-                                :countries="countries_sorted"
-                                v-on:updateGovtResponse="updateGovtResponse"
-                            />
+<!--                            <keep-alive include="DashboardView,MapView,MapViewMobile,StatsChart,StatsChartMobile,LineChart,LineChartMobile">-->
+                                <PoliciesView
+                                    class="policies-view"
+                                    v-if="view === 'response'"
+                                    :selectedCompareTab="selectedCompareTab"
+                                    :comparePolicies="comparePolicies()"
+                                    :uniqueCountries="getUniqueCountriesCompare()"
+                                    :compare="compare"
+                                    :compareLength="getCompareLength()"
+                                    :database="database"
+                                    :countries="countries_sorted"
+                                    v-on:updateGovtResponse="updateGovtResponse"
+                                />
 
-                            <DailyView
-                                v-if="view === 'daily'"
-                                :selectedCompareTab="selectedCompareTab"
-                                :options="options"
-                                :comparisonData="getComparisonData()"
-                                :view="view"
-                                :compare="compare"
-                                v-on:updateCompare="emitCompare"
-                                v-on:updateSelected="updateSelected"
-                            />
+                                <DailyView
+                                    v-if="view === 'daily'"
+                                    :selectedCompareTab="selectedCompareTab"
+                                    :options="options"
+                                    :comparisonData="getComparisonData()"
+                                    :view="view"
+                                    :compare="compare"
+                                    v-on:updateCompare="emitCompare"
+                                    v-on:updateSelected="updateSelected"
+                                />
 
                             <keep-alive>
                                 <StatsChartMobile
@@ -149,7 +149,7 @@
                                 />
                             </keep-alive>
 
-                            <!--                            </keep-alive>-->
+<!--                            </keep-alive>-->
                             <div class="h-full relative flex flex-1" v-if="view === 'about'">
                                 <About />
                             </div>
@@ -302,7 +302,7 @@
                     var response = _.cloneDeep(this.getGovtResponse(country));
 
                     // setTimeout(function(){
-                    self.database.processed.oxford[country] = response;
+                        self.database.processed.oxford[country] = response;
                     // },1)
 
 
@@ -1219,7 +1219,7 @@
             }
         }
     }
-</script>
+    </script>
 
 <style scoped>
 

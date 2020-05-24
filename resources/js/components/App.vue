@@ -7,17 +7,17 @@
             v-if="inComparison()"
             :mode="mode"
         />
-        <!--        <About-->
-        <!--            v-show="about"-->
-        <!--            v-on:showAbout="showAbout"-->
-        <!--            class="fixed top-0 right-0 bottom-0 left-0 z-20"-->
-        <!--        />-->
+<!--        <About-->
+<!--            v-show="about"-->
+<!--            v-on:showAbout="showAbout"-->
+<!--            class="fixed top-0 right-0 bottom-0 left-0 z-20"-->
+<!--        />-->
 
-        <!--        :include="[-->
-        <!--        'comparisonDashboard',-->
-        <!--        'comparisonCharts'-->
-        <!--        ]"-->
-        <!--        include="comparisonDashboard,DashboardView,Map"-->
+<!--        :include="[-->
+<!--        'comparisonDashboard',-->
+<!--        'comparisonCharts'-->
+<!--        ]"-->
+<!--        include="comparisonDashboard,DashboardView,Map"-->
         <keep-alive include="MapView,MapViewMobile,StatsChart,StatsChartMobile,LineChart">
             <router-view
                 v-on:updateCompare="updateCompare"
@@ -29,7 +29,7 @@
                 class="fixed xl:pt-0 top-0 left-0 right-0 bottom-0" :class="inComparison()?'pt-14 xl:pt-0 xl:mt-14':''" :loading="database.loading" :database="database">
             </router-view>
         </keep-alive>
-        <!--            :key="$route.fullPath"-->
+<!--            :key="$route.fullPath"-->
         <MobileNav
             class="xl:hidden fixed bottom-0 inset-x-0 z-0"
             v-on:showAbout="showAbout"
@@ -145,33 +145,33 @@
             }
         },
         computed:
-            {
-                ...mapGetters({
-                    countries: 'countries',
-                    countriesIndex: 'countriesIndex',
-                    countriesStatus: 'countriesStatus',
+        {
+            ...mapGetters({
+                countries: 'countries',
+                countriesIndex: 'countriesIndex',
+                countriesStatus: 'countriesStatus',
 
-                    countryCases: 'dailyCountryCases',
-                    stateCases: 'dailyStateCases',
-                    countryCasesIndex: 'dailyCountryCasesIndex',
-                    stateCasesIndex: 'dailyStateCasesIndex',
+                countryCases: 'dailyCountryCases',
+                stateCases: 'dailyStateCases',
+                countryCasesIndex: 'dailyCountryCasesIndex',
+                stateCasesIndex: 'dailyStateCasesIndex',
 
-                    countryCasesStatus: 'dailyCountryCasesStatus',
-                    stateCasesStatus: 'dailyStateCasesStatus',
-                }),
-                // global()
-                // {
-                //     return this.database.processed.global;
-                // },
-                // countries()
-                // {
-                //     return this.database.processed.countries;
-                // },
-                // datasets()
-                // {
-                //     return this.database.processed.dataset;
-                // }
-            },
+                countryCasesStatus: 'dailyCountryCasesStatus',
+                stateCasesStatus: 'dailyStateCasesStatus',
+            }),
+            // global()
+            // {
+            //     return this.database.processed.global;
+            // },
+            // countries()
+            // {
+            //     return this.database.processed.countries;
+            // },
+            // datasets()
+            // {
+            //     return this.database.processed.dataset;
+            // }
+        },
         watch: {
             $route(to,from) {
                 this.setPageTitle(to.meta.title);

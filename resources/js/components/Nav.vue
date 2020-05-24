@@ -11,7 +11,7 @@
                     </g>
                 </svg>
             </div>
-            <!--            <router-link to="/comparison" @click="setMode('trends')" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive('comparisonDashboard','bg-hoverslab')">Dashboard</router-link>-->
+<!--            <router-link to="/comparison" @click="setMode('trends')" class="p-2 px-4 cursor-pointer hover:text-white" :class="isActive('comparisonDashboard','bg-hoverslab')">Dashboard</router-link>-->
             <router-link to="/comparison/response" @click="setMode('trends')" class="hidden xl:block p-2 px-4 cursor-pointer hover:text-white" :class="isActive('comparisonResponse','bg-hoverslab')">Government Response</router-link>
             <router-link to="/comparison/daily" @click="setMode('trends')" class="hidden xl:block p-2 px-4 cursor-pointer hover:text-white" :class="isActive('comparisonDaily','bg-hoverslab')">Daily Breakdown</router-link>
             <router-link to="/comparison/charts" @click="setMode('trends')" class="hidden xl:block p-2 px-4 cursor-pointer hover:text-white" :class="isActive('comparisonCharts','bg-hoverslab')">Charts</router-link>
@@ -39,21 +39,21 @@
             }
         },
         computed:
-            {
-                ...mapGetters({
-                    countries: 'countries',
-                    countriesIndex: 'countriesIndex',
-                    countriesStatus: 'countriesStatus',
+        {
+            ...mapGetters({
+                countries: 'countries',
+                countriesIndex: 'countriesIndex',
+                countriesStatus: 'countriesStatus',
 
-                    countryCases: 'dailyCountryCases',
-                    stateCases: 'dailyStateCases',
-                    countryCasesIndex: 'dailyCountryCasesIndex',
-                    stateCasesIndex: 'dailyStateCasesIndex',
+                countryCases: 'dailyCountryCases',
+                stateCases: 'dailyStateCases',
+                countryCasesIndex: 'dailyCountryCasesIndex',
+                stateCasesIndex: 'dailyStateCasesIndex',
 
-                    countryCasesStatus: 'dailyCountryCasesStatus',
-                    stateCasesStatus: 'dailyStateCasesStatus',
-                }),
-            },
+                countryCasesStatus: 'dailyCountryCasesStatus',
+                stateCasesStatus: 'dailyStateCasesStatus',
+            }),
+        },
         methods: {
             isActive(current, classes){
                 if(this.$route.name == current)
