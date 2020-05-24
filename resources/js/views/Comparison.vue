@@ -2,9 +2,10 @@
     <div>
         <div v-if="!loaded" class="flex items-center justify-center pt-20">
             <div></div>
-            <div class="bg-slab rounded p-4 px-8 w-80 flex flex-col items-center justify-center">
-                <div v-if="countriesStatus == 'success' && countryCasesStatus == 'success' && stateCasesStatus == 'success' && ajax_loading.oxford" class="font-bold text-2xl text-white p-2 text-center">Launching...</div>
-                <div v-else class="font-bold text-2xl text-white p-2 text-center">Downloading data...</div>
+            <div class="bg-slab rounded p-4 px-8 pb-8 w-80 xl:w-128 flex flex-col items-center justify-center">
+                <div v-if="countriesStatus == 'success' && countryCasesStatus == 'success' && stateCasesStatus == 'success' && ajax_loading.oxford" class="font-bold xl:text-2xl text-white p-2 text-center">Launching...</div>
+                <div v-else-if="countryCasesStatus == 'success' || stateCasesStatus == 'success' || ajax_loading.oxford" class="font-bold xl:text-2xl text-white p-2 text-center">Processing data</div>
+                <div v-else class="font-bold xl:text-2xl text-white p-2 text-center">Downloading country data</div>
 <!--                <div class="p-2 mb-4 text-center"><img src="/img/loader.svg"></div>-->
                 <div class="p-2 mb-4 text-center"><img src="/img/loading.gif"></div>
                 <div class="flex items-center text-xs w-44">

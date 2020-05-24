@@ -25,7 +25,7 @@
         </div>
         <div class="absolute left-0 right-0 bottom-4.25 xl:bottom-0 m-2 xl:m-4 top-5.5" style="position:absolute;">
             <simplebar class="w-full h-full">
-                <div class="flex justify-start rounded-t z-10 relative bg-slab-primary" :class="'min-w-' + (comparison.length*32) + ' xl:min-w-' + (comparison.length*64+36)">
+                <div class="flex justify-start rounded-t z-10 relative bg-slab-primary" :class="'min-w-' + (comparisonLength*32) + ' xl:min-w-' + (comparisonLength*64+36)">
                     <div class="hidden xl:block bg-slab-primary border-lightslab w-36 text-xs font-bold flex-shrink-0">
                         <div class="px-4 py-2 h-12"></div>
                         <div class="px-4 py-2 h-8 border-b border-slab"></div>
@@ -49,7 +49,7 @@
                      </div>
                     <div class="hidden xl:block px-4 py-2 xl:h-20 border-l border-lightslab"></div>
                 </div>
-                <simplebar class="inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0 top-3.25 xl:top-5 overflow-x-show w-full" style="position: absolute;" :class="'min-w-' + (comparison.length*32) + ' xl:min-w-' + (comparison.length*64+36)">
+                <simplebar class="inner-scrollbar bg-slab rounded absolute inset-x-0 bottom-0 top-3.25 xl:top-5 overflow-x-show w-full" style="position: absolute;" :class="'min-w-' + (comparisonLength*32) + ' xl:min-w-' + (comparisonLength*64+36)">
                     <div class="flex justify-start rounded-t z-10 relative bg-slab">
                         <div class="hidden xl:block bg-slab-primary border-b border-lightslab w-36 text-xs font-bold flex-shrink-0">
                             <div class="px-4 py-2 h-32 border-b border-slab">New cases per day</div>
@@ -389,6 +389,19 @@
                     'absolute': (this.settings && this.settings.absolute) ? this.settings.absolute : false,
                     'solo': (this.settings && this.settings.solo) ? this.settings.solo : false,
                 }
+            },
+            comparisonLength()
+            {
+                var count = 0;
+                for(var x in this.comparison)
+                {
+                    if(this.comparison[x])
+                    {
+                        count++;
+                    }
+
+                }
+                return count;
             },
             comparison()
             {
