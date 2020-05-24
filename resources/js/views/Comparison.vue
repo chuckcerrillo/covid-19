@@ -337,7 +337,86 @@
                 }
 
                 var data = {},
-                    temp = {};
+                    blank =
+                        {
+                            "date": false,
+                            "stringencyindex": 0,
+                            "latest": {
+                                "C1": {
+                                    "value": "0.00",
+                                    "target": "0"
+                                },
+                                "C2": {
+                                    "value": "0.00",
+                                    "target": "0"
+                                },
+                                "C3": {
+                                    "value": "0.00",
+                                    "target": "0"
+                                },
+                                "C4": {
+                                    "value": "0.00",
+                                    "target": "0"
+                                },
+                                "C5": {
+                                    "value": "0.00",
+                                    "target": "0"
+                                },
+                                "C6": {
+                                    "value": "0.00",
+                                    "target": "0"
+                                },
+                                "C7": {
+                                    "value": "0.00",
+                                    "target": "0"
+                                },
+                                "C8": {
+                                    "value": "0.00",
+                                    "target": ""
+                                },
+                                "E1": {
+                                    "value": "0.00",
+                                    "target": "0"
+                                },
+                                "E2": {
+                                    "value": "0.00",
+                                    "target": ""
+                                },
+                                "E3": {
+                                    "value": "0.00",
+                                    "target": ""
+                                },
+                                "E4": {
+                                    "value": 0,
+                                    "target": ""
+                                },
+                                "H1": {
+                                    "value": "0.00",
+                                    "target": "1"
+                                },
+                                "H2": {
+                                    "value": "0.00",
+                                    "target": ""
+                                },
+                                "H3": {
+                                    "value": "0.00",
+                                    "target": ""
+                                },
+                                "H4": {
+                                    "value": 0,
+                                    "target": ""
+                                },
+                                "H5": {
+                                    "value": 0,
+                                    "target": ""
+                                },
+                                "M1": {
+                                    "value": "",
+                                }
+                            }
+                        },
+                    temp = _.cloneDeep(blank);
+
 
                 var date1 = new Date(start_date);
                 var date2 = new Date(end_date);
@@ -369,14 +448,14 @@
                                 target: daily[new_date].policies[y].t,
                             }
                         }
-                        data[new_date] = _.clone(row);
+                        data[new_date] = _.cloneDeep(row);
                         temp = _.cloneDeep(row);
                     }
                     else
                     {
-                        row = _.clone(temp);
+                        row = _.cloneDeep(temp);
                         row.date = new_date;
-                        data[new_date] = _.clone(row);
+                        data[new_date] = _.cloneDeep(row);
                     }
 
                 }
