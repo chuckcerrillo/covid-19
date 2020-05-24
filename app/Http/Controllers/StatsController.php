@@ -3042,6 +3042,8 @@ class StatsController extends Controller
         $latest = [];
         foreach($csv AS $row)
         {
+            $changed = false;
+
             if(isset($this->oxford_jh_map[$row[0]]))
             {
                 $country = $this->oxford_jh_map[$row[0]];
@@ -3077,6 +3079,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['C1']['t'] != $daily[$country][$date]['policies']['C1']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['C1'] = [
                                 'v' => $daily[$country][$date]['policies']['C1']['v'],
                                 't' => $daily[$country][$date]['policies']['C1']['t'],
@@ -3116,6 +3119,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['C2']['t'] != $daily[$country][$date]['policies']['C2']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['C2'] = [
                                 'v' => $daily[$country][$date]['policies']['C2']['v'],
                                 't' => $daily[$country][$date]['policies']['C2']['t'],
@@ -3154,6 +3158,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['C3']['t'] != $daily[$country][$date]['policies']['C3']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['C3'] = [
                                 'v' => $daily[$country][$date]['policies']['C3']['v'],
                                 't' => $daily[$country][$date]['policies']['C3']['t'],
@@ -3192,6 +3197,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['C4']['t'] != $daily[$country][$date]['policies']['C4']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['C4'] = [
                                 'v' => $daily[$country][$date]['policies']['C4']['v'],
                                 't' => $daily[$country][$date]['policies']['C4']['t'],
@@ -3231,6 +3237,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['C5']['t'] != $daily[$country][$date]['policies']['C5']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['C5'] = [
                                 'v' => $daily[$country][$date]['policies']['C5']['v'],
                                 't' => $daily[$country][$date]['policies']['C5']['t'],
@@ -3269,6 +3276,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['C6']['t'] != $daily[$country][$date]['policies']['C6']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['C6'] = [
                                 'v' => $daily[$country][$date]['policies']['C6']['v'],
                                 't' => $daily[$country][$date]['policies']['C6']['t'],
@@ -3307,6 +3315,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['C7']['t'] != $daily[$country][$date]['policies']['C7']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['C7'] = [
                                 'v' => $daily[$country][$date]['policies']['C7']['v'],
                                 't' => $daily[$country][$date]['policies']['C7']['t'],
@@ -3345,6 +3354,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['C8']['t'] != $daily[$country][$date]['policies']['C8']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['C8'] = [
                                 'v' => $daily[$country][$date]['policies']['C8']['v'],
                                 't' => $daily[$country][$date]['policies']['C8']['t'],
@@ -3381,6 +3391,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['E1']['t'] != $daily[$country][$date]['policies']['E1']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['E1'] = [
                                 'v' => $daily[$country][$date]['policies']['E1']['v'],
                                 't' => $daily[$country][$date]['policies']['E1']['t'],
@@ -3419,6 +3430,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['E2']['t'] != $daily[$country][$date]['policies']['E2']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['E2'] = [
                                 'v' => $daily[$country][$date]['policies']['E2']['v'],
                                 't' => $daily[$country][$date]['policies']['E2']['t'],
@@ -3457,6 +3469,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['E3']['t'] != $daily[$country][$date]['policies']['E3']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['E3'] = [
                                 'v' => $daily[$country][$date]['policies']['E3']['v'],
                                 't' => $daily[$country][$date]['policies']['E3']['t'],
@@ -3510,6 +3523,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['E4']['t'] != $daily[$country][$date]['policies']['E4']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['E4']['v'] = $daily[$country][$date]['policies']['E4']['v'];
                             $latest[$country]['policies']['E4']['t'] = $daily[$country][$date]['policies']['E4']['t'];
                             $latest[$country]['policies']['E4']['n'] = $daily[$country][$date]['policies']['E4']['n'];
@@ -3562,6 +3576,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['H1']['t'] != $daily[$country][$date]['policies']['H1']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['H1'] = [
                                 'v' => $daily[$country][$date]['policies']['H1']['v'],
                                 't' => $daily[$country][$date]['policies']['H1']['t'],
@@ -3600,6 +3615,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['H2']['t'] != $daily[$country][$date]['policies']['H2']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['H2'] = [
                                 'v' => $daily[$country][$date]['policies']['H2']['v'],
                                 't' => $daily[$country][$date]['policies']['H2']['t'],
@@ -3638,6 +3654,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['H3']['t'] != $daily[$country][$date]['policies']['H3']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['H3'] = [
                                 'v' => $daily[$country][$date]['policies']['H3']['v'],
                                 't' => $daily[$country][$date]['policies']['H3']['t'],
@@ -3676,6 +3693,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['H4']['t'] != $daily[$country][$date]['policies']['H4']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['H4'] = [
                                 'v' => $daily[$country][$date]['policies']['H4']['v'],
                                 't' => $daily[$country][$date]['policies']['H4']['t'],
@@ -3729,6 +3747,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['H5']['t'] != $daily[$country][$date]['policies']['H5']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['H5']['v'] = $daily[$country][$date]['policies']['H5']['v'];
                             $latest[$country]['policies']['H5']['t'] = $daily[$country][$date]['policies']['H5']['t'];
                             $latest[$country]['policies']['H5']['n'] = $daily[$country][$date]['policies']['H5']['n'];
@@ -3780,6 +3799,7 @@ class StatsController extends Controller
                             || $latest[$country]['policies']['M1']['t'] != $daily[$country][$date]['policies']['M1']['t']
                         )
                         {
+                            $changed = true;
                             $latest[$country]['policies']['M1'] = [
                                 'v' => $daily[$country][$date]['policies']['M1']['v'],
                                 't' => $daily[$country][$date]['policies']['M1']['t'],
@@ -3822,14 +3842,13 @@ class StatsController extends Controller
                         }
                     }
                 }
+
+                if(!$changed)
+                {
+                    unset($daily[$country][$date]);
+                }
             }
         }
-
-        $data = [
-            'key' => $key,
-            'daily' => $daily,
-            'latest' => $latest,
-        ];
 
         $data = [
             'key' => $key,
