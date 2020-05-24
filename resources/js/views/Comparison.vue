@@ -94,7 +94,6 @@
                                     v-on:updateGovtResponse="updateGovtResponse"
                                 />
 
-                            <keep-alive>
                                 <DailyView
                                     v-if="view === 'daily'"
                                     :selectedCompareTab="selectedCompareTab"
@@ -105,7 +104,6 @@
                                     v-on:updateCompare="emitCompare"
                                     v-on:updateSelected="updateSelected"
                                 />
-                            </keep-alive>
 
                             <keep-alive>
                                 <StatsChartMobile

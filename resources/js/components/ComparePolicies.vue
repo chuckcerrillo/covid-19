@@ -375,8 +375,8 @@
             },
             comparison()
             {
-                console.log('data');
-                console.log(this.data);
+                // console.log('data');
+                // console.log(this.data);
                 var data = [];
                 for(var x in this.data)
                 {
