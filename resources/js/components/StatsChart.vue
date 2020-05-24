@@ -121,7 +121,7 @@
 
                             <div
                                 v-if="selectedMode('chronological')"
-                                class="border w-full px-2 m-1 flex flex-1 items-center justify-start"
+                                class="bg-slab rounded w-full px-2 m-1 flex flex-1 items-center justify-start"
                             >
                                 <span class="flex-shrink-0 font-bold">Select date</span>
                                 <v-date-picker
