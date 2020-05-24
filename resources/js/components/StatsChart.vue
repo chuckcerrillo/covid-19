@@ -121,7 +121,7 @@
 
                             <div
                                 v-if="selectedMode('chronological')"
-                                class="border w-full px-2 m-1 flex flex-1 items-center justify-start"
+                                class="bg-slab rounded w-full px-2 m-1 flex flex-1 items-center justify-start"
                             >
                                 <span class="flex-shrink-0 font-bold">Select date</span>
                                 <v-date-picker
@@ -945,9 +945,9 @@
                                     content[y].deaths.push(row.d);
                                     content[y].recovered.push(row.r);
                                     content[y].active.push(row.a);
-                                    content[y].deltaConfirmed.push(row.delta.c);
-                                    content[y].deltaDeaths.push(row.delta.d);
-                                    content[y].deltaRecovered.push(row.delta.r);
+                                    content[y].deltaConfirmed.push(row.delta.c > 0 ? row.delta.c : 0);
+                                    content[y].deltaDeaths.push(row.delta.d > 0 ? row.delta.d : 0);
+                                    content[y].deltaRecovered.push(row.delta.r > 0 ? row.delta.r : 0);
                                     content[y].average.push(Math.round(row.average.c*100)/100);
                                     content[y].growthFactor.push(Math.round(row.growth.c * 100)/100);
                                     found = true;
@@ -1576,9 +1576,9 @@
                             content[country_index].deaths.push(row.d);
                             content[country_index].recovered.push(row.r);
                             content[country_index].active.push(row.a);
-                            content[country_index].deltaConfirmed.push(row.delta.c);
-                            content[country_index].deltaDeaths.push(row.delta.d);
-                            content[country_index].deltaRecovered.push(row.delta.r);
+                            content[country_index].deltaConfirmed.push(row.delta.c > 0 ? row.delta.c : 0);
+                            content[country_index].deltaDeaths.push(row.delta.d > 0 ? row.delta.d : 0);
+                            content[country_index].deltaRecovered.push(row.delta.r > 0 ? row.delta.r : 0);
                             content[country_index].average.push(Math.round(row.average.c * 100)/100);
                             content[country_index].growthFactor.push(Math.round(row.growth.c * 100)/100);
                         }
