@@ -49,7 +49,7 @@
 
                                 <div class="xl:hidden mt-4">
                                     <router-link to="/comparison" class="text-lightlabel hover:text-white cursor-pointer">
-                                        <div class="font-bold p-2 px-4 bg-black rounded-lg text-center">Go to the comparison panel</div>
+                                        <div class="font-bold p-2 px-4 bg-black rounded-lg text-center">Start comparing</div>
                                     </router-link>
                                 </div>
                             </div>
@@ -57,7 +57,7 @@
 
                             <div class="hidden xl:flex text-baseslab items-center justify-start mt-2" style="">
                                 <router-link to="/comparison" class="flex text-lightlabel hover:text-white cursor-pointer rounded-lg p-2 px-4" style="background: rgba(0,0,0,0.8)">
-                                    <div class="text-3xl font-bold mr-4 mt-1">Go to the comparison panel</div>
+                                    <div class="text-3xl font-bold mr-4 mt-1">Start comparing</div>
                                     <div class="text-4xl font-bold">&raquo;</div>
                                 </router-link>
                             </div>
@@ -76,14 +76,6 @@
                     </div>
                     <div class="text-center absolute inset-x-0 bottom-0 mb-8 text-white text-shadow font-bold z-20 hidden sm:block">
                         <img class="rounded inline px-2 pb-2" src="/img/arrow-down-1b.png" />
-                    </div>
-                </div>
-
-                <div class="w-full xl:w-256">
-                    <div class="xl:hidden text-center p-4">
-                        <router-link to="/comparison" class="text-heading bg-hoverslab hover:text-white cursor-pointer p-2 px-4">
-                            Go to the comparison panel
-                        </router-link>
                     </div>
                 </div>
 
