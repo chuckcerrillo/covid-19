@@ -1,5 +1,6 @@
 <template>
     <div class="h-full">
+<!--        <div class="absolute top-5 right-0 w-128 z-10 bg-slab-primary overflow-auto h-200">{{data}}</div>-->
         <div class="" :class="config.absolute ? 'xl:absolute top-0 left-0 right-0': ''">
             <div v-if="config.solo == false" class="mx-4 pt-4 relative flex items-center justify-between">
                 <h2 class="font-bold text-3xl">{{data.name.full}}</h2>
