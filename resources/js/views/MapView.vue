@@ -18,6 +18,7 @@
                                     :rankings="ajax.rankings"
                                     :layers="layers"
                                     :settings="{interactive:true,zoom:1.5,stops: options.stops}"
+                                    :location="location"
                                 />
                             </keep-alive>
                         </div>
@@ -82,7 +83,7 @@
                                 <li v-if="filteredAnnotations.length == 0" class="text-xs p-4">
                                     Nothing to show here.
                                 </li>
-                                <li v-for="note in filteredAnnotations" class="flex text-xs items-start justify-start mr-4">
+                                <li v-for="(note,key,index) in filteredAnnotations" class="flex text-xs items-start justify-start mr-4" :key="key">
                                     <div class="mr-1 w-20 flex-shrink-0 text-date-slab">{{note.date}}</div>
                                     <div class="w-full">
                                         <span v-if="note.state.length > 0" class="font-bold mr-1">[{{note.state}}]</span>
@@ -118,7 +119,7 @@
             'annotations',
             'countries_sorted',
             'getDaily',
-            'database'
+            'database',
         ],
         data()
         {
@@ -141,7 +142,7 @@
                 },
                 playing: false,
                 interval: false,
-
+                location: false,
             }
         },
         created()
@@ -159,6 +160,31 @@
 
                 });
 
+
+            var self = this;
+
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            };
+
+            function success(pos) {
+                var crd = pos.coords;
+
+                // console.log('Your current position is:');
+                // console.log(`Latitude : ${crd.latitude}`);
+                // console.log(`Longitude: ${crd.longitude}`);
+                // console.log(`More or less ${crd.accuracy} meters.`);
+
+                self.location = crd;
+            }
+
+            function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+            }
+
+            navigator.geolocation.getCurrentPosition(success, error, options);
         },
         computed:
         {

@@ -1,38 +1,48 @@
 <template>
     <div class="flex flex-col flex-1 h-screen overflow-y-hidden">
         <Nav
+            class="fixed top-0 inset-x-0 z-20"
             v-on:showAbout="showAbout"
             v-on:setMode="setMode"
             v-if="inComparison()"
             :mode="mode"
         />
-<!--        <About-->
-<!--            v-show="about"-->
-<!--            v-on:showAbout="showAbout"-->
-<!--            class="fixed top-0 right-0 bottom-0 left-0 z-20"-->
-<!--        />-->
+        <!--        <About-->
+        <!--            v-show="about"-->
+        <!--            v-on:showAbout="showAbout"-->
+        <!--            class="fixed top-0 right-0 bottom-0 left-0 z-20"-->
+        <!--        />-->
 
-<!--        :include="[-->
-<!--        'comparisonDashboard',-->
-<!--        'comparisonCharts'-->
-<!--        ]"-->
-<!--        include="comparisonDashboard,DashboardView,Map"-->
-        <keep-alive>
+        <!--        :include="[-->
+        <!--        'comparisonDashboard',-->
+        <!--        'comparisonCharts'-->
+        <!--        ]"-->
+        <!--        include="comparisonDashboard,DashboardView,Map"-->
+        <keep-alive include="MapView,MapViewMobile,StatsChart,StatsChartMobile,LineChart">
             <router-view
                 v-on:updateCompare="updateCompare"
                 v-on:updateSelected="updateSelected"
+                v-on:updateLoading="updateSelected"
                 v-on:saveProcessedData="saveProcessedData"
+                v-on:updateGovtResponse="updateGovtResponse"
                 :mode="mode"
-
-                class="fixed top-0 left-0 right-0 bottom-0" :class="inComparison()?'xl:mt-14':''" :loading="database.loading" :database="database">
+                class="fixed xl:pt-0 top-0 left-0 right-0 bottom-0" :class="inComparison()?'pt-14 xl:pt-0 xl:mt-14':''" :loading="database.loading" :database="database">
             </router-view>
-<!--            :key="$route.fullPath"-->
         </keep-alive>
+        <!--            :key="$route.fullPath"-->
+        <MobileNav
+            class="xl:hidden fixed bottom-0 inset-x-0 z-0"
+            v-on:showAbout="showAbout"
+            v-on:setMode="setMode"
+            v-if="inComparison()"
+            :mode="mode"
+        />
     </div>
 </template>
 
 <script>
     import Nav from './Nav';
+    import MobileNav from "./MobileNav";
     import About from "../views/About";
     import {mapGetters} from 'vuex';
     export default {
@@ -54,7 +64,7 @@
                     processed: {
                         'global' : {},
                         'countries': {},
-                        'compare' : {},
+                        'compare' : [],
                         'dataset' : {},
                         'oxford' : {},
                         'annotations' : {},
@@ -69,10 +79,12 @@
                         'oxford' : false,
                     },
                 },
+                compare: [],
             }
         },
         components: {
             Nav,
+            MobileNav,
             About
         },
         created()
@@ -84,6 +96,10 @@
             this.setPageTitle(this.$route.meta.title);
         },
         methods: {
+            updateGovtResponse(country,data)
+            {
+                this.database.processed.oxford[country] = _.clone(data);
+            },
             showAbout()
             {
                 this.about = !this.about;
@@ -96,9 +112,16 @@
             {
                 this.database.processed.selectedCompareTab = key;
             },
+            updateLoading(key,value)
+            {
+                if(this.database.loading && this.database.loading[key])
+                {
+                    this.database.loading[key] = _.clone(value);
+                }
+            },
             updateCompare(compare)
             {
-                var data = {};
+                var data = [];
                 for(var x in compare)
                 {
                     data[x] = compare[x];
@@ -122,33 +145,33 @@
             }
         },
         computed:
-        {
-            ...mapGetters({
-                countries: 'countries',
-                countriesIndex: 'countriesIndex',
-                countriesStatus: 'countriesStatus',
+            {
+                ...mapGetters({
+                    countries: 'countries',
+                    countriesIndex: 'countriesIndex',
+                    countriesStatus: 'countriesStatus',
 
-                countryCases: 'dailyCountryCases',
-                stateCases: 'dailyStateCases',
-                countryCasesIndex: 'dailyCountryCasesIndex',
-                stateCasesIndex: 'dailyStateCasesIndex',
+                    countryCases: 'dailyCountryCases',
+                    stateCases: 'dailyStateCases',
+                    countryCasesIndex: 'dailyCountryCasesIndex',
+                    stateCasesIndex: 'dailyStateCasesIndex',
 
-                countryCasesStatus: 'dailyCountryCasesStatus',
-                stateCasesStatus: 'dailyStateCasesStatus',
-            }),
-            // global()
-            // {
-            //     return this.database.processed.global;
-            // },
-            // countries()
-            // {
-            //     return this.database.processed.countries;
-            // },
-            // datasets()
-            // {
-            //     return this.database.processed.dataset;
-            // }
-        },
+                    countryCasesStatus: 'dailyCountryCasesStatus',
+                    stateCasesStatus: 'dailyStateCasesStatus',
+                }),
+                // global()
+                // {
+                //     return this.database.processed.global;
+                // },
+                // countries()
+                // {
+                //     return this.database.processed.countries;
+                // },
+                // datasets()
+                // {
+                //     return this.database.processed.dataset;
+                // }
+            },
         watch: {
             $route(to,from) {
                 this.setPageTitle(to.meta.title);

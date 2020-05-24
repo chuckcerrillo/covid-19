@@ -667,7 +667,6 @@ class StatsController extends Controller
 
     public function __construct()
     {
-        date_default_timezone_set('UTC');
         define('MASTER_LIST','../covid-data/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv');
 //        define('MASTER_LIST','../covid-data-clean/COVID-19_CLEAN/csse_cleaned_supporting_material/Cleaned_Lookup.csv');
 //        define('COVID_DATA','../covid-data/csse_covid_19_data/csse_covid_19_daily_reports/');
@@ -1201,6 +1200,7 @@ class StatsController extends Controller
         {
             if(isset($this->rename[$row['Country_Region']]))
             {
+//                dump('Found ' . $row['Country_Region'] . ' rename to ' . $this->rename[$row['Country_Region']]);
                 $row['Country_Region'] = $this->rename[$row['Country_Region']];
 
             }
@@ -1391,6 +1391,8 @@ class StatsController extends Controller
         $file_processed['deathsUS'] = $time_series_us['deaths'];
 
 
+//        dump($file_processed['confirmed']);
+//        dd($file_processed['confirmedUS']);
 //        // Then generate daily and tally data
         foreach($files AS $type => $file) {
             $date = str_replace('.csv', '', $file);
@@ -2228,10 +2230,10 @@ class StatsController extends Controller
                 if(isset($this->wikipedia_jh_map[$country]))
                 {
                     return [
-                    'country' => $this->wikipedia_jh_map[$country],
-                    'confirmed' => str_replace(',','',$col_body[0]),
-                    'deaths' => str_replace(',','',$col_body[1]),
-                    'recovered' => str_replace(',','',$col_body[2]),
+                        'country' => $this->wikipedia_jh_map[$country],
+                        'confirmed' => str_replace(',','',$col_body[0]),
+                        'deaths' => str_replace(',','',$col_body[1]),
+                        'recovered' => str_replace(',','',$col_body[2]),
                     ];
                 }
             }
@@ -2309,10 +2311,6 @@ class StatsController extends Controller
                 $states = State::where('country_id',$countries[$row['country']])->get()->all();
                 if(count($states) > 1)
                 {
-
-                    // We're tracking multiple states for this country, so we'll have to subtract the total from the other states
-
-                    // First we have to find the (Unspecified) state, which acts as the buffer
                     $state = null;
                     foreach($states AS $index => $item)
                     {
@@ -2322,8 +2320,6 @@ class StatsController extends Controller
                             break;
                         }
                     }
-
-                    // $state -> (Unspecified)
 
                     if($state)
                     {
@@ -2344,6 +2340,8 @@ class StatsController extends Controller
                             ->where('countries.id','=',$state->country_id)
                             ->where('states.name','!=','(Unspecified)')
                             ->get()->first();
+
+
 
                         if(isset($current_states->confirmed))
                         {
@@ -2544,17 +2542,17 @@ class StatsController extends Controller
         }
 
         // Do worldometers
-//        $data = $this->harvest_worldometer();
-//        $this->apply_overrides($countries,$data,$date,'worldometers');
+        $data = $this->harvest_worldometer();
+        $this->apply_overrides($countries,$data,$date,'worldometers');
 
         // Do wikipedia
-//        $data = $this->harvest_wikipedia();
-//        $this->apply_overrides($countries,$data,$date,'wikipedia');
+        $data = $this->harvest_wikipedia();
+        $this->apply_overrides($countries,$data,$date,'wikipedia');
 
 
         // Do manual override
-//        $data = $this->manual_override();
-        $data = [];
+        $data = $this->manual_override();
+//        $data = [];
         foreach($data AS $country_name => $rows)
         {
             foreach($rows AS $date => $states)
@@ -3106,9 +3104,9 @@ class StatsController extends Controller
                 if(strlen($row[6]) > 0)
                 {
                     $daily[$country][$date]['policies']['C2'] = [
-                            'v' => $row[6],
-                            't' => $row[7],
-                            'n' => $row[8],
+                        'v' => $row[6],
+                        't' => $row[7],
+                        'n' => $row[8],
                     ];
 
                     if(isset($latest[$country]['policies']['C2']))
@@ -3144,9 +3142,9 @@ class StatsController extends Controller
                 if(strlen($row[9]) > 0)
                 {
                     $daily[$country][$date]['policies']['C3'] = [
-                            'v' => $row[9],
-                            't' => $row[10],
-                            'n' => $row[11],
+                        'v' => $row[9],
+                        't' => $row[10],
+                        'n' => $row[11],
                     ];
 
                     if(isset($latest[$country]['policies']['C3']))
@@ -3182,9 +3180,9 @@ class StatsController extends Controller
                 if(strlen($row[12]) > 0)
                 {
                     $daily[$country][$date]['policies']['C4'] = [
-                            'v' => $row[12],
-                            't' => $row[13],
-                            'n' => $row[14],
+                        'v' => $row[12],
+                        't' => $row[13],
+                        'n' => $row[14],
                     ];
 
                     if(isset($latest[$country]['policies']['C4']))
@@ -3220,9 +3218,9 @@ class StatsController extends Controller
                 if(strlen($row[15]) > 0)
                 {
                     $daily[$country][$date]['policies']['C5'] = [
-                            'v' => $row[15],
-                            't' => $row[16],
-                            'n' => $row[17],
+                        'v' => $row[15],
+                        't' => $row[16],
+                        'n' => $row[17],
                     ];
 
 
@@ -3259,9 +3257,9 @@ class StatsController extends Controller
                 if(strlen($row[18]) > 0)
                 {
                     $daily[$country][$date]['policies']['C6'] = [
-                            'v' => $row[18],
-                            't' => $row[19],
-                            'n' => $row[20],
+                        'v' => $row[18],
+                        't' => $row[19],
+                        'n' => $row[20],
                     ];
 
                     if(isset($latest[$country]['policies']['C6']))
@@ -3297,9 +3295,9 @@ class StatsController extends Controller
                 if(strlen($row[21]) > 0)
                 {
                     $daily[$country][$date]['policies']['C7'] = [
-                            'v' => $row[21],
-                            't' => $row[22],
-                            'n' => $row[23],
+                        'v' => $row[21],
+                        't' => $row[22],
+                        'n' => $row[23],
                     ];
 
                     if(isset($latest[$country]['policies']['C7']))
@@ -3335,9 +3333,9 @@ class StatsController extends Controller
                 if($row[24] > 0)
                 {
                     $daily[$country][$date]['policies']['C8'] = [
-                            'v' => $row[24],
-                            't' => '',
-                            'n' => $row[25],
+                        'v' => $row[24],
+                        't' => '',
+                        'n' => $row[25],
                     ];
 
                     if(isset($latest[$country]['policies']['C8']))
@@ -3371,9 +3369,9 @@ class StatsController extends Controller
                 if($row[26] > 0)
                 {
                     $daily[$country][$date]['policies']['E1'] = [
-                            'v' => $row[26],
-                            't' => $row[27],
-                            'n' => $row[28],
+                        'v' => $row[26],
+                        't' => $row[27],
+                        'n' => $row[28],
                     ];
 
                     if(isset($latest[$country]['policies']['E1']))
@@ -3409,9 +3407,9 @@ class StatsController extends Controller
                 if($row[29] > 0)
                 {
                     $daily[$country][$date]['policies']['E2'] = [
-                            'v' => $row[29],
-                            't' => '',
-                            'n' => $row[30],
+                        'v' => $row[29],
+                        't' => '',
+                        'n' => $row[30],
                     ];
 
                     if(isset($latest[$country]['policies']['E2']))
@@ -3447,9 +3445,9 @@ class StatsController extends Controller
                 if($row[31] > 0)
                 {
                     $daily[$country][$date]['policies']['E3'] = [
-                            'v' => $row[31],
-                            't' => '',
-                            'n' => $row[32],
+                        'v' => $row[31],
+                        't' => '',
+                        'n' => $row[32],
                     ];
 
                     if(isset($latest[$country]['policies']['E3']))
@@ -3500,9 +3498,9 @@ class StatsController extends Controller
                 if(strlen($row[33]) > 0)
                 {
                     $daily[$country][$date]['policies']['E4'] = [
-                            'v' => $row[33] + (isset($latest[$country]['policies']['E4']['v'])?$latest[$country]['policies']['E4']['v']:0),
-                            't' => '',
-                            'n' => $row[34],
+                        'v' => $row[33] + (isset($latest[$country]['policies']['E4']['v'])?$latest[$country]['policies']['E4']['v']:0),
+                        't' => '',
+                        'n' => $row[34],
                     ];
 
                     if(isset($latest[$country]['policies']['E4']))
@@ -3552,9 +3550,9 @@ class StatsController extends Controller
                 if(strlen($row[35]) > 0)
                 {
                     $daily[$country][$date]['policies']['H1'] = [
-                            'v' => $row[35],
-                            't' => $row[36],
-                            'n' => $row[37],
+                        'v' => $row[35],
+                        't' => $row[36],
+                        'n' => $row[37],
                     ];
 
                     if(isset($latest[$country]['policies']['H1']))
@@ -4029,6 +4027,7 @@ class StatsController extends Controller
 //            ];
 //        }
 //
+//        dump($today);
 //
 //
 //
@@ -4690,6 +4689,7 @@ class StatsController extends Controller
         {
             if(isset($this->rename[$row['Country_Region']]))
             {
+//                dump('Found ' . $row['Country_Region'] . ' rename to ' . $this->rename[$row['Country_Region']]);
                 $row['Country_Region'] = $this->rename[$row['Country_Region']];
 
             }
@@ -4812,8 +4812,8 @@ class StatsController extends Controller
             ->get()->first();
 
         $global = DB::table('countries')->updateOrInsert([
-                'name' => 'Global',
-            ],
+            'name' => 'Global',
+        ],
             [
                 'lat' => 0,
                 'lng' => 0,
@@ -4881,6 +4881,7 @@ class StatsController extends Controller
                 $new_date = new \DateTime($first_date);
 
                 // Further trim to grab last 2 days because JH is a day behind
+//                dump('Country: ' . $country . ' State: ' . $state);
                 if($request->full) {
                 }
                 else
@@ -4974,20 +4975,10 @@ class StatsController extends Controller
             $country = Country::where('name',$country_name)->first();
             if($country)
             {
-                $unspecified = State::where('name','(Unspecified)')->where('country_id',$country->id)->get()->first();
                 foreach($state_data AS $state_name => $dates)
                 {
                     foreach($dates AS $date => $values)
                     {
-
-                        $old_total = DB::table('cases')
-                            ->selectRaw('sum(confirmed) AS confirmed, sum(deaths) AS deaths, sum(recovered) AS recovered')
-                            ->join('states','states.id','cases.state_id')
-                            ->join('countries','countries.id','states.country_id')
-                            ->where('countries.id','=',$country->id)
-                            ->where('date','=',$date)
-                            ->get()->first();
-
                         $state = State::where([
                             'name' => $state_name,
                             'country_id' => $country->id,
@@ -5055,28 +5046,6 @@ class StatsController extends Controller
                                 );
                             }
                         }
-
-
-                        // After gathering JH data, we have to recalculate the Unspecified amount. The state data has changed, but the total number should not change.
-                        $total = DB::table('cases')
-                            ->selectRaw('sum(confirmed) AS confirmed, sum(deaths) AS deaths, sum(recovered) AS recovered')
-                            ->join('states','states.id','cases.state_id')
-                            ->join('countries','countries.id','states.country_id')
-                            ->where('cases.state_id','!=',$unspecified->id)
-                            ->where('countries.id','=',$country->id)
-                            ->where('date','=',$date)
-                            ->get()->first();
-
-                        $update = [
-                            'confirmed' => $old_total->confirmed - $total->confirmed,
-                            'deaths' => $old_total->deaths - $total->deaths,
-                            'recovered' => $old_total->recovered - $total->recovered,
-                        ];
-
-                        DB::table('cases')
-                            ->where('date','=',$date)
-                            ->where('state_id','=',$unspecified->id)
-                            ->update($update);
                     }
                 }
             }
@@ -5088,7 +5057,7 @@ class StatsController extends Controller
     {
         $first_date = '2020-01-22';
 
-         // Special preparation for the US time series data...
+        // Special preparation for the US time series data...
         $files = COVID_DATA_TIME_SERIES;
 
         unset($files['confirmed']);
@@ -5096,7 +5065,6 @@ class StatsController extends Controller
         unset($files['recovered']);
 
         $country = Country::where('name','United States')->first();
-        $unspecified = State::where('name','(Unspecified)')->where('country_id',$country->id)->get()->first();
 
         $time_series = [
         ];
@@ -5204,18 +5172,9 @@ class StatsController extends Controller
 
         foreach($time_series AS $state_name => $dates)
         {
-
+//            echo 'Rebuilding: ' . $state_name . '<br />';
             foreach($dates AS $date => $values)
             {
-
-                $old_total = DB::table('cases')
-                    ->selectRaw('sum(confirmed) AS confirmed, sum(deaths) AS deaths, sum(recovered) AS recovered')
-                    ->join('states','states.id','cases.state_id')
-                    ->join('countries','countries.id','states.country_id')
-                    ->where('countries.id','=',$country->id)
-                    ->where('date','=',$date)
-                    ->get()->first();
-
                 $state = State::where([
                     'name' => $state_name,
                     'country_id' => $country->id,
@@ -5246,16 +5205,17 @@ class StatsController extends Controller
 
                     if($case)
                     {
-                        if($case->confirmed && isset($input['confirmed']) && $case->confirmed > $input['confirmed'])
-                        {
-                            unset($input['confirmed']);
-                            unset($input['confirmed_source']);
-                        }
-                        if($case->deaths && isset($input['deaths']) && $case->deaths > $input['deaths'])
-                        {
-                            unset($input['deaths']);
-                            unset($input['deaths_source']);
-                        }
+                        // For the US, we will always use JH data for confirmed and deaths
+//                        if($case->confirmed && isset($input['confirmed']) && $case->confirmed > $input['confirmed'])
+//                        {
+//                            unset($input['confirmed']);
+//                            unset($input['confirmed_source']);
+//                        }
+//                        if($case->deaths && isset($input['deaths']) && $case->deaths > $input['deaths'])
+//                        {
+//                            unset($input['deaths']);
+//                            unset($input['deaths_source']);
+//                        }
 
                         if($case->recovered && isset($input['recovered']) && $case->recovered > $input['recovered'])
                         {
@@ -5284,34 +5244,8 @@ class StatsController extends Controller
                         );
                     }
                 }
-
-
-                // After gathering JH data, we have to recalculate the Unspecified amount. The state data has changed, but the total number should not change.
-                $total = DB::table('cases')
-                    ->selectRaw('sum(confirmed) AS confirmed, sum(deaths) AS deaths, sum(recovered) AS recovered')
-                    ->join('states','states.id','cases.state_id')
-                    ->join('countries','countries.id','states.country_id')
-                    ->where('cases.state_id','!=',$unspecified->id)
-                    ->where('countries.id','=',$country->id)
-                    ->where('date','=',$date)
-                    ->get()->first();
-
-                $update = [
-                    'confirmed' => $old_total->confirmed - $total->confirmed,
-                    'deaths' => $old_total->deaths - $total->deaths,
-                    'recovered' => $old_total->recovered - $total->recovered,
-                ];
-
-                DB::table('cases')
-                    ->where('date','=',$date)
-                    ->where('state_id','=',$unspecified->id)
-                    ->update($update);
             }
         }
-
-
-
-
         return response('Done harvesting from JH US data')->setStatusCode(Response::HTTP_OK);
     }
 
@@ -5638,5 +5572,14 @@ class StatsController extends Controller
     public function get_all_states()
     {
         return new  StateCollection(State::get());
+    }
+
+    public function get_ip_location()
+    {
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $url = 'http://ip-api.com/json/' . $ip;
+        $response = file_get_contents($url);
+
+        return response($response)->setStatusCode(Response::HTTP_OK);
     }
 }

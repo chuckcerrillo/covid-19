@@ -8,7 +8,7 @@
                     <div v-if="chartsettings.length == 0" class="p-4 text-xs">
                         Choose countries or states to begin comparing.
                     </div>
-                    <div v-show="chartsettings.length > 0" v-for="row in chartsettings" class="m-2 bg-gray-200 p-2">
+                    <div v-show="chartsettings.length > 0" v-for="(row,key,index) in chartsettings" :key="key" class="m-2 bg-gray-200 p-2">
                         <div class="font-bold text-sm">{{row.name}}</div>
                         <div class="flex text-xs">
                             <div class="w-24"></div>
@@ -60,7 +60,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="full" class="absolute top-0 right-0 bottom-0 left-0">
+        <div v-if="full" class="absolute top-0 right-0 bottom-0 left-0 m-2">
             <div class="py-4" v-if="settings.controls.menu">
                 <div class="text-xs flex items-start justify-between">
                     <div>
@@ -110,12 +110,45 @@
                            v-if="active && data.length > 0"
                 />
                 <div class="text-xs absolute left-0 right-0 bottom-0 h-12 flex items-start justify-between" v-if="settings.controls.menu">
-                    <div class="flex items-center justify-start">
-                        <div class="mx-2">Time mode</div>
-                        <div class="flex">
+                    <div class="flex flex-1 items-center justify-start">
+                        <div class="mx-2 flex-shrink-0 w-16">Time mode</div>
+                        <div class="flex flex-1">
+                            <div
+                                class="p-2 border border-lightslab m-1 cursor-pointer flex-shrink-0"
+                                :class="selectedMode('chronological') ? 'bg-lightslab':''"
+                                @click="selectMode('chronological')"
+                            >Chronological</div>
+
+                            <div
+                                v-if="selectedMode('chronological')"
+                                class="bg-slab rounded w-full px-2 m-1 flex flex-1 items-center justify-start"
+                            >
+                                <span class="flex-shrink-0 font-bold">Select date</span>
+                                <v-date-picker
+                                    class="flex-shrink-0"
+                                    mode="range"
+                                    v-model="range"
+                                    :min-date="options.date.min"
+                                    :max-date="options.date.max"
+                                    :masks="{ data: ['YYYY-MM-DD', 'YYYY/MM/DD'],input: ['YYYY-MM-DD', 'YYYY/MM/DD'] }"
+                                    :popover="{ placement: 'bottom', visibility: 'click' }">
+                                <button class="p-2 hover:bg-lightlabel text-white rounded focus:outline-none flex-shrink-0">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                        class="w-4 h-4 fill-current">
+                                        <path d="M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z" />
+                                    </svg>
+                                </button>
+                                </v-date-picker>
+                                <div class="flex-shrink-0">{{moment(range.start).format('YYYY-MM-DD')}} to {{moment(range.end).format('YYYY-MM-DD')}}</div>
+                                <vue-slider style="width: 100%" class="mx-2" v-model="dateRange" :data="dateSliderRange" :lazy="true" :adsorb="true" />
+                            </div>
+
                             <div
                                 v-for="row in graphControls.x"
-                                class="p-2 border border-lightslab m-1 cursor-pointer"
+                                v-if="row[0] !== 'chronological'"
+                                class="p-2 border border-lightslab m-1 cursor-pointer flex-shrink-0"
                                 :class="selectedMode(row[0]) ? 'bg-lightslab':''"
                                 @click="selectMode(row[0])"
                             >
@@ -200,6 +233,7 @@
 
 <script>
     import LineChart from "./charts/LineChart";
+    import VueSlider from 'vue-slider-component'
     import simplebar from 'simplebar-vue';
     import 'simplebar/dist/simplebar.min.css';
     import moment from 'moment';
@@ -208,6 +242,7 @@
         components:{
             simplebar,
             LineChart,
+            VueSlider,
         },
         data(){
             return {
@@ -216,6 +251,10 @@
                     labels: false,
                 },
                 'options' : {
+                    date: {
+                        min: new Date('2020-01-22'),
+                        max: false,
+                    },
                     'mode': 'chronological',
 
                     'controls' : {
@@ -358,7 +397,12 @@
                         ['linear','Linear'],
                     ]
                 },
-                stats: {}
+                stats: {},
+                date: '',
+                range: {
+                    start: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+                    end: moment().subtract(1, 'days').format('YYYY-MM-DD')
+                },
             }
         },
         props: [
@@ -367,6 +411,39 @@
             'config',
             'active',
         ],
+        mounted()
+        {
+            if(this.config)
+            {
+                if(this.config.mode)
+                {
+                    this.options.mode = this.config.mode;
+                }
+
+                if(this.config.settings)
+                {
+                    this.options.chartsettings = _.cloneDeep(this.config.settings);
+                }
+
+                if(this.config.fields)
+                {
+                    if(this.config.fields.primary)
+                    {
+                        this.ui.primary = this.config.fields.primary;
+                    }
+                    if(this.config.fields.secondary)
+                    {
+                        this.ui.primary = this.config.fields.secondary;
+                    }
+                }
+            }
+
+            if(this.data && this.data.length > 0)
+            {
+                this.range.end = _.clone(this.data[0].daily[this.data[0].daily.length - 2].date);
+                this.range.start = moment(this.range.end).subtract(30,'days').format('YYYY-MM-DD');
+            }
+        },
         methods: {
             setColor(name,color)
             {
@@ -403,10 +480,13 @@
                 {
                     for(var y in current)
                     {
-                        if(current[y].name == this.data[x].name.full)
+                        if(this.data[x])
                         {
-                            data.push(current[y]);
-                            break;
+                            if(current[y].name == this.data[x].name.full)
+                            {
+                                data.push(current[y]);
+                                break;
+                            }
                         }
                     }
                 }
@@ -505,6 +585,7 @@
                 }
 
                 this.options.chartsettings = data;
+                this.$emit('updateChartSettings',_.cloneDeep(data));
             },
             getFieldName(key)
             {
@@ -531,6 +612,7 @@
             selectMode(key)
             {
                 this.options.mode = key;
+                this.$emit('updateChartMode',_.clone(this.options.mode));
             },
             selectedScaleType(key)
             {
@@ -551,6 +633,8 @@
                     this.options.controls[level] = key;
                 }
                 this.ui[level] = false;
+
+                this.$emit('updateChartFields',{primary:this.options.controls.primary,secondary:this.options.controls.secondary});
             },
             selectedField(key,level)
             {
@@ -588,21 +672,74 @@
             },
         },
         computed: {
+            dateRange:
+            {
+                get()
+                {
+                    var data = [
+                        _.clone(this.range.start),
+                        _.clone(this.range.end),
+                    ]
+                    return data;
+                },
+                set(newvalue)
+                {
+                    this.range.start = newvalue[0];
+                    this.range.end = newvalue[1];
+                }
+            },
+            dateSliderRange()
+            {
+                Date.prototype.addDays = function(days) {
+                    var date = new Date(this.valueOf());
+                    date.setDate(date.getDate() + days);
+                    return date;
+                }
+
+
+                var date1 = new Date('2020-01-01');
+                var date2 = new Date();
+                date2.setDate(date2.getDate() - 1);
+
+                var daysTotal = (date2.getTime() - date1.getTime()) / (1000*3600*24);
+                var data = [];
+
+                for(var x = 0; x<daysTotal; x++)
+                {
+                    data.push(moment(date1.addDays(x)).format('YYYY-MM-DD'));
+                }
+                return data;
+            },
             chartsettings()
             {
                 var data = [];
-                for(var x in this.data)
+
+                if(!this.config.settings || (this.config.settings && this.config.settings.length !== this.data.length))
                 {
-                    this.addSetting(this.data[x].name.full);
+                    for(var x in this.data)
+                    {
+                        if(this.data[x])
+                        {
+                            this.addSetting(this.data[x].name.full);
+                        }
+                    }
+                }
+                else
+                {
+                    this.options.chartsettings = this.config.settings;
                 }
                 return this.options.chartsettings;
             },
             settings()
             {
-                return {...this.options, ...this.config};
+                return this.options;
             },
             xAxis()
             {
+                if(this.config && this.config.mode)
+                {
+                    this.options.mode = this.config.mode;
+                }
                 return [
                     this.options.mode
                 ];
@@ -611,6 +748,13 @@
             {
                 var data = [];
 
+                if(this.config && this.config.fields)
+                {
+                    if(this.config.fields.primary)
+                        this.options.controls.primary = this.config.fields.primary;
+                    if(this.config.fields.secondary)
+                        this.options.controls.secondary = this.config.fields.secondary;
+                }
                 if(this.options.controls.primary)
                     data.push(this.options.controls.primary);
                 if(this.options.controls.secondary)
@@ -724,24 +868,38 @@
 
                 var start = '', end = '';
                 // Get start and end dates
-                for(var x in this.data)
-                {
-                    var stats = this.data[x].daily;
-                    for(var y in stats)
-                    {
-                        var date = stats[y].date;
-                        if(start.length === 0 || moment(date).format('YYYY-MM-DD') < start)
-                        {
-                            start = moment(date).format('YYYY-MM-DD');
-                        }
 
-                        if(end.length === 0 || moment(date).format('YYYY-MM-DD') > end)
+
+                if(this.range && this.range.start && this.range.end)
+                {
+                    start = this.range.start;
+                    end = this.range.end;
+                }
+
+                else
+                {
+                    for(var x in this.data)
+                    {
+                        if(!this.data[x])
                         {
-                            end = moment(date).format('YYYY-MM-DD');
+                            continue;
+                        }
+                        var stats = this.data[x].daily;
+                        for(var y in stats)
+                        {
+                            var date = stats[y].date;
+                            if(start.length === 0 || moment(date).format('YYYY-MM-DD') < start)
+                            {
+                                start = moment(date).format('YYYY-MM-DD');
+                            }
+
+                            if(end.length === 0 || moment(date).format('YYYY-MM-DD') > end)
+                            {
+                                end = moment(date).format('YYYY-MM-DD');
+                            }
                         }
                     }
                 }
-
 
                 // Assemble content
                 for(var x = 0; x <= moment(end).diff(moment(start),'days'); x++)
@@ -751,6 +909,10 @@
                     data.labels.push(current_date);
                     for(var y = 0; y < this.data.length; y++)
                     {
+                        if(!this.data[y])
+                        {
+                            continue;
+                        }
                         if(!content[y])
                         {
                             content.push(
@@ -768,7 +930,7 @@
                             );
                         }
 
-                        if(this.data[y].daily)
+                        if(this.data[y] && this.data[y].daily)
                         {
 
                             var found = false;
@@ -783,9 +945,9 @@
                                     content[y].deaths.push(row.d);
                                     content[y].recovered.push(row.r);
                                     content[y].active.push(row.a);
-                                    content[y].deltaConfirmed.push(row.delta.c);
-                                    content[y].deltaDeaths.push(row.delta.d);
-                                    content[y].deltaRecovered.push(row.delta.r);
+                                    content[y].deltaConfirmed.push(row.delta.c > 0 ? row.delta.c : 0);
+                                    content[y].deltaDeaths.push(row.delta.d > 0 ? row.delta.d : 0);
+                                    content[y].deltaRecovered.push(row.delta.r > 0 ? row.delta.r : 0);
                                     content[y].average.push(Math.round(row.average.c*100)/100);
                                     content[y].growthFactor.push(Math.round(row.growth.c * 100)/100);
                                     found = true;
@@ -833,6 +995,10 @@
                 // Assemble labels
                 for(var x = 0; x < this.data.length; x++)
                 {
+                    if(!this.data[x])
+                    {
+                        continue;
+                    }
                     for(var y in this.yAxis)
                     {
                         if (y == 0)
@@ -888,6 +1054,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -935,6 +1102,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -982,6 +1150,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1029,6 +1198,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1076,6 +1246,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1123,6 +1294,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1170,6 +1342,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1217,6 +1390,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1402,9 +1576,9 @@
                             content[country_index].deaths.push(row.d);
                             content[country_index].recovered.push(row.r);
                             content[country_index].active.push(row.a);
-                            content[country_index].deltaConfirmed.push(row.delta.c);
-                            content[country_index].deltaDeaths.push(row.delta.d);
-                            content[country_index].deltaRecovered.push(row.delta.r);
+                            content[country_index].deltaConfirmed.push(row.delta.c > 0 ? row.delta.c : 0);
+                            content[country_index].deltaDeaths.push(row.delta.d > 0 ? row.delta.d : 0);
+                            content[country_index].deltaRecovered.push(row.delta.r > 0 ? row.delta.r : 0);
                             content[country_index].average.push(Math.round(row.average.c * 100)/100);
                             content[country_index].growthFactor.push(Math.round(row.growth.c * 100)/100);
                         }
@@ -1484,6 +1658,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1531,6 +1706,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1578,6 +1754,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1625,6 +1802,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1672,6 +1850,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1719,6 +1898,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1766,6 +1946,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1813,6 +1994,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1860,6 +2042,7 @@
                                             if(
                                                 tick.toString().substr(0,1) == 1
                                                 || tick.toString().substr(0,1) == 5
+                                                || tick.toString() == 0
                                             )
                                             {
                                                 return tick.toLocaleString();
@@ -1878,6 +2061,23 @@
                 };
             },
         },
+        watch: {
+            date: function(newValue,oldValue)
+            {
+                if(typeof(newValue) != 'string')
+                {
+                    this.date = moment(newValue).format('YYYY-MM-DD');
+                }
+            },
+            range: function(newvalue)
+            {
+                if(typeof(newvalue.start) != 'string')
+                {
+                    this.range.start = moment(newvalue.start).format('YYYY-MM-DD');
+                    this.range.end = moment(newvalue.end).format('YYYY-MM-DD');
+                }
+            }
+        }
     }
 </script>
 

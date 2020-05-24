@@ -6,17 +6,23 @@
                     Select up to {{options.compare_limit}} countries or states to begin comparing.
                 </div>
 
-                <Latest v-else
-                        :data="comparisonData"
-                        :active="view === 'daily' && selectedCompareTab === 'all'"
-                />
+                <keep-alive>
+                    <Latest v-if="getCompareLength() > 0 && (!isMobile || (isMobile && selectedCompareTab === 'all'))"
+                            :data="comparisonData"
+                            :active="view === 'daily' && selectedCompareTab === 'all'"
+                    />
+                </keep-alive>
             </div>
             <div v-if="getCompareLength() > 0" v-for="(row,key,index) in compare" class="" :key="key">
-                <div class="h-full" :class="selectedCompareTab != key ? 'hidden' : ''">
+<!--                <div v-if="selectedCompareTab === 'all'" class="absolute top-5 right-0 w-128 z-10 bg-slab-primary overflow-auto h-200">{{comparisonData}}</div>-->
+                <div class="h-full" v-show="selectedCompareTab === key">
                     <Daily
+                        v-if="row"
+                        v-once
                         v-on:removeCompare="removeCompare"
-                        :data="comparisonData[index]"
+                        :data="comparisonData[key]"
                         :settings="{absolute:true, solo:false}"
+                        v-once
                     />
                 </div>
             </div>
@@ -26,7 +32,7 @@
 
 <script>
     import Daily from "../components/Daily";
-    import Latest from "../components/Latest";
+    import Latest from "../components/CompareDaily";
     export default {
         name: "DailyView",
         props: [
@@ -49,7 +55,7 @@
                 if(found)
                 {
                     var key = item.country + item.state;
-                    delete this.compare[found];
+                    this.compare[found] = false;
                     if(key === this.selectedCompareTab)
                     {
                         this.updateSelected(this.getLastCompareItem());
@@ -102,6 +108,17 @@
                 return count;
             },
         },
+        computed:
+        {
+            isMobile() {
+                if( screen.width <= 760 ) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
 
 
     }

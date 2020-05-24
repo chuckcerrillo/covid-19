@@ -1,13 +1,46 @@
 <template>
     <div>
-        <div class="xl:hidden">
-            <p class="text-sm text-yellow-400 m-4">For the full experience, including comparison views and charts, please view this website on a larger screen (at least 1920x1080). We are currently working on making this tool available on smaller screens.</p>
+        <div v-if="!loaded" class="flex items-center justify-center pt-20">
+            <div></div>
+            <div class="bg-slab rounded p-4 px-8 w-80 flex flex-col items-center justify-center">
+                <div v-if="countriesStatus == 'success' && countryCasesStatus == 'success' && stateCasesStatus == 'success' && ajax_loading.oxford" class="font-bold text-2xl text-white p-2 text-center">Launching...</div>
+                <div v-else class="font-bold text-2xl text-white p-2 text-center">Downloading data...</div>
+                <!--                <div class="p-2 mb-4 text-center"><img src="/img/loader.svg"></div>-->
+                <div class="p-2 mb-4 text-center"><img src="/img/loading.gif"></div>
+                <div class="flex items-center text-xs w-44">
+                    <div class="w-32">Country list</div>
+                    <div class="text-right text-lightlabel" v-if="countriesStatus !== 'success'">loading</div>
+                    <div class="text-right text-green-400" v-else>done</div>
+                </div>
+                <div class="flex items-center text-xs w-44">
+                    <div class="w-32">Case counts</div>
+                    <div class="text-right text-lightlabel" v-if="countryCasesStatus !== 'success' || stateCasesStatus !== 'success'">loading</div>
+                    <div class="text-right text-green-400" v-else>done</div>
+                </div>
+                <div class="flex items-center text-xs w-44">
+                    <div class="w-32">Government response</div>
+                    <div class="text-right text-lightlabel" v-if="!ajax_loading.oxford">loading</div>
+                    <div class="text-right text-green-400" v-else>done</div>
+                </div>
+                <div class="flex items-center text-xs w-44">
+                    <div class="w-32">Annotations</div>
+                    <div class="text-right text-lightlabel" v-if="!database.loading.annotations">loading</div>
+                    <div class="text-right text-green-400" v-else>done</div>
+                </div>
+            </div>
+            <div></div>
+
         </div>
-        <div class="hidden xl:block" v-if="!loaded">Loading data</div>
         <div v-else class="h-full overflow-hidden relative">
-            <div class="hidden relative h-full xl:flex flex-1">
+            <div class="relative h-full xl:flex flex-1">
+                <div class="absolute top-0 left-0 bg-white text-black p-4 z-20 hidden">
+                    <div>Test</div>
+                    <div @click="log_debug('policies')">Policies</div>
+                    <div @click="log_debug('process_policies')">Process policies</div>
+                </div>
                 <Sidebar
-                    :class="view === 'dashboard' || view === 'about' || view === 'map'? 'hidden' : ''"
+                    class="hidden xl:flex"
+                    :class="view === 'dashboard' || view === 'about' || view === 'map'? 'xl:hidden' : ''"
                     :global="global()"
                     :sort_stats="sort_stats"
                     :countriesIndex="countriesIndex"
@@ -15,62 +48,108 @@
                     :selectCountry="selectCountry"
                     :compare="compare"
                 />
-                <div class="m-4 ml-0 w-full overflow-hidden relative" :class="view === 'dashboard' || view === 'about' || view === 'map' ? 'ml-4': ''">
-                    <div class="bg-slab rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col p-4">
-                        <div class="absolute top-0 right-0 bottom-0 left-0 p-4">
+                <SidebarMobile
+                    class="xl:hidden"
+                    :class="view === 'dashboard' || view === 'about' || view === 'map'? 'xl:hidden' : ''"
+                    :global="global()"
+                    :sort_stats="sort_stats"
+                    :countriesIndex="countriesIndex"
+                    :countries_sorted="countries_sorted"
+                    :selectCountry="selectCountry"
+                    :compare="compare"
+                    v-on:removeAllCompare="removeAllCompare"
+                />
+
+                <div class="absolute inset-x-0 bottom-0 xl:m-4 xl:ml-0 xl:w-full xl:overflow-hidden xl:relative xl:top-auto" :class="view === 'dashboard' || view === 'about' || view === 'map' ? 'top-0 xl:ml-4': 'top-3.1'">
+                    <div class="bg-slab xl:rounded absolute top-0 right-0 bottom-0 left-0 flex-1 flex-col xl:p-4">
+                        <div class="absolute top-0 right-0 bottom-0 left-0 pt-2 xl:p-4 content-area">
                             <simplebar v-if="view != 'charts' && view != 'dashboard' && view != 'about' && view != 'map'" class="text-xs w-full">
                                 <div class="w-full flex items-center justify-start relative">
-                                    <div @click="updateSelected('all')" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == 'all' ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
-                                        Comparison
+                                    <div @click="updateSelected('all')" class="flex-shrink-0 cursor-pointer relative rounded rounded-b-none py-2 px-4 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == 'all' ? 'bg-hoverslab' : 'bg-slab-primary'">
+                                        Compare
                                     </div>
-                                    <div v-for="(row,key,index) in compare">
-                                        <div @click="updateSelected(key)" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
+                                    <div v-if="row" v-for="(row,key,index) in compare" :key="key">
+                                        <div @click="updateSelected(key)" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 xl:pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
                                             {{getCompareLength() > 0 && row.state ? row.state + ' - ' : ''}}
                                             {{getCompareLength() > 0 ? row.country : '(none)'}}
-                                            <div v-on:click.stop="removeCompare({country: row.country,state: row.state})" class="text-lightlabel text-xs absolute top-0 right-0 m-2 px-2 pb-1 rounded hover:text-heading hover:bg-lightlabel">x</div>
+                                            <div v-on:click.stop="removeCompare({country: row.country,state: row.state})" class="hidden xl:block text-lightlabel text-xs absolute top-0 right-0 m-2 px-2 pb-1 rounded hover:text-heading hover:bg-lightlabel">x</div>
                                         </div>
                                     </div>
-                                    <div v-if="getCompareLength() > 0" class="w-24 border absolute z-10 bg-slab border-hoverslab hover:bg-hoverslab px-2 py-1 top-0 right-0 cursor-pointer" @click="removeAllCompare()">
+                                    <div v-if="getCompareLength() > 0" class="hidden xl:block xl:absolute w-24 border z-10 bg-slab border-hoverslab hover:bg-hoverslab px-2 py-1 top-0 right-0 cursor-pointer" @click="removeAllCompare()">
                                         Remove all
                                     </div>
                                 </div>
                             </simplebar>
 
-                            <keep-alive include="DashboardView,PoliciesView,MapView,StatsChart,LineChart">
-                                <PoliciesView
-                                    v-if="view === 'response'"
-                                    :selectedCompareTab="selectedCompareTab"
-                                    :comparePolicies="comparePolicies()"
-                                    :uniqueCountries="getUniqueCountriesCompare()"
-                                    :compareLength="getCompareLength()"
+                            <!--                            <keep-alive include="DashboardView,MapView,MapViewMobile,StatsChart,StatsChartMobile,LineChart,LineChartMobile">-->
+                            <PoliciesView
+                                class="policies-view"
+                                v-if="view === 'response'"
+                                :selectedCompareTab="selectedCompareTab"
+                                :comparePolicies="comparePolicies()"
+                                :uniqueCountries="getUniqueCountriesCompare()"
+                                :compare="compare"
+                                :compareLength="getCompareLength()"
+                                :database="database"
+                                :countries="countries_sorted"
+                                v-on:updateGovtResponse="updateGovtResponse"
+                            />
+
+                            <DailyView
+                                v-if="view === 'daily'"
+                                :selectedCompareTab="selectedCompareTab"
+                                :options="options"
+                                :comparisonData="getComparisonData()"
+                                :view="view"
+                                :compare="compare"
+                                v-on:updateCompare="emitCompare"
+                                v-on:updateSelected="updateSelected"
+                            />
+
+                            <keep-alive>
+                                <StatsChartMobile
+                                    v-if="isMobile"
+                                    v-show="view === 'charts'"
+                                    :data="getChartData()"
+                                    :config="ui.chart"
+                                    :full="true"
+                                    :active="view === 'charts'"
+                                    v-on:updateChartSettings="updateChartSettings"
+                                    v-on:updateChartMode="updateChartMode"
+                                    v-on:updateChartFields="updateChartFields"
+                                />
+                                <StatsChart
+                                    v-else
+                                    v-show="view === 'charts'"
+                                    :data="getChartData()"
+                                    :config="ui.chart"
+                                    :full="true"
+                                    :active="view === 'charts'"
+                                    v-on:updateChartSettings="updateChartSettings"
+                                    v-on:updateChartMode="updateChartMode"
+                                    v-on:updateChartFields="updateChartFields"
+                                />
+                            </keep-alive>
+
+                            <keep-alive>
+                                <MapViewMobile
+                                    v-if="view === 'map' && isMobile"
+                                    :countries_sorted="countries_sorted"
+                                    :annotations="getAnnotations()"
+                                    :getDaily="getDaily()"
                                     :database="database"
                                 />
-
-                                <DailyView
-                                    v-else-if="view === 'daily'"
-                                    :selectedCompareTab="selectedCompareTab"
-                                    :options="options"
-                                    :comparisonData="getComparisonData()"
-                                    :view="view"
-                                    :compare="compare"
-                                    v-on:updateCompare="emitCompare"
-                                    v-on:updateSelected="updateSelected"
-                                />
-
-
-                                <div class="h-full relative flex flex-1 pt-8" v-else-if="view === 'charts'">
-                                    <StatsChart :data="getComparisonData()" :full="true" :active="view === 'charts'" />
-                                </div>
-
                                 <MapView
                                     v-else-if="view === 'map'"
                                     :countries_sorted="countries_sorted"
                                     :annotations="getAnnotations()"
                                     :getDaily="getDaily()"
                                     :database="database"
-                                />
 
+                                />
                             </keep-alive>
+
+                            <!--                            </keep-alive>-->
                             <div class="h-full relative flex flex-1" v-if="view === 'about'">
                                 <About />
                             </div>
@@ -86,34 +165,46 @@
 <script>
     import simplebar from 'simplebar-vue';
     import 'simplebar/dist/simplebar.min.css';
-    import StatsChart from "../components/StatsChart";
     import moment from 'moment'
-    import Map from '../components/Map';
     import {mapGetters} from 'vuex';
-    import About from "./About";
-    import Sidebar from "../components/Sidebar";
-    import PoliciesView from "./PoliciesView";
+    import SidebarMobile from "../components/SidebarMobile";
     import DailyView from "./DailyView";
-    import DashboardView from "./DashboardView";
     import MapView from "./MapView";
+    import MapViewMobile from "./MapViewMobile";
 
     export default {
         name: "Comparison",
         components:{
-            DashboardView,
+            DailyView, // do not lazy load this so we dont' have the weird detached tab thing
+            DashboardView: () => import('./DashboardView'),
+            // MapView: () => import('./MapView'),
+            // MapViewMobile: () => import('./MapViewMobile'),
+            // DailyView: () => import('./DailyView'),
             MapView,
-            DailyView,
-            PoliciesView,
-            About,
+            MapViewMobile,
+            PoliciesView: () => import('./PoliciesView'),
+            Sidebar: () => import('../components/Sidebar'),
+            SidebarMobile,
+            StatsChart: () => import('../components/StatsChart'),
+            StatsChartMobile: () => import('../components/StatsChartMobile'),
+            About: () => import('./About'),
             simplebar,
-            StatsChart,
-            Map,
-            Sidebar,
         },
         props: [
             'database',
         ],
         created(){
+            // alert('created');
+
+            this.database.processed.selectedCompareTab = 'all';
+        },
+        mounted()
+        {
+
+            if(this.isMobile)
+            {
+                this.options.compare_limit = 3;
+            }
 
             axios.get('/api/stats/annotations')
                 .then(res => {
@@ -127,20 +218,11 @@
             axios.get('/api/stats/oxford')
                 .then(res => {
                     this.database.raw.raw_oxford = res.data;
-                    this.database.loading.oxford = true;
+                    this.ajax_loading.oxford = true;
                 })
                 .catch(error => {
 
                 });
-
-            // alert('created');
-
-            this.database.processed.selectedCompareTab = 'all';
-        },
-        mounted()
-        {
-            // alert('mounted');
-            // // Assemble data for everything and prepopulate the processed array
         },
         data()
         {
@@ -153,7 +235,7 @@
                     'table' : 'daily',
                 },
                 'options' : {
-                    'compare_limit' : 5,
+                    'compare_limit' : 10,
                 },
                 'comparison' : [],
 
@@ -169,214 +251,77 @@
                             'order' : 'desc',
                         }
                     },
-                    'chart' : {}
+                    'chart' : {
+                        settings: false,
+                        mode: false,
+                        fields: false,
+                    }
                 },
                 layers : {
                     confirmed: false
-                }
+                },
+                ajax_loading: {
+                    oxford: false,
+                    final: false,
+                },
+                user: {
+                    location: false,
+                },
             }
         },
         methods:{
-            addConfirmedLayer()
+            log_debug(item)
             {
-                this.layers.confirmed = true;
-            },
-            getAnnotations()
-            {
-                var data = _.clone(this.database.raw.raw_annotations.All);
-                data = data.reverse();
-                return data;
-            },
-            getUniqueCountriesCompare()
-            {
-                var countries = [],
-                    data = [];
-                for(var x in this.compare)
+                if(item === 'policies')
                 {
-                    if(countries.indexOf(this.compare[x].country) === -1)
-                    {
-                        countries.push(this.compare[x].country);
-                        data.push(this.compare[x]);
-                    }
+                    console.log(this.database.processed);
                 }
-                return data;
-            },
-            comparePolicies()
-            {
-                var data = [];
-                for(var x in this.getUniqueCountriesCompare())
+                if(item === 'process_policies')
                 {
-                    var row = {};
-                    row.name = this.getUniqueCountriesCompare()[x].country;
-                    // row.latest = this.getLatestGovtResponse(row.name);
-
-
-                    if(this.getGovtResponse(row.name))
-                    {
-                        row.stringencyindex = this.getGovtResponse(row.name).latest.si;
-                        var daily = [];
-                        for(var y in this.getGovtResponse(row.name).daily)
-                        {
-                            daily.push(_.clone(this.translateGovtResponse(this.getGovtResponse(row.name).daily[y])))
-                        }
-                        row.daily = daily;
-                    }
-                    else
-                    {
-                        row.stringencyindex = 'N/A';
-                        row.daily = {};
-                    }
-                    data.push(_.clone(row));
+                    this.processGovtResponse();
                 }
-                return data;
             },
-            translateGovtResponse(policy)
+            updateChartSettings(settings)
             {
-
-                var key = this.database.raw.raw_oxford.key;
-                for(var x in policy.latest)
-                {
-                    var row = policy.latest[x];
-                    var target = '';
-                    var value = row.value;
-                    if(key && key[x] && key[x].values)
-                    {
-                        var help = key[x].values;
-                    }
-                    else
-                    {
-                        var help = [];
-                    }
-
-                    if(key[x] && key[x].hasTarget)
-                    {
-                        if(key[x].targets && key[x].targets.length > 0)
-                        {
-                            target = 'Scope: ' + key[x].targets[row.target];
-                        }
-                        else
-                        {
-                            if(row.t == 1)
-                            {
-                                target = 'Scope: Targeted';
-                            }
-                            else
-                            {
-                                target = 'Scope: General';
-                            }
-                        }
-                    }
-                    if(row.value.length == 0)
-                    {
-                        value = '';
-                        target = '';
-                    }
-                    else if(key[x] && key[x].type == 'lookup')
-                    {
-                        value = key[x].values[parseInt(row.value)];
-                    }
-                    else
-                    {
-                        value = row.value;
-                    }
-
-                    policy.latest[x] = {
-                        id: x,
-                        name: key[x].name,
-                        description: key[x].description,
-                        value: value,
-                        target: target,
-                        since: row.s,
-                        help: help,
-                        notes: row.n,
-                        date: policy.date,
-                    };
-                }
-                return _.clone(policy);
+                this.ui.chart.settings = _.clone(settings);
             },
-            getLatestGovtResponse(country)
+            updateChartMode(mode)
             {
-                var response = this.getGovtResponse(country);
-                var data = [];
-                if(response && response.latest && response.latest.policies)
+                this.ui.chart.mode = _.clone(mode);
+            },
+            updateChartFields(fields)
+            {
+                this.ui.chart.fields = _.clone(fields);
+            },
+            processGovtResponse()
+            {
+                var self = this;
+                for (var x in this.countries)
                 {
-                    for(var x in response.latest.policies)
-                    {
+                    var country = _.cloneDeep(this.countries[x].name);
+                    var response = _.cloneDeep(this.getGovtResponse(country));
 
-                        var row = response.latest.policies[x];
-                        var key = response.key[x];
-                        var target = '';
-                        var value = row.value;
-                        if(key && key.values)
-                        {
-                            var help = key.values;
-                        }
-                        else
-                        {
-                            var help = [];
-                        }
+                    // setTimeout(function(){
+                    self.database.processed.oxford[country] = response;
+                    // },1)
 
-                        if(key.hasTarget)
-                        {
-                            if(key.targets && key.targets.length > 0)
-                            {
-                                target = 'Scope: ' + key.targets[row.t];
-                            }
-                            else
-                            {
-                                if(row.t == 1)
-                                {
-                                    target = 'Scope: Targeted';
-                                }
-                                else
-                                {
-                                    target = 'Scope: General';
-                                }
-                            }
-                        }
-                        if(row.v.length == 0)
-                        {
-                            value = '';
-                            target = '';
-                        }
-                        else if(key.type == 'lookup')
-                        {
-                            value = key.values[parseInt(row.v)];
-                        }
-                        else
-                        {
-                            value = row.v;
-                        }
 
-                        data.push({
-                            id: x,
-                            name: key.name,
-                            description: key.description,
-                            value: value,
-                            target: target,
-                            since: row.s,
-                            help: help,
-                            notes: row.n,
-                        })
-
-                        data = data.sort(function (a, b) {
-                            return a.id > b.id ? 1 : -1;
-                        });
-                    }
                 }
-                return data;
             },
             getGovtResponse(country)
             {
                 if(country)
                 {
+                    if(this.database && this.database.processed && this.database.processed.oxford && this.database.processed.oxford[country])
+                    {
+                        return _.cloneDeep(this.database.processed.oxford[country]);
+                    }
                     if(this.database.raw.raw_oxford && this.database.raw.raw_oxford.latest && this.database.raw.raw_oxford.latest[country])
                     {
                         return {
                             key: this.database.raw.raw_oxford.key,
-                            latest: this.database.raw.raw_oxford.latest[country],
-                            daily: this.getDailyGovtResponse(this.database.raw.raw_oxford.daily[country],'2020-01-01',moment().format('YYYY-MM-DD')),
-                            // daily: this.database.raw.raw_oxford.daily[country],
+                            latest: _.cloneDeep(this.database.raw.raw_oxford.latest[country]),
+                            daily: this.getDailyGovtResponse(_.cloneDeep(this.database.raw.raw_oxford.daily[country]),'2020-01-01',moment().format('YYYY-MM-DD')),
                         }
                     }
                 }
@@ -390,7 +335,7 @@
                     return date;
                 }
 
-                var data = [],
+                var data = {},
                     temp = {};
 
                 var date1 = new Date(start_date);
@@ -423,18 +368,146 @@
                                 target: daily[new_date].policies[y].t,
                             }
                         }
-                        data.push(_.clone(row));
-                        temp = _.clone(row);
+                        data[new_date] = _.clone(row);
+                        temp = _.cloneDeep(row);
                     }
                     else
                     {
                         row = _.clone(temp);
                         row.date = new_date;
-                        data.push(row);
+                        data[new_date] = _.clone(row);
                     }
 
                 }
                 return data;
+            },
+            updateGovtResponse(country,data)
+            {
+                this.$emit('updateGovtResponse',country,data);
+            },
+            addConfirmedLayer()
+            {
+                this.layers.confirmed = true;
+            },
+            getAnnotations()
+            {
+                var data = _.clone(this.database.raw.raw_annotations.All);
+                data = data.reverse();
+                return data;
+            },
+            getUniqueCountriesCompare()
+            {
+                var countries = [],
+                    data = [];
+                for(var x in this.compare)
+                {
+                    if(this.compare[x])
+                    {
+                        if(countries.indexOf(this.compare[x].country) === -1)
+                        {
+                            countries.push(this.compare[x].country);
+                            data.push(this.compare[x]);
+                        }
+                    }
+                }
+                return data;
+            },
+            comparePolicies()
+            {
+                var data = [];
+                for(var x in this.getUniqueCountriesCompare())
+                {
+                    if(this.getUniqueCountriesCompare()[x])
+                    {
+                        var row = {};
+                        row.name = this.getUniqueCountriesCompare()[x].country;
+                        row.daily = {};
+                        // row.latest = this.getLatestGovtResponse(row.name);
+
+                        var response = _.cloneDeep(this.getGovtResponse(row.name));
+
+                        if(response)
+                        {
+                            row.stringencyindex = _.clone(response.latest.si);
+                            for(var temp_date in response.daily)
+                            {
+                                row.daily[temp_date] = _.cloneDeep(this.translateGovtResponse(response.daily[temp_date]));
+                            }
+                        }
+                        else
+                        {
+                            row.stringencyindex = 'N/A';
+                            row.daily = {};
+                        }
+                        data.push(_.cloneDeep(row));
+                    }
+                }
+                return data;
+            },
+            translateGovtResponse(policy)
+            {
+
+                var key = this.database.raw.raw_oxford.key;
+                for(var x in policy.latest)
+                {
+                    var row = _.cloneDeep(policy.latest[x]);
+
+                    var target = '';
+                    var value = _.clone(row.value);
+                    if(key && key[x] && key[x].values)
+                    {
+                        var help = key[x].values;
+                    }
+                    else
+                    {
+                        var help = [];
+                    }
+
+                    if(key[x] && key[x].hasTarget)
+                    {
+                        if(key[x].targets && key[x].targets.length > 0)
+                        {
+                            target = 'Scope: ' + _.clone(key[x].targets[row.target]);
+                        }
+                        else
+                        {
+                            if(row.t == 1)
+                            {
+                                target = 'Scope: Targeted';
+                            }
+                            else
+                            {
+                                target = 'Scope: General';
+                            }
+                        }
+                    }
+                    if(row.value && row.value.length === 0)
+                    {
+                        value = '';
+                        target = '';
+                    }
+                    else if(key[x] && key[x].type == 'lookup')
+                    {
+                        value = _.clone(key[x].values[parseInt(row.value)]);
+                    }
+                    else
+                    {
+                        value = _.clone(row.value);
+                    }
+
+                    policy.latest[x] = {
+                        id: x,
+                        name: key[x].name,
+                        description: key[x].description,
+                        value: value,
+                        target: target,
+                        since: row.s,
+                        help: help,
+                        notes: row.n,
+                        date: policy.date,
+                    };
+                }
+                return _.cloneDeep(policy);
             },
             getGlobalDayNotes(date)
             {
@@ -592,6 +665,26 @@
                         row = this.assembleDataset(this.database.processed.compare[x])
                         data.push(row);
                     }
+                    else
+                    {
+                        data.push(false);
+                    }
+                }
+                return data;
+            },
+            getChartData()
+            {
+                var data = [],
+                    row = [];
+
+
+                for(var x in this.database.processed.compare)
+                {
+                    if(this.database.processed.compare[x])
+                    {
+                        row = this.assembleDataset(this.database.processed.compare[x])
+                        data.push(row);
+                    }
                 }
                 return data;
             },
@@ -618,7 +711,7 @@
                 var found = false;
                 for(var x in this.compare)
                 {
-                    if(this.compare[x].country == item.country)
+                    if(this.compare[x] && this.compare[x].country == item.country)
                     {
 
                         if(this.compare[x].state == item.state)
@@ -634,7 +727,8 @@
             {
                 for(var x in this.compare)
                 {
-                    delete this.compare[x];
+                    // delete this.compare[x];
+                    this.compare[x] = false;
                 }
                 this.updateSelected('all')
                 this.$emit('updateCompare',this.compare);
@@ -645,7 +739,8 @@
                 if(found)
                 {
                     var key = item.country + item.state;
-                    delete this.compare[found];
+                    // delete this.compare[found];
+                    this.compare[found] = false;
                     if(key == this.selectedCompareTab)
                     {
                         this.updateSelected(this.getLastCompareItem());
@@ -822,7 +917,8 @@
                     // Add new item
                     if(this.getCompareLength() < this.options.compare_limit)
                     {
-                        this.compare[country+state] = {country: country, state: state};
+                        // this.compare[country+state] = {country: country, state: state};
+                        this.compare.push({country: country, state: state})
                     }
 
                     // this.updateSelected(this.getLastCompareItem());
@@ -1030,12 +1126,16 @@
                 {
                     this.ui.content.selectedTab = 'dashboard';
                 }
+                console.log('view');
+                console.log(this.ui.content.selectedTab);
                 return this.ui.content.selectedTab;
             },
             loading()
             {
                 if(this.database && this.database.loading)
+                {
                     return this.database.loading;
+                }
                 else
                     return {
                         'countries' : false,
@@ -1086,12 +1186,27 @@
             },
             loaded()
             {
-                if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success')
+                if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success' && this.ajax_loading.oxford && !this.ajax_loading.final)
+                {
+                    var self = this;
+                    setTimeout(function(){
+                        self.ajax_loading.final = true;
+                    },100);
+                }
+                else if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success' && this.ajax_loading.oxford && this.ajax_loading.final)
                 {
                     return true;
                 }
                 return false;
             },
+            isMobile() {
+                if( screen.width <= 760 ) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
         },
         watch: {
             loaded: function(newvalue)
@@ -1099,11 +1214,12 @@
                 if(newvalue === true)
                 {
                     this.preProcessData();
+                    this.processGovtResponse();
                 }
             }
         }
     }
-    </script>
+</script>
 
 <style scoped>
 

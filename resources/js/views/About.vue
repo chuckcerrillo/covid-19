@@ -1,9 +1,6 @@
 <template>
-    <div class="flex flex-1 items-start justify-center h-full">
-<!--    <div class="w-full h-full">-->
-<!--        <div class="bg-black opacity-50 absolute top-0 right-0 bottom-0 left-0 z-0" @click="close()"></div>-->
-        <div class="bg-slab rounded z-10 p-4 text-sm relative">
-<!--            <div class="absolute top-0 right-0 px-4 py-2 bg-slab border border-lightslab cursor-pointer hover:bg-lightslab" @click="close()">Close</div>-->
+    <div class="bg-slab absolute inset-x-0 inset-y-0 z-10">
+        <div class="absolute inset-y-0 left-0 p-4" style="right: 22rem">
             <div class="text-6xl font-bold tracking-tighter text-white">
                 COVID-19 Tracker
             </div>
@@ -25,15 +22,23 @@
                     <div>&copy;</div>
                     <div class="mx-2"><img src="/img/logo/logo-140.png" class="h-4" alt="Simpler Solutions" /></div>
                     <div>Simpler Solutions</div>
-                 </div>
+                </div>
             </div>
         </div>
-        <div class="pt-8 w-220 relative h-full">
+        <div class="absolute inset-y-0 right-0 w-80 z-10 overflow-hidden mr-4">
             <div class="m-2 text-2xl font-bold">Changelog:</div>
-            <simplebar class="p-2 rounded bg-slab-primary absolute inset-x-0" style="position:absolute; bottom: 1rem; top: 6rem;">
+            <simplebar class="p-2 rounded bg-slab-primary absolute inset-x-0 inset-y-0" style="position:absolute; top: 4rem; bottom: 2rem;">
                 <div class="m2 text-sm">
+                    <div class="font-bold">2020-05-24</div>
+                    <ul class="list-disc ml-8 mr-4">
+                        <li>Added a new loading screen.</li>
+                        <li>All new mobile layout. The comparison tool is now viewable in mobile. It's currently sharing the same back-end as the desktop version so there's still room for performance improvements.</li>
+                        <li>Applied some performance enhancements for a more responsive interface for both desktop and mobile view.</li>
+                        <li>Fixed issues with the date slider. At times of day the slider is initialising with the wrong date range.</li>
+                        <li>Charts are now date filtered, showing the last 30 days by default. This is to reduce unnecessary loading of data.</li>
+                    </ul>
 
-                    <div class="font-bold">2020-05-15</div>
+                    <div class="font-bold mt-2">2020-05-15</div>
                     <ul class="list-disc ml-8 mr-4">
                         <li>The background on the home page is now a map showing overlays representing the number of confirmed cases per country.</li>
                         <li>Added a new "Maps" view in the comparison tool, which visually shows certain statistics for each country. This is currently limited to "Confirmed", "Deaths", and "Recovered", but more will be added in future updates.</li>
@@ -42,7 +47,7 @@
                         <li>The date slider in the "Daily Breakdown comparison page" is now a date range slider, allowing you to specify start and end dates. This affects the mini charts.</li>
                     </ul>
 
-                    <div class="font-bold">2020-05-10</div>
+                    <div class="font-bold mt-2">2020-05-10</div>
                     <ul class="list-disc ml-8 mr-4">
                         <li>Added comparison table view for Government Response</li>
                         <li>Added comparison table view for Daily Breakdown</li>
@@ -51,7 +56,7 @@
                         <li>Bugfix: Charts were loading in the background regardless of the page you're viewing, causing unnecessary delays to page load.</li>
                     </ul>
 
-                    <div class="font-bold">2020-05-03</div>
+                    <div class="font-bold mt-2">2020-05-03</div>
                     <ul class="list-disc ml-8 mr-4">
                         <li>Overhauled data structure, which should result in better performance and overall responsiveness of the UI.</li>
                         <li>Layout is slightly more fluid. Now supporting 1280px wide screens. (We'll eventually get down to mobile support!)</li>
@@ -68,7 +73,6 @@
                 </div>
             </simplebar>
         </div>
-
     </div>
 </template>
 

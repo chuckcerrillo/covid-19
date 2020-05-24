@@ -18,7 +18,8 @@
             'rankings',
             'enable',
             'settings',
-            'layers'
+            'layers',
+            'location',
         ],
         data(){
             return {
@@ -144,6 +145,7 @@
             });
             this.map = map;
             map.setZoom(this.options.zoom);
+
             map.setCenter([6.679687499992383, 34.597041516152586]);
 
 
@@ -176,6 +178,10 @@
             map.on('load',function(){
                 self.mapReady = true;
                 self.setLayers(self.layers);
+                if(self.location)
+                {
+                    map.setCenter([self.location.longitude, self.location.latitude]);
+                }
             })
         },
         methods:
@@ -704,8 +710,15 @@
                         if(this.layers[x] === true)
                             this.map.getSource(x).setData(this.geoJson(x));
                     }
+                },
+            },
+            location: {
+                immediate: true,
+                deep: true,
+                handler(newvalue, oldvalue) {
+                    this.map.setCenter([newvalue.longitude, newvalue.latitude]);
                 }
-            }
+            },
         }
     }
 </script>
