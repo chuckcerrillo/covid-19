@@ -2,26 +2,27 @@
     <div>
         <div v-if="!loaded" class="flex items-center justify-center pt-20">
             <div></div>
-            <div class="bg-slab rounded p-4 px-8">
-                <div class="font-bold text-2xl text-white p-2 text-center">Loading data</div>
+            <div class="bg-slab rounded p-4 px-8 w-80 flex flex-col items-center justify-center">
+                <div v-if="countriesStatus == 'success' && countryCasesStatus == 'success' && stateCasesStatus == 'success' && ajax_loading.oxford" class="font-bold text-2xl text-white p-2 text-center">Launching...</div>
+                <div v-else class="font-bold text-2xl text-white p-2 text-center">Downloading data...</div>
 <!--                <div class="p-2 mb-4 text-center"><img src="/img/loader.svg"></div>-->
                 <div class="p-2 mb-4 text-center"><img src="/img/loading.gif"></div>
-                <div class="flex items-center text-xs">
+                <div class="flex items-center text-xs w-44">
                     <div class="w-32">Country list</div>
                     <div class="text-right text-lightlabel" v-if="countriesStatus !== 'success'">loading</div>
                     <div class="text-right text-green-400" v-else>done</div>
                 </div>
-                <div class="flex items-center text-xs">
+                <div class="flex items-center text-xs w-44">
                     <div class="w-32">Case counts</div>
                     <div class="text-right text-lightlabel" v-if="countryCasesStatus !== 'success' || stateCasesStatus !== 'success'">loading</div>
                     <div class="text-right text-green-400" v-else>done</div>
                 </div>
-                <div class="flex items-center text-xs">
+                <div class="flex items-center text-xs w-44">
                     <div class="w-32">Government response</div>
                     <div class="text-right text-lightlabel" v-if="!ajax_loading.oxford">loading</div>
                     <div class="text-right text-green-400" v-else>done</div>
                 </div>
-                <div class="flex items-center text-xs">
+                <div class="flex items-center text-xs w-44">
                     <div class="w-32">Annotations</div>
                     <div class="text-right text-lightlabel" v-if="!database.loading.annotations">loading</div>
                     <div class="text-right text-green-400" v-else>done</div>
@@ -1190,7 +1191,6 @@
                     var self = this;
                     setTimeout(function(){
                         self.ajax_loading.final = true;
-                        self.loaded = true;
                     },100);
                 }
                 else if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success' && this.ajax_loading.oxford && this.ajax_loading.final)
