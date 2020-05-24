@@ -36,6 +36,7 @@
                         <li>Applied some performance enhancements for a more responsive interface for both desktop and mobile view.</li>
                         <li>Fixed issues with the date slider. At times of day the slider is initialising with the wrong date range.</li>
                         <li>Charts are now date filtered, showing the last 30 days by default. This is to reduce unnecessary loading of data.</li>
+                        <li>Comparison limit is set to 3 on mobile, and 10 on larger screens (up from 5).</li>
                     </ul>
 
                     <div class="font-bold mt-2">2020-05-15</div>
