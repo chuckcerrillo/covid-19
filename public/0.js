@@ -397,7 +397,7 @@ __webpack_require__.r(__webpack_exports__);
             'latest': {}
           };
 
-          if (policies && policies.daily) {
+          if (policies && policies.name !== 'Global' && policies.daily) {
             row.latest = _.cloneDeep(policies.daily[this.date].latest);
             row.stringencyindex = _.clone(policies.daily[this.date].stringencyindex);
           }
@@ -780,7 +780,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".inner-scrollbar .simplebar-track.simplebar-horizontal {\n  visibility: hidden !important;\n}\r\n", ""]);
+exports.push([module.i, ".inner-scrollbar .simplebar-track.simplebar-horizontal {\n  visibility: hidden !important;\n}\n", ""]);
 
 // exports
 

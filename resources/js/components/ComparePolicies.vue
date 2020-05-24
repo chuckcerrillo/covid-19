@@ -389,11 +389,8 @@
                             'latest' : {},
                         };
 
-                        if(policies && policies.daily)
+                        if(policies && policies.name !== 'Global' && policies.daily)
                         {
-
-
-
                             row.latest = _.cloneDeep(policies.daily[this.date].latest);
                             row.stringencyindex = _.clone(policies.daily[this.date].stringencyindex);
 
