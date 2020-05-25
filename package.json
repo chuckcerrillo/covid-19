@@ -34,8 +34,10 @@
         "simplebar-vue": "^1.4.0",
         "v-calendar": "^1.0.0-beta.23",
         "vue-chartjs": "^3.5.0",
+        "vue-cookies": "^1.7.0",
         "vue-moment": "^4.1.0",
         "vue-numerals": "^3.0.8",
-        "vue-slider-component": "^3.1.2"
+        "vue-slider-component": "^3.1.2",
+        "vuex": "^3.4.0"
     }
 }
