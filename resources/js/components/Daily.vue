@@ -6,6 +6,16 @@
                 <h2 class="font-bold text-3xl">{{data.name.full}}</h2>
 
                 <div class="flex">
+                    <button @click="favourite = !favourite" class="p-2 border hover:bg-lightlabel hover:border-white hover:text-white rounded focus:outline-none flex items-center" :class="isFavourite ? 'text-gray-800 border-heading bg-heading' : 'text-heading border-lightlabel'">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            class="w-4 h-4 fill-current">
+                            <path d="M10,15.273 L16.18,19 L14.545,11.971 L20,7.244 L12.809,6.627 L10,0 L7.191,6.627 L0,7.244 L5.455,11.971 L3.82,19 L10,15.273 Z" id="Shape"/>
+                        </svg>
+                        <div v-if="isFavourite" class="xl:ml-2">Favourite</div>
+                        <div v-else class="xl:ml-2">Add to favourites</div>
+                    </button>
 <!--                    <div-->
 <!--                        class="mr-4 mb-4 text-xs px-4 py-2 hover:text-white cursor-pointer rounded bg-slab-primary hover:bg-lightslab"-->
 <!--                        @click="toggleExpand()"-->
@@ -329,6 +339,7 @@
                 recomputed_data: [],
                 expanded: false,
                 show_daily: false,
+                favourite: false,
             }
         },
         methods: {
@@ -395,6 +406,10 @@
                 else {
                     return false;
                 }
+            },
+            isFavourite()
+            {
+                return this.favourite;
             }
         },
     }
