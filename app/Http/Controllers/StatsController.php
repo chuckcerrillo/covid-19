@@ -4865,6 +4865,10 @@ class StatsController extends Controller
     {
         $first_date = '2020-01-22';
 
+        $today = date('Y-m-d');
+        $yesterday = new \DateTime($today);
+        $yesterday = $yesterday->sub(new \DateInterval('P1D'));
+
         $files = COVID_DATA_TIME_SERIES;
 
         unset($files['confirmedUS']);
@@ -4997,14 +5001,24 @@ class StatsController extends Controller
             $country = Country::where('name',$country_name)->first();
             if($country)
             {
+                $total_states = count($state_data);
                 foreach($state_data AS $state_name => $dates)
                 {
                     foreach($dates AS $date => $values)
                     {
+
                         $state = State::where([
                             'name' => $state_name,
                             'country_id' => $country->id,
                         ])->first();
+
+                        $adjustments = [
+                            'confirmed' => 0,
+                            'deaths' => 0,
+                            'recovered' => 0,
+                        ];
+
+
                         if($state) {
 
                             $input = [];
@@ -5031,28 +5045,79 @@ class StatsController extends Controller
 
                             if($case)
                             {
-                                if($case->confirmed && isset($input['confirmed']) && $case->confirmed > $input['confirmed'])
+                                if($case->confirmed && isset($input['confirmed']))
                                 {
-                                    unset($input['confirmed']);
-                                    unset($input['confirmed_source']);
+                                    if($case->confirmed > $input['confirmed'])
+                                    {
+                                        unset($input['confirmed']);
+                                        unset($input['confirmed_source']);
+                                    }
+                                    else
+                                    {
+                                        $adjustments['confirmed'] = $case->confirmed - $input['confirmed'];
+                                    }
                                 }
-                                if($case->deaths && isset($input['deaths']) && $case->deaths > $input['deaths'])
+
+                                if($case->deaths && isset($input['deaths']))
                                 {
-                                    unset($input['deaths']);
-                                    unset($input['deaths_source']);
+                                    if($case->deaths > $input['deaths'])
+                                    {
+                                        unset($input['deaths']);
+                                        unset($input['deaths_source']);
+                                    }
+                                    else
+                                    {
+                                        $adjustments['deaths'] = $case->deaths - $input['deaths'];
+                                    }
                                 }
-                                if($case->recovered && isset($input['recovered']) && $case->recovered > $input['recovered'])
+
+                                if($case->recovered && isset($input['recovered']))
                                 {
-                                    unset($input['recovered']);
-                                    unset($input['recovered_source']);
+                                    if($case->recovered > $input['recovered'])
+                                    {
+                                        unset($input['recovered']);
+                                        unset($input['recovered_source']);
+                                    }
+                                    else
+                                    {
+                                        $adjustments['recovered'] = $case->recovered - $input['recovered'];
+                                    }
                                 }
+
+
+                                if($adjustments['confirmed'] !== 0 || $adjustments['deaths'] !== 0 || $adjustments['recovered'])
+                                {
+                                    $unspecified = DB::table('cases')
+                                        ->selectRaw('countries.id as country_id, cases.date, cases.confirmed, cases.deaths, cases.recovered, cases.state_id')
+                                        ->join('states','states.id','cases.state_id')
+                                        ->join('countries','countries.id','states.country_id')
+                                        ->where('countries.id',$country->id)
+                                        ->where('cases.date','=',$date)
+                                        ->where('states.name','=','(Unspecified)')
+                                        ->get()->first();
+
+                                    $unspecified->confirmed += $adjustments['confirmed'];
+                                    $unspecified->deaths += $adjustments['deaths'];
+                                    $unspecified->recovered += $adjustments['recovered'];
+
+                                    DB::table('cases')
+                                        ->where('state_id',$unspecified->state_id)
+                                        ->where('date',$date)
+                                        ->update(
+                                            [
+                                                'confirmed' => $unspecified->confirmed,
+                                                'deaths' => $unspecified->deaths,
+                                                'recovered' => $unspecified->recovered,
+                                                'updated_at' => date('Y-m-d H:i:s'),
+                                            ]);
+                                }
+
                                 if(count($input)>0)
                                 {
                                     DB::table('cases')->updateOrInsert(
                                         [
                                             'state_id' => $state->id,
                                             'date' => $date,
-                                            'updated_at' => date('Y-m-d H:i:s'),
                                         ],
                                         $input
                                     );
@@ -5063,6 +5128,25 @@ class StatsController extends Controller
                                             [
                                                 'updated_at' => date('Y-m-d H:i:s'),
                                             ]);
+
+                                    // If JH is updating yesterday's stats, let's do this for today as well
+                                    if($date === $yesterday)
+                                    {
+                                        DB::table('cases')->updateOrInsert(
+                                            [
+                                                'state_id' => $state->id,
+                                                'date' => $today,
+                                            ],
+                                            $input
+                                        );
+                                        DB::table('cases')
+                                            ->where('state_id',$state->id)
+                                            ->where('date',$today)
+                                            ->update(
+                                                [
+                                                    'updated_at' => date('Y-m-d H:i:s'),
+                                                ]);
+                                    }
                                 }
                             }
                             else
@@ -5083,6 +5167,27 @@ class StatsController extends Controller
                                             'created_at' => date('Y-m-d H:i:s'),
                                             'updated_at' => date('Y-m-d H:i:s'),
                                         ]);
+
+                                // If JH is updating yesterday's stats, let's do this for today as well
+                                if($date === $yesterday)
+                                {
+                                    DB::table('cases')->updateOrInsert(
+                                        [
+                                            'state_id' => $state->id,
+                                            'date' => $today,
+                                        ],
+                                        $input
+                                    );
+
+                                    DB::table('cases')
+                                        ->where('state_id',$state->id)
+                                        ->where('date',$today)
+                                        ->update(
+                                            [
+                                                'created_at' => date('Y-m-d H:i:s'),
+                                                'updated_at' => date('Y-m-d H:i:s'),
+                                            ]);
+                                }
                             }
                         }
                     }
@@ -5095,6 +5200,10 @@ class StatsController extends Controller
     public function harvest_cases_from_jh_timeline_us(Request $request)
     {
         $first_date = '2020-01-22';
+
+        $today = date('Y-m-d');
+        $yesterday = new \DateTime($today);
+        $yesterday = $yesterday->sub(new \DateInterval('P1D'));
 
          // Special preparation for the US time series data...
         $files = COVID_DATA_TIME_SERIES;
@@ -5218,6 +5327,13 @@ class StatsController extends Controller
                     'name' => $state_name,
                     'country_id' => $country->id,
                 ])->first();
+
+                $adjustments = [
+                    'confirmed' => 0,
+                    'deaths' => 0,
+                    'recovered' => 0,
+                ];
+
                 if($state) {
 
                     $input = [];
@@ -5244,23 +5360,48 @@ class StatsController extends Controller
 
                     if($case)
                     {
-                        // For the US, we will always use JH data for confirmed and deaths
-//                        if($case->confirmed && isset($input['confirmed']) && $case->confirmed > $input['confirmed'])
-//                        {
-//                            unset($input['confirmed']);
-//                            unset($input['confirmed_source']);
-//                        }
-//                        if($case->deaths && isset($input['deaths']) && $case->deaths > $input['deaths'])
-//                        {
-//                            unset($input['deaths']);
-//                            unset($input['deaths_source']);
-//                        }
+                        // If there are changes to the state numbers, update the (Unspecified) record to reflect these changes
+                        if(!($case->confirmed && isset($input['confirmed']) && $case->confirmed > $input['confirmed']))
+                        {
+                            $adjustments['confirmed'] = $case->confirmed - $input['confirmed'];
+                        }
+
+                        if($case->deaths && isset($input['deaths']) && $case->deaths > $input['deaths'])
+                        {
+                            $adjustments['deaths'] = $case->deaths - $input['deaths'];
+                        }
+
+                        if($adjustments['confirmed'] !== 0 || $adjustments['deaths'] !== 0)
+                        {
+                            $unspecified = DB::table('cases')
+                                ->selectRaw('countries.id as country_id, cases.date, cases.confirmed, cases.deaths, cases.recovered, cases.state_id')
+                                ->join('states','states.id','cases.state_id')
+                                ->join('countries','countries.id','states.country_id')
+                                ->where('countries.id',$country->id)
+                                ->where('cases.date','=',$date)
+                                ->where('states.name','=','(Unspecified)')
+                                ->get()->first();
+
+                            $unspecified->confirmed += $adjustments['confirmed'];
+                            $unspecified->deaths += $adjustments['deaths'];
+
+                            DB::table('cases')
+                                ->where('state_id',$unspecified->state_id)
+                                ->where('date',$date)
+                                ->update(
+                                    [
+                                        'confirmed' => $unspecified->confirmed,
+                                        'deaths' => $unspecified->deaths,
+                                        'updated_at' => date('Y-m-d H:i:s'),
+                                    ]);
+                        }
 
                         if($case->recovered && isset($input['recovered']) && $case->recovered > $input['recovered'])
                         {
                             unset($input['recovered']);
                             unset($input['recovered_source']);
                         }
+
                         if(count($input)>0)
                         {
                             DB::table('cases')->updateOrInsert(
@@ -5278,6 +5419,26 @@ class StatsController extends Controller
                                     [
                                         'updated_at' => date('Y-m-d H:i:s'),
                                     ]);
+
+                            // If JH is updating yesterday's stats, let's do this for today as well
+                            if($date === $yesterday)
+                            {
+                                DB::table('cases')->updateOrInsert(
+                                    [
+                                        'state_id' => $state->id,
+                                        'date' => $today,
+                                    ],
+                                    $input
+                                );
+
+                                DB::table('cases')
+                                    ->where('state_id',$state->id)
+                                    ->where('date',$today)
+                                    ->update(
+                                        [
+                                            'updated_at' => date('Y-m-d H:i:s'),
+                                        ]);
+                            }
                         }
                     }
                     else
@@ -5297,6 +5458,26 @@ class StatsController extends Controller
                                     'created_at' => date('Y-m-d H:i:s'),
                                     'updated_at' => date('Y-m-d H:i:s'),
                                 ]);
+
+                        // If JH is updating yesterday's stats, let's do this for today as well
+                        if($date === $yesterday)
+                        {
+                            DB::table('cases')->updateOrInsert(
+                                [
+                                    'state_id' => $state->id,
+                                    'date' => $today,
+                                ],
+                                $input
+                            );
+                            DB::table('cases')
+                                ->where('state_id',$state->id)
+                                ->where('date',$today)
+                                ->update(
+                                    [
+                                        'created_at' => date('Y-m-d H:i:s'),
+                                        'updated_at' => date('Y-m-d H:i:s'),
+                                    ]);
+                        }
                     }
                 }
             }
