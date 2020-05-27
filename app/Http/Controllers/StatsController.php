@@ -2536,6 +2536,8 @@ class StatsController extends Controller
                         'confirmed_source' => $row->confirmed_source,
                         'deaths_source' => $row->deaths_source,
                         'recovered_source' => $row->recovered_source,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'created_at' => date('Y-m-d H:i:s'),
                     ]
                 );
             }
@@ -2633,6 +2635,7 @@ class StatsController extends Controller
                                 $update['recovered'] = intval($row['recovered']);
                                 $update['recovered_source'] = 'manual';
                             }
+                            $update['updated_at'] = date('Y-m-d H:i:s');
                         }
 
                         if(count($update)>0)
@@ -5049,9 +5052,17 @@ class StatsController extends Controller
                                         [
                                             'state_id' => $state->id,
                                             'date' => $date,
+                                            'updated_at' => date('Y-m-d H:i:s'),
                                         ],
                                         $input
                                     );
+                                    DB::table('cases')
+                                        ->where('state_id',$state->id)
+                                        ->where('date',$date)
+                                        ->update(
+                                            [
+                                                'updated_at' => date('Y-m-d H:i:s'),
+                                            ]);
                                 }
                             }
                             else
@@ -5063,6 +5074,15 @@ class StatsController extends Controller
                                     ],
                                     $input
                                 );
+
+                                DB::table('cases')
+                                    ->where('state_id',$state->id)
+                                    ->where('date',$date)
+                                    ->update(
+                                        [
+                                            'created_at' => date('Y-m-d H:i:s'),
+                                            'updated_at' => date('Y-m-d H:i:s'),
+                                        ]);
                             }
                         }
                     }
@@ -5250,6 +5270,14 @@ class StatsController extends Controller
                                 ],
                                 $input
                             );
+
+                            DB::table('cases')
+                                ->where('state_id',$state->id)
+                                ->where('date',$date)
+                                ->update(
+                                    [
+                                        'updated_at' => date('Y-m-d H:i:s'),
+                                    ]);
                         }
                     }
                     else
@@ -5261,6 +5289,14 @@ class StatsController extends Controller
                             ],
                             $input
                         );
+                        DB::table('cases')
+                            ->where('state_id',$state->id)
+                            ->where('date',$date)
+                            ->update(
+                                [
+                                    'created_at' => date('Y-m-d H:i:s'),
+                                    'updated_at' => date('Y-m-d H:i:s'),
+                                ]);
                     }
                 }
             }
