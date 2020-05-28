@@ -6,7 +6,7 @@
                 <h2 class="font-bold text-3xl">{{data.name.full}}</h2>
 
                 <div class="flex">
-                    <button @click="favourite = !favourite" class="p-2 border hover:bg-lightlabel hover:border-white hover:text-white rounded focus:outline-none flex items-center" :class="isFavourite ? 'text-gray-800 border-heading bg-heading' : 'text-heading border-lightlabel'">
+                    <button @click="toggleFavourite()" class="p-2 border hover:bg-lightlabel hover:border-white hover:text-white rounded focus:outline-none flex items-center" :class="isFavourite ? 'text-gray-800 border-heading bg-heading' : 'text-heading border-lightlabel'">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 20 20"
@@ -342,6 +342,9 @@
                 favourite: false,
             }
         },
+        mounted()
+        {
+        },
         methods: {
             getDayNotes(date)
             {
@@ -362,6 +365,80 @@
             remove(item){
                 this.$emit('removeCompare',item);
             },
+            toggleFavourite()
+            {
+
+
+                var favourites = [];
+                if(localStorage.favourites)
+                {
+                    favourites = JSON.parse(localStorage.favourites);
+                }
+                else
+                {
+                    localStorage.favourites = [];
+
+                }
+
+                console.log('Updating favourites');
+                if(!this.isFavourite)
+                {
+                    if(!this.findFavourite({country:this.data.name.country,state:this.data.name.state}))
+                    {
+                        this.favourite = true;
+                        favourites.push({country:this.data.name.country,state:this.data.name.state})
+                    }
+                }
+                else
+                {
+                    for(var x in favourites)
+                    {
+                        if(favourites[x])
+                        if(favourites[x].country === this.data.name.country && favourites[x].state === this.data.name.state)
+                        {
+                            favourites.splice(x,1);
+                            this.favourite = false;
+                        }
+                    }
+                }
+
+                localStorage.favourites = JSON.stringify(favourites);
+            },
+            findFavourite(search)
+            {
+                console.log('searching for ' + search.country + ' - ' + search.state)
+                if(search)
+                {
+                    if(search.country)
+                    {
+                        if(localStorage.favourites)
+                        {
+                            var favourites = JSON.parse(localStorage.favourites);
+                            console.log(favourites);
+                            for(var row of favourites)
+                            {
+                                if(row)
+                                if(row.country === search.country)
+                                {
+                                    if(search.state)
+                                    {
+                                        if(row.state === search.state)
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        return true;
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
         },
         computed: {
 
@@ -409,7 +486,17 @@
             },
             isFavourite()
             {
-                return this.favourite;
+                if(!this.favourite)
+                {
+                    var status = this.findFavourite({country:this.data.name.country,state:this.data.name.state})
+                    this.favourite = status;
+                    return status;
+                }
+                return true;
+            },
+            favourites()
+            {
+                return JSON.parse(localStorage.favourites);
             }
         },
     }

@@ -207,6 +207,10 @@
                 this.options.compare_limit = 3;
             }
 
+            // LOCAL STORAGE THINGS
+            this.localStorageReady();
+
+
             axios.get('/api/stats/annotations')
                 .then(res => {
                     this.database.raw.raw_annotations = res.data;
@@ -271,6 +275,18 @@
             }
         },
         methods:{
+            localStorageReady()
+            {
+                if(localStorage.favourites)
+                {
+                    console.log('Favourite countries');
+                    console.log(localStorage.favourites);
+                }
+                else
+                {
+                    console.log('No favourites yet');
+                }
+            },
             log_debug(item)
             {
                 if(item === 'policies')
