@@ -24,6 +24,7 @@ Route::get('/statistics/countries_list_map', 'StatsController@get_all_countries'
 
 
 Route::get('/statistics/harvest_oxford', 'StatsController@harvest_oxford');
+Route::get('/statistics/harvest_australia', 'StatsController@harvest_australia');
 Route::get('/statistics/harvest_annotations', 'StatsController@harvest_annotations');
 Route::get('/statistics/harvest_countries_and_states', 'StatsController@harvest_countries_and_states');
 Route::get('/statistics/harvest_cases_from_jh_timeline_us', 'StatsController@harvest_cases_from_jh_timeline_us');
