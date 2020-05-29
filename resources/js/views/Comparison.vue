@@ -208,8 +208,6 @@
             }
 
             // LOCAL STORAGE THINGS
-            this.localStorageReady();
-
 
             axios.get('/api/stats/annotations')
                 .then(res => {
@@ -277,14 +275,36 @@
         methods:{
             localStorageReady()
             {
+
+                console.log('Favourite countries');
+                console.log(localStorage.favourites);
+
                 if(localStorage.favourites)
                 {
-                    console.log('Favourite countries');
-                    console.log(localStorage.favourites);
+
+
                 }
                 else
                 {
                     console.log('No favourites yet');
+                }
+
+                // console.log('Selected for comparison');
+                // console.log(localStorage.compare);
+
+                if(localStorage.compare && localStorage.compare.length > 0)
+                {
+                    console.log('compare is not blank')
+                    console.log(localStorage.compare);
+                    if(JSON.parse(localStorage.compare))
+                    {
+                        var compare = JSON.parse(localStorage.compare);
+                        // this.compare = compare;
+                        for(var row of compare)
+                        {
+                            this.compare.push(row);
+                        }
+                    }
                 }
             },
             log_debug(item)
@@ -1287,6 +1307,9 @@
                     var self = this;
                     setTimeout(function(){
                         self.ajax_loading.final = true;
+                        setTimeout(function() {
+                            self.localStorageReady();
+                        },100);
                     },100);
                 }
                 else if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success' && this.ajax_loading.oxford && this.ajax_loading.final)

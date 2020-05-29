@@ -1,7 +1,7 @@
 <template>
     <div class="bg-slab absolute inset-x-0 inset-y-0 z-10">
         <div class="absolute inset-y-0 left-0 p-4" style="right: 22rem">
-            <div class="text-6xl font-bold tracking-tighter text-white">
+            <div class="text-6xl font-bold tracking-tighter text-white" @click="show_debug()">
                 COVID-19 Tracker
             </div>
             <div class="text-heading">
@@ -22,6 +22,22 @@
                     <div>&copy;</div>
                     <div class="mx-2"><img src="/img/logo/logo-140.png" class="h-4" alt="Simpler Solutions" /></div>
                     <div>Simpler Solutions</div>
+                </div>
+
+                <div v-if="debug_mode" class="border mt-4 p-4">
+                    <div class="text-2xl font-bold my-4">Localstorage Debug</div>
+                    <div class="border p-2 m-1">
+                        <div class="font-bold">Favourites</div>
+                        <div @click="dump_favourites()">Dump content</div>
+                        <div v-if="favourites">{{favourites}}</div>
+                        <div @click="clear_favourites()">Clear all</div>
+                    </div>
+                    <div class="border p-2 m-1">
+                        <div class="font-bold">Comparison</div>
+                        <div @click="dump_compare()">Dump content</div>
+                        <div v-if="compare">{{compare}}</div>
+                        <div @click="clear_compare()">Clear all</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,10 +101,45 @@
         components:{
             simplebar,
         },
+        data(){
+            return {
+                debug_mode: false,
+                debug_clicks: 0,
+                favourites: false,
+                compare: false,
+            }
+        },
         methods: {
             close()
             {
                 this.$emit('showAbout');
+            },
+            show_debug()
+            {
+                this.debug_clicks++;
+
+                if(this.debug_clicks >= 5)
+                {
+                    this.debug_mode = true;
+                }
+            },
+            dump_favourites()
+            {
+                console.log(localStorage.favourites);
+                this.favourites = localStorage.favourites;
+            },
+            clear_favourites()
+            {
+                localStorage.favourites = '[]';
+            },
+            dump_compare()
+            {
+                console.log(localStorage.compare);
+                this.compare = localStorage.compare;
+            },
+            clear_compare()
+            {
+                localStorage.compare = '[]';
             }
         }
     }

@@ -406,7 +406,6 @@
             },
             findFavourite(search)
             {
-                console.log('searching for ' + search.country + ' - ' + search.state)
                 if(search)
                 {
                     if(search.country)
@@ -414,7 +413,6 @@
                         if(localStorage.favourites)
                         {
                             var favourites = JSON.parse(localStorage.favourites);
-                            console.log(favourites);
                             for(var row of favourites)
                             {
                                 if(row)

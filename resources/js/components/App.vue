@@ -127,6 +127,8 @@
                     data[x] = compare[x];
                 }
                 this.database.processed.compare = data;
+
+                localStorage.compare = JSON.stringify(data);
             },
             saveProcessedData(row,name)
             {

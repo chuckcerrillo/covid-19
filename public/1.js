@@ -59,6 +59,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CountryStateItem",
   props: ['data', 'country_key', 'compare', 'sidebarExpanded', 'settings'],
@@ -95,6 +111,13 @@ __webpack_require__.r(__webpack_exports__);
       return {
         dashboard: this.settings && this.settings.dashboard == true ? this.settings.dashboard : false
       };
+    },
+    favourite: function favourite() {
+      if (this.settings && this.settings.favourite) {
+        return this.settings.favourite;
+      }
+
+      return false;
     }
   }
 });
@@ -114,6 +137,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_CountryStateItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/CountryStateItem */ "./resources/js/components/CountryStateItem.vue");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+function _createForOfIteratorHelper(o) { if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) { var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var it, normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -185,6 +225,39 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.sort_stats.key = key;
       }
+    },
+    findFavourite: function findFavourite(search) {
+      if (search) {
+        if (search.country) {
+          if (localStorage.favourites) {
+            var favourites = JSON.parse(localStorage.favourites);
+
+            var _iterator = _createForOfIteratorHelper(favourites),
+                _step;
+
+            try {
+              for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                var row = _step.value;
+                if (row) if (row.country === search.country) {
+                  if (search.state) {
+                    if (row.state === search.state) {
+                      return true;
+                    }
+                  } else {
+                    return true;
+                  }
+                }
+              }
+            } catch (err) {
+              _iterator.e(err);
+            } finally {
+              _iterator.f();
+            }
+          }
+        }
+      }
+
+      return false;
     }
   }
 });
@@ -212,15 +285,18 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass:
-            "flex hover:bg-lightslab cursor-pointer items-center h-8",
+          staticClass: "flex cursor-pointer items-center",
           class:
             (_vm.config.dashboard ? "justify-center " : "") +
             (_vm.isSelected(_vm.data.name, false)
-              ? "bg-hoverslab "
+              ? _vm.favourite
+                ? "bg-heading border border-heading mt-1 text-gray-800 rounded h-12"
+                : "bg-hoverslab h-8"
+              : _vm.favourite
+              ? "bg-lightlabel hover:bg-heading hover:border-heading border border-lightlabel mt-1 text-gray-800 rounded h-12"
               : _vm.country_key % 2 == 1
-              ? "bg-slab-primary "
-              : "bg-slab-secondary ")
+              ? "bg-slab-primary hover:bg-lightslab h-8"
+              : "bg-slab-secondary hover:bg-lightslab h-8")
         },
         [
           _vm.data.states.length <= 1
@@ -229,7 +305,8 @@ var render = function() {
                 "div",
                 {
                   staticClass:
-                    "w-5 m-0 text-white border border-transparent hover:border-white rounded text-center font-bold",
+                    "w-5 m-0 border border-transparent hover:border-white rounded text-center font-bold",
+                  class: _vm.favourite ? "text-gray-800" : "text-white",
                   on: {
                     click: function($event) {
                       return _vm.toggleExpand()
@@ -598,19 +675,41 @@ var render = function() {
                 staticStyle: { position: "absolute" },
                 attrs: { "data-simplebar-auto-hide": "false" }
               },
-              _vm._l(_vm.countries_sorted, function(data, key, index) {
-                return _c("CountryStateItem", {
-                  key: key,
-                  attrs: {
-                    data: data,
-                    country_key: key,
-                    compare: _vm.compare,
-                    settings: { dashboard: false }
-                  },
-                  on: { selectCountry: _vm.selectCountry }
+              [
+                _vm._l(_vm.countries_sorted, function(data, key, index) {
+                  return _vm.findFavourite({ country: data.name, state: false })
+                    ? _c("CountryStateItem", {
+                        key: key,
+                        attrs: {
+                          data: data,
+                          country_key: key,
+                          compare: _vm.compare,
+                          settings: { dashboard: false, favourite: true }
+                        },
+                        on: { selectCountry: _vm.selectCountry }
+                      })
+                    : _vm._e()
+                }),
+                _vm._v(" "),
+                _vm._l(_vm.countries_sorted, function(data, key, index) {
+                  return !_vm.findFavourite({
+                    country: data.name,
+                    state: false
+                  })
+                    ? _c("CountryStateItem", {
+                        key: key,
+                        attrs: {
+                          data: data,
+                          country_key: key,
+                          compare: _vm.compare,
+                          settings: { dashboard: false }
+                        },
+                        on: { selectCountry: _vm.selectCountry }
+                      })
+                    : _vm._e()
                 })
-              }),
-              1
+              ],
+              2
             )
           ],
           1

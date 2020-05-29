@@ -1,16 +1,32 @@
 <template>
     <div>
         <div
-            class="flex hover:bg-lightslab cursor-pointer items-center h-8"
+            class="flex cursor-pointer items-center"
             :class="
                 (config.dashboard ? 'justify-center ' : '')
                 +
-                (isSelected(data.name,false) ? 'bg-hoverslab ' : ((country_key % 2 == 1) ? 'bg-slab-primary ':'bg-slab-secondary '))
+                (
+                    isSelected(data.name,false) ?
+                        (favourite) ?
+                        'bg-heading border border-heading mt-1 text-gray-800 rounded h-12'
+                        : 'bg-hoverslab h-8'
+                    :
+                    (
+                        (favourite) ?
+                        'bg-lightlabel hover:bg-heading hover:border-heading border border-lightlabel mt-1 text-gray-800 rounded h-12'
+                        :
+                        (country_key % 2 == 1) ?
+                        'bg-slab-primary hover:bg-lightslab h-8'
+                        :
+                        'bg-slab-secondary hover:bg-lightslab h-8'
+                    )
+                )
             "
         >
             <div v-if="data.states.length <= 1" class="w-4 p-2 m-1 ml-0"></div>
             <div v-else
-                 class="w-5 m-0 text-white border border-transparent hover:border-white rounded text-center font-bold"
+                 class="w-5 m-0 border border-transparent hover:border-white rounded text-center font-bold"
+                 :class="favourite? 'text-gray-800' : 'text-white'"
                  @click="toggleExpand()"
             >
                 <div v-if="expanded">-</div>
@@ -60,7 +76,7 @@
         ],
         data(){
             return {
-                'expanded' : false
+                'expanded' : false,
             }
         },
         methods: {
@@ -98,6 +114,14 @@
                 return {
                     dashboard: (this.settings && this.settings.dashboard == true) ? this.settings.dashboard : false,
                 }
+            },
+            favourite()
+            {
+                if(this.settings && this.settings.favourite)
+                {
+                    return this.settings.favourite;
+                }
+                return false;
             }
         }
     }

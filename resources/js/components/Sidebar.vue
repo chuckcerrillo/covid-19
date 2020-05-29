@@ -34,6 +34,17 @@
             <div class="w-full h-full relative">
                 <simplebar data-simplebar-auto-hide="false" class="top-0 right-0 bottom-0 left-0" style="position:absolute">
                     <CountryStateItem
+                        v-if="findFavourite({country:data.name, state:false})"
+                        v-for="(data,key,index) in countries_sorted"
+                        v-on:selectCountry="selectCountry"
+                        :data="data"
+                        :key="key"
+                        :country_key="key"
+                        :compare="compare"
+                        :settings="{dashboard:false,favourite:true}"
+                    />
+                    <CountryStateItem
+                        v-if="!findFavourite({country:data.name, state:false})"
                         v-for="(data,key,index) in countries_sorted"
                         v-on:selectCountry="selectCountry"
                         :data="data"
@@ -87,6 +98,39 @@
                     this.sort_stats.key = key;
                 }
             },
+            findFavourite(search)
+            {
+                if(search)
+                {
+                    if(search.country)
+                    {
+                        if(localStorage.favourites)
+                        {
+                            var favourites = JSON.parse(localStorage.favourites);
+                            for(var row of favourites)
+                            {
+                                if(row)
+                                    if(row.country === search.country)
+                                    {
+                                        if(search.state)
+                                        {
+                                            if(row.state === search.state)
+                                            {
+                                                return true;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            return true;
+                                        }
+                                    }
+
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
         }
     }
 </script>
