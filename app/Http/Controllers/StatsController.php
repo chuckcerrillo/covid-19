@@ -5471,7 +5471,7 @@ class StatsController extends Controller
                             $adjustments['confirmed'] = $case->confirmed - $input['confirmed'];
                         }
 
-                        if($case->deaths && isset($input['deaths']) && $case->deaths > $input['deaths'])
+                        if(!($case->deaths && isset($input['deaths']) && $case->deaths > $input['deaths']))
                         {
                             $adjustments['deaths'] = $case->deaths - $input['deaths'];
                         }
