@@ -291,12 +291,12 @@ var render = function() {
             (_vm.isSelected(_vm.data.name, false)
               ? _vm.favourite
                 ? "bg-heading border border-heading mt-1 text-gray-800 rounded h-12"
-                : "bg-hoverslab h-8"
+                : "bg-heading text-gray-800 h-8 mt-1"
               : _vm.favourite
               ? "bg-lightlabel hover:bg-heading hover:border-heading border border-lightlabel mt-1 text-gray-800 rounded h-12"
               : _vm.country_key % 2 == 1
-              ? "bg-slab-primary hover:bg-lightslab h-8"
-              : "bg-slab-secondary hover:bg-lightslab h-8")
+              ? "bg-slab-primary hover:bg-lightslab h-8 mt-1"
+              : "bg-slab-secondary hover:bg-lightslab h-8 mt-1")
         },
         [
           _vm.data.states.length <= 1
@@ -306,7 +306,10 @@ var render = function() {
                 {
                   staticClass:
                     "w-5 m-0 border border-transparent hover:border-white rounded text-center font-bold",
-                  class: _vm.favourite ? "text-gray-800" : "text-white",
+                  class:
+                    _vm.favourite || _vm.isSelected(_vm.data.name, false)
+                      ? "text-gray-800"
+                      : "text-white",
                   on: {
                     click: function($event) {
                       return _vm.toggleExpand()

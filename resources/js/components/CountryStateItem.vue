@@ -9,16 +9,16 @@
                     isSelected(data.name,false) ?
                         (favourite) ?
                         'bg-heading border border-heading mt-1 text-gray-800 rounded h-12'
-                        : 'bg-hoverslab h-8'
+                        : 'bg-heading text-gray-800 h-8 mt-1'
                     :
                     (
                         (favourite) ?
                         'bg-lightlabel hover:bg-heading hover:border-heading border border-lightlabel mt-1 text-gray-800 rounded h-12'
                         :
                         (country_key % 2 == 1) ?
-                        'bg-slab-primary hover:bg-lightslab h-8'
+                        'bg-slab-primary hover:bg-lightslab h-8 mt-1'
                         :
-                        'bg-slab-secondary hover:bg-lightslab h-8'
+                        'bg-slab-secondary hover:bg-lightslab h-8 mt-1'
                     )
                 )
             "
@@ -26,7 +26,7 @@
             <div v-if="data.states.length <= 1" class="w-4 p-2 m-1 ml-0"></div>
             <div v-else
                  class="w-5 m-0 border border-transparent hover:border-white rounded text-center font-bold"
-                 :class="favourite? 'text-gray-800' : 'text-white'"
+                 :class="favourite || isSelected(data.name,false) ? 'text-gray-800' : 'text-white'"
                  @click="toggleExpand()"
             >
                 <div v-if="expanded">-</div>

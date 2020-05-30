@@ -294,17 +294,19 @@
 
                 if(localStorage.compare && localStorage.compare.length > 0)
                 {
-                    console.log('compare is not blank')
-                    console.log(localStorage.compare);
-                    if(JSON.parse(localStorage.compare))
-                    {
-                        var compare = JSON.parse(localStorage.compare);
-                        // this.compare = compare;
-                        for(var row of compare)
-                        {
-                            this.compare.push(row);
-                        }
-                    }
+                    // console.log('compare is not blank')
+                    // console.log(localStorage.compare);
+                    // if(JSON.parse(localStorage.compare))
+                    // {
+                    //     // this.compare = compare;
+                    //     var compare = JSON.parse(localStorage.compare);
+                    //     console.log(compare);
+                    //     for(var row of compare)
+                    //     {
+                    //         this.compare.push(row);
+                    //     }
+                    //
+                    // }
                 }
             },
             log_debug(item)
@@ -861,6 +863,12 @@
                     {
                         this.updateSelected(this.getLastCompareItem());
                     }
+                    // var data = [];
+                    // for(var row of this.compare)
+                    // {
+                    //     data.push(row);
+                    // }
+                    // localStorage.compare = JSON.stringify(this.compare);
                 }
 
                 this.$emit('updateCompare',this.compare);
@@ -1038,8 +1046,15 @@
                     }
 
                     // this.updateSelected(this.getLastCompareItem());
+
+                    // var data = [];
+                    // for(var row of this.compare)
+                    // {
+                    //     data.push(row);
+                    // }
+                    // localStorage.compare = JSON.stringify(this.compare);
                 }
-                this.$emit('updateCompare',this.compare);
+                this.$emit('updateCompare',_.cloneDeep(this.compare));
             },
             countries_and_stats()
             {
@@ -1178,6 +1193,12 @@
             },
             emitCompare(item)
             {
+                // var data = [];
+                // for(var row of this.compare)
+                // {
+                //     data.push(row);
+                // }
+                // localStorage.compare = JSON.stringify(this.compare);
                 this.$emit('updateCompare',item);
             },
             preProcessData()

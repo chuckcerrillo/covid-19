@@ -128,6 +128,12 @@
                 }
                 this.database.processed.compare = data;
 
+
+                var data = [];
+                for(var row of _.cloneDeep(compare))
+                {
+                    data.push(row);
+                }
                 localStorage.compare = JSON.stringify(data);
             },
             saveProcessedData(row,name)
