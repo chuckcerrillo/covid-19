@@ -2350,17 +2350,17 @@ class StatsController extends Controller
                             $input = [];
                             if(strlen($row['confirmed'])>0 && $total_states->confirmed < $row['confirmed'])
                             {
-                                $input['confirmed'] = intval($row['confirmed']) - $current_states->confirmed;
+                                $input['confirmed'] = intval($row['confirmed']) - intval($current_states->confirmed);
                                 $input['confirmed_source'] = $source;
                             }
                             if(strlen($row['deaths'])>0 && $total_states->deaths < $row['deaths'])
                             {
-                                $input['deaths'] = intval($row['deaths']) - $current_states->deaths;
+                                $input['deaths'] = intval($row['deaths']) - intval($current_states->deaths);
                                 $input['deaths_source'] = $source;
                             }
                             if(strlen($row['recovered'])>0 && intval($row['recovered']) > 0 && $total_states->recovered < $row['recovered'])
                             {
-                                $input['recovered'] = intval($row['recovered']) - $current_states->recovered;
+                                $input['recovered'] = intval($row['recovered']) - intval($current_states->recovered);
                                 $input['recovered_source'] = $source;
                             }
                             DB::table('cases')->updateOrInsert(
