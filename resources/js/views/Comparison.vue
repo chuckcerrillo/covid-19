@@ -336,10 +336,14 @@
                 {
                     for(var x in this.rankings.sorted[sort.key])
                     {
-                        var row = _.cloneDeep(this.assembleDataset({
+                        var countryObject = _.cloneDeep(this.assembleDataset({
                             country: this.rankings.sorted[sort.key][x].country,
                             state: false
                         }));
+
+                        var row = {};
+                        row.name = _.cloneDeep(countryObject.name);
+                        row.total = _.cloneDeep(countryObject.total);
 
                         row.states = [];
                         if(row)
@@ -350,11 +354,16 @@
                                 {
                                     if(country_state_map[row.name.country][y] !== '(Unspecified)')
                                     {
+                                        var stateObject = _.cloneDeep(this.assembleDataset({
+                                            country: row.name.country,
+                                            state: country_state_map[row.name.country][y]
+                                        }));
+                                        var row2 = {};
+                                        row2.name = _.cloneDeep(stateObject.name);
+                                        row2.total = _.cloneDeep(stateObject.total);
+
                                         row.states.push(
-                                            _.cloneDeep(this.assembleDataset({
-                                                country: row.name.country,
-                                                state: country_state_map[row.name.country][y]
-                                            }))
+                                            row2
                                         );
                                     }
                                 }
@@ -413,7 +422,7 @@
                 }
 
 
-                this.draw_next(data,25,50);
+                this.draw_next(data,50,150);
             },
             draw_next(data,first,limit,count)
             {
