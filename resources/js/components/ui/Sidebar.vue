@@ -50,6 +50,7 @@
                     <div v-show="active.indexOf('recoveredDelta') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'recoveredDelta' ? 'bg-hoverslab' : '' " @click="toggleSort('recoveredDelta')">New recovered</div>
                     <div v-show="active.indexOf('confirmedCapita') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'confirmedCapita' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmedCapita')">Confirmed per capita</div>
                     <div v-show="active.indexOf('deathsCapita') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'deathsCapita' ? 'bg-hoverslab' : '' " @click="toggleSort('deathsCapita')">Deaths per capita</div>
+                    <div v-show="active.indexOf('activeCapita') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'activeCapita' ? 'bg-hoverslab' : '' " @click="toggleSort('activeCapita')">Active per capita</div>
                     <div v-show="active.indexOf('recoveredCapita') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'recoveredCapita' ? 'bg-hoverslab' : '' " @click="toggleSort('recoveredCapita')">Recovered per capita</div>
                     <div v-show="active.indexOf('confirmedAverage') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'confirmedAverage' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmedAverage')">Average confirmed</div>
                     <div v-show="active.indexOf('deathsAverage') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'deathsAverage' ? 'bg-hoverslab' : '' " @click="toggleSort('deathsAverage')">Average deaths</div>
@@ -143,6 +144,7 @@
                     'confirmedCapita':'Confirmed per 1M population',
                     'deathsCapita':'Deaths per 1M population',
                     'recoveredCapita':'Recovered per 1M population',
+                    'activeCapita':'Active per 1M population',
                     'confirmedAverage':'Average confirmed cases',
                     'deathsAverage':'Average deaths',
                     'recoveredAverage':'Average recoveries',

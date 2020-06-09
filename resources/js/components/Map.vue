@@ -206,6 +206,7 @@
                     'China',
                     'Australia',
                     'United States',
+                    'China',
                 ]
 
 
@@ -215,7 +216,6 @@
                     field = 'confirmed';
                 }
 
-                console.log(this.database.processed.dataset);
                 if(['confirmed','deaths','recovered'].indexOf(field) !== -1)
                 {
                     if (this.database && this.database.processed)
@@ -245,6 +245,7 @@
 
                             )
                             {
+                                // If we encounter any of the items we want to exclude, skip to the next one
                                 continue;
                             }
                             else

@@ -257,6 +257,7 @@
                         confirmedCapita: [],
                         deathsCapita: [],
                         recoveredCapita: [],
+                        activeCapita: [],
                         confirmedAverage: [],
                         deathsAverage: [],
                         recoveredAverage: [],
@@ -274,6 +275,7 @@
                         confirmedCapita: {},
                         deathsCapita: {},
                         recoveredCapita: {},
+                        activeCapita: {},
                         confirmedAverage: {},
                         deathsAverage: {},
                         recoveredAverage: {},
@@ -318,7 +320,7 @@
             {
 
                 var country_state_map = this.countries_states();
-                var metrics = ['confirmed','deaths','recovered','active','confirmedDelta','deathsDelta','recoveredDelta','confirmedCapita','deathsCapita','recoveredCapita','confirmedAverage','deathsAverage','recoveredAverage','growthFactor'];
+                var metrics = ['confirmed','deaths','recovered','active','confirmedDelta','deathsDelta','recoveredDelta','confirmedCapita','deathsCapita','recoveredCapita','activeCapita','confirmedAverage','deathsAverage','recoveredAverage','growthFactor'];
                 this.sorted_countries_list = [];
 
                 for(var y in metrics)
@@ -362,7 +364,6 @@
             draw_sorted_countries()
             {
                 clearTimeout(this.timeout);
-                console.log('draw sorted countries');
                 var sort = this.sort_stats;
                 this.sorted_countries_list = [];
                 var country_state_map = this.countries_states();
@@ -1385,6 +1386,7 @@
                         this.rankings.sorted.confirmedCapita.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.capita.c))});
                         this.rankings.sorted.deathsCapita.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.capita.d))});
                         this.rankings.sorted.recoveredCapita.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.capita.r))});
+                        this.rankings.sorted.activeCapita.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.capita.a))});
                         this.rankings.sorted.confirmedAverage.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.average.c))});
                         this.rankings.sorted.deathsAverage.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.average.d))});
                         this.rankings.sorted.recoveredAverage.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.average.r))});
@@ -1666,7 +1668,6 @@
                 deep: true,
                 handler()
                 {
-                    console.log('sort order has changed');
                     this.draw_sorted_countries();
                 }
             }

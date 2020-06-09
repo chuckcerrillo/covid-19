@@ -27,8 +27,9 @@ class Cases extends JsonResource
             ],
             'capita' => [
                 'c' => round($this->capita['confirmed'],4),
-                'd' => round($this->capita['deaths']),
-                'r' => round($this->capita['recovered']),
+                'd' => round($this->capita['deaths'],4),
+                'r' => round($this->capita['recovered'],4),
+                'a' => round($this->capita['active'],4),
             ],
             'average' => [
                 'c' => round($this->average['confirmed'],4),

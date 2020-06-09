@@ -5740,7 +5740,7 @@ class StatsController extends Controller
         }
 
         file_put_contents(STATS . 'countries_daily.json',json_encode($data));
-        return response($data)->setStatusCode(Response::HTTP_OK);
+        return response('Done generating country daily data')->setStatusCode(Response::HTTP_OK);
 
     }
 
@@ -5923,6 +5923,7 @@ class StatsController extends Controller
             $result[$index]->capita['confirmed'] = $row->confirmed / ($population > 0 ? $population : 1) * 1000000;
             $result[$index]->capita['deaths'] = $row->deaths / ($population > 0 ? $population : 1) * 1000000;
             $result[$index]->capita['recovered'] = $row->recovered / ($population > 0 ? $population : 1) * 1000000;
+            $result[$index]->capita['active'] = ($row->confirmed - $row->deaths - $row->recovered) / ($population > 0 ? $population : 1) * 1000000;
 
             // 5D average and growth factor
             if(count($five_days_average['confirmed']) > 5)
@@ -5965,7 +5966,6 @@ class StatsController extends Controller
             $yesterday = clone $result[$index];
             $x++;
         }
-
         return new CasesCollection($result);
     }
 

@@ -30,6 +30,7 @@
             <div v-show="fields.indexOf('confirmedCapita') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.capita.c| numeralFormat('0,000.00')}}</div>
             <div v-show="fields.indexOf('deathsCapita') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.capita.d| numeralFormat('0,000.00')}}</div>
             <div v-show="fields.indexOf('recoveredCapita') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.capita.r| numeralFormat('0,000.00')}}</div>
+            <div v-show="fields.indexOf('activeCapita') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.capita.a| numeralFormat('0,000.00')}}</div>
             <div v-show="fields.indexOf('confirmedAverage') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.average.c| numeralFormat('0,000.0')}}</div>
             <div v-show="fields.indexOf('deathsAverage') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.average.d| numeralFormat('0,000.0')}}</div>
             <div v-show="fields.indexOf('recoveredAverage') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.average.r| numeralFormat('0,000.0')}}</div>
@@ -71,6 +72,7 @@
             <div v-show="fields.indexOf('confirmedCapita') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.capita.c| numeralFormat('0,000.00')}}</div>
             <div v-show="fields.indexOf('deathsCapita') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.capita.d| numeralFormat('0,000.00')}}</div>
             <div v-show="fields.indexOf('recoveredCapita') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.capita.r| numeralFormat('0,000.00')}}</div>
+            <div v-show="fields.indexOf('activeCapita') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.capita.a| numeralFormat('0,000.00')}}</div>
             <div v-show="fields.indexOf('confirmedAverage') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.average.c| numeralFormat('0,000.0')}}</div>
             <div v-show="fields.indexOf('deathsAverage') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.average.d| numeralFormat('0,000.0')}}</div>
             <div v-show="fields.indexOf('recoveredAverage') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.average.r| numeralFormat('0,000.0')}}</div>

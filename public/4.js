@@ -96,6 +96,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CountryStateItem",
   props: ['data', 'country_key', 'compare', 'sidebarExpanded', 'settings', 'fields', 'rank'],
@@ -259,6 +261,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -285,6 +288,7 @@ __webpack_require__.r(__webpack_exports__);
         'confirmedCapita': 'Confirmed per 1M population',
         'deathsCapita': 'Deaths per 1M population',
         'recoveredCapita': 'Recovered per 1M population',
+        'activeCapita': 'Active per 1M population',
         'confirmedAverage': 'Average confirmed cases',
         'deathsAverage': 'Average deaths',
         'recoveredAverage': 'Average recoveries',
@@ -631,6 +635,33 @@ var render = function() {
               _vm._v(
                 _vm._s(
                   _vm._f("numeralFormat")(_vm.data.total.capita.r, "0,000.00")
+                )
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.fields.indexOf("activeCapita") >= 0,
+                  expression: "fields.indexOf('activeCapita') >= 0"
+                }
+              ],
+              staticClass: "text-xs pl-2 py-1 w-20",
+              on: {
+                click: function($event) {
+                  return _vm.selectCountry(_vm.data.name.country, false)
+                }
+              }
+            },
+            [
+              _vm._v(
+                _vm._s(
+                  _vm._f("numeralFormat")(_vm.data.total.capita.a, "0,000.00")
                 )
               )
             ]
@@ -1040,6 +1071,36 @@ var render = function() {
                     _vm._v(
                       _vm._s(
                         _vm._f("numeralFormat")(row.total.capita.r, "0,000.00")
+                      )
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("activeCapita") >= 0,
+                        expression: "fields.indexOf('activeCapita') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm._f("numeralFormat")(row.total.capita.a, "0,000.00")
                       )
                     )
                   ]
@@ -1537,6 +1598,29 @@ var render = function() {
                   }
                 },
                 [_vm._v("Deaths per capita")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.active.indexOf("activeCapita") >= 0,
+                      expression: "active.indexOf('activeCapita') >= 0"
+                    }
+                  ],
+                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
+                  class:
+                    _vm.sort_stats.key === "activeCapita" ? "bg-hoverslab" : "",
+                  on: {
+                    click: function($event) {
+                      return _vm.toggleSort("activeCapita")
+                    }
+                  }
+                },
+                [_vm._v("Active per capita")]
               ),
               _vm._v(" "),
               _c(
