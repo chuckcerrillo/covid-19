@@ -313,54 +313,14 @@
                 sorted_countries_source: {},
                 sorted_countries_list: false,
                 timeout: false,
+                excludedCountries: [
+                    'Global',
+                    'Diamond Princess',
+                    'MS Zaandam',
+                ]
             }
         },
         methods:{
-            sort_countries()
-            {
-
-                var country_state_map = this.countries_states();
-                var metrics = ['confirmed','deaths','recovered','active','confirmedDelta','deathsDelta','recoveredDelta','confirmedCapita','deathsCapita','recoveredCapita','activeCapita','confirmedAverage','deathsAverage','recoveredAverage','growthFactor'];
-                this.sorted_countries_list = [];
-
-                for(var y in metrics)
-                {
-                    var data = [];
-                    var sort = metrics[y];
-                    for(var x in this.rankings.sorted[sort])
-                    {
-                        var row = _.cloneDeep(this.assembleDataset({
-                            country: this.rankings.sorted[sort][x].country,
-                            state: false
-                        }));
-
-                        row.states = [];
-                        if(row)
-                        {
-                            if(row.name.country && country_state_map[row.name.country])
-                            {
-                                for(var y in country_state_map[row.name.country])
-                                {
-                                    if(country_state_map[row.name.country][y] !== '(Unspecified)')
-                                    {
-                                        row.states.push(
-                                            _.cloneDeep(this.assembleDataset({
-                                                country: row.name.country,
-                                                state: country_state_map[row.name.country][y]
-                                            }))
-                                        );
-                                    }
-                                }
-                            }
-                            data.push(_.cloneDeep(row));
-                        }
-
-                        this.sorted_countries_list[sort].desc = _.cloneDeep(data);
-                        data.reverse();
-                        this.sorted_countries_list[sort].asc = _.cloneDeep(data);
-                    }
-                }
-            },
             draw_sorted_countries()
             {
                 clearTimeout(this.timeout);
@@ -418,6 +378,41 @@
                         data = _.cloneDeep(this.sorted_countries_source[sort.key].desc);
                     }
                 }
+
+                // Draw excluded countries
+                console.log('draw excluded');
+                console.log(this.excludedCountries);
+                for(var x in this.excludedCountries)
+                {
+                    console.log('looking for ' + this.excludedCountries[x]);
+                    var row = _.cloneDeep(this.assembleDataset({
+                        country: this.excludedCountries[x],
+                        state: false
+                    }));
+
+                    row.states = [];
+                    if(row)
+                    {
+                        if(row.name.country && country_state_map[row.name.country])
+                        {
+                            for(var y in country_state_map[row.name.country])
+                            {
+                                if(country_state_map[row.name.country][y] !== '(Unspecified)')
+                                {
+                                    row.states.push(
+                                        _.cloneDeep(this.assembleDataset({
+                                            country: row.name.country,
+                                            state: country_state_map[row.name.country][y]
+                                        }))
+                                    );
+                                }
+                            }
+                        }
+                        data.push(_.cloneDeep(row));
+                    }
+                }
+
+
                 this.draw_next(data,25,50);
             },
             draw_next(data,first,limit,count)
@@ -1368,13 +1363,15 @@
             {
                 var countries = _.clone(this.countries_and_stats());
                 var countries_states = this.countries_states();
+
+                var excluded = this.excludedCountries;
+
                 for(var x in countries)
                 {
                     var data = this.assembleDataset({country:countries[x].name})
 
-                    // Populate the rankings
-                    // if(countries[x].name !== 'Global' && data)
-                    // {
+                    if(excluded.indexOf(countries[x].name) === -1)
+                    {
                         this.rankings.sorted.country.push({country : _.clone(countries[x].name), value : _.clone(countries[x].name)});
                         this.rankings.sorted.confirmed.push({country : _.clone(countries[x].name), value : _.clone(parseInt(data.total.c))});
                         this.rankings.sorted.deaths.push({country : _.clone(countries[x].name), value : _.clone(parseInt(data.total.d))});
@@ -1391,8 +1388,9 @@
                         this.rankings.sorted.deathsAverage.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.average.d))});
                         this.rankings.sorted.recoveredAverage.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.average.r))});
                         this.rankings.sorted.growthFactor.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.growth.c))});
-                    // }
+                    }
 
+                    // Populate the states within the country
                     if(countries_states && countries_states[countries[x].name] && countries_states[countries[x].name].length > 1)
                     {
                         for(var y in countries_states[countries[x].name])
@@ -1429,7 +1427,7 @@
                     var count = 0;
                     for(var y in this.rankings.sorted[x])
                     {
-                        if(this.rankings.sorted[x][y].country !== 'Global')
+                        if(excluded.indexOf(this.rankings.sorted[x][y].country) === -1)
                         {
                             count++;
                             this.rankings.positions[x][this.rankings.sorted[x][y].country] = count;
@@ -1438,6 +1436,7 @@
                 }
 
                 this.draw_sorted_countries();
+                // this.draw_excluded_countries();
             },
             get_rank(country)
             {
