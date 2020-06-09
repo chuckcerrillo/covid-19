@@ -21,13 +21,24 @@
             </div>
             <div class="overflow-hidden rounded flex flex-col items-start absolute inset-x-0 border-b border-hoverslab" style="top: 3rem; bottom: 6.75rem">
                 <div class="text-xs text-right mx-2 mb-2">Sorting by {{sort_stats.key}} {{sort_stats.order}}</div>
-                <div class="">
+                <div class="w-full">
                     <div class="flex font-bold py-2 text-xs items-center bg-heading-quaternary text-white">
                         <div class="w-4 p-2 m-1 ml-0"></div>
                         <div class="w-28 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'country' ? 'bg-heading-tertiary' : '' " @click="toggleSort('country')">Country</div>
-                        <div class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'confirmed' ? 'bg-heading-tertiary' : '' " @click="toggleSort('confirmed')">Confirmed</div>
-                        <div class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'deaths' ? 'bg-heading-tertiary' : '' " @click="toggleSort('deaths')">Deaths</div>
-                        <div class="w-24 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'recovered' ? 'bg-heading-tertiary' : '' " @click="toggleSort('recovered')">Recovered</div>
+                        <div v-show="active.indexOf('confirmed') >= 0"class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'confirmed' ? 'bg-heading-tertiary' : '' " @click="toggleSort('confirmed')">Confirmed</div>
+                        <div v-show="active.indexOf('deaths') >= 0"class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'deaths' ? 'bg-heading-tertiary' : '' " @click="toggleSort('deaths')">Deaths</div>
+                        <div v-show="active.indexOf('recovered') >= 0"class="w-24 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'recovered' ? 'bg-heading-tertiary' : '' " @click="toggleSort('recovered')">Recovered</div>
+                        <div v-show="active.indexOf('active') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'active' ? 'bg-hoverslab' : '' " @click="toggleSort('active')">Active</div>
+                        <div v-show="active.indexOf('confirmedDelta') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'confirmedDelta' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmedDelta')">New confirmed</div>
+                        <div v-show="active.indexOf('deathsDelta') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'deathsDelta' ? 'bg-hoverslab' : '' " @click="toggleSort('deathsDelta')">New deaths</div>
+                        <div v-show="active.indexOf('recoveredDelta') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'recoveredDelta' ? 'bg-hoverslab' : '' " @click="toggleSort('recoveredDelta')">New recovered</div>
+                        <div v-show="active.indexOf('confirmedCapita') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'confirmedCapita' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmedCapita')">Confirmed per capita</div>
+                        <div v-show="active.indexOf('deathsCapita') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'deathsCapita' ? 'bg-hoverslab' : '' " @click="toggleSort('deathsCapita')">Deaths per capita</div>
+                        <div v-show="active.indexOf('recoveredCapita') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'recoveredCapita' ? 'bg-hoverslab' : '' " @click="toggleSort('recoveredCapita')">Recovered per capita</div>
+                        <div v-show="active.indexOf('confirmedAverage') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'confirmedAverage' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmedAverage')">Average confirmed</div>
+                        <div v-show="active.indexOf('deathsAverage') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'deathsAverage' ? 'bg-hoverslab' : '' " @click="toggleSort('deathsAverage')">Average deaths</div>
+                        <div v-show="active.indexOf('recoveredAverage') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'recoveredAverage' ? 'bg-hoverslab' : '' " @click="toggleSort('recoveredAverage')">Average recovered</div>
+                        <div v-show="active.indexOf('growthFactor') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'growthFactor' ? 'bg-hoverslab' : '' " @click="toggleSort('growthFactor')">Growth factor</div>
                     </div>
                 </div>
                 <div class="w-full absolute inset-x-0 bottom-0" style="top:4.75rem">
@@ -38,7 +49,9 @@
                             :data="data"
                             :key="key"
                             :country_key="key"
+                            :rank="get_rank(data.name.country)"
                             :compare="compare"
+                            :fields="active"
                             :settings="{dashboard:false}"
                         />
                     </simplebar>
@@ -92,6 +105,27 @@
         data(){
             return {
                 showSelector: false,
+                metrics: {
+                    'confirmed':'Confirmed cases',
+                    'deaths':'Deaths',
+                    'recovered':'Recovered',
+                    'active':'Active cases',
+                    'confirmedDelta':'New confirmed cases',
+                    'deathsDelta':'New deaths',
+                    'recoveredDelta':'New recoveries',
+                    'confirmedCapita':'Confirmed per 1M population',
+                    'deathsCapita':'Deaths per 1M population',
+                    'recoveredCapita':'Recovered per 1M population',
+                    'confirmedAverage':'Average confirmed cases',
+                    'deathsAverage':'Average deaths',
+                    'recoveredAverage':'Average recoveries',
+                    'growthFactor':'Growth Factor',
+                },
+                active: [
+                    'confirmed',
+                    'deaths',
+                    'recovered',
+                ]
             }
         },
         methods:
@@ -123,6 +157,17 @@
                     count++;
                 }
                 return count;
+            },
+            get_rank(country)
+            {
+                if(country)
+                {
+                    if(this.rankings && this.rankings.positions[this.sort_stats.key])
+                    {
+                        return this.rankings.positions[this.sort_stats.key][country];
+                    }
+                }
+                return false;
             }
         }
     }

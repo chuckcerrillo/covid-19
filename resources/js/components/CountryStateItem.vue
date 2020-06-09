@@ -43,7 +43,7 @@
 <!--            <div v-if="config.dashboard" @click="selectCountry(data['name'],false)" class="text-xs pl-2 py-1 w-20">{{data.total.recoveredpc|numeralFormat('0,000.00')}}</div>-->
 <!--            <div v-if="config.dashboard" @click="selectCountry(data['name'],false)" class="text-xs pl-2 py-1 w-20">{{data.total.stringencyindex}}</div>-->
         </div>
-        <div v-for="(row,key,index) in data.states" class="pb-1 hover:bg-lightslab cursor-pointer flex items-center text-xs" v-show="expanded"
+        <div v-if="row.total && row.total.delta" v-for="(row,key,index) in data.states" class="pb-1 hover:bg-lightslab cursor-pointer flex items-center text-xs" v-show="expanded"
              :key="key"
             :class="
             (config.dashboard ? 'justify-center ' : '')
@@ -51,13 +51,35 @@
             (isSelected(data.name.country,row.name.state) ? 'bg-hoverslab' : 'bg-darkslab')
             "
         >
+            <div class="w-10 p-2 m-1 ml-0">
+                <div class="px-1 text-xs"></div>
+            </div>
             <div class="w-4 p-2 m-1 ml-0"></div>
             <div @click="selectCountry(data.name.country,row.name.state)" class="w-32 px-2">
                 <div>{{row.name.state}}</div>
             </div>
-            <div @click="selectCountry(data.name.country,row.name.state)" class="w-20 pl-2">{{(row.total && row.total.c ? row.total.c : 0) | numeralFormat}}</div>
-            <div @click="selectCountry(data.name.country,row.name.state)" class="w-20 pl-2">{{(row.total && row.total.d ? row.total.d :0)| numeralFormat}}</div>
-            <div @click="selectCountry(data.name.country,row.name.state)" class="w-20 pl-2">{{(row.total && row.total.r ? row.total.r :0)| numeralFormat}}</div>
+
+
+            <div v-show="fields.indexOf('confirmed') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.c| numeralFormat}}</div>
+            <div v-show="fields.indexOf('deaths') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.d| numeralFormat}}</div>
+            <div v-show="fields.indexOf('recovered') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.r| numeralFormat}}</div>
+            <div v-show="fields.indexOf('active') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.a| numeralFormat}}</div>
+
+            <div v-show="fields.indexOf('confirmedDelta') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.delta.c| numeralFormat}}</div>
+            <div v-show="fields.indexOf('deathsDelta') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.delta.d| numeralFormat}}</div>
+            <div v-show="fields.indexOf('recoveredDelta') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.delta.r| numeralFormat}}</div>
+            <div v-show="fields.indexOf('confirmedCapita') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.capita.c| numeralFormat('0,000.00')}}</div>
+            <div v-show="fields.indexOf('deathsCapita') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.capita.d| numeralFormat('0,000.00')}}</div>
+            <div v-show="fields.indexOf('recoveredCapita') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.capita.r| numeralFormat('0,000.00')}}</div>
+            <div v-show="fields.indexOf('confirmedAverage') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.average.c| numeralFormat('0,000.0')}}</div>
+            <div v-show="fields.indexOf('deathsAverage') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.average.d| numeralFormat('0,000.0')}}</div>
+            <div v-show="fields.indexOf('recoveredAverage') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.average.r| numeralFormat('0,000.0')}}</div>
+            <div v-show="fields.indexOf('growthFactor') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.growth.c| numeralFormat('0.00')}}</div>
+
+
+<!--            <div @click="selectCountry(data.name.country,row.name.state)" class="w-20 pl-2">{{(row.total && row.total.c ? row.total.c : 0) | numeralFormat}}</div>-->
+<!--            <div @click="selectCountry(data.name.country,row.name.state)" class="w-20 pl-2">{{(row.total && row.total.d ? row.total.d :0)| numeralFormat}}</div>-->
+<!--            <div @click="selectCountry(data.name.country,row.name.state)" class="w-20 pl-2">{{(row.total && row.total.r ? row.total.r :0)| numeralFormat}}</div>-->
             <div v-if="config.dashboard" class="w-120"></div>
         </div>
     </div>

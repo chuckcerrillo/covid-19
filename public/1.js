@@ -74,6 +74,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CountryStateItem",
   props: ['data', 'country_key', 'compare', 'sidebarExpanded', 'settings', 'fields', 'rank'],
@@ -723,128 +745,447 @@ var render = function() {
       ),
       _vm._v(" "),
       _vm._l(_vm.data.states, function(row, key, index) {
-        return _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.expanded,
-                expression: "expanded"
-              }
-            ],
-            key: key,
-            staticClass:
-              "pb-1 hover:bg-lightslab cursor-pointer flex items-center text-xs",
-            class:
-              (_vm.config.dashboard ? "justify-center " : "") +
-              (_vm.isSelected(_vm.data.name.country, row.name.state)
-                ? "bg-hoverslab"
-                : "bg-darkslab")
-          },
-          [
-            _c("div", { staticClass: "w-4 p-2 m-1 ml-0" }),
-            _vm._v(" "),
-            _c(
+        return row.total && row.total.delta
+          ? _c(
               "div",
               {
-                staticClass: "w-32 px-2",
-                on: {
-                  click: function($event) {
-                    return _vm.selectCountry(
-                      _vm.data.name.country,
-                      row.name.state
-                    )
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.expanded,
+                    expression: "expanded"
                   }
-                }
-              },
-              [_c("div", [_vm._v(_vm._s(row.name.state))])]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "w-20 pl-2",
-                on: {
-                  click: function($event) {
-                    return _vm.selectCountry(
-                      _vm.data.name.country,
-                      row.name.state
-                    )
-                  }
-                }
+                ],
+                key: key,
+                staticClass:
+                  "pb-1 hover:bg-lightslab cursor-pointer flex items-center text-xs",
+                class:
+                  (_vm.config.dashboard ? "justify-center " : "") +
+                  (_vm.isSelected(_vm.data.name.country, row.name.state)
+                    ? "bg-hoverslab"
+                    : "bg-darkslab")
               },
               [
-                _vm._v(
-                  _vm._s(
-                    _vm._f("numeralFormat")(
-                      row.total && row.total.c ? row.total.c : 0
+                _vm._m(0, true),
+                _vm._v(" "),
+                _c("div", { staticClass: "w-4 p-2 m-1 ml-0" }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "w-32 px-2",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          _vm.data.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [_c("div", [_vm._v(_vm._s(row.name.state))])]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("confirmed") >= 0,
+                        expression: "fields.indexOf('confirmed') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row.total.c)))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("deaths") >= 0,
+                        expression: "fields.indexOf('deaths') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row.total.d)))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("recovered") >= 0,
+                        expression: "fields.indexOf('recovered') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row.total.r)))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("active") >= 0,
+                        expression: "fields.indexOf('active') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row.total.a)))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("confirmedDelta") >= 0,
+                        expression: "fields.indexOf('confirmedDelta') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row.total.delta.c)))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("deathsDelta") >= 0,
+                        expression: "fields.indexOf('deathsDelta') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row.total.delta.d)))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("recoveredDelta") >= 0,
+                        expression: "fields.indexOf('recoveredDelta') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row.total.delta.r)))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("confirmedCapita") >= 0,
+                        expression: "fields.indexOf('confirmedCapita') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm._f("numeralFormat")(row.total.capita.c, "0,000.00")
+                      )
                     )
-                  )
-                )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("deathsCapita") >= 0,
+                        expression: "fields.indexOf('deathsCapita') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm._f("numeralFormat")(row.total.capita.d, "0,000.00")
+                      )
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("recoveredCapita") >= 0,
+                        expression: "fields.indexOf('recoveredCapita') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm._f("numeralFormat")(row.total.capita.r, "0,000.00")
+                      )
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("confirmedAverage") >= 0,
+                        expression: "fields.indexOf('confirmedAverage') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm._f("numeralFormat")(row.total.average.c, "0,000.0")
+                      )
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("deathsAverage") >= 0,
+                        expression: "fields.indexOf('deathsAverage') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm._f("numeralFormat")(row.total.average.d, "0,000.0")
+                      )
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("recoveredAverage") >= 0,
+                        expression: "fields.indexOf('recoveredAverage') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm._f("numeralFormat")(row.total.average.r, "0,000.0")
+                      )
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.fields.indexOf("growthFactor") >= 0,
+                        expression: "fields.indexOf('growthFactor') >= 0"
+                      }
+                    ],
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          row.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm._f("numeralFormat")(row.total.growth.c, "0.00")
+                      )
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _vm.config.dashboard
+                  ? _c("div", { staticClass: "w-120" })
+                  : _vm._e()
               ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "w-20 pl-2",
-                on: {
-                  click: function($event) {
-                    return _vm.selectCountry(
-                      _vm.data.name.country,
-                      row.name.state
-                    )
-                  }
-                }
-              },
-              [
-                _vm._v(
-                  _vm._s(
-                    _vm._f("numeralFormat")(
-                      row.total && row.total.d ? row.total.d : 0
-                    )
-                  )
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "w-20 pl-2",
-                on: {
-                  click: function($event) {
-                    return _vm.selectCountry(
-                      _vm.data.name.country,
-                      row.name.state
-                    )
-                  }
-                }
-              },
-              [
-                _vm._v(
-                  _vm._s(
-                    _vm._f("numeralFormat")(
-                      row.total && row.total.r ? row.total.r : 0
-                    )
-                  )
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _vm.config.dashboard
-              ? _c("div", { staticClass: "w-120" })
-              : _vm._e()
-          ]
-        )
+            )
+          : _vm._e()
       })
     ],
     2
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-10 p-2 m-1 ml-0" }, [
+      _c("div", { staticClass: "px-1 text-xs" })
+    ])
+  }
+]
 render._withStripped = true
 
 
