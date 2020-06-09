@@ -224,7 +224,7 @@
 </template>
 
 <script>
-    import LineChart from "./charts/LineChartMobile";
+    import LineChart from "./LineChartMobile";
     import simplebar from 'simplebar-vue';
     import 'simplebar/dist/simplebar.min.css';
     import moment from 'moment';

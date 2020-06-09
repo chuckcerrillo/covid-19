@@ -193,12 +193,29 @@
                     features: [
                     ]
                 };
+                var allowedCountryStates = [
+                    'United States',
+                    'Denmark',
+                    'Australia',
+                    'Canada',
+                    'China',
+                ]
+
+                var omitCountries = [
+                    'Denmark',
+                    'China',
+                    'Australia',
+                    'United States',
+                ]
+
+
+
                 if(!field)
                 {
                     field = 'confirmed';
                 }
 
-
+                console.log(this.database.processed.dataset);
                 if(['confirmed','deaths','recovered'].indexOf(field) !== -1)
                 {
                     if (this.database && this.database.processed)
@@ -206,7 +223,31 @@
                         for(var x in this.database.processed.dataset)
                         {
                             var row = this.database.processed.dataset[x];
-                            if(x !== 'Global')
+                            if(
+                                // exclude global
+                                row.name.country === 'Global'
+
+                                ||
+                                // exclude countries from this list
+                                (
+                                    omitCountries.indexOf(row.name.country) !== -1
+                                    && row.name.state.length === 0
+                                )
+
+                                ||
+                                // exclude states from countries not in this list
+                                (
+                                    row.name.state.length > 0
+                                    && allowedCountryStates.indexOf(row.name.country) === -1
+                                )
+
+
+
+                            )
+                            {
+                                continue;
+                            }
+                            else
                             {
                                 for(var y in row.daily)
                                 {
@@ -242,7 +283,7 @@
                         for(var x in this.data)
                         {
                             var row = this.data[x];
-                            if(row.name !== 'Global')
+                            if(row.name.country !== 'Global' && (row.name.state === false || row.name.state.length === 0))
                             {
                                 data.features.push({
                                     type: 'Feature',

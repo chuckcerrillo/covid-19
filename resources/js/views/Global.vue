@@ -287,8 +287,8 @@
     import 'simplebar/dist/simplebar.min.css';
     import moment from 'moment'
     import LineChart from "../components/charts/LineChart";
-    import ComparisonChart from "../components/ComparisonChart";
-    import StatsChart from "../components/StatsChart";
+    import ComparisonChart from "../components/charts/ComparisonChart";
+    import StatsChart from "../components/charts/StatsChart";
     import Map from '../components/Map';
 
     export default {

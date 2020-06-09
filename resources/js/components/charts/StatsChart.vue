@@ -232,7 +232,7 @@
 </template>
 
 <script>
-    import LineChart from "./charts/LineChart";
+    import LineChart from "./LineChart";
     import VueSlider from 'vue-slider-component'
     import simplebar from 'simplebar-vue';
     import 'simplebar/dist/simplebar.min.css';

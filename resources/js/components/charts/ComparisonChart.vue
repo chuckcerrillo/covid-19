@@ -12,10 +12,10 @@
 </template>
 
 <script>
-    import LineChart from "./charts/LineChart";
+    import LineChart from "./LineChart";
     import simplebar from 'simplebar-vue';
     import 'simplebar/dist/simplebar.min.css';
-    import Daily from "./Daily";
+    import Daily from "../daily/Daily";
     import moment from 'moment';
     export default {
         name: "Comparison",

@@ -31,8 +31,8 @@
 </template>
 
 <script>
-    import Daily from "../components/Daily";
-    import Latest from "../components/CompareDaily";
+    import Daily from "../components/daily/Daily";
+    import Latest from "../components/daily/CompareDaily";
     export default {
         name: "DailyView",
         props: [

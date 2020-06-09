@@ -14,7 +14,7 @@
 
 
     const LineChart = () => ({
-        component: import("./charts/LineChart"),
+        component: import("../charts/LineChart"),
 
     });
 

@@ -300,7 +300,7 @@
 <script>
     import moment from 'moment'
     import simplebar from 'simplebar-vue';
-    import FullCountry from "./FullCountry";
+    import FullCountry from "../FullCountry";
     import VueSlider from 'vue-slider-component'
     import 'vue-slider-component/theme/default.css'
 

@@ -173,7 +173,7 @@
     import 'simplebar/dist/simplebar.min.css';
     import moment from 'moment'
     import {mapGetters} from 'vuex';
-    import SidebarMobile from "../components/SidebarMobile";
+    import SidebarMobile from "../components/ui/SidebarMobile";
     import DailyView from "./DailyView";
     import MapView from "./MapView";
     import MapViewMobile from "./MapViewMobile";
@@ -189,10 +189,10 @@
             MapView,
             MapViewMobile,
             PoliciesView: () => import('./PoliciesView'),
-            Sidebar: () => import('../components/Sidebar'),
+            Sidebar: () => import('../components/ui/Sidebar'),
             SidebarMobile,
-            StatsChart: () => import('../components/StatsChart'),
-            StatsChartMobile: () => import('../components/StatsChartMobile'),
+            StatsChart: () => import('../components/charts/StatsChart'),
+            StatsChartMobile: () => import('../components/charts/StatsChartMobile'),
             About: () => import('./About'),
             simplebar,
         },

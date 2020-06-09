@@ -108,7 +108,7 @@
 
 <script>
     import simplebar from 'simplebar-vue';
-    import CountryStateItem from "../components/CountryStateItem";
+    import CountryStateItem from "./CountryStateItem";
     import moment from 'moment'
     export default {
         name: "Sidebar",

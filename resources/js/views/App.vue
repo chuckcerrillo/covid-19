@@ -41,9 +41,9 @@
 </template>
 
 <script>
-    import Nav from './Nav';
-    import MobileNav from "./MobileNav";
-    import About from "../views/About";
+    import Nav from '../components/ui/Nav';
+    import MobileNav from "../components/ui/MobileNav";
+    import About from "./About";
     import {mapGetters} from 'vuex';
     export default {
         name: "App",

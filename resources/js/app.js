@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import router from './router';
-import App from './components/App';
+import App from './views/App';
 import VueNumerals from 'vue-numerals';
 import store from './store';
 import VCalendar from 'v-calendar';

@@ -311,7 +311,7 @@
 <script>
     import moment from 'moment'
     import simplebar from 'simplebar-vue';
-    import FullCountry from "./FullCountry";
+    import FullCountry from "../FullCountry";
 
     export default {
         name: "Daily",
