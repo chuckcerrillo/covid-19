@@ -427,10 +427,14 @@
                 var list = _.clone(this.ajax.countries_list_map);
                 for(var x in list)
                 {
-                    var row = list[x];
-
+                    var row = _.cloneDeep(list[x]);
+                    row.name = {
+                        country: _.clone(row.name),
+                        state: false,
+                    }
+                    data.push(_.cloneDeep(row));
                 }
-                return _.clone(this.ajax.countries_list_map);
+                return data;
             }
         }
     }

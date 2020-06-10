@@ -108,6 +108,7 @@
                                     :comparisonData="getComparisonData()"
                                     :view="view"
                                     :compare="compare"
+                                    :rankings="rankings"
                                     v-on:updateCompare="emitCompare"
                                     v-on:updateSelected="updateSelected"
                                 />

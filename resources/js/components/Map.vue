@@ -146,7 +146,7 @@
             this.map = map;
             map.setZoom(this.options.zoom);
 
-            map.setCenter([6.679687499992383, 34.597041516152586]);
+
 
 
             if(this.settings)
@@ -178,9 +178,14 @@
             map.on('load',function(){
                 self.mapReady = true;
                 self.setLayers(self.layers);
+                console.log(self.location);
                 if(self.location)
                 {
-                    map.setCenter([self.location.longitude, self.location.latitude]);
+                    self.map.setCenter([self.location.lng, self.location.lat]);
+                }
+                else
+                {
+                    self.map.setCenter([6.679687499992383, 34.597041516152586]);
                 }
             })
         },
@@ -231,13 +236,14 @@
                                 // exclude countries from this list
                                 (
                                     omitCountries.indexOf(row.name.country) !== -1
+                                    && row.name.state
                                     && row.name.state.length === 0
                                 )
 
                                 ||
                                 // exclude states from countries not in this list
                                 (
-                                    row.name.state.length > 0
+                                    row.name.state && row.name.state.length > 0
                                     && allowedCountryStates.indexOf(row.name.country) === -1
                                 )
 
@@ -757,8 +763,8 @@
             location: {
                 immediate: true,
                 deep: true,
-                handler(newvalue, oldvalue) {
-                    this.map.setCenter([newvalue.longitude, newvalue.latitude]);
+                handler(newvalue) {
+                    this.map.setCenter([newvalue.lng, newvalue.lat]);
                 }
             },
         }

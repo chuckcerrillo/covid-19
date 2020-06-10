@@ -10,6 +10,7 @@
                     <Latest v-if="getCompareLength() > 0 && (!isMobile || (isMobile && selectedCompareTab === 'all'))"
                             :data="comparisonData"
                             :active="view === 'daily' && selectedCompareTab === 'all'"
+                            :rankings="rankings"
                     />
                 </keep-alive>
             </div>
@@ -42,6 +43,7 @@
             'comparisonData',
             'compare',
             'view',
+            'rankings',
         ],
         components: {
             Daily,

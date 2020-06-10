@@ -87,80 +87,116 @@
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">Confirmed cases</div>
-                                        <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('confirmed',row.latest.c) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-16 border-b border-lightslab relative" :class="getBiggestValue('confirmed',row.latest.c) ? 'bg-darkslab':''">
                                             {{ isNaN(row.latest.c) ? 0 : row.latest.c | numeralFormat}}<br />
                                             <span class="text-xs text-red-400" v-if="row.latest.percent.c > 0">(+{{row.latest.percent.c| numeralFormat('0.0%')}})</span>
                                             <span class="text-xs text-green-400" v-else>({{row.latest.percent.c | numeralFormat('0.0%')}})</span>
+                                            <div class="absolute inset-y-0 right-0" v-if="get_rank('confirmed',row.name.country) && get_rank('confirmed',row.name.country) <= 10">
+                                                <div class="inline-block rounded bg-white text-baseslab px-1 m-2 text-xs font-bold">{{get_rank('confirmed',row.name.country)}}</div>
+                                            </div>
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">Deaths</div>
-                                        <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('deaths',row.latest.d) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-16 border-b border-lightslab relative" :class="getBiggestValue('deaths',row.latest.d) ? 'bg-darkslab':''">
                                             {{ isNaN(row.latest.d) ? 0 : row.latest.d | numeralFormat}}<br />
                                             <span class="text-xs text-red-400" v-if="row.latest.percent.d > 0">(+{{row.latest.percent.d| numeralFormat('0.0%')}})</span>
                                             <span class="text-xs text-green-400" v-else>({{row.latest.percent.d | numeralFormat('0.0%')}})</span>
+                                            <div class="absolute inset-y-0 right-0" v-if="get_rank('deaths',row.name.country) && get_rank('deaths',row.name.country) <= 10">
+                                                <div class="inline-block rounded bg-white text-baseslab px-1 m-2 text-xs font-bold">{{get_rank('deaths',row.name.country)}}</div>
+                                            </div>
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">Recovered</div>
-                                        <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('recovered',row.latest.r) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-16 border-b border-lightslab relative" :class="getBiggestValue('recovered',row.latest.r) ? 'bg-darkslab':''">
                                             {{ isNaN(row.latest.r) ? 0 : row.latest.r | numeralFormat}}<br />
                                             <span class="text-xs text-green-400" v-if="row.latest.percent.r > 0">(+{{row.latest.percent.r | numeralFormat('0.0%')}})</span>
                                             <span class="text-xs text-green-400" v-else-if="row.latest.percent.r == 0">({{row.latest.percent.r | numeralFormat('0.0%')}})</span>
                                             <span class="text-xs text-red-400" v-else>({{row.latest.percent.r | numeralFormat('0.0%')}})</span>
+                                            <div class="absolute inset-y-0 right-0" v-if="get_rank('recovered',row.name.country) && get_rank('recovered',row.name.country) <= 10">
+                                                <div class="inline-block rounded bg-white text-baseslab px-1 m-2 text-xs font-bold">{{get_rank('recovered',row.name.country)}}</div>
+                                            </div>
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">Active</div>
-                                        <div class="px-4 py-2 h-24 border-b border-lightslab" :class="getBiggestValue('active',row.latest.a) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-24 border-b border-lightslab relative" :class="getBiggestValue('active',row.latest.a) ? 'bg-darkslab':''">
                                             {{ (isNaN(row.latest.a) ? 0 : row.latest.a) | numeralFormat}}<br />
                                             <span class="text-xs text-green-400" v-if="row.latest.delta.a < 0">({{row.latest.delta.a| numeralFormat}})</span>
                                             <span class="text-xs text-green-400" v-else-if="row.latest.delta.a == 0">({{row.latest.delta.a| numeralFormat}})</span>
                                             <span class="text-xs text-red-400" v-else>(+{{row.latest.delta.a| numeralFormat}})</span><br />
                                             <span class="text-xs text-blue-400">{{row.latest.a / row.latest.population | numeralFormat('0.000%')}} of total population</span>
+                                            <div class="absolute inset-y-0 right-0" v-if="get_rank('active',row.name.country) && get_rank('active',row.name.country) <= 10">
+                                                <div class="inline-block rounded bg-white text-baseslab px-1 m-2 text-xs font-bold">{{get_rank('active',row.name.country)}}</div>
+                                            </div>
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">New cases</div>
-                                        <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('confirmedDelta',row.latest.delta.c) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-12 border-b border-lightslab relative" :class="getBiggestValue('confirmedDelta',row.latest.delta.c) ? 'bg-darkslab':''">
                                             {{row.latest.delta.c| numeralFormat}}
+                                            <div class="absolute inset-y-0 right-0" v-if="get_rank('confirmedDelta',row.name.country) && get_rank('confirmedDelta',row.name.country) <= 10">
+                                                <div class="inline-block rounded bg-white text-baseslab px-1 m-2 text-xs font-bold">{{get_rank('confirmedDelta',row.name.country)}}</div>
+                                            </div>
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">New deaths</div>
-                                        <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('deathsDelta',row.latest.delta.d) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-12 border-b border-lightslab relative" :class="getBiggestValue('deathsDelta',row.latest.delta.d) ? 'bg-darkslab':''">
                                             {{row.latest.delta.d| numeralFormat}}
+                                            <div class="absolute inset-y-0 right-0" v-if="get_rank('deathsDelta',row.name.country) && get_rank('deathsDelta',row.name.country) <= 10">
+                                                <div class="inline-block rounded bg-white text-baseslab px-1 m-2 text-xs font-bold">{{get_rank('deathsDelta',row.name.country)}}</div>
+                                            </div>
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">New recovered</div>
-                                        <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('recoveredDelta',row.latest.delta.r) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-12 border-b border-lightslab relative" :class="getBiggestValue('recoveredDelta',row.latest.delta.r) ? 'bg-darkslab':''">
                                             {{row.latest.delta.r| numeralFormat}}
+                                            <div class="absolute inset-y-0 right-0" v-if="get_rank('recoveredDelta',row.name.country) && get_rank('recoveredDelta',row.name.country) <= 10">
+                                                <div class="inline-block rounded bg-white text-baseslab px-1 m-2 text-xs font-bold">{{get_rank('recoveredDelta',row.name.country)}}</div>
+                                            </div>
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">Population</div>
-                                        <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('population',row.population) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-12 border-b border-lightslab relative" :class="getBiggestValue('population',row.population) ? 'bg-darkslab':''">
                                             {{row.population | numeralFormat('0,000')}}
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">Confirmed per 1M pop</div>
-                                        <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('confirmedCapita',row.latest.capita.c) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-16 border-b border-lightslab relative" :class="getBiggestValue('confirmedCapita',row.latest.capita.c) ? 'bg-darkslab':''">
                                             {{row.latest.capita.c | numeralFormat('0,000.00')}}
+                                            <div class="absolute inset-y-0 right-0" v-if="get_rank('confirmedCapita',row.name.country) && get_rank('confirmedCapita',row.name.country) <= 10">
+                                                <div class="inline-block rounded bg-white text-baseslab px-1 m-2 text-xs font-bold">{{get_rank('confirmedCapita',row.name.country)}}</div>
+                                            </div>
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">Deaths per 1M pop</div>
-                                        <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('deathsCapita',row.latest.capita.d) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-16 border-b border-lightslab relative" :class="getBiggestValue('deathsCapita',row.latest.capita.d) ? 'bg-darkslab':''">
                                             {{row.latest.capita.d | numeralFormat('0,000.00')}}
+                                            <div class="absolute inset-y-0 right-0" v-if="get_rank('deathsCapita',row.name.country) && get_rank('deathsCapita',row.name.country) <= 10">
+                                                <div class="inline-block rounded bg-white text-baseslab px-1 m-2 text-xs font-bold">{{get_rank('deathsCapita',row.name.country)}}</div>
+                                            </div>
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">Recovered per 1M pop</div>
-                                        <div class="px-4 py-2 h-16 border-b border-lightslab" :class="getBiggestValue('recoveredCapita',row.latest.capita.r) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-16 border-b border-lightslab relative" :class="getBiggestValue('recoveredCapita',row.latest.capita.r) ? 'bg-darkslab':''">
                                             {{row.latest.capita.r | numeralFormat('0,000.00')}}
+                                            <div class="absolute inset-y-0 right-0" v-if="get_rank('recoveredCapita',row.name.country) && get_rank('recoveredCapita',row.name.country) <= 10">
+                                                <div class="inline-block rounded bg-white text-baseslab px-1 m-2 text-xs font-bold">{{get_rank('recoveredCapita',row.name.country)}}</div>
+                                            </div>
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">5 days average</div>
-                                        <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('confirmedAverage',row.latest.average.c) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-12 border-b border-lightslab relative" :class="getBiggestValue('confirmedAverage',row.latest.average.c) ? 'bg-darkslab':''">
                                             {{row.latest.average.c | numeralFormat('0,000.0')}}
+                                            <div class="absolute inset-y-0 right-0" v-if="get_rank('confirmedAverage',row.name.country) && get_rank('confirmedAverage',row.name.country) <= 10">
+                                                <div class="inline-block rounded bg-white text-baseslab px-1 m-2 text-xs font-bold">{{get_rank('confirmedAverage',row.name.country)}}</div>
+                                            </div>
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">Growth factor</div>
-                                        <div class="px-4 py-2 h-12 border-b border-lightslab" :class="getBiggestValue('confirmedGrowth',row.latest.growth.c) ? 'bg-darkslab':''">
+                                        <div class="px-4 py-2 h-12 border-b border-lightslab relative" :class="getBiggestValue('confirmedGrowth',row.latest.growth.c) ? 'bg-darkslab':''">
                                             <span class="text-red-400" v-if="row.latest.growth.c > 1">{{row.latest.growth.c | numeralFormat('0.00')}}</span>
                                             <span class="text-green-400" v-else>{{row.latest.growth.c | numeralFormat('0.00')}}</span>
+                                            <div class="absolute inset-y-0 right-0" v-if="get_rank('confirmedGrowth',row.name.country) && get_rank('confirmedGrowth',row.name.country) <= 10">
+                                                <div class="inline-block rounded bg-white text-baseslab px-1 m-2 text-xs font-bold">{{get_rank('confirmedGrowth',row.name.country)}}</div>
+                                            </div>
                                         </div>
 
                                         <div class="p-2 xl:hidden font-bold text-lightlabel">Stringency index</div>
@@ -210,7 +246,8 @@
         props: [
             'data',
             'settings',
-            'active'
+            'active',
+            'rankings'
         ],
         data(){
             return {
@@ -368,6 +405,14 @@
                 }
                 return data;
             },
+            get_rank(metric,country)
+            {
+                if(this.rankings && this.rankings.positions && this.rankings.positions[metric] && this.rankings.positions[metric][country])
+                {
+                    return this.rankings.positions[metric][country];
+                }
+                return false;
+            }
         },
         computed: {
             dateRange:
