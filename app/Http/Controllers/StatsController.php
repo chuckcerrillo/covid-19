@@ -719,6 +719,7 @@ class StatsController extends Controller
         $this->generate_daily_ranking();
         $this->generate_all_countries();
         $this->generate_all_daily();
+        $this->generate_sidebar_list();
         return response('Done updating JSON files')->setStatusCode(Response::HTTP_OK);
     }
 
