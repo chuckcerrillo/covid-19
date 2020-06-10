@@ -346,6 +346,9 @@
                         row.name = _.cloneDeep(countryObject.name);
                         row.total = _.cloneDeep(countryObject.total);
 
+
+                        row.total.delta = _.cloneDeep(countryObject.daily.slice(-2,-1)[0].delta);
+
                         row.states = [];
                         if(row)
                         {
@@ -359,12 +362,17 @@
                                             country: row.name.country,
                                             state: country_state_map[row.name.country][y]
                                         }));
-                                        var row2 = {};
-                                        row2.name = _.cloneDeep(stateObject.name);
-                                        row2.total = _.cloneDeep(stateObject.total);
+                                        var state_row = {};
+                                        state_row.name = _.cloneDeep(stateObject.name);
+                                        state_row.total = _.cloneDeep(stateObject.total);
+                                        if(stateObject && stateObject.daily)
+                                        {
+                                            state_row.total.delta = _.cloneDeep(stateObject.daily.slice(-2,-1)[0].delta);
+                                        }
+
 
                                         row.states.push(
-                                            row2
+                                            state_row
                                         );
                                     }
                                 }
