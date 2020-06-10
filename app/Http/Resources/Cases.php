@@ -15,15 +15,15 @@ class Cases extends JsonResource
     public function toArray($request)
     {
         return [
-            'date' => $this->date,
-            'c' => $this->confirmed,
-            'd' => $this->deaths,
-            'r' => $this->recovered,
-            'a' => $this->active,
+            'date' => (int) $this->date,
+            'c' => (int) $this->confirmed,
+            'd' => (int) $this->deaths,
+            'r' => (int) $this->recovered,
+            'a' => (int) $this->active,
             'delta' => [
-                'c' => $this->delta['confirmed'],
-                'd' => $this->delta['deaths'],
-                'r' => $this->delta['recovered'],
+                'c' => (int) $this->delta['confirmed'],
+                'd' => (int) $this->delta['deaths'],
+                'r' => (int) $this->delta['recovered'],
             ],
             'capita' => [
                 'c' => round($this->capita['confirmed'],4),
