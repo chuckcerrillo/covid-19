@@ -72,6 +72,7 @@
                         'selectedCompareTab' : '',
                     },
                     loading: {
+                        'sidebar_list' : false,
                         'countries' : false,
                         'states' : false,
                         'annotations' : false,

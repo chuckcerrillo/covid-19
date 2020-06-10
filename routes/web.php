@@ -50,6 +50,7 @@ Route::get('/statistics/generate_at_a_glance', 'StatsController@generate_at_a_gl
 Route::get('/statistics/generate_daily_ranking', 'StatsController@generate_daily_ranking');
 
 // Individual generation scripts for comparison pages
+Route::get('/statistics/generate_sidebar_list', 'StatsController@generate_sidebar_list');
 Route::get('/statistics/generate_all_countries', 'StatsController@generate_all_countries');
 Route::get('/statistics/generate_all_countries_daily', 'StatsController@generate_all_countries_daily');
 Route::get('/statistics/generate_all_states_daily', 'StatsController@generate_all_states_daily');

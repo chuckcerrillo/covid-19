@@ -14,6 +14,11 @@
                     <div class="text-right text-green-400" v-else>done</div>
                 </div>
                 <div class="flex items-center text-xs w-44">
+                    <div class="w-32">Sidebar list</div>
+                    <div class="text-right text-lightlabel" v-if="!ajax_loading.sidebar_list">loading</div>
+                    <div class="text-right text-green-400" v-else>done</div>
+                </div>
+                <div class="flex items-center text-xs w-44">
                     <div class="w-32">Case counts</div>
                     <div class="text-right text-lightlabel" v-if="countryCasesStatus !== 'success' || stateCasesStatus !== 'success'">loading</div>
                     <div class="text-right text-green-400" v-else>done</div>
@@ -213,6 +218,15 @@
                 this.options.compare_limit = 3;
             }
 
+            axios.get('/api/stats/get_sidebar_list')
+                .then(res => {
+                    this.sidebar_list = res.data;
+                    this.ajax_loading.sidebar_list = true;
+                })
+                .catch(error => {
+
+                });
+
             axios.get('/api/stats/annotations')
                 .then(res => {
                     this.database.raw.raw_annotations = res.data;
@@ -307,6 +321,7 @@
                 ajax_loading: {
                     oxford: false,
                     final: false,
+                    sidebar_list: false,
                 },
                 user: {
                     location: false,
@@ -318,7 +333,8 @@
                     'Global',
                     'Diamond Princess',
                     'MS Zaandam',
-                ]
+                ],
+                sidebar_list: [],
             }
         },
         methods:{
@@ -335,57 +351,61 @@
                 }
                 else
                 {
-                    for(var x in this.rankings.sorted[sort.key])
-                    {
-                        var countryObject = _.cloneDeep(this.assembleDataset({
-                            country: this.rankings.sorted[sort.key][x].country,
-                            state: false
-                        }));
-
-                        var row = {};
-                        row.name = _.cloneDeep(countryObject.name);
-                        row.total = _.cloneDeep(countryObject.total);
-
-
-                        row.total.delta = _.cloneDeep(countryObject.daily.slice(-2,-1)[0].delta);
-
-                        row.states = [];
-                        if(row)
-                        {
-                            if(row.name.country && country_state_map[row.name.country])
-                            {
-                                for(var y in country_state_map[row.name.country])
-                                {
-                                    if(country_state_map[row.name.country][y] !== '(Unspecified)')
-                                    {
-                                        var stateObject = _.cloneDeep(this.assembleDataset({
-                                            country: row.name.country,
-                                            state: country_state_map[row.name.country][y]
-                                        }));
-                                        var state_row = {};
-                                        state_row.name = _.cloneDeep(stateObject.name);
-                                        state_row.total = _.cloneDeep(stateObject.total);
-                                        if(stateObject && stateObject.daily)
-                                        {
-                                            state_row.total.delta = _.cloneDeep(stateObject.daily.slice(-2,-1)[0].delta);
-                                        }
-
-
-                                        row.states.push(
-                                            state_row
-                                        );
-                                    }
-                                }
-                            }
-                            data.push(_.cloneDeep(row));
-                        }
-
-                    }
+                    data = this.sidebar_list;
+                    // for(var x in this.rankings.sorted[sort.key])
+                    // {
+                    //     var countryObject = _.cloneDeep(this.assembleDataset({
+                    //         country: this.rankings.sorted[sort.key][x].country,
+                    //         state: false
+                    //     }));
+                    //
+                    //     var row = {};
+                    //     row.name = _.cloneDeep(countryObject.name);
+                    //     row.total = _.cloneDeep(countryObject.total);
+                    //
+                    //
+                    //     row.total.delta = _.cloneDeep(countryObject.daily.slice(-2,-1)[0].delta);
+                    //
+                    //     row.states = [];
+                    //     if(row)
+                    //     {
+                    //         if(row.name.country && country_state_map[row.name.country])
+                    //         {
+                    //             for(var y in country_state_map[row.name.country])
+                    //             {
+                    //                 if(country_state_map[row.name.country][y] !== '(Unspecified)')
+                    //                 {
+                    //                     var stateObject = _.cloneDeep(this.assembleDataset({
+                    //                         country: row.name.country,
+                    //                         state: country_state_map[row.name.country][y]
+                    //                     }));
+                    //                     var state_row = {};
+                    //                     state_row.name = _.cloneDeep(stateObject.name);
+                    //                     state_row.total = _.cloneDeep(stateObject.total);
+                    //                     if(stateObject && stateObject.daily)
+                    //                     {
+                    //                         state_row.total.delta = _.cloneDeep(stateObject.daily.slice(-2,-1)[0].delta);
+                    //                     }
+                    //
+                    //
+                    //                     row.states.push(
+                    //                         state_row
+                    //                     );
+                    //                 }
+                    //             }
+                    //         }
+                    //         data.push(_.cloneDeep(row));
+                    //     }
+                    //
+                    // }
 
                     if(!this.sorted_countries_source[sort.key])
                     {
                         this.sorted_countries_source[sort.key] = {};
                     }
+
+                    console.log('country list');
+                    console.log(data);
 
                     this.sorted_countries_source[sort.key].desc = _.cloneDeep(data);
                     data.reverse();
@@ -1386,39 +1406,38 @@
             },
             preProcessData()
             {
-                var countries = _.clone(this.countries_and_stats());
+                // var countries = _.clone(this.countries_and_stats());
+                var countries = _.clone(this.sidebar_list);
                 var countries_states = this.countries_states();
 
                 var excluded = this.excludedCountries;
 
                 for(var x in countries)
                 {
-                    var data = this.assembleDataset({country:countries[x].name})
+                    // var data = this.assembleDataset({country:countries[x].name})
+                    var data = countries[x];
+
 
                     if(excluded.indexOf(countries[x].name) === -1)
                     {
-                        this.rankings.sorted.country.push({country : _.clone(countries[x].name), value : _.clone(countries[x].name)});
-                        this.rankings.sorted.confirmed.push({country : _.clone(countries[x].name), value : _.clone(parseInt(data.total.c))});
-                        this.rankings.sorted.deaths.push({country : _.clone(countries[x].name), value : _.clone(parseInt(data.total.d))});
-                        this.rankings.sorted.recovered.push({country : _.clone(countries[x].name), value : _.clone(parseInt(data.total.r))});
-                        this.rankings.sorted.active.push({country : _.clone(countries[x].name), value : _.clone(parseInt(data.total.a))});
+                        this.rankings.sorted.country.push({country : _.clone(countries[x].name.country), value : _.clone(countries[x].name)});
+                        this.rankings.sorted.confirmed.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.total.c))});
+                        this.rankings.sorted.deaths.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.total.d))});
+                        this.rankings.sorted.recovered.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.total.r))});
+                        this.rankings.sorted.active.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.total.a))});
 
-                        // this.rankings.sorted.confirmedDelta.push({country : _.clone(countries[x].name), value : _.clone(parseInt(data.total.delta.c))});
-                        // this.rankings.sorted.deathsDelta.push({country : _.clone(countries[x].name), value : _.clone(parseInt(data.total.delta.d))});
-                        // this.rankings.sorted.recoveredDelta.push({country : _.clone(countries[x].name), value : _.clone(parseInt(data.total.delta.r))});
+                        this.rankings.sorted.confirmedDelta.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.total.delta.c))});
+                        this.rankings.sorted.deathsDelta.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.total.delta.d))});
+                        this.rankings.sorted.recoveredDelta.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.total.delta.r))});
 
-                        this.rankings.sorted.confirmedDelta.push({country : _.clone(countries[x].name), value : _.clone(parseInt(data.daily.slice(-2,-1)[0].delta.c))});
-                        this.rankings.sorted.deathsDelta.push({country : _.clone(countries[x].name), value : _.clone(parseInt(data.daily.slice(-2,-1)[0].delta.d))});
-                        this.rankings.sorted.recoveredDelta.push({country : _.clone(countries[x].name), value : _.clone(parseInt(data.daily.slice(-2,-1)[0].delta.r))});
-
-                        this.rankings.sorted.confirmedCapita.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.capita.c))});
-                        this.rankings.sorted.deathsCapita.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.capita.d))});
-                        this.rankings.sorted.recoveredCapita.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.capita.r))});
-                        this.rankings.sorted.activeCapita.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.capita.a))});
-                        this.rankings.sorted.confirmedAverage.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.average.c))});
-                        this.rankings.sorted.deathsAverage.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.average.d))});
-                        this.rankings.sorted.recoveredAverage.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.average.r))});
-                        this.rankings.sorted.growthFactor.push({country : _.clone(countries[x].name), value : _.clone(parseFloat(data.total.growth.c))});
+                        this.rankings.sorted.confirmedCapita.push({country : _.clone(countries[x].name.country), value : _.clone(parseFloat(data.total.capita.c))});
+                        this.rankings.sorted.deathsCapita.push({country : _.clone(countries[x].name.country), value : _.clone(parseFloat(data.total.capita.d))});
+                        this.rankings.sorted.recoveredCapita.push({country : _.clone(countries[x].name.country), value : _.clone(parseFloat(data.total.capita.r))});
+                        this.rankings.sorted.activeCapita.push({country : _.clone(countries[x].name.country), value : _.clone(parseFloat(data.total.capita.a))});
+                        this.rankings.sorted.confirmedAverage.push({country : _.clone(countries[x].name.country), value : _.clone(parseFloat(data.total.average.c))});
+                        this.rankings.sorted.deathsAverage.push({country : _.clone(countries[x].name.country), value : _.clone(parseFloat(data.total.average.d))});
+                        this.rankings.sorted.recoveredAverage.push({country : _.clone(countries[x].name.country), value : _.clone(parseFloat(data.total.average.r))});
+                        this.rankings.sorted.growthFactor.push({country : _.clone(countries[x].name.country), value : _.clone(parseFloat(data.total.growth.c))});
                     }
 
                     // Populate the states within the country
@@ -1558,103 +1577,6 @@
             {
                 return this.sorted_countries_list;
 
-                var sort = this.sort_stats;
-                // var data = _.clone(this.countries_and_stats());
-
-                var country_state_map = this.countries_states();
-                var data = [];
-                for(var x in this.rankings.sorted[sort.key])
-                {
-                    var row = _.cloneDeep(this.assembleDataset({
-                        country: this.rankings.sorted[sort.key][x].country,
-                        state: false
-                    }));
-
-                    row.states = [];
-                    for(var y in country_state_map[x])
-                    {
-                        if(country_state_map[x][y] !== '(Unspecified)')
-                        {
-                            row.states.push(
-                                this.assembleDataset({
-                                    country: x,
-                                    state: country_state_map[x][y]
-                                })
-                            );
-                        }
-                    }
-
-                    data.push(_.cloneDeep(row));
-                }
-
-
-
-                if(sort.order === 'asc')
-                {
-                    data.reverse();
-                }
-
-                return data;
-
-                // return data.sort(function (a, b) {
-                //     if (sort.key == 'country')
-                //     {
-                //         if (sort.order == 'asc')
-                //             return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;
-                //         else
-                //             return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
-                //     }
-                //
-                //     else if (sort.key == 'confirmed') {
-                //         if (sort.order == 'desc')
-                //             return parseInt(a.total.c) < parseInt(b.total.c) ? 1 : -1;
-                //         else
-                //             return parseInt(a.total.c) > parseInt(b.total.c) ? 1 : -1;
-                //     }
-                //
-                //     else if (sort.key == 'deaths') {
-                //         if (sort.order == 'desc')
-                //             return parseInt(a.total.d) < parseInt(b.total.d) ? 1 : -1;
-                //         else
-                //             return parseInt(a.total.d) > parseInt(b.total.d) ? 1 : -1;
-                //     }
-                //
-                //     else if (sort.key == 'recovered') {
-                //         if (sort.order == 'desc')
-                //             return parseInt(a.total.r) < parseInt(b.total.r) ? 1 : -1;
-                //         else
-                //             return parseInt(a.total.r) > parseInt(b.total.r) ? 1 : -1;
-                //     }
-                //
-                //     else if (sort.key == 'active') {
-                //         if (sort.order == 'desc')
-                //             return parseInt(a.total.a) < parseInt(b.total.a) ? 1 : -1;
-                //         else
-                //             return parseInt(a.total.a) > parseInt(b.total.a) ? 1 : -1;
-                //     }
-                //
-                //     else if (sort.key == 'confirmedDelta') {
-                //         if (sort.order == 'desc')
-                //             return parseInt(a.total.delta.confirmed) < parseInt(b.total.delta.confirmed) ? 1 : -1;
-                //         else
-                //             return parseInt(a.total.delta.confirmed) > parseInt(b.total.delta.confirmed) ? 1 : -1;
-                //     }
-                //
-                //     else if (sort.key == 'deathsDelta') {
-                //         if (sort.order == 'desc')
-                //             return parseInt(a.total.delta.deaths) < parseInt(b.total.delta.deaths) ? 1 : -1;
-                //         else
-                //             return parseInt(a.total.delta.deaths) > parseInt(b.total.delta.deaths) ? 1 : -1;
-                //     }
-                //
-                //     else if (sort.key == 'recoveredDelta') {
-                //         if (sort.order == 'desc')
-                //             return parseInt(a.total.delta.recovered) < parseInt(b.total.delta.recovered) ? 1 : -1;
-                //         else
-                //             return parseInt(a.total.delta.recovered) > parseInt(b.total.delta.recovered) ? 1 : -1;
-                //     }
-                // });
-
             },
             loaded()
             {
@@ -1688,10 +1610,6 @@
                     this.preProcessData();
                     this.processGovtResponse();
                 }
-            },
-            countries_sorted: function(newvalue)
-            {
-                // this.draw_sorted_countries(newvalue);
             },
             sort_stats:
             {
