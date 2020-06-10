@@ -20,29 +20,34 @@
                 <div v-else>+</div>
             </div>
             <div @click="selectCountry(data.name.country,false)" class="text-xs py-1 w-32 px-2 font-bold">{{data.name.country}}</div>
-            <div v-show="fields.indexOf('confirmed') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.c| numeralFormat}}</div>
-            <div v-show="fields.indexOf('deaths') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.d| numeralFormat}}</div>
-            <div v-show="fields.indexOf('recovered') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.r| numeralFormat}}</div>
-            <div v-show="fields.indexOf('active') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.a| numeralFormat}}</div>
-            <div v-show="fields.indexOf('confirmedDelta') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.delta.c| numeralFormat}}</div>
-            <div v-show="fields.indexOf('deathsDelta') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.delta.d| numeralFormat}}</div>
-            <div v-show="fields.indexOf('recoveredDelta') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.delta.r| numeralFormat}}</div>
-            <div v-show="fields.indexOf('confirmedCapita') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.capita.c| numeralFormat('0,000.00')}}</div>
-            <div v-show="fields.indexOf('deathsCapita') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.capita.d| numeralFormat('0,000.00')}}</div>
-            <div v-show="fields.indexOf('recoveredCapita') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.capita.r| numeralFormat('0,000.00')}}</div>
-            <div v-show="fields.indexOf('activeCapita') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.capita.a| numeralFormat('0,000.00')}}</div>
-            <div v-show="fields.indexOf('confirmedAverage') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.average.c| numeralFormat('0,000.0')}}</div>
-            <div v-show="fields.indexOf('deathsAverage') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.average.d| numeralFormat('0,000.0')}}</div>
-            <div v-show="fields.indexOf('recoveredAverage') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.average.r| numeralFormat('0,000.0')}}</div>
-            <div v-show="fields.indexOf('growthFactor') >= 0" @click="selectCountry(data.name.country,false)" class="text-xs pl-2 py-1 w-20">{{data.total.growth.c| numeralFormat('0.00')}}</div>
 
+            <div
+                v-for="metric in fields"
+                v-if="fields.indexOf(metric) >= 0"
+                @click="selectCountry(data.name.country,data.name.state)"
+                class="text-xs pl-2 py-1 w-20"
+            >
+                <div v-if="metric === 'confirmed'">{{data.total.c| numeralFormat}}</div>
+                <div v-else-if="metric === 'deaths'">{{data.total.d| numeralFormat}}</div>
+                <div v-else-if="metric === 'recovered'">{{data.total.r| numeralFormat}}</div>
+                <div v-else-if="metric === 'active'">{{data.total.a| numeralFormat}}</div>
 
-<!--            <div v-if="config.dashboard" @click="selectCountry(data['name'],false)" class="text-xs pl-2 py-1 w-20">{{data.total.active|numeralFormat}}</div>-->
-<!--            <div v-if="config.dashboard" @click="selectCountry(data['name'],false)" class="text-xs pl-2 py-1 w-20">{{data.population|numeralFormat}}</div>-->
-<!--            <div v-if="config.dashboard" @click="selectCountry(data['name'],false)" class="text-xs pl-2 py-1 w-20">{{data.total.confirmedpc|numeralFormat('0,000.00')}}</div>-->
-<!--            <div v-if="config.dashboard" @click="selectCountry(data['name'],false)" class="text-xs pl-2 py-1 w-20">{{data.total.deathspc|numeralFormat('0,000.00')}}</div>-->
-<!--            <div v-if="config.dashboard" @click="selectCountry(data['name'],false)" class="text-xs pl-2 py-1 w-20">{{data.total.recoveredpc|numeralFormat('0,000.00')}}</div>-->
-<!--            <div v-if="config.dashboard" @click="selectCountry(data['name'],false)" class="text-xs pl-2 py-1 w-20">{{data.total.stringencyindex}}</div>-->
+                <div v-else-if="metric === 'confirmedDelta'">{{data.total.delta.c| numeralFormat}}</div>
+                <div v-else-if="metric === 'deathsDelta'">{{data.total.delta.d| numeralFormat}}</div>
+                <div v-else-if="metric === 'recoveredDelta'">{{data.total.delta.r| numeralFormat}}</div>
+
+                <div v-else-if="metric === 'confirmedCapita'">{{data.total.capita.c| numeralFormat}}</div>
+                <div v-else-if="metric === 'deathsCapita'">{{data.total.capita.d| numeralFormat}}</div>
+                <div v-else-if="metric === 'recoveredCapita'">{{data.total.capita.r| numeralFormat}}</div>
+                <div v-else-if="metric === 'activeCapita'">{{data.total.capita.a| numeralFormat}}</div>
+
+                <div v-else-if="metric === 'confirmedAverage'">{{data.total.average.c| numeralFormat}}</div>
+                <div v-else-if="metric === 'deathsAverage'">{{data.total.average.d| numeralFormat}}</div>
+                <div v-else-if="metric === 'recoveredAverage'">{{data.total.average.r| numeralFormat}}</div>
+
+                <div v-else-if="metric === 'growthFactor'">{{data.total.growth.c| numeralFormat}}</div>
+            </div>
+
         </div>
         <div v-if="row.total && row.total.delta" v-for="(row,key,index) in data.states" class="pb-1 hover:bg-lightslab cursor-pointer flex items-center text-xs" v-show="expanded"
              :key="key"
@@ -61,27 +66,33 @@
             </div>
 
 
-            <div v-show="fields.indexOf('confirmed') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.c| numeralFormat}}</div>
-            <div v-show="fields.indexOf('deaths') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.d| numeralFormat}}</div>
-            <div v-show="fields.indexOf('recovered') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.r| numeralFormat}}</div>
-            <div v-show="fields.indexOf('active') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.a| numeralFormat}}</div>
+            <div
+                v-for="metric in fields"
+                v-if="fields.indexOf(metric) >= 0"
+                @click="selectCountry(row.name.country,row.name.state)"
+                class="text-xs pl-2 py-1 w-20"
+            >
+                <div v-if="metric === 'confirmed'">{{row.total.c| numeralFormat}}</div>
+                <div v-else-if="metric === 'deaths'">{{row.total.d| numeralFormat}}</div>
+                <div v-else-if="metric === 'recovered'">{{row.total.r| numeralFormat}}</div>
+                <div v-else-if="metric === 'active'">{{row.total.a| numeralFormat}}</div>
 
-            <div v-show="fields.indexOf('confirmedDelta') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.delta.c| numeralFormat}}</div>
-            <div v-show="fields.indexOf('deathsDelta') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.delta.d| numeralFormat}}</div>
-            <div v-show="fields.indexOf('recoveredDelta') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.delta.r| numeralFormat}}</div>
-            <div v-show="fields.indexOf('confirmedCapita') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.capita.c| numeralFormat('0,000.00')}}</div>
-            <div v-show="fields.indexOf('deathsCapita') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.capita.d| numeralFormat('0,000.00')}}</div>
-            <div v-show="fields.indexOf('recoveredCapita') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.capita.r| numeralFormat('0,000.00')}}</div>
-            <div v-show="fields.indexOf('activeCapita') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.capita.a| numeralFormat('0,000.00')}}</div>
-            <div v-show="fields.indexOf('confirmedAverage') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.average.c| numeralFormat('0,000.0')}}</div>
-            <div v-show="fields.indexOf('deathsAverage') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.average.d| numeralFormat('0,000.0')}}</div>
-            <div v-show="fields.indexOf('recoveredAverage') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.average.r| numeralFormat('0,000.0')}}</div>
-            <div v-show="fields.indexOf('growthFactor') >= 0" @click="selectCountry(row.name.country,row.name.state)" class="text-xs pl-2 py-1 w-20">{{row.total.growth.c| numeralFormat('0.00')}}</div>
+                <div v-else-if="metric === 'confirmedDelta'">{{row.total.delta.c| numeralFormat}}</div>
+                <div v-else-if="metric === 'deathsDelta'">{{row.total.delta.d| numeralFormat}}</div>
+                <div v-else-if="metric === 'recoveredDelta'">{{row.total.delta.r| numeralFormat}}</div>
 
+                <div v-else-if="metric === 'confirmedCapita'">{{row.total.capita.c| numeralFormat}}</div>
+                <div v-else-if="metric === 'deathsCapita'">{{row.total.capita.d| numeralFormat}}</div>
+                <div v-else-if="metric === 'recoveredCapita'">{{row.total.capita.r| numeralFormat}}</div>
+                <div v-else-if="metric === 'activeCapita'">{{row.total.capita.a| numeralFormat}}</div>
 
-<!--            <div @click="selectCountry(data.name.country,row.name.state)" class="w-20 pl-2">{{(row.total && row.total.c ? row.total.c : 0) | numeralFormat}}</div>-->
-<!--            <div @click="selectCountry(data.name.country,row.name.state)" class="w-20 pl-2">{{(row.total && row.total.d ? row.total.d :0)| numeralFormat}}</div>-->
-<!--            <div @click="selectCountry(data.name.country,row.name.state)" class="w-20 pl-2">{{(row.total && row.total.r ? row.total.r :0)| numeralFormat}}</div>-->
+                <div v-else-if="metric === 'confirmedAverage'">{{row.total.average.c| numeralFormat}}</div>
+                <div v-else-if="metric === 'deathsAverage'">{{row.total.average.d| numeralFormat}}</div>
+                <div v-else-if="metric === 'recoveredAverage'">{{row.total.average.r| numeralFormat}}</div>
+
+                <div v-else-if="metric === 'growthFactor'">{{row.total.growth.c| numeralFormat}}</div>
+            </div>
+
             <div v-if="config.dashboard" class="w-120"></div>
         </div>
     </div>

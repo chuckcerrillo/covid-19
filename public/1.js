@@ -98,6 +98,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CountryStateItem",
   props: ['data', 'country_key', 'compare', 'sidebarExpanded', 'settings', 'fields', 'rank'],
@@ -257,11 +268,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
@@ -282,16 +288,16 @@ __webpack_require__.r(__webpack_exports__);
         'deaths': 'Deaths',
         'recovered': 'Recovered',
         'active': 'Active cases',
-        'confirmedDelta': 'New confirmed cases',
+        'confirmedDelta': 'New confirmed',
         'deathsDelta': 'New deaths',
         'recoveredDelta': 'New recoveries',
-        'confirmedCapita': 'Confirmed per 1M population',
-        'deathsCapita': 'Deaths per 1M population',
-        'recoveredCapita': 'Recovered per 1M population',
+        'confirmedCapita': 'Confirmed per capita',
+        'deathsCapita': 'Deaths per capita',
+        'recoveredCapita': 'Recovered per capita',
         'activeCapita': 'Active per 1M population',
-        'confirmedAverage': 'Average confirmed cases',
+        'confirmedAverage': 'Average confirmed',
         'deathsAverage': 'Average deaths',
-        'recoveredAverage': 'Average recoveries',
+        'recoveredAverage': 'Average recovered',
         'growthFactor': 'Growth Factor'
       },
       active: ['confirmed', 'deaths', 'recovered']
@@ -412,367 +418,141 @@ var render = function() {
             [_vm._v(_vm._s(_vm.data.name.country))]
           ),
           _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("confirmed") >= 0,
-                  expression: "fields.indexOf('confirmed') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [_vm._v(_vm._s(_vm._f("numeralFormat")(_vm.data.total.c)))]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("deaths") >= 0,
-                  expression: "fields.indexOf('deaths') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [_vm._v(_vm._s(_vm._f("numeralFormat")(_vm.data.total.d)))]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("recovered") >= 0,
-                  expression: "fields.indexOf('recovered') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [_vm._v(_vm._s(_vm._f("numeralFormat")(_vm.data.total.r)))]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("active") >= 0,
-                  expression: "fields.indexOf('active') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [_vm._v(_vm._s(_vm._f("numeralFormat")(_vm.data.total.a)))]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("confirmedDelta") >= 0,
-                  expression: "fields.indexOf('confirmedDelta') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [_vm._v(_vm._s(_vm._f("numeralFormat")(_vm.data.total.delta.c)))]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("deathsDelta") >= 0,
-                  expression: "fields.indexOf('deathsDelta') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [_vm._v(_vm._s(_vm._f("numeralFormat")(_vm.data.total.delta.d)))]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("recoveredDelta") >= 0,
-                  expression: "fields.indexOf('recoveredDelta') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [_vm._v(_vm._s(_vm._f("numeralFormat")(_vm.data.total.delta.r)))]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("confirmedCapita") >= 0,
-                  expression: "fields.indexOf('confirmedCapita') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [
-              _vm._v(
-                _vm._s(
-                  _vm._f("numeralFormat")(_vm.data.total.capita.c, "0,000.00")
+          _vm._l(_vm.fields, function(metric) {
+            return _vm.fields.indexOf(metric) >= 0
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          _vm.data.name.country,
+                          _vm.data.name.state
+                        )
+                      }
+                    }
+                  },
+                  [
+                    metric === "confirmed"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(_vm._f("numeralFormat")(_vm.data.total.c))
+                          )
+                        ])
+                      : metric === "deaths"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(_vm._f("numeralFormat")(_vm.data.total.d))
+                          )
+                        ])
+                      : metric === "recovered"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(_vm._f("numeralFormat")(_vm.data.total.r))
+                          )
+                        ])
+                      : metric === "active"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(_vm._f("numeralFormat")(_vm.data.total.a))
+                          )
+                        ])
+                      : metric === "confirmedDelta"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.delta.c)
+                            )
+                          )
+                        ])
+                      : metric === "deathsDelta"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.delta.d)
+                            )
+                          )
+                        ])
+                      : metric === "recoveredDelta"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.delta.r)
+                            )
+                          )
+                        ])
+                      : metric === "confirmedCapita"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.capita.c)
+                            )
+                          )
+                        ])
+                      : metric === "deathsCapita"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.capita.d)
+                            )
+                          )
+                        ])
+                      : metric === "recoveredCapita"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.capita.r)
+                            )
+                          )
+                        ])
+                      : metric === "activeCapita"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.capita.a)
+                            )
+                          )
+                        ])
+                      : metric === "confirmedAverage"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.average.c)
+                            )
+                          )
+                        ])
+                      : metric === "deathsAverage"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.average.d)
+                            )
+                          )
+                        ])
+                      : metric === "recoveredAverage"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.average.r)
+                            )
+                          )
+                        ])
+                      : metric === "growthFactor"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.growth.c)
+                            )
+                          )
+                        ])
+                      : _vm._e()
+                  ]
                 )
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("deathsCapita") >= 0,
-                  expression: "fields.indexOf('deathsCapita') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [
-              _vm._v(
-                _vm._s(
-                  _vm._f("numeralFormat")(_vm.data.total.capita.d, "0,000.00")
-                )
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("recoveredCapita") >= 0,
-                  expression: "fields.indexOf('recoveredCapita') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [
-              _vm._v(
-                _vm._s(
-                  _vm._f("numeralFormat")(_vm.data.total.capita.r, "0,000.00")
-                )
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("activeCapita") >= 0,
-                  expression: "fields.indexOf('activeCapita') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [
-              _vm._v(
-                _vm._s(
-                  _vm._f("numeralFormat")(_vm.data.total.capita.a, "0,000.00")
-                )
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("confirmedAverage") >= 0,
-                  expression: "fields.indexOf('confirmedAverage') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [
-              _vm._v(
-                _vm._s(
-                  _vm._f("numeralFormat")(_vm.data.total.average.c, "0,000.0")
-                )
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("deathsAverage") >= 0,
-                  expression: "fields.indexOf('deathsAverage') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [
-              _vm._v(
-                _vm._s(
-                  _vm._f("numeralFormat")(_vm.data.total.average.d, "0,000.0")
-                )
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("recoveredAverage") >= 0,
-                  expression: "fields.indexOf('recoveredAverage') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [
-              _vm._v(
-                _vm._s(
-                  _vm._f("numeralFormat")(_vm.data.total.average.r, "0,000.0")
-                )
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.fields.indexOf("growthFactor") >= 0,
-                  expression: "fields.indexOf('growthFactor') >= 0"
-                }
-              ],
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data.name.country, false)
-                }
-              }
-            },
-            [
-              _vm._v(
-                _vm._s(_vm._f("numeralFormat")(_vm.data.total.growth.c, "0.00"))
-              )
-            ]
-          )
-        ]
+              : _vm._e()
+          })
+        ],
+        2
       ),
       _vm._v(" "),
       _vm._l(_vm.data.states, function(row, key, index) {
@@ -818,418 +598,145 @@ var render = function() {
                   [_c("div", [_vm._v(_vm._s(row.name.state))])]
                 ),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("confirmed") >= 0,
-                        expression: "fields.indexOf('confirmed') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row.total.c)))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("deaths") >= 0,
-                        expression: "fields.indexOf('deaths') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row.total.d)))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("recovered") >= 0,
-                        expression: "fields.indexOf('recovered') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row.total.r)))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("active") >= 0,
-                        expression: "fields.indexOf('active') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row.total.a)))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("confirmedDelta") >= 0,
-                        expression: "fields.indexOf('confirmedDelta') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row.total.delta.c)))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("deathsDelta") >= 0,
-                        expression: "fields.indexOf('deathsDelta') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row.total.delta.d)))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("recoveredDelta") >= 0,
-                        expression: "fields.indexOf('recoveredDelta') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm._f("numeralFormat")(row.total.delta.r)))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("confirmedCapita") >= 0,
-                        expression: "fields.indexOf('confirmedCapita') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      _vm._s(
-                        _vm._f("numeralFormat")(row.total.capita.c, "0,000.00")
+                _vm._l(_vm.fields, function(metric) {
+                  return _vm.fields.indexOf(metric) >= 0
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "text-xs pl-2 py-1 w-20",
+                          on: {
+                            click: function($event) {
+                              return _vm.selectCountry(
+                                row.name.country,
+                                row.name.state
+                              )
+                            }
+                          }
+                        },
+                        [
+                          metric === "confirmed"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(_vm._f("numeralFormat")(row.total.c))
+                                )
+                              ])
+                            : metric === "deaths"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(_vm._f("numeralFormat")(row.total.d))
+                                )
+                              ])
+                            : metric === "recovered"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(_vm._f("numeralFormat")(row.total.r))
+                                )
+                              ])
+                            : metric === "active"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(_vm._f("numeralFormat")(row.total.a))
+                                )
+                              ])
+                            : metric === "confirmedDelta"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.delta.c)
+                                  )
+                                )
+                              ])
+                            : metric === "deathsDelta"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.delta.d)
+                                  )
+                                )
+                              ])
+                            : metric === "recoveredDelta"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.delta.r)
+                                  )
+                                )
+                              ])
+                            : metric === "confirmedCapita"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.capita.c)
+                                  )
+                                )
+                              ])
+                            : metric === "deathsCapita"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.capita.d)
+                                  )
+                                )
+                              ])
+                            : metric === "recoveredCapita"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.capita.r)
+                                  )
+                                )
+                              ])
+                            : metric === "activeCapita"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.capita.a)
+                                  )
+                                )
+                              ])
+                            : metric === "confirmedAverage"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.average.c)
+                                  )
+                                )
+                              ])
+                            : metric === "deathsAverage"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.average.d)
+                                  )
+                                )
+                              ])
+                            : metric === "recoveredAverage"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.average.r)
+                                  )
+                                )
+                              ])
+                            : metric === "growthFactor"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.growth.c)
+                                  )
+                                )
+                              ])
+                            : _vm._e()
+                        ]
                       )
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("deathsCapita") >= 0,
-                        expression: "fields.indexOf('deathsCapita') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      _vm._s(
-                        _vm._f("numeralFormat")(row.total.capita.d, "0,000.00")
-                      )
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("recoveredCapita") >= 0,
-                        expression: "fields.indexOf('recoveredCapita') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      _vm._s(
-                        _vm._f("numeralFormat")(row.total.capita.r, "0,000.00")
-                      )
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("activeCapita") >= 0,
-                        expression: "fields.indexOf('activeCapita') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      _vm._s(
-                        _vm._f("numeralFormat")(row.total.capita.a, "0,000.00")
-                      )
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("confirmedAverage") >= 0,
-                        expression: "fields.indexOf('confirmedAverage') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      _vm._s(
-                        _vm._f("numeralFormat")(row.total.average.c, "0,000.0")
-                      )
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("deathsAverage") >= 0,
-                        expression: "fields.indexOf('deathsAverage') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      _vm._s(
-                        _vm._f("numeralFormat")(row.total.average.d, "0,000.0")
-                      )
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("recoveredAverage") >= 0,
-                        expression: "fields.indexOf('recoveredAverage') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      _vm._s(
-                        _vm._f("numeralFormat")(row.total.average.r, "0,000.0")
-                      )
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.fields.indexOf("growthFactor") >= 0,
-                        expression: "fields.indexOf('growthFactor') >= 0"
-                      }
-                    ],
-                    staticClass: "text-xs pl-2 py-1 w-20",
-                    on: {
-                      click: function($event) {
-                        return _vm.selectCountry(
-                          row.name.country,
-                          row.name.state
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      _vm._s(
-                        _vm._f("numeralFormat")(row.total.growth.c, "0.00")
-                      )
-                    )
-                  ]
-                ),
+                    : _vm._e()
+                }),
                 _vm._v(" "),
                 _vm.config.dashboard
                   ? _c("div", { staticClass: "w-120" })
                   : _vm._e()
-              ]
+              ],
+              2
             )
           : _vm._e()
       })
@@ -1389,363 +896,32 @@ var render = function() {
                 [_vm._v("Country / Region")]
               ),
               _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("confirmed") >= 0,
-                      expression: "active.indexOf('confirmed') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "confirmed" ? "bg-hoverslab" : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("confirmed")
-                    }
-                  }
-                },
-                [_vm._v("Confirmed")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("deaths") >= 0,
-                      expression: "active.indexOf('deaths') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class: _vm.sort_stats.key === "deaths" ? "bg-hoverslab" : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("deaths")
-                    }
-                  }
-                },
-                [_vm._v("Deaths")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("recovered") >= 0,
-                      expression: "active.indexOf('recovered') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "recovered" ? "bg-hoverslab" : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("recovered")
-                    }
-                  }
-                },
-                [_vm._v("Recovered")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("active") >= 0,
-                      expression: "active.indexOf('active') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class: _vm.sort_stats.key === "active" ? "bg-hoverslab" : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("active")
-                    }
-                  }
-                },
-                [_vm._v("Active")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("confirmedDelta") >= 0,
-                      expression: "active.indexOf('confirmedDelta') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "confirmedDelta"
-                      ? "bg-hoverslab"
-                      : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("confirmedDelta")
-                    }
-                  }
-                },
-                [_vm._v("New confirmed")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("deathsDelta") >= 0,
-                      expression: "active.indexOf('deathsDelta') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "deathsDelta" ? "bg-hoverslab" : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("deathsDelta")
-                    }
-                  }
-                },
-                [_vm._v("New deaths")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("recoveredDelta") >= 0,
-                      expression: "active.indexOf('recoveredDelta') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "recoveredDelta"
-                      ? "bg-hoverslab"
-                      : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("recoveredDelta")
-                    }
-                  }
-                },
-                [_vm._v("New recovered")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("confirmedCapita") >= 0,
-                      expression: "active.indexOf('confirmedCapita') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "confirmedCapita"
-                      ? "bg-hoverslab"
-                      : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("confirmedCapita")
-                    }
-                  }
-                },
-                [_vm._v("Confirmed per capita")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("deathsCapita") >= 0,
-                      expression: "active.indexOf('deathsCapita') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "deathsCapita" ? "bg-hoverslab" : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("deathsCapita")
-                    }
-                  }
-                },
-                [_vm._v("Deaths per capita")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("activeCapita") >= 0,
-                      expression: "active.indexOf('activeCapita') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "activeCapita" ? "bg-hoverslab" : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("activeCapita")
-                    }
-                  }
-                },
-                [_vm._v("Active per capita")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("recoveredCapita") >= 0,
-                      expression: "active.indexOf('recoveredCapita') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "recoveredCapita"
-                      ? "bg-hoverslab"
-                      : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("recoveredCapita")
-                    }
-                  }
-                },
-                [_vm._v("Recovered per capita")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("confirmedAverage") >= 0,
-                      expression: "active.indexOf('confirmedAverage') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "confirmedAverage"
-                      ? "bg-hoverslab"
-                      : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("confirmedAverage")
-                    }
-                  }
-                },
-                [_vm._v("Average confirmed")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("deathsAverage") >= 0,
-                      expression: "active.indexOf('deathsAverage') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "deathsAverage"
-                      ? "bg-hoverslab"
-                      : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("deathsAverage")
-                    }
-                  }
-                },
-                [_vm._v("Average deaths")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("recoveredAverage") >= 0,
-                      expression: "active.indexOf('recoveredAverage') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "recoveredAverage"
-                      ? "bg-hoverslab"
-                      : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("recoveredAverage")
-                    }
-                  }
-                },
-                [_vm._v("Average recovered")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.active.indexOf("growthFactor") >= 0,
-                      expression: "active.indexOf('growthFactor') >= 0"
-                    }
-                  ],
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "growthFactor" ? "bg-hoverslab" : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("growthFactor")
-                    }
-                  }
-                },
-                [_vm._v("Growth factor")]
-              )
-            ]
+              _vm._l(_vm.active, function(metric) {
+                return _vm.active.indexOf(metric) >= 0
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
+                        class:
+                          _vm.sort_stats.key === metric ? "bg-hoverslab" : "",
+                        on: {
+                          click: function($event) {
+                            return _vm.toggleSort(metric)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm.metrics[metric]) +
+                            "\n                "
+                        )
+                      ]
+                    )
+                  : _vm._e()
+              })
+            ],
+            2
           )
         ]),
         _vm._v(" "),
@@ -1768,6 +944,7 @@ var render = function() {
                     rank: _vm.get_rank(data.name.country),
                     compare: _vm.compare,
                     fields: _vm.active,
+                    metrics: _vm.metrics,
                     settings: { dashboard: false }
                   },
                   on: { selectCountry: _vm.selectCountry }

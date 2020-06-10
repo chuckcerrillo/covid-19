@@ -41,21 +41,15 @@
                     </div>
                     <div class="w-4 p-2 m-1 ml-0"></div>
                     <div class="w-32 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'country' ? 'bg-hoverslab' : '' " @click="toggleSort('country')">Country / Region</div>
-                    <div v-show="active.indexOf('confirmed') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'confirmed' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmed')">Confirmed</div>
-                    <div v-show="active.indexOf('deaths') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'deaths' ? 'bg-hoverslab' : '' " @click="toggleSort('deaths')">Deaths</div>
-                    <div v-show="active.indexOf('recovered') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'recovered' ? 'bg-hoverslab' : '' " @click="toggleSort('recovered')">Recovered</div>
-                    <div v-show="active.indexOf('active') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'active' ? 'bg-hoverslab' : '' " @click="toggleSort('active')">Active</div>
-                    <div v-show="active.indexOf('confirmedDelta') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'confirmedDelta' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmedDelta')">New confirmed</div>
-                    <div v-show="active.indexOf('deathsDelta') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'deathsDelta' ? 'bg-hoverslab' : '' " @click="toggleSort('deathsDelta')">New deaths</div>
-                    <div v-show="active.indexOf('recoveredDelta') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'recoveredDelta' ? 'bg-hoverslab' : '' " @click="toggleSort('recoveredDelta')">New recovered</div>
-                    <div v-show="active.indexOf('confirmedCapita') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'confirmedCapita' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmedCapita')">Confirmed per capita</div>
-                    <div v-show="active.indexOf('deathsCapita') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'deathsCapita' ? 'bg-hoverslab' : '' " @click="toggleSort('deathsCapita')">Deaths per capita</div>
-                    <div v-show="active.indexOf('activeCapita') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'activeCapita' ? 'bg-hoverslab' : '' " @click="toggleSort('activeCapita')">Active per capita</div>
-                    <div v-show="active.indexOf('recoveredCapita') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'recoveredCapita' ? 'bg-hoverslab' : '' " @click="toggleSort('recoveredCapita')">Recovered per capita</div>
-                    <div v-show="active.indexOf('confirmedAverage') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'confirmedAverage' ? 'bg-hoverslab' : '' " @click="toggleSort('confirmedAverage')">Average confirmed</div>
-                    <div v-show="active.indexOf('deathsAverage') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'deathsAverage' ? 'bg-hoverslab' : '' " @click="toggleSort('deathsAverage')">Average deaths</div>
-                    <div v-show="active.indexOf('recoveredAverage') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'recoveredAverage' ? 'bg-hoverslab' : '' " @click="toggleSort('recoveredAverage')">Average recovered</div>
-                    <div v-show="active.indexOf('growthFactor') >= 0" class="w-20 cursor-pointer p-2 overflow-hidden" :class="sort_stats.key === 'growthFactor' ? 'bg-hoverslab' : '' " @click="toggleSort('growthFactor')">Growth factor</div>
+                    <div
+                        v-for="metric in active"
+                        v-if="active.indexOf(metric) >= 0"
+                        class="w-20 cursor-pointer p-2 overflow-hidden"
+                        :class="sort_stats.key === metric ? 'bg-hoverslab' : '' "
+                        @click="toggleSort(metric)"
+                    >
+                        {{metrics[metric]}}
+                    </div>
                 </div>
             </div>
             <div class="w-full h-full relative">
@@ -69,6 +63,7 @@
                         :rank="get_rank(data.name.country)"
                         :compare="compare"
                         :fields="active"
+                        :metrics="metrics"
                         :settings="{dashboard:false}"
                     />
                 </simplebar>
@@ -138,16 +133,16 @@
                     'deaths':'Deaths',
                     'recovered':'Recovered',
                     'active':'Active cases',
-                    'confirmedDelta':'New confirmed cases',
+                    'confirmedDelta':'New confirmed',
                     'deathsDelta':'New deaths',
                     'recoveredDelta':'New recoveries',
-                    'confirmedCapita':'Confirmed per 1M population',
-                    'deathsCapita':'Deaths per 1M population',
-                    'recoveredCapita':'Recovered per 1M population',
+                    'confirmedCapita':'Confirmed per capita',
+                    'deathsCapita':'Deaths per capita',
+                    'recoveredCapita':'Recovered per capita',
                     'activeCapita':'Active per 1M population',
-                    'confirmedAverage':'Average confirmed cases',
+                    'confirmedAverage':'Average confirmed',
                     'deathsAverage':'Average deaths',
-                    'recoveredAverage':'Average recoveries',
+                    'recoveredAverage':'Average recovered',
                     'growthFactor':'Growth Factor',
                 },
                 active: [
