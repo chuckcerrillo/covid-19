@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Cases;
 use App\Country;
+use App\Http\Resources\Cases as CasesResource;
 use App\Http\Resources\CasesCollection;
 use App\Http\Resources\CountryCollection;
 use App\Http\Resources\LogCollection as LogCollectionResource;
@@ -5834,7 +5835,7 @@ class StatsController extends Controller
         return $this->compute_daily($country,$state);
     }
 
-    private function compute_daily($country, $state = false)
+    private function compute_daily($country, $state = false, $latest = false)
     {
         $population = $country->population;
 
@@ -5848,8 +5849,16 @@ class StatsController extends Controller
                 ->where('countries.name','=',$country->name)
                 ->where('states.name','=',$state->name)
                 ->groupBy('date')
-                ->orderBy('cases.date')
-                ->get();
+                ->orderBy('cases.date');
+
+            if($latest)
+            {
+                $current_date = new \DateTime();
+                $current_date->sub(new \DateInterval('P5D'))->format('Y-m-d');
+                $data = $data->where('date','>=',$current_date);
+            }
+
+            $data = $data->get();
         }
         else
         {
@@ -5860,8 +5869,16 @@ class StatsController extends Controller
                 ->join('countries','countries.id','=','states.country_id')
                 ->where('countries.name',$country->name)
                 ->groupBy('date')
-                ->orderBy('cases.date')
-                ->get();
+                ->orderBy('cases.date');
+
+            if($latest)
+            {
+                $current_date = new \DateTime();
+                $current_date->sub(new \DateInterval('P5D'))->format('Y-m-d');
+                $data = $data->where('date','>=',$current_date);
+            }
+
+            $data = $data->get();
         }
         if(count($data) == 0)
         {
@@ -6071,5 +6088,58 @@ class StatsController extends Controller
         }
 
         return $data;
+    }
+
+    function generate_sidebar_list()
+    {
+        $data = json_decode('{"name":{"full":"Papua New Guinea","country":"Papua New Guinea","state":"","country_id":false},"total":{"date":"2020-06-10","c":"8","d":"0","r":"8","a":0,"delta":{"c":0,"d":0,"r":0,"a":0},"capita":{"c":0.8942,"d":0,"r":0.8942,"a":0},"average":{"c":0,"d":0,"r":0},"growth":{"c":0,"d":0,"r":0},"percent":{"c":0,"d":0,"r":0},"stringencyindex":0},"states":[]}',true);
+        dump($data);
+
+        $countries = Country::all();
+        $data = [];
+
+        foreach($countries AS $country)
+        {
+            $temp_country = [
+                'id' => $country->id,
+                'name' => [
+                    'country' => $country->name,
+                    'state' => false,
+                ],
+                'lat' => $country->lat,
+                'lng' => $country->lng,
+                'population' => $country->population,
+                'total' => new CasesResource($this->compute_daily($country,false,true)[4]),
+                'states' => []
+            ];
+
+            $states = State::where('country_id',$country->id)->get();
+            if(isset($states) && count($states) > 1)
+            {
+                foreach($states AS $state)
+                {
+                    $case = $this->compute_daily($country,$state,true);
+
+                    if(count($case)>0)
+                    {
+                        $temp_country['states'][] = [
+                            'name' => [
+                                'country' => $country->name,
+                                'state' => $state->name,
+                            ],
+                            'total' => $case,
+//                            'total' => count($this->compute_daily($country,$state,true)),
+                        ];
+                    }
+                }
+            }
+
+            $data[] = $temp_country;
+        }
+
+        dump(json_decode(json_encode($data),true)[184]);
+
+        file_put_contents(STATS . 'sidebar_list.json',json_encode($data));
+        return response('Done generating sidebar list')->setStatusCode(Response::HTTP_OK);
     }
 }
