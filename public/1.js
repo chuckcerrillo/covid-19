@@ -1022,10 +1022,18 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                        " +
-                            _vm._s(metric) +
-                            "\n                    "
-                        )
+                          "\n                        " + _vm._s(metric) + " "
+                        ),
+                        _vm.active.indexOf(index) >= 0
+                          ? _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "inline-block text-xs bg-white text-hoverslab px-1 ml-2"
+                              },
+                              [_vm._v(_vm._s(_vm.active.indexOf(index) + 1))]
+                            )
+                          : _vm._e()
                       ]
                     )
                   }),

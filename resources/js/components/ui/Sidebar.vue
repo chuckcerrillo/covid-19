@@ -93,7 +93,7 @@
                             :class="active.indexOf(index) >= 0 ? 'bg-heading text-slab':''"
                             @click="selectMetric(index)"
                         >
-                            {{metric}}
+                            {{metric}} <div v-if="active.indexOf(index) >= 0" class="inline-block text-xs bg-white text-hoverslab px-1 ml-2" >{{(active.indexOf(index) + 1)}}</div>
                         </div>
                     </div>
                 </simplebar>
