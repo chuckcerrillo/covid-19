@@ -1447,10 +1447,10 @@
                         {
                             if(countries_states[countries[x].name][y] && countries_states[countries[x].name][y] !== '(Unspecified)')
                             {
-                                this.assembleDataset({
-                                    country: countries[x].name,
-                                    state: countries_states[countries[x].name][y]
-                                });
+                                // this.assembleDataset({
+                                //     country: countries[x].name,
+                                //     state: countries_states[countries[x].name][y]
+                                // });
                             }
                         }
                     }
