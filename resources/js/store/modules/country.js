@@ -19,7 +19,7 @@ const getters = {
 const actions = {
     fetchCountries({commit,state}){
         commit('setCountriesStatus','loading');
-        axios.get('/api/stats/get_all_countries')
+        axios.get('/api/stats/get_sidebar_list')
             .then(res => {
                 commit('setCountries',res.data);
                 commit('setCountriesStatus','success');
@@ -35,16 +35,16 @@ const actions = {
 
 const mutations = {
     setCountry(state, country) {
-        if(state.countriesIndex.indexOf(country.name) === -1){
-            state.countriesIndex.push(country.name);
+        if(state.countriesIndex.indexOf(country.name.country) === -1){
+            state.countriesIndex.push(country.name.country);
         }
         state.countries[country.id] = country;
     },
     setCountries(state, countries) {
         countries.forEach((country,index) => {
             if(country.id > 0){
-                if(!state.countriesIndex.includes(country.name)){
-                    state.countriesIndex.push(country.name);
+                if(!state.countriesIndex.includes(country.name.country)){
+                    state.countriesIndex.push(country.name.country);
                 }
                 state.countries[country.id] = country;
             }

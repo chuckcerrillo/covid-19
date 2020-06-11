@@ -112,6 +112,7 @@
             'countries_sorted',
             'getDaily',
             'database',
+            'loaded',
         ],
         data()
         {
@@ -148,6 +149,10 @@
         },
         mounted()
         {
+            setTimeout(function(){
+                self.$emit('loadMapData');
+            },100)
+
             axios.get('/api/stats/rankings')
                 .then(res => {
                     this.ajax.rankings = res.data;

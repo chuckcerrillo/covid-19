@@ -147,6 +147,10 @@
             map.setZoom(this.options.zoom);
 
 
+            console.log('DATA IN MAPS');
+            console.log(this.data)
+
+
 
 
             if(this.settings)
@@ -198,6 +202,8 @@
                     features: [
                     ]
                 };
+                console.log('processed list');
+                console.log(this.database.processed.dataset);
                 var allowedCountryStates = [
                     'United States',
                     'Denmark',
@@ -228,6 +234,7 @@
                         for(var x in this.database.processed.dataset)
                         {
                             var row = this.database.processed.dataset[x];
+
                             if(
                                 // exclude global
                                 row.name.country === 'Global'
@@ -256,6 +263,7 @@
                             }
                             else
                             {
+
                                 for(var y in row.daily)
                                 {
                                     if(row.daily[y])
@@ -273,8 +281,8 @@
                                                 geometry: {
                                                     type: 'Point',
                                                     coordinates: [
-                                                        row.long,
-                                                        row.lat,
+                                                        _.clone(row.long),
+                                                        _.clone(row.lat),
                                                     ]
                                                 }
                                             });

@@ -150,6 +150,8 @@
                                     :annotations="getAnnotations()"
                                     :getDaily="getDaily()"
                                     :database="database"
+                                    :loaded="map_loaded"
+                                    v-on:loadMapData="prepare_map_data"
                                 />
                                 <MapView
                                     v-else-if="view === 'map'"
@@ -157,6 +159,8 @@
                                     :annotations="getAnnotations()"
                                     :getDaily="getDaily()"
                                     :database="database"
+                                    :loaded="map_loaded"
+                                    v-on:loadMapData="prepare_map_data"
 
                                 />
                             </keep-alive>
@@ -259,6 +263,7 @@
                     'compare_limit' : 10,
                 },
                 'comparison' : [],
+                map_loaded: false,
                 rankings: {
                     sorted: {
                         country: [],
@@ -338,13 +343,42 @@
             }
         },
         methods:{
+            prepare_map_data()
+            {
+                if(!this.map_loaded)
+                {
+                    console.log(this.countries);
+                    for(var x in this.countries)
+                    {
+
+                        this.assembleDataset({
+                            country: this.countries[x].name.country,
+                            state: false,
+                        });
+
+                        if(this.countries[x].states && this.countries[x].states.length > 0)
+                        {
+                            for(var y in this.countries[x].states)
+                            {
+                                this.assembleDataset({
+                                    country: this.countries[x].name.country,
+                                    state: this.countries[x].states[y].name.state,
+                                });
+                            }
+                        }
+                    }
+                    this.map_loaded = true;
+                    console.log('map is now loaded');
+                    console.log(this.database.processed.dataset);
+                }
+            },
             draw_sorted_countries()
             {
                 clearTimeout(this.timeout);
                 var sort = this.sort_stats;
                 this.sorted_countries_list = [];
                 var country_state_map = this.countries_states();
-                var data = [], source = [];
+                var data = [], source = [], excluded = [];
                 if(this.sorted_countries_source && this.sorted_countries_source[sort.key] && this.sorted_countries_source[sort.key][sort.order])
                 {
                     data = _.cloneDeep(this.sorted_countries_source[sort.key][sort.order]);
@@ -357,6 +391,10 @@
                         if(this.excludedCountries.indexOf(source[x].name.country) === -1)
                         {
                             data.push(_.cloneDeep(source[x]));
+                        }
+                        else
+                        {
+                            excluded.push(_.cloneDeep(source[x]));
                         }
                     }
 
@@ -449,13 +487,13 @@
                 // Draw excluded countries
                 console.log('draw excluded');
                 console.log(this.excludedCountries);
-                for(var x in this.excludedCountries)
+                for(var x in excluded)
                 {
-                    console.log('looking for ' + this.excludedCountries[x]);
-                    var row = _.cloneDeep(this.assembleDataset({
-                        country: this.excludedCountries[x],
-                        state: false
-                    }));
+                    // var row = _.cloneDeep(this.assembleDataset({
+                    //     country: this.excludedCountries[x],
+                    //     state: false
+                    // }));
+                    var row = _.cloneDeep(excluded[x]);
 
                     // row.total.delta = _.cloneDeep(row.daily.slice(-2,-1)[0].delta);
 
@@ -922,10 +960,11 @@
 
                 var population = 0,
                     lat = 0, long = 0,
+                    total = false,
                     state = false;
 
-                if(!daily && !name)
-                {
+                // if(!daily || !name)
+                // {
 
                     if(source.state)
                     {
@@ -933,7 +972,7 @@
                         {
                             for(var x in country.states)
                             {
-                                if(country.states[x].name == source.state)
+                                if(country.states[x].name.state === source.state)
                                 {
                                     state = _.clone(country.states[x]);
                                     break;
@@ -943,9 +982,10 @@
 
                         if(state)
                         {
-                            lat = state.lat;
-                            long = state.lng;
+                            lat = _.clone(state.lat);
+                            long = _.clone(state.lng);
                             population = state.population;
+                            total = _.cloneDeep(state.total);
                         }
                     }
                     else
@@ -953,9 +993,10 @@
                         lat = country.lat;
                         long = country.lng;
                         population = country.population;
+                        total = _.cloneDeep(country.total);
                     }
 
-                }
+                // }
 
 
                 row = {
@@ -965,6 +1006,7 @@
                     population: population,
                     annotations: [],
                     daily: (daily ? daily : this.getDaily(source)),
+                    total: total,
                 }
 
                 row.total = {
@@ -1120,7 +1162,7 @@
                         {
                             if(this.countryCases[compare.country] && this.countryCases[compare.country].daily)
                             {
-                                var daily = _.clone(this.countryCases[compare.country].daily);
+                                var daily = _.cloneDeep(this.countryCases[compare.country].daily);
                                 for(var x in daily)
                                 {
                                     daily[x].delta.a = daily[x].delta.c - daily[x].delta.d - daily[x].delta.r;
@@ -1162,11 +1204,11 @@
 
                             for(var x in country.states)
                             {
-                                if(country.states[x] && country.states[x].id && country.states[x].name == compare.state)
+                                if(country.states[x] && country.states[x].id && country.states[x].name.state === compare.state)
                                 {
                                     if(this.stateCases && this.stateCases[country.states[x].id])
                                     {
-                                        var daily = _.clone(this.stateCases[country.states[x].id].daily);
+                                        var daily = _.cloneDeep(this.stateCases[country.states[x].id].daily);
                                     }
                                     else
                                     {
@@ -1328,11 +1370,6 @@
                     country: 'Global',
                     state: false
                 }
-
-                if(data.total)
-                {
-                    data.total.active = data.total.confirmed - data.total.deaths - data.total.recovered;
-                }
                 return data;
             },
             globalDataset()
@@ -1347,9 +1384,10 @@
                     var row = this.global().daily[x];
                     daily.push({
                         'date' : x,
-                        'confirmed' : row.confirmed,
-                        'deaths' : row.deaths,
-                        'recovered' : row.recovered
+                        'confirmed' : row.c,
+                        'deaths' : row.d,
+                        'recovered' : row.r,
+                        'active' : row.a,
                     });
                 }
 
@@ -1443,6 +1481,7 @@
                 // var countries = _.clone(this.countries_and_stats());
                 var countries = _.clone(this.sidebar_list);
                 var countries_states = this.countries_states();
+                var self = this;
 
                 var excluded = this.excludedCountries;
 
@@ -1450,6 +1489,9 @@
                 {
                     // var data = this.assembleDataset({country:countries[x].name})
                     var data = countries[x];
+                    setTimeout(function(){
+                        self.assembleDataset({country:data.name.country})
+                    },1);
 
 
                     if(excluded.indexOf(countries[x].name.country) === -1)
@@ -1487,6 +1529,12 @@
                                 //     country: countries[x].name,
                                 //     state: countries_states[countries[x].name][y]
                                 // });
+                                // setTimeout(function(){
+                                //     self.assembleDataset({
+                                //         country: countries[x].name,
+                                //         state: countries_states[countries[x].name.country][y]
+                                //     })
+                                // },1);
                             }
                         }
                     }

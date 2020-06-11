@@ -796,9 +796,7 @@ var render = function() {
               _c("div", { staticClass: "text-sm" }, [_vm._v("Confirmed")]),
               _vm._v(" "),
               _c("div", { staticClass: "text-2xl text-white" }, [
-                _vm._v(
-                  _vm._s(_vm._f("numeralFormat")(_vm.global.total.confirmed))
-                )
+                _vm._v(_vm._s(_vm._f("numeralFormat")(_vm.global.total.c)))
               ])
             ]),
             _vm._v(" "),
@@ -806,7 +804,7 @@ var render = function() {
               _c("div", { staticClass: "text-sm" }, [_vm._v("Deaths")]),
               _vm._v(" "),
               _c("div", { staticClass: "text-2xl text-white" }, [
-                _vm._v(_vm._s(_vm._f("numeralFormat")(_vm.global.total.deaths)))
+                _vm._v(_vm._s(_vm._f("numeralFormat")(_vm.global.total.d)))
               ])
             ]),
             _vm._v(" "),
@@ -814,9 +812,7 @@ var render = function() {
               _c("div", { staticClass: "text-sm" }, [_vm._v("Recovered")]),
               _vm._v(" "),
               _c("div", { staticClass: "text-2xl text-white" }, [
-                _vm._v(
-                  _vm._s(_vm._f("numeralFormat")(_vm.global.total.recovered))
-                )
+                _vm._v(_vm._s(_vm._f("numeralFormat")(_vm.global.total.r)))
               ])
             ])
           ]
