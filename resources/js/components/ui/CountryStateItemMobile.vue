@@ -84,9 +84,6 @@
             },
             selectCountry(country,state)
             {
-                console.log('seetct')
-                console.log(country);
-                console.log(state);
                 this.$emit('selectCountry',country,state);
             },
             toggleExpand()

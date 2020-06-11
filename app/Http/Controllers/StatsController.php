@@ -6016,7 +6016,27 @@ class StatsController extends Controller
         $filename = STATS . 'countries_summary.json';
         $file = fopen($filename,'r');
         $data = json_decode(fread($file,filesize($filename)),true);
-        return response($data)->setStatusCode(Response::HTTP_OK);
+        $result = [];
+
+        foreach($data AS $row)
+        {
+            $result[] = [
+                'name' => [
+                    'country' => $row['name'],
+                    'state' => false,
+                ],
+                'population' => $row['population'],
+                'total' => [
+                    'c' => $row['total']['confirmed'],
+                    'd' => $row['total']['deaths'],
+                    'r' => $row['total']['recovered'],
+                ],
+                'lat' => $row['lat'],
+                'lng' => $row['lng'],
+            ];
+        }
+
+        return response($result)->setStatusCode(Response::HTTP_OK);
     }
 
     public function get_states_daily()

@@ -9,6 +9,7 @@
                         <img class="min-h-screen"
                             src="/img/backgrounds/transparent.png" style="opacity:0">
                         <Map
+                            v-if="map_countries && map_countries.length > 0"
                             class="w-full overflow-hidden absolute inset-x-0 inset-y-0"
                             style="position: absolute"
                             id="world_map"
@@ -423,18 +424,7 @@
             },
             map_countries()
             {
-                var data = [];
-                var list = _.clone(this.ajax.countries_list_map);
-                for(var x in list)
-                {
-                    var row = _.cloneDeep(list[x]);
-                    row.name = {
-                        country: _.clone(row.name),
-                        state: false,
-                    }
-                    data.push(_.cloneDeep(row));
-                }
-                return data;
+                return this.ajax.countries_list_map;
             }
         }
     }

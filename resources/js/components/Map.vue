@@ -146,13 +146,6 @@
             this.map = map;
             map.setZoom(this.options.zoom);
 
-
-            console.log('DATA IN MAPS');
-            console.log(this.data)
-
-
-
-
             if(this.settings)
             {
                 if(this.settings && this.settings.home)
@@ -202,8 +195,16 @@
                     features: [
                     ]
                 };
-                console.log('processed list');
-                console.log(this.database.processed.dataset);
+
+                if(this.data)
+                {
+                    var list = this.data;
+                }
+                else
+                {
+                    list = this.database.processed.dataset;
+                }
+
                 var allowedCountryStates = [
                     'United States',
                     'Denmark',
@@ -229,11 +230,11 @@
 
                 if(['confirmed','deaths','recovered'].indexOf(field) !== -1)
                 {
-                    if (this.database && this.database.processed)
+                    if (list)
                     {
-                        for(var x in this.database.processed.dataset)
+                        for(var x in list)
                         {
-                            var row = this.database.processed.dataset[x];
+                            var row = list[x];
 
                             if(
                                 // exclude global
@@ -263,30 +264,51 @@
                             }
                             else
                             {
-
-                                for(var y in row.daily)
+                                if(!row.daily)
                                 {
-                                    if(row.daily[y])
+                                    data.features.push({
+                                        type: 'Feature',
+                                        properties: {
+                                            name: x,
+                                            confirmed: parseInt(row.total.c),
+                                            deaths: parseInt(row.total.d),
+                                            recovered: parseInt(row.total.r),
+                                        },
+                                        geometry: {
+                                            type: 'Point',
+                                            coordinates: [
+                                                _.clone(row.lng),
+                                                _.clone(row.lat),
+                                            ]
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    for(var y in row.daily)
                                     {
-                                        if(row.daily[y].date === this.date)
+                                        if(row.daily[y])
                                         {
-                                            data.features.push({
-                                                type: 'Feature',
-                                                properties: {
-                                                    name: x,
-                                                    confirmed: parseInt(row.daily[y].c),
-                                                    deaths: parseInt(row.daily[y].d),
-                                                    recovered: parseInt(row.daily[y].r),
-                                                },
-                                                geometry: {
-                                                    type: 'Point',
-                                                    coordinates: [
-                                                        _.clone(row.long),
-                                                        _.clone(row.lat),
-                                                    ]
-                                                }
-                                            });
-                                            break;
+                                            if(row.daily[y].date === this.date)
+                                            {
+                                                data.features.push({
+                                                    type: 'Feature',
+                                                    properties: {
+                                                        name: x,
+                                                        confirmed: parseInt(row.daily[y].c),
+                                                        deaths: parseInt(row.daily[y].d),
+                                                        recovered: parseInt(row.daily[y].r),
+                                                    },
+                                                    geometry: {
+                                                        type: 'Point',
+                                                        coordinates: [
+                                                            _.clone(row.long),
+                                                            _.clone(row.lat),
+                                                        ]
+                                                    }
+                                                });
+                                                break;
+                                            }
                                         }
                                     }
                                 }

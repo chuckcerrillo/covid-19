@@ -347,7 +347,6 @@
             {
                 if(!this.map_loaded)
                 {
-                    console.log(this.countries);
                     for(var x in this.countries)
                     {
 
@@ -368,8 +367,6 @@
                         }
                     }
                     this.map_loaded = true;
-                    console.log('map is now loaded');
-                    console.log(this.database.processed.dataset);
                 }
             },
             draw_sorted_countries()
@@ -485,8 +482,6 @@
                 }
 
                 // Draw excluded countries
-                console.log('draw excluded');
-                console.log(this.excludedCountries);
                 for(var x in excluded)
                 {
                     // var row = _.cloneDeep(this.assembleDataset({
