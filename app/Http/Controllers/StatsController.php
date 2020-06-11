@@ -717,7 +717,7 @@ class StatsController extends Controller
         $this->generate_global_summary();
         $this->generate_at_a_glance();
         $this->generate_daily_ranking();
-        $this->generate_all_countries();
+//        $this->generate_all_countries();
         $this->generate_all_daily();
         $this->generate_sidebar_list();
         return response('Done updating JSON files')->setStatusCode(Response::HTTP_OK);
@@ -2550,8 +2550,8 @@ class StatsController extends Controller
         $this->apply_overrides($countries,$data,$date,'worldometers');
 
         // Do wikipedia
-        $data = $this->harvest_wikipedia();
-        $this->apply_overrides($countries,$data,$date,'wikipedia');
+//        $data = $this->harvest_wikipedia();
+//        $this->apply_overrides($countries,$data,$date,'wikipedia');
 
 
         // Do manual override
@@ -5049,7 +5049,7 @@ class StatsController extends Controller
                             {
                                 if($case->confirmed && isset($input['confirmed']))
                                 {
-                                    if($case->confirmed > $input['confirmed'])
+                                    if($case->confirmed_source !== 'JH' && $case->confirmed > $input['confirmed'])
                                     {
                                         unset($input['confirmed']);
                                         unset($input['confirmed_source']);
@@ -5062,7 +5062,7 @@ class StatsController extends Controller
 
                                 if($case->deaths && isset($input['deaths']))
                                 {
-                                    if($case->deaths > $input['deaths'])
+                                    if($case->deaths_source !== 'JH' && $case->deaths > $input['deaths'])
                                     {
                                         unset($input['deaths']);
                                         unset($input['deaths_source']);
@@ -5075,7 +5075,7 @@ class StatsController extends Controller
 
                                 if($case->recovered && isset($input['recovered']))
                                 {
-                                    if($case->recovered > $input['recovered'])
+                                    if($case->recovered_source !== 'JH' && $case->recovered > $input['recovered'])
                                     {
                                         unset($input['recovered']);
                                         unset($input['recovered_source']);
@@ -5468,12 +5468,12 @@ class StatsController extends Controller
                     if($case)
                     {
                         // If there are changes to the state numbers, update the (Unspecified) record to reflect these changes
-                        if(!($case->confirmed && isset($input['confirmed']) && $case->confirmed > $input['confirmed']))
+                        if(!($case->confirmed && isset($input['confirmed']) && $case->confirmed > $input['confirmed'] && $case->confirmed_source !== 'JH'))
                         {
                             $adjustments['confirmed'] = $case->confirmed - $input['confirmed'];
                         }
 
-                        if(!($case->deaths && isset($input['deaths']) && $case->deaths > $input['deaths']))
+                        if(!($case->deaths && isset($input['deaths']) && $case->deaths > $input['deaths'] && $case->deaths_source !== 'JH'))
                         {
                             $adjustments['deaths'] = $case->deaths - $input['deaths'];
                         }
@@ -5740,6 +5740,7 @@ class StatsController extends Controller
         {
             $data[$country->id] = $this->compute_daily($country);
         }
+
 
         file_put_contents(STATS . 'countries_daily.json',json_encode($data));
         return response('Done generating country daily data')->setStatusCode(Response::HTTP_OK);
@@ -6101,6 +6102,10 @@ class StatsController extends Controller
 
         foreach($countries AS $country)
         {
+            $case = new CasesResource($this->compute_daily($country,false,true));
+            $total = $case[4];
+            $total->delta = $case[3]->delta;
+
             $temp_country = [
                 'id' => $country->id,
                 'name' => [
@@ -6110,7 +6115,7 @@ class StatsController extends Controller
                 'lat' => $country->lat,
                 'lng' => $country->lng,
                 'population' => $country->population,
-                'total' => new CasesResource($this->compute_daily($country,false,true)[4]),
+                'total' => $total,
                 'states' => []
             ];
 
@@ -6124,11 +6129,14 @@ class StatsController extends Controller
                     if(count($case)>0)
                     {
                         $temp_country['states'][] = [
+                            'id' => $state->id,
                             'name' => [
                                 'country' => $country->name,
                                 'state' => $state->name,
                             ],
                             'total' => $case,
+                            'lat' => $state->lat,
+                            'lng' => $state->lng,
 //                            'total' => count($this->compute_daily($country,$state,true)),
                         ];
                     }

@@ -15,7 +15,7 @@ class Cases extends JsonResource
     public function toArray($request)
     {
         return [
-            'date' => (int) $this->date,
+            'date' => $this->date,
             'c' => (int) $this->confirmed,
             'd' => (int) $this->deaths,
             'r' => (int) $this->recovered,
