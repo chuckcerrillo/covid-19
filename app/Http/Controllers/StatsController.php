@@ -5856,7 +5856,7 @@ class StatsController extends Controller
             if($latest)
             {
                 $current_date = new \DateTime();
-                $current_date->sub(new \DateInterval('P5D'))->format('Y-m-d');
+                $current_date->sub(new \DateInterval('P6D'))->format('Y-m-d');
                 $data = $data->where('date','>=',$current_date);
             }
 
@@ -5876,7 +5876,7 @@ class StatsController extends Controller
             if($latest)
             {
                 $current_date = new \DateTime();
-                $current_date->sub(new \DateInterval('P5D'))->format('Y-m-d');
+                $current_date->sub(new \DateInterval('P6D'))->format('Y-m-d');
                 $data = $data->where('date','>=',$current_date);
             }
 
@@ -5928,6 +5928,7 @@ class StatsController extends Controller
             'deaths' => [],
             'recovered' => [],
         ];
+
         foreach($result AS $index=>$row)
         {
 
@@ -5943,36 +5944,44 @@ class StatsController extends Controller
             $result[$index]->capita['deaths'] = $row->deaths / ($population > 0 ? $population : 1) * 1000000;
             $result[$index]->capita['recovered'] = $row->recovered / ($population > 0 ? $population : 1) * 1000000;
             $result[$index]->capita['active'] = ($row->confirmed - $row->deaths - $row->recovered) / ($population > 0 ? $population : 1) * 1000000;
+            $result[$index]->rate['deaths'] = $row->deaths / ($row->confirmed > 0 ? $row->confirmed : 1);
+            $result[$index]->rate['recovered'] = $row->recovered / ($row->confirmed > 0 ? $row->confirmed : 1);
 
-            // 5D average and growth factor
-            if(count($five_days_average['confirmed']) > 5)
+
+            if(!$latest || ($latest && $x > 0))
             {
-                array_shift($five_days_average['confirmed']);
-            }
-            $five_days_average['confirmed'][] = $result[$index]->delta['confirmed'];
+                // 5D average and growth factor
+                if(count($five_days_average['confirmed']) > 5)
+                {
+                    array_shift($five_days_average['confirmed']);
+                }
+                $five_days_average['confirmed'][] = $result[$index]->delta['confirmed'];
 
-            if(count($five_days_average['deaths']) > 5)
-            {
-                array_shift($five_days_average['deaths']);
-            }
-            $five_days_average['deaths'][] = $result[$index]->delta['deaths'];
+                if(count($five_days_average['deaths']) > 5)
+                {
+                    array_shift($five_days_average['deaths']);
+                }
+                $five_days_average['deaths'][] = $result[$index]->delta['deaths'];
 
-            if(count($five_days_average['recovered']) > 5)
-            {
-                array_shift($five_days_average['recovered']);
-            }
-            $five_days_average['recovered'][] = $result[$index]->delta['recovered'];
+                if(count($five_days_average['recovered']) > 5)
+                {
+                    array_shift($five_days_average['recovered']);
+                }
+                $five_days_average['recovered'][] = $result[$index]->delta['recovered'];
 
-            $result[$index]->average = [];
-            $result[$index]->average['confirmed'] = array_sum($five_days_average['confirmed']) / count($five_days_average['confirmed']);
-            $result[$index]->average['deaths'] = array_sum($five_days_average['deaths']) / count($five_days_average['deaths']);
-            $result[$index]->average['recovered'] = array_sum($five_days_average['recovered']) / count($five_days_average['recovered']);
+
+                $result[$index]->average = [];
+                $result[$index]->average['confirmed'] = array_sum($five_days_average['confirmed']) / count($five_days_average['confirmed']);
+                $result[$index]->average['deaths'] = array_sum($five_days_average['deaths']) / count($five_days_average['deaths']);
+                $result[$index]->average['recovered'] = array_sum($five_days_average['recovered']) / count($five_days_average['recovered']);
+            }
 
             $result[$index]->growthfactor = [
                 'confirmed' => 0,
                 'deaths' => 0,
                 'recovered' => 0,
             ];
+
             if(isset($yesterday->average))
             {
                 $result[$index]->growthfactor['confirmed'] = $result[$index]->average['confirmed'] / ($yesterday->average['confirmed'] > 0 ? $yesterday->average['confirmed'] : 1);
@@ -5984,6 +5993,10 @@ class StatsController extends Controller
             // Prepare for next loop
             $yesterday = clone $result[$index];
             $x++;
+        }
+        if($latest)
+        {
+            array_shift($result);
         }
         return new CasesCollection($result);
     }
@@ -6114,59 +6127,57 @@ class StatsController extends Controller
 
     function generate_sidebar_list()
     {
-        $data = json_decode('{"name":{"full":"Papua New Guinea","country":"Papua New Guinea","state":"","country_id":false},"total":{"date":"2020-06-10","c":"8","d":"0","r":"8","a":0,"delta":{"c":0,"d":0,"r":0,"a":0},"capita":{"c":0.8942,"d":0,"r":0.8942,"a":0},"average":{"c":0,"d":0,"r":0},"growth":{"c":0,"d":0,"r":0},"percent":{"c":0,"d":0,"r":0},"stringencyindex":0},"states":[]}',true);
-        dump($data);
-
         $countries = Country::all();
         $data = [];
 
         foreach($countries AS $country)
         {
             $case = new CasesResource($this->compute_daily($country,false,true));
-            $total = $case[4];
-            $total->delta = $case[3]->delta;
-
-            $temp_country = [
-                'id' => $country->id,
-                'name' => [
-                    'country' => $country->name,
-                    'state' => false,
-                ],
-                'lat' => $country->lat,
-                'lng' => $country->lng,
-                'population' => $country->population,
-                'total' => $total,
-                'states' => []
-            ];
-
-            $states = State::where('country_id',$country->id)->get();
-            if(isset($states) && count($states) > 1)
+            if($case)
             {
-                foreach($states AS $state)
-                {
-                    $case = $this->compute_daily($country,$state,true);
+                $total = $case[4];
+                $total->delta = $case[3]->delta;
 
-                    if(count($case)>0)
+                $temp_country = [
+                    'id' => $country->id,
+                    'name' => [
+                        'country' => $country->name,
+                        'state' => false,
+                    ],
+                    'lat' => $country->lat,
+                    'lng' => $country->lng,
+                    'population' => $country->population,
+                    'total' => $total,
+                    'states' => []
+                ];
+
+                $states = State::where('country_id',$country->id)->get();
+                if(isset($states) && count($states) > 1)
+                {
+                    foreach($states AS $state)
                     {
-                        $temp_country['states'][] = [
-                            'id' => $state->id,
-                            'name' => [
-                                'country' => $country->name,
-                                'state' => $state->name,
-                            ],
-                            'total' => $case,
-                            'lat' => $state->lat,
-                            'lng' => $state->lng,
+                        $case = $this->compute_daily($country,$state,true);
+
+                        if(count($case)>0)
+                        {
+                            $temp_country['states'][] = [
+                                'id' => $state->id,
+                                'name' => [
+                                    'country' => $country->name,
+                                    'state' => $state->name,
+                                ],
+                                'total' => $case,
+                                'lat' => $state->lat,
+                                'lng' => $state->lng,
 //                            'total' => count($this->compute_daily($country,$state,true)),
-                        ];
+                            ];
+                        }
                     }
                 }
+
+                $data[] = $temp_country;
             }
-
-            $data[] = $temp_country;
         }
-
-        dump(json_decode(json_encode($data),true)[184]);
 
         file_put_contents(STATS . 'sidebar_list.json',json_encode($data));
         return response('Done generating sidebar list')->setStatusCode(Response::HTTP_OK);

@@ -281,7 +281,10 @@
                         confirmedAverage: [],
                         deathsAverage: [],
                         recoveredAverage: [],
+                        deathsRate: [],
+                        recoveredRate: [],
                         growthFactor: [],
+                        population: [],
                     },
                     positions: {
                         country: {},
@@ -299,7 +302,10 @@
                         confirmedAverage: {},
                         deathsAverage: {},
                         recoveredAverage: {},
+                        deathsRate: {},
+                        recoveredRate: {},
                         growthFactor: {},
+                        population: {},
                     }
                 },
                 'show_countries': true,
@@ -465,9 +471,23 @@
                             return a.total.average.r < b.total.average.r ? 1 : -1;
                         }
 
+                        else if(sort.key === 'deathsRate')
+                        {
+                            return a.total.rate.d < b.total.rate.d ? 1 : -1;
+                        }
+                        else if(sort.key === 'recoveredRate')
+                        {
+                            return a.total.rate.r < b.total.rate.r ? 1 : -1;
+                        }
+
                         else if(sort.key === 'growthFactor')
                         {
-                            return a.total.growthFactor.c < b.total.growthFactor.c ? 1 : -1;
+                            return a.total.growth.c < b.total.growth.c ? 1 : -1;
+                        }
+
+                        else if(sort.key === 'population')
+                        {
+                            return a.population < b.population ? 1 : -1;
                         }
                     });
 
@@ -479,6 +499,9 @@
                     {
                         data = _.cloneDeep(this.sorted_countries_source[sort.key].desc);
                     }
+
+                    console.log('data---');
+                    console.log(this.sorted_countries_list);
                 }
 
                 // Draw excluded countries
@@ -1509,6 +1532,11 @@
                         this.rankings.sorted.confirmedAverage.push({country : _.clone(countries[x].name.country), value : _.clone((data.total.average.c))});
                         this.rankings.sorted.deathsAverage.push({country : _.clone(countries[x].name.country), value : _.clone((data.total.average.d))});
                         this.rankings.sorted.recoveredAverage.push({country : _.clone(countries[x].name.country), value : _.clone((data.total.average.r))});
+
+                        this.rankings.sorted.deathsRate.push({country : _.clone(countries[x].name.country), value : _.clone(parseFloat(data.total.rate.d))});
+                        this.rankings.sorted.recoveredRate.push({country : _.clone(countries[x].name.country), value : _.clone(parseFloat(data.total.rate.r))});
+
+                        this.rankings.sorted.population.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.population))});
 
                         this.rankings.sorted.growthFactor.push({country : _.clone(countries[x].name.country), value : _.clone((data.total.growth.c))});
                     }

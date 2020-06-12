@@ -384,6 +384,14 @@
                     {
                         data.push(row.latest.growth.c);
                     }
+                    else if(field == 'deathsRate')
+                    {
+                        data.push(row.latest.rate.d);
+                    }
+                    else if(field == 'recoveredRate')
+                    {
+                        data.push(row.latest.rate.r);
+                    }
                     else if(field == 'stringencyIndex')
                     {
                         data.push(row.latest.stringencyindex);
@@ -496,6 +504,10 @@
                             d: 0,
                             r: 0,
                             a: 0,
+                        },
+                        rate: {
+                            d: 0,
+                            r: 0,
                         },
                         stringencyindex: 0
                     }

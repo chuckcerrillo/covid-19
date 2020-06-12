@@ -143,12 +143,15 @@
                     'confirmedAverage':'Average confirmed',
                     'deathsAverage':'Average deaths',
                     'recoveredAverage':'Average recovered',
+                    'deathsRate':'Death rate',
+                    'recoveredRate':'Recovery rate',
                     'growthFactor':'Growth Factor',
+                    'population':'Population',
                 },
                 active: [
                     'confirmed',
-                    'deaths',
-                    'recovered',
+                    'deathsRate',
+                    'recoveredRate',
                 ]
 
             }

@@ -5,7 +5,7 @@
             :class="
                 (config.dashboard ? 'justify-center ' : '')
                 +
-                (isSelected(data.name.country,false) ? 'bg-hoverslab ' : ((country_key % 2 == 1) ? 'bg-slab-primary ':'bg-slab-secondary '))
+                (isSelected(data.name.country,false) ? 'bg-hoverslab ' : ((country_key % 2 === 1) ? 'bg-slab-primary ':'bg-slab-secondary '))
             "
         >
             <div class="w-10 p-2 m-1 ml-0">
@@ -45,7 +45,12 @@
                 <div v-else-if="metric === 'deathsAverage'">{{data.total.average.d| numeralFormat}}</div>
                 <div v-else-if="metric === 'recoveredAverage'">{{data.total.average.r| numeralFormat}}</div>
 
-                <div v-else-if="metric === 'growthFactor'">{{data.total.growth.c| numeralFormat}}</div>
+                <div v-else-if="metric === 'deathsRate'">{{data.total.rate.d| numeralFormat('0,000.000%')}}</div>
+                <div v-else-if="metric === 'recoveredRate'">{{data.total.rate.r| numeralFormat('0,000.000%')}}</div>
+
+                <div v-else-if="metric === 'growthFactor'">{{data.total.growth.c| numeralFormat('0.000')}}</div>
+
+                <div v-else-if="metric === 'population'">{{data.population| numeralFormat('0,000')}}</div>
             </div>
 
         </div>
@@ -90,7 +95,12 @@
                 <div v-else-if="metric === 'deathsAverage'">{{row.total.average.d| numeralFormat}}</div>
                 <div v-else-if="metric === 'recoveredAverage'">{{row.total.average.r| numeralFormat}}</div>
 
-                <div v-else-if="metric === 'growthFactor'">{{row.total.growth.c| numeralFormat}}</div>
+                <div v-else-if="metric === 'deathsRate'">{{row.total.rate.d| numeralFormat('0,000.000%')}}</div>
+                <div v-else-if="metric === 'recoveredRate'">{{row.total.rate.r| numeralFormat('0,000.000%')}}</div>
+
+                <div v-else-if="metric === 'growthFactor'">{{row.total.growth.c| numeralFormat('0.000')}}</div>
+
+                <div v-else-if="metric === 'population'">{{row.population| numeralFormat('0,000')}}</div>
             </div>
 
             <div v-if="config.dashboard" class="w-120"></div>
@@ -115,19 +125,23 @@
                 'expanded' : false
             }
         },
+        mounted()
+        {
+            console.log(this.data.total.rate);
+        },
         methods: {
             isSelected(country,state)
             {
                 for(var x in this.compare)
                 {
                     var item = this.compare[x];
-                    if(country == item.country)
+                    if(country === item.country)
                     {
-                        if (state == false)
+                        if (state === false)
                         {
                             return true;
                         }
-                        else if (state == item.state)
+                        else if (state === item.state)
                         {
                             return true;
                         }
@@ -148,7 +162,7 @@
             config()
             {
                 return {
-                    dashboard: (this.settings && this.settings.dashboard == true) ? this.settings.dashboard : false,
+                    dashboard: (this.settings && this.settings.dashboard === true) ? this.settings.dashboard : false,
                 }
             }
         }

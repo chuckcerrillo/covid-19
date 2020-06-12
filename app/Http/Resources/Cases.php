@@ -41,6 +41,10 @@ class Cases extends JsonResource
                 'd' => round($this->growthfactor['deaths'],4),
                 'r' => round($this->growthfactor['recovered'],4),
             ],
+            'rate' => [
+                'd' => (float) $this->rate['deaths'],
+                'r' => (float) $this->rate['recovered'],
+            ],
         ];
     }
 }

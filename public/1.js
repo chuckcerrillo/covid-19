@@ -109,6 +109,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CountryStateItem",
   props: ['data', 'country_key', 'compare', 'sidebarExpanded', 'settings', 'fields', 'rank'],
@@ -117,15 +127,18 @@ __webpack_require__.r(__webpack_exports__);
       'expanded': false
     };
   },
+  mounted: function mounted() {
+    console.log(this.data.total.rate);
+  },
   methods: {
     isSelected: function isSelected(country, state) {
       for (var x in this.compare) {
         var item = this.compare[x];
 
-        if (country == item.country) {
-          if (state == false) {
+        if (country === item.country) {
+          if (state === false) {
             return true;
-          } else if (state == item.state) {
+          } else if (state === item.state) {
             return true;
           }
         }
@@ -143,7 +156,7 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     config: function config() {
       return {
-        dashboard: this.settings && this.settings.dashboard == true ? this.settings.dashboard : false
+        dashboard: this.settings && this.settings.dashboard === true ? this.settings.dashboard : false
       };
     }
   }
@@ -298,9 +311,12 @@ __webpack_require__.r(__webpack_exports__);
         'confirmedAverage': 'Average confirmed',
         'deathsAverage': 'Average deaths',
         'recoveredAverage': 'Average recovered',
-        'growthFactor': 'Growth Factor'
+        'deathsRate': 'Death rate',
+        'recoveredRate': 'Recovery rate',
+        'growthFactor': 'Growth Factor',
+        'population': 'Population'
       },
-      active: ['confirmed', 'deaths', 'recovered']
+      active: ['confirmed', 'deathsRate', 'recoveredRate']
     };
   },
   methods: {
@@ -369,7 +385,7 @@ var render = function() {
             (_vm.config.dashboard ? "justify-center " : "") +
             (_vm.isSelected(_vm.data.name.country, false)
               ? "bg-hoverslab "
-              : _vm.country_key % 2 == 1
+              : _vm.country_key % 2 === 1
               ? "bg-slab-primary "
               : "bg-slab-secondary ")
         },
@@ -538,11 +554,47 @@ var render = function() {
                             )
                           )
                         ])
+                      : metric === "deathsRate"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(
+                                _vm.data.total.rate.d,
+                                "0,000.000%"
+                              )
+                            )
+                          )
+                        ])
+                      : metric === "recoveredRate"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(
+                                _vm.data.total.rate.r,
+                                "0,000.000%"
+                              )
+                            )
+                          )
+                        ])
                       : metric === "growthFactor"
                       ? _c("div", [
                           _vm._v(
                             _vm._s(
-                              _vm._f("numeralFormat")(_vm.data.total.growth.c)
+                              _vm._f("numeralFormat")(
+                                _vm.data.total.growth.c,
+                                "0.000"
+                              )
+                            )
+                          )
+                        ])
+                      : metric === "population"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(
+                                _vm.data.population,
+                                "0,000"
+                              )
                             )
                           )
                         ])
@@ -718,11 +770,47 @@ var render = function() {
                                   )
                                 )
                               ])
+                            : metric === "deathsRate"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(
+                                      row.total.rate.d,
+                                      "0,000.000%"
+                                    )
+                                  )
+                                )
+                              ])
+                            : metric === "recoveredRate"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(
+                                      row.total.rate.r,
+                                      "0,000.000%"
+                                    )
+                                  )
+                                )
+                              ])
                             : metric === "growthFactor"
                             ? _c("div", [
                                 _vm._v(
                                   _vm._s(
-                                    _vm._f("numeralFormat")(row.total.growth.c)
+                                    _vm._f("numeralFormat")(
+                                      row.total.growth.c,
+                                      "0.000"
+                                    )
+                                  )
+                                )
+                              ])
+                            : metric === "population"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(
+                                      row.population,
+                                      "0,000"
+                                    )
                                   )
                                 )
                               ])
