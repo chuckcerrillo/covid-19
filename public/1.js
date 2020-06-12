@@ -316,7 +316,7 @@ __webpack_require__.r(__webpack_exports__);
         'growthFactor': 'Growth Factor',
         'population': 'Population'
       },
-      active: ['confirmed', 'deathsRate', 'recoveredRate']
+      active: ['confirmed', 'deaths', 'recovered']
     };
   },
   methods: {

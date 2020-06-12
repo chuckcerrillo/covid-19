@@ -150,8 +150,8 @@
                 },
                 active: [
                     'confirmed',
-                    'deathsRate',
-                    'recoveredRate',
+                    'deaths',
+                    'recovered',
                 ]
 
             }
