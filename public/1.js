@@ -127,9 +127,6 @@ __webpack_require__.r(__webpack_exports__);
       'expanded': false
     };
   },
-  mounted: function mounted() {
-    console.log(this.data.total.rate);
-  },
   methods: {
     isSelected: function isSelected(country, state) {
       for (var x in this.compare) {

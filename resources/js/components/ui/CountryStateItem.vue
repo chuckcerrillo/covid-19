@@ -125,10 +125,6 @@
                 'expanded' : false
             }
         },
-        mounted()
-        {
-            console.log(this.data.total.rate);
-        },
         methods: {
             isSelected(country,state)
             {

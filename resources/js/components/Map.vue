@@ -356,7 +356,7 @@
 
                         for(var y in this.data)
                         {
-                            if(this.data[y] && this.data[y].name && this.data[y].name === row.name)
+                            if(this.data[y] && this.data[y].name && this.data[y].name.country === row.name)
                             {
                                 country = _.clone(this.data[y]);
                             }
@@ -366,14 +366,14 @@
                             data.features.push({
                                 type: 'Feature',
                                 properties: {
-                                    name: row.name,
+                                    name: row.name.country,
                                     confirmedSurge: row.confirmedSurge,
                                     confirmed: parseInt(row.confirmedDelta),
                                 },
                                 geometry: {
                                     type: 'Point',
                                     coordinates: [
-                                        country.lng,
+                                        country.long,
                                         country.lat,
                                     ]
                                 }

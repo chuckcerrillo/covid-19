@@ -499,9 +499,6 @@
                     {
                         data = _.cloneDeep(this.sorted_countries_source[sort.key].desc);
                     }
-
-                    console.log('data---');
-                    console.log(this.sorted_countries_list);
                 }
 
                 // Draw excluded countries
@@ -1591,9 +1588,6 @@
                         }
                     }
                 }
-
-                console.log('ranking');
-                console.log(this.rankings.sorted);
 
                 this.draw_sorted_countries();
                 // this.draw_excluded_countries();
