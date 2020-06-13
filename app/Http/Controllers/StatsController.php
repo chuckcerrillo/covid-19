@@ -5876,7 +5876,7 @@ class StatsController extends Controller
             if($latest)
             {
                 $current_date = new \DateTime();
-                $current_date->sub(new \DateInterval('P6D'))->format('Y-m-d');
+                $current_date->sub(new \DateInterval('P15D'))->format('Y-m-d');
                 $data = $data->where('date','>=',$current_date);
             }
 
@@ -5951,19 +5951,19 @@ class StatsController extends Controller
             if(!$latest || ($latest && $x > 0))
             {
                 // 5D average and growth factor
-                if(count($five_days_average['confirmed']) > 5)
+                if(count($five_days_average['confirmed']) >= 5)
                 {
                     array_shift($five_days_average['confirmed']);
                 }
                 $five_days_average['confirmed'][] = $result[$index]->delta['confirmed'];
 
-                if(count($five_days_average['deaths']) > 5)
+                if(count($five_days_average['deaths']) >= 5)
                 {
                     array_shift($five_days_average['deaths']);
                 }
                 $five_days_average['deaths'][] = $result[$index]->delta['deaths'];
 
-                if(count($five_days_average['recovered']) > 5)
+                if(count($five_days_average['recovered']) >= 5)
                 {
                     array_shift($five_days_average['recovered']);
                 }
@@ -5984,6 +5984,15 @@ class StatsController extends Controller
 
             if(isset($yesterday->average))
             {
+                if($country->name === 'Afghanistan')
+                {
+                    echo $country->name . ' - ' . $row->date . '<br>';
+                    echo 'Avg confirmed: ' . $result[$index]->average['confirmed'] . '<br>';
+                    echo 'Yesterday avg: ' . $yesterday->average['confirmed'] . '<br>';
+                    echo 'Growth: ' . $result[$index]->average['confirmed'] / ($yesterday->average['confirmed'] > 0 ? $yesterday->average['confirmed'] : 1) . '<br><Br>';
+                }
+
+
                 $result[$index]->growthfactor['confirmed'] = $result[$index]->average['confirmed'] / ($yesterday->average['confirmed'] > 0 ? $yesterday->average['confirmed'] : 1);
                 $result[$index]->growthfactor['deaths'] = $result[$index]->average['deaths'] / ($yesterday->average['deaths'] > 0 ? $yesterday->average['deaths'] : 1);
                 $result[$index]->growthfactor['recovered'] = $result[$index]->average['recovered'] / ($yesterday->average['recovered'] > 0 ? $yesterday->average['recovered'] : 1);
@@ -5997,6 +6006,7 @@ class StatsController extends Controller
         if($latest)
         {
             array_shift($result);
+//            array_shift($result);
         }
         return new CasesCollection($result);
     }
@@ -6135,7 +6145,7 @@ class StatsController extends Controller
             $case = new CasesResource($this->compute_daily($country,false,true));
             if($case)
             {
-                $total = $case[4];
+                $total = $case[$case->count()-1];
                 $total->delta = $case[3]->delta;
 
                 $temp_country = [
