@@ -16,19 +16,20 @@ class Cases extends JsonResource
     {
         return [
             'date' => $this->date,
-            'c' => $this->confirmed,
-            'd' => $this->deaths,
-            'r' => $this->recovered,
-            'a' => $this->active,
+            'c' => (int) $this->confirmed,
+            'd' => (int) $this->deaths,
+            'r' => (int) $this->recovered,
+            'a' => (int) $this->active,
             'delta' => [
-                'c' => $this->delta['confirmed'],
-                'd' => $this->delta['deaths'],
-                'r' => $this->delta['recovered'],
+                'c' => (int) $this->delta['confirmed'],
+                'd' => (int) $this->delta['deaths'],
+                'r' => (int) $this->delta['recovered'],
             ],
             'capita' => [
                 'c' => round($this->capita['confirmed'],4),
-                'd' => round($this->capita['deaths']),
-                'r' => round($this->capita['recovered']),
+                'd' => round($this->capita['deaths'],4),
+                'r' => round($this->capita['recovered'],4),
+                'a' => round($this->capita['active'],4),
             ],
             'average' => [
                 'c' => round($this->average['confirmed'],4),
@@ -39,6 +40,10 @@ class Cases extends JsonResource
                 'c' => round($this->growthfactor['confirmed'],4),
                 'd' => round($this->growthfactor['deaths'],4),
                 'r' => round($this->growthfactor['recovered'],4),
+            ],
+            'rate' => [
+                'd' => (float) $this->rate['deaths'],
+                'r' => (float) $this->rate['recovered'],
             ],
         ];
     }

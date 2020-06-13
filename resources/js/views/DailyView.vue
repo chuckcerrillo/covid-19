@@ -10,6 +10,7 @@
                     <Latest v-if="getCompareLength() > 0 && (!isMobile || (isMobile && selectedCompareTab === 'all'))"
                             :data="comparisonData"
                             :active="view === 'daily' && selectedCompareTab === 'all'"
+                            :rankings="rankings"
                     />
                 </keep-alive>
             </div>
@@ -31,8 +32,8 @@
 </template>
 
 <script>
-    import Daily from "../components/Daily";
-    import Latest from "../components/CompareDaily";
+    import Daily from "../components/daily/Daily";
+    import Latest from "../components/daily/CompareDaily";
     export default {
         name: "DailyView",
         props: [
@@ -42,6 +43,7 @@
             'comparisonData',
             'compare',
             'view',
+            'rankings',
         ],
         components: {
             Daily,

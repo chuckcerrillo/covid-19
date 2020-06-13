@@ -113,7 +113,7 @@
 
 <script>
     import simplebar from 'simplebar-vue';
-    import StatsChart from "./StatsChart";
+    import StatsChart from "./charts/StatsChart";
     export default {
         name: "FullCountry",
         components: {

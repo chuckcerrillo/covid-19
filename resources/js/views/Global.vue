@@ -9,6 +9,7 @@
                         <img class="min-h-screen"
                             src="/img/backgrounds/transparent.png" style="opacity:0">
                         <Map
+                            v-if="map_countries && map_countries.length > 0"
                             class="w-full overflow-hidden absolute inset-x-0 inset-y-0"
                             style="position: absolute"
                             id="world_map"
@@ -287,8 +288,8 @@
     import 'simplebar/dist/simplebar.min.css';
     import moment from 'moment'
     import LineChart from "../components/charts/LineChart";
-    import ComparisonChart from "../components/ComparisonChart";
-    import StatsChart from "../components/StatsChart";
+    import ComparisonChart from "../components/charts/ComparisonChart";
+    import StatsChart from "../components/charts/StatsChart";
     import Map from '../components/Map';
 
     export default {
@@ -423,14 +424,7 @@
             },
             map_countries()
             {
-                var data = [];
-                var list = _.clone(this.ajax.countries_list_map);
-                for(var x in list)
-                {
-                    var row = list[x];
-
-                }
-                return _.clone(this.ajax.countries_list_map);
+                return this.ajax.countries_list_map;
             }
         }
     }

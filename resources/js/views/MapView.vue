@@ -7,12 +7,12 @@
                         <div class="absolute inset-x-0 top-0" style="bottom:9rem;">
                             <!--                        {{database.processed.dataset['Australia']}}-->
                             <!--                        <div v-if="ajax.rankings && ajax.rankings.confirmedSurge">{{ajax.rankings.confirmedSurge}}</div>-->
-                            <keep-alive>
+                            <keep-alive v-if="loaded">
                                 <Map
                                     class="w-full xl:rounded-lg overflow-hidden h-full"
                                     id="world_map"
                                     :enable="true"
-                                    :data="countries_sorted"
+                                    :data="database.processed.dataset"
                                     :database="database"
                                     :date="date"
                                     :rankings="ajax.rankings"
@@ -21,6 +21,9 @@
                                     :location="location"
                                 />
                             </keep-alive>
+                            <div v-else>
+                                Loading map data
+                            </div>
                         </div>
                         <div class="absolute inset-x-0 bottom-0">
                             <div class="my-2 py-2 pb-4 px-4 bg-slab-primary rounded">
@@ -120,6 +123,7 @@
             'countries_sorted',
             'getDaily',
             'database',
+            'loaded',
         ],
         data()
         {
@@ -152,6 +156,13 @@
         },
         mounted()
         {
+            var self = this;
+
+
+            setTimeout(function(){
+                self.$emit('loadMapData');
+            },100)
+
             axios.get('/api/stats/rankings')
                 .then(res => {
                     this.ajax.rankings = res.data;
@@ -159,7 +170,6 @@
                 .catch(error => {
 
                 });
-
 
             var self = this;
 
