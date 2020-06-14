@@ -36,14 +36,14 @@
                 <div v-else-if="metric === 'deathsDelta'">{{humanReadable(data.total.delta.d)}}</div>
                 <div v-else-if="metric === 'recoveredDelta'">{{humanReadable(data.total.delta.r)}}</div>
 
-                <div v-else-if="metric === 'confirmedCapita'">{{humanReadable(data.total.capita.c,'0,000.00')}}</div>
-                <div v-else-if="metric === 'deathsCapita'">{{humanReadable(data.total.capita.d,'0,000.00')}}</div>
-                <div v-else-if="metric === 'recoveredCapita'">{{humanReadable(data.total.capita.r,'0,000.00')}}</div>
-                <div v-else-if="metric === 'activeCapita'">{{humanReadable(data.total.capita.a,'0,000.00')}}</div>
+                <div v-else-if="metric === 'confirmedCapita'">{{humanReadable(data.total.capita.c,'float')}}</div>
+                <div v-else-if="metric === 'deathsCapita'">{{humanReadable(data.total.capita.d,'float')}}</div>
+                <div v-else-if="metric === 'recoveredCapita'">{{humanReadable(data.total.capita.r,'float')}}</div>
+                <div v-else-if="metric === 'activeCapita'">{{humanReadable(data.total.capita.a,'float')}}</div>
 
-                <div v-else-if="metric === 'confirmedAverage'">{{humanReadable(data.total.average.c,'0,000.00')}}</div>
-                <div v-else-if="metric === 'deathsAverage'">{{humanReadable(data.total.average.d,'0,000.00')}}</div>
-                <div v-else-if="metric === 'recoveredAverage'">{{humanReadable(data.total.average.r,'0,000.00')}}</div>
+                <div v-else-if="metric === 'confirmedAverage'">{{humanReadable(data.total.average.c,'float')}}</div>
+                <div v-else-if="metric === 'deathsAverage'">{{humanReadable(data.total.average.d,'float')}}</div>
+                <div v-else-if="metric === 'recoveredAverage'">{{humanReadable(data.total.average.r,'float')}}</div>
 
                 <div v-else-if="metric === 'deathsRate'">{{data.total.rate.d| numeralFormat('0,000.000%')}}</div>
                 <div v-else-if="metric === 'recoveredRate'">{{data.total.rate.r| numeralFormat('0,000.000%')}}</div>
@@ -85,14 +85,14 @@
                 <div v-else-if="metric === 'deathsDelta'">{{humanReadable(row.total.delta.d)}}</div>
                 <div v-else-if="metric === 'recoveredDelta'">{{humanReadable(row.total.delta.r)}}</div>
 
-                <div v-else-if="metric === 'confirmedCapita'">{{humanReadable(row.total.capita.c,'0,000.00')}}</div>
-                <div v-else-if="metric === 'deathsCapita'">{{humanReadable(row.total.capita.d,'0,000.00')}}</div>
-                <div v-else-if="metric === 'recoveredCapita'">{{humanReadable(row.total.capita.r,'0,000.00')}}</div>
-                <div v-else-if="metric === 'activeCapita'">{{humanReadable(row.total.capita.a,'0,000.00')}}</div>
+                <div v-else-if="metric === 'confirmedCapita'">{{humanReadable(row.total.capita.c,'float')}}</div>
+                <div v-else-if="metric === 'deathsCapita'">{{humanReadable(row.total.capita.d,'float')}}</div>
+                <div v-else-if="metric === 'recoveredCapita'">{{humanReadable(row.total.capita.r,'float')}}</div>
+                <div v-else-if="metric === 'activeCapita'">{{humanReadable(row.total.capita.a,'float')}}</div>
 
-                <div v-else-if="metric === 'confirmedAverage'">{{humanReadable(row.total.average.c,'0,000.00')}}</div>
-                <div v-else-if="metric === 'deathsAverage'">{{humanReadable(row.total.average.d,'0,000.00')}}</div>
-                <div v-else-if="metric === 'recoveredAverage'">{{humanReadable(row.total.average.r,'0,000.00')}}</div>
+                <div v-else-if="metric === 'confirmedAverage'">{{humanReadable(row.total.average.c,'float')}}</div>
+                <div v-else-if="metric === 'deathsAverage'">{{humanReadable(row.total.average.d,'float')}}</div>
+                <div v-else-if="metric === 'recoveredAverage'">{{humanReadable(row.total.average.r,'float')}}</div>
 
                 <div v-else-if="metric === 'deathsRate'">{{row.total.rate.d| numeralFormat('0,000.000%')}}</div>
                 <div v-else-if="metric === 'recoveredRate'">{{row.total.rate.r| numeralFormat('0,000.000%')}}</div>
@@ -156,24 +156,53 @@
                 var numeral = require('numeral');
                 if(!format)
                 {
-                    var format = '0,000.0';
+                    var format = 'whole';
                 }
 
                 if(value < 1000)
                 {
-                    return numeral(value).format(format);
+                    if(format === 'float')
+                    {
+                        return numeral(value).format('0,000.00');
+                    }
+                    else
+                    {
+                        return numeral(value).format('0,000');
+                    }
                 }
                 else if(value < 1000000)
                 {
-                    return numeral(value / 1000).format(format) + 'k';
+                    if(format === 'float')
+                    {
+                        return numeral(value/1000).format('0,000.00') + 'k';
+                    }
+                    else
+                    {
+                        return numeral(value/1000).format('0,000.0') + 'k';
+                    }
+
                 }
                 else if(value < 1000000000)
                 {
-                    return numeral(value / 1000000).format(format) + 'M';
+                    if(format === 'float')
+                    {
+                        return numeral(value/1000000).format('0,000.00') + 'M';
+                    }
+                    else
+                    {
+                        return numeral(value/1000000).format('0,000.0') + 'M';
+                    }
                 }
                 else if(value < 1000000000000)
                 {
-                    return numeral(value / 1000000000).format(format) + 'B';
+                    if(format === 'float')
+                    {
+                        return numeral(value/1000000000).format('0,000.00') + 'B';
+                    }
+                    else
+                    {
+                        return numeral(value/1000000000).format('0,000.0') + 'B';
+                    }
                 }
             }
         },
