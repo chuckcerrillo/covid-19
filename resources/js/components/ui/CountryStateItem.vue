@@ -20,7 +20,6 @@
                 <div v-else>+</div>
             </div>
             <div @click="selectCountry(data.name.country,false)" class="text-xs py-1 w-32 px-2 font-bold">{{data.name.country}}</div>
-
             <div
                 v-for="metric in fields"
                 v-if="fields.indexOf(metric) >= 0"
@@ -51,6 +50,7 @@
                 <div v-else-if="metric === 'growthFactor'">{{data.total.growth.c| numeralFormat('0.000')}}</div>
 
                 <div v-else-if="metric === 'population'">{{data.population| numeralFormat('0,000')}}</div>
+
             </div>
 
         </div>

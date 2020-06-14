@@ -29,7 +29,7 @@
             <div class="m-2 text-2xl font-bold">Changelog:</div>
             <simplebar class="p-2 rounded bg-slab-primary absolute inset-x-0 inset-y-0" style="position:absolute; top: 4rem; bottom: 2rem;">
                 <div class="m2 text-sm">
-                    <div class="font-bold">2020-06-12</div>
+                    <div class="font-bold">2020-06-13</div>
                     <ul class="list-disc ml-8 mr-4">
                         <li>Added all new ranking system. Numbers now appear next to the country in the sidebar and in the daily breakdown tabs. These numbers represent the position of that country based on the selected metric.</li>
                         <li>Rank numbers are shown in desktop view. Not yet fully implemented in mobile. The mobile update will come out soon after.</li>
