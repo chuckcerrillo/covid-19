@@ -6167,9 +6167,12 @@ class StatsController extends Controller
                     foreach($states AS $state)
                     {
                         $case = $this->compute_daily($country,$state,true);
-
                         if(count($case)>0)
                         {
+                            $total = $case[3];
+                            $total->delta = $case[2]->delta;
+                            $case = $total;
+
                             $temp_country['states'][] = [
                                 'id' => $state->id,
                                 'name' => [
