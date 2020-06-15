@@ -279,7 +279,7 @@ class StatsController extends Controller
         'Turkey' => 'Turkey',
         'UAE' => 'United Arab Emirates',
         'Uganda' => 'Uganda',
-        'United Kingdom' => 'United Kingdom',
+        'UK' => 'United Kingdom',
         'Ukraine' => 'Ukraine',
         'Uruguay' => 'Uruguay',
         'USA' => 'United States',
