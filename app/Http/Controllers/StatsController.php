@@ -6146,7 +6146,7 @@ class StatsController extends Controller
             if($case)
             {
                 $total = $case[$case->count()-1];
-                $total->delta = $case[3]->delta;
+                $total->delta = $case[$case->count()-2]->delta;
 
                 $temp_country = [
                     'id' => $country->id,
