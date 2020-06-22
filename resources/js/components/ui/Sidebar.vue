@@ -5,17 +5,49 @@
             <div class="text-xs mb-4">as of {{global.last_update}}</div>
 
             <div class="flex font-bold justify-between items-center">
-                <div class="m-2 ml-0">
-                    <div class="text-sm">Confirmed</div>
-                    <div class="text-2xl text-white">{{global.total.c| numeralFormat}}</div>
-                </div>
-                <div class="m-2">
-                    <div class="text-sm">Deaths</div>
-                    <div class="text-2xl text-white">{{global.total.d| numeralFormat}}</div>
-                </div>
-                <div class="m-2 mr-0">
-                    <div class="text-sm">Recovered</div>
-                    <div class="text-2xl text-white">{{global.total.r| numeralFormat}}</div>
+<!--                <div class="m-2 ml-0">-->
+<!--                    <div class="text-sm">Confirmed</div>-->
+<!--                    <div class="text-2xl text-white">{{global.total.c| numeralFormat}}</div>-->
+<!--                </div>-->
+<!--                <div class="m-2">-->
+<!--                    <div class="text-sm">Deaths</div>-->
+<!--                    <div class="text-2xl text-white">{{global.total.d| numeralFormat}}</div>-->
+<!--                </div>-->
+<!--                <div class="m-2 mr-0">-->
+<!--                    <div class="text-sm">Recovered</div>-->
+<!--                    <div class="text-2xl text-white">{{global.total.r| numeralFormat}}</div>-->
+<!--                </div>-->
+
+                <div
+                    v-for="(metric,index) in active"
+                    v-if="active.indexOf(metric) >= 0"
+                    class="m-2"
+                    :class="index === 0 ? 'ml-0' : index === 2 ? 'mr-0' : ''"
+                >
+                    <div v-if="metric === 'confirmed'"><div class="text-sm">Confirmed</div><div class="text-2xl text-white">{{global.total.c| numeralFormat}}</div></div>
+                    <div v-else-if="metric === 'deaths'"><div class="text-sm">Deaths</div><div class="text-2xl text-white">{{global.total.d| numeralFormat}}</div></div>
+                    <div v-else-if="metric === 'recovered'"><div class="text-sm">Recovered</div><div class="text-2xl text-white">{{global.total.r| numeralFormat}}</div></div>
+                    <div v-else-if="metric === 'active'"><div class="text-sm">Active</div><div class="text-2xl text-white">{{global.total.a| numeralFormat}}</div></div>
+
+                    <div v-else-if="metric === 'confirmedDelta'"><div class="text-sm">New confirmed</div><div class="text-2xl text-white">{{global.total.delta.c| numeralFormat}}</div></div>
+                    <div v-else-if="metric === 'deathsDelta'"><div class="text-sm">New deaths</div><div class="text-2xl text-white">{{global.total.delta.d| numeralFormat}}</div></div>
+                    <div v-else-if="metric === 'recoveredDelta'"><div class="text-sm">New recovered</div><div class="text-2xl text-white">{{global.total.delta.r| numeralFormat}}</div></div>
+
+                    <div v-else-if="metric === 'confirmedCapita'"><div class="text-sm">Confirmed per capita</div><div class="text-2xl text-white">{{global.total.capita.c| numeralFormat}}</div></div>
+                    <div v-else-if="metric === 'deathsCapita'"><div class="text-sm">Deaths per capita</div><div class="text-2xl text-white">{{global.total.capita.d| numeralFormat}}</div></div>
+                    <div v-else-if="metric === 'recoveredCapita'"><div class="text-sm">Recovered per capita</div><div class="text-2xl text-white">{{global.total.capita.r| numeralFormat}}</div></div>
+                    <div v-else-if="metric === 'activeCapita'"><div class="text-sm">Active per capita</div><div class="text-2xl text-white">{{global.total.capita.a| numeralFormat}}</div></div>
+
+                    <div v-else-if="metric === 'confirmedAverage'"><div class="text-sm">Average confirmed</div><div class="text-2xl text-white">{{global.total.average.c| numeralFormat}}</div></div>
+                    <div v-else-if="metric === 'deathsAverage'"><div class="text-sm">Average deaths</div><div class="text-2xl text-white">{{global.total.average.d| numeralFormat}}</div></div>
+                    <div v-else-if="metric === 'recoveredAverage'"><div class="text-sm">Average recovered</div><div class="text-2xl text-white">{{global.total.average.r| numeralFormat}}</div></div>
+
+                    <div v-else-if="metric === 'deathsRate'"><div class="text-sm">Death rate</div><div class="text-2xl text-white">{{global.total.rate.d| numeralFormat('0,000.000%')}}</div></div>
+                    <div v-else-if="metric === 'recoveredRate'"><div class="text-sm">Recovery rate</div><div class="text-2xl text-white">{{global.total.rate.r| numeralFormat('0,000.000%')}}</div></div>
+
+                    <div v-else-if="metric === 'growthFactor'"><div class="text-sm">Growth factor</div><div class="text-2xl text-white">{{global.total.growth.c| numeralFormat('0.000')}}</div></div>
+
+                    <div v-else-if="metric === 'population'"><div class="text-sm">Population</div><div class="text-2xl text-white">{{global.population| numeralFormat('0,000')}}</div></div>
                 </div>
             </div>
         </div>
@@ -127,6 +159,7 @@
             return {
                 ui: {
                     metrics: false,
+                    expanded: true,
                 },
                 metrics: {
                     'confirmed':'Confirmed cases',
