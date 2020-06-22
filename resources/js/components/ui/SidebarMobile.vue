@@ -19,7 +19,7 @@
 <!--                <div @click="showSelector=false" class="text-xs border border-lightslab bg-hoverslab p-1 px-2 rounded inline-block">Close</div>-->
                 <div class="cursor-pointer bg-darkslab text-heading rounded p-2 text-xs" @click="showSelector = false">Close panel</div>
             </div>
-            <div class="overflow-hidden rounded flex flex-col items-start absolute inset-x-0 border-b border-hoverslab" style="top: 3rem; bottom: 6.75rem">
+            <div class="overflow-hidden flex flex-col items-start absolute inset-x-0 border-b border-hoverslab top-3" :class="ui.expanded ? 'bottom-8' : 'bottom-2.5'">
                 <div class="flex items-center justify-start mb-2 mx-2 text-xs ">
                     <div class="mr-2">Sorting by {{sort_stats.key}} {{sort_stats.order}}</div>
                     <div @click="ui.metrics = true" class="underline">Choose metrics</div>
@@ -88,24 +88,49 @@
                 </div>
             </div>
 
-            <div class="overflow-hidden bg-heading-quaternary p-4 absolute inset-x-0 bottom-0 text-heading">
-                <div class="flex justify-between items-center">
+            <div class="overflow-hidden bg-heading-quaternary p-4 absolute inset-x-0 bottom-0 text-heading" :class="ui.expanded ? '' : 'py-2'">
+                <div v-if="ui.expanded" class="absolute top-0 right-0 text-xs bg-heading-tertiary rounded p-1 px-2 m-4" @click="ui.expanded = !ui.expanded">
+                    Collapse
+                </div>
+                <div v-else class="absolute top-0 right-0 text-xs bg-heading-tertiary rounded p-1 px-2 m-2" @click="ui.expanded = !ui.expanded">
+                    Expand
+                </div>
+                <div class="flex items-center">
                     <div class="xl:text-2xl tracking-tight font-bold">Global tally</div>
-                    <div class="text-xs xl:mb-4">as of {{global.last_update}}</div>
+                    <div class="ml-4 text-xs xl:mb-4">as of {{global.last_update}}</div>
                 </div>
 
-                <div class="flex font-bold justify-between items-center">
-                    <div class="m-2 ml-0 mb-0">
-                        <div class="text-sm">Confirmed</div>
-                        <div class="text-white">{{global.total.c| numeralFormat}}</div>
-                    </div>
-                    <div class="m-2 mb-0">
-                        <div class="text-sm">Deaths</div>
-                        <div class="text-white">{{global.total.d| numeralFormat}}</div>
-                    </div>
-                    <div class="m-2 mr-0 mb-0">
-                        <div class="text-sm">Recovered</div>
-                        <div class="text-white">{{global.total.r| numeralFormat}}</div>
+                <div class="flex font-bold justify-between items-center" v-if="ui.expanded">
+                    <div
+                        v-for="(metric,index) in active"
+                        v-if="active.indexOf(metric) >= 0"
+                        class="m-2"
+                        :class="index === 0 ? 'ml-0' : index === 2 ? 'mr-0' : ''"
+                    >
+                        <div v-if="metric === 'confirmed'"><div class="text-sm">Confirmed</div><div class="text-2xl text-white">{{global.total.c| numeralFormat}}</div></div>
+                        <div v-else-if="metric === 'deaths'"><div class="text-sm">Deaths</div><div class="text-2xl text-white">{{global.total.d| numeralFormat}}</div></div>
+                        <div v-else-if="metric === 'recovered'"><div class="text-sm">Recovered</div><div class="text-2xl text-white">{{global.total.r| numeralFormat}}</div></div>
+                        <div v-else-if="metric === 'active'"><div class="text-sm">Active</div><div class="text-2xl text-white">{{global.total.a| numeralFormat}}</div></div>
+
+                        <div v-else-if="metric === 'confirmedDelta'"><div class="text-sm">New confirmed</div><div class="text-2xl text-white">{{global.total.delta.c| numeralFormat}}</div></div>
+                        <div v-else-if="metric === 'deathsDelta'"><div class="text-sm">New deaths</div><div class="text-2xl text-white">{{global.total.delta.d| numeralFormat}}</div></div>
+                        <div v-else-if="metric === 'recoveredDelta'"><div class="text-sm">New recovered</div><div class="text-2xl text-white">{{global.total.delta.r| numeralFormat}}</div></div>
+
+                        <div v-else-if="metric === 'confirmedCapita'"><div class="text-sm">Confirmed per capita</div><div class="text-2xl text-white">{{global.total.capita.c| numeralFormat}}</div></div>
+                        <div v-else-if="metric === 'deathsCapita'"><div class="text-sm">Deaths per capita</div><div class="text-2xl text-white">{{global.total.capita.d| numeralFormat}}</div></div>
+                        <div v-else-if="metric === 'recoveredCapita'"><div class="text-sm">Recovered per capita</div><div class="text-2xl text-white">{{global.total.capita.r| numeralFormat}}</div></div>
+                        <div v-else-if="metric === 'activeCapita'"><div class="text-sm">Active per capita</div><div class="text-2xl text-white">{{global.total.capita.a| numeralFormat}}</div></div>
+
+                        <div v-else-if="metric === 'confirmedAverage'"><div class="text-sm">Average confirmed</div><div class="text-2xl text-white">{{global.total.average.c| numeralFormat}}</div></div>
+                        <div v-else-if="metric === 'deathsAverage'"><div class="text-sm">Average deaths</div><div class="text-2xl text-white">{{global.total.average.d| numeralFormat}}</div></div>
+                        <div v-else-if="metric === 'recoveredAverage'"><div class="text-sm">Average recovered</div><div class="text-2xl text-white">{{global.total.average.r| numeralFormat}}</div></div>
+
+                        <div v-else-if="metric === 'deathsRate'"><div class="text-sm">Death rate</div><div class="text-2xl text-white">{{global.total.rate.d| numeralFormat('0,000.000%')}}</div></div>
+                        <div v-else-if="metric === 'recoveredRate'"><div class="text-sm">Recovery rate</div><div class="text-2xl text-white">{{global.total.rate.r| numeralFormat('0,000.000%')}}</div></div>
+
+                        <div v-else-if="metric === 'growthFactor'"><div class="text-sm">Growth factor</div><div class="text-2xl text-white">{{global.total.growth.c| numeralFormat('0.000')}}</div></div>
+
+                        <div v-else-if="metric === 'population'"><div class="text-sm">Population</div><div class="text-2xl text-white">{{global.population| numeralFormat('0,000')}}</div></div>
                     </div>
                 </div>
             </div>
@@ -163,6 +188,7 @@
                 ],
                 ui: {
                     metrics: false,
+                    expanded: true,
                 },
             }
         },

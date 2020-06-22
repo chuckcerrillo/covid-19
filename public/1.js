@@ -278,6 +278,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -291,7 +323,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       ui: {
-        metrics: false
+        metrics: false,
+        expanded: true
       },
       metrics: {
         'confirmed': 'Confirmed cases',
@@ -876,31 +909,287 @@ var render = function() {
         _c(
           "div",
           { staticClass: "flex font-bold justify-between items-center" },
-          [
-            _c("div", { staticClass: "m-2 ml-0" }, [
-              _c("div", { staticClass: "text-sm" }, [_vm._v("Confirmed")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "text-2xl text-white" }, [
-                _vm._v(_vm._s(_vm._f("numeralFormat")(_vm.global.total.c)))
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "m-2" }, [
-              _c("div", { staticClass: "text-sm" }, [_vm._v("Deaths")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "text-2xl text-white" }, [
-                _vm._v(_vm._s(_vm._f("numeralFormat")(_vm.global.total.d)))
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "m-2 mr-0" }, [
-              _c("div", { staticClass: "text-sm" }, [_vm._v("Recovered")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "text-2xl text-white" }, [
-                _vm._v(_vm._s(_vm._f("numeralFormat")(_vm.global.total.r)))
-              ])
-            ])
-          ]
+          _vm._l(_vm.active, function(metric, index) {
+            return _vm.active.indexOf(metric) >= 0
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "m-2",
+                    class: index === 0 ? "ml-0" : index === 2 ? "mr-0" : ""
+                  },
+                  [
+                    metric === "confirmed"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Confirmed")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(_vm.global.total.c)
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "deaths"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Deaths")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(_vm.global.total.d)
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "recovered"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Recovered")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(_vm.global.total.r)
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "active"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Active")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(_vm.global.total.a)
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "confirmedDelta"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("New confirmed")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.delta.c
+                                )
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "deathsDelta"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("New deaths")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.delta.d
+                                )
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "recoveredDelta"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("New recovered")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.delta.r
+                                )
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "confirmedCapita"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Confirmed per capita")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.capita.c
+                                )
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "deathsCapita"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Deaths per capita")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.capita.d
+                                )
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "recoveredCapita"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Recovered per capita")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.capita.r
+                                )
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "activeCapita"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Active per capita")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.capita.a
+                                )
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "confirmedAverage"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Average confirmed")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.average.c
+                                )
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "deathsAverage"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Average deaths")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.average.d
+                                )
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "recoveredAverage"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Average recovered")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.average.r
+                                )
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "deathsRate"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Death rate")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.rate.d,
+                                  "0,000.000%"
+                                )
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "recoveredRate"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Recovery rate")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.rate.r,
+                                  "0,000.000%"
+                                )
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "growthFactor"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Growth factor")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(
+                                  _vm.global.total.growth.c,
+                                  "0.000"
+                                )
+                              )
+                            )
+                          ])
+                        ])
+                      : metric === "population"
+                      ? _c("div", [
+                          _c("div", { staticClass: "text-sm" }, [
+                            _vm._v("Population")
+                          ]),
+                          _c("div", { staticClass: "text-2xl text-white" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("numeralFormat")(
+                                  _vm.global.population,
+                                  "0,000"
+                                )
+                              )
+                            )
+                          ])
+                        ])
+                      : _vm._e()
+                  ]
+                )
+              : _vm._e()
+          }),
+          0
         )
       ]
     ),
@@ -936,7 +1225,7 @@ var render = function() {
                 },
                 [
                   _vm._v(
-                    "\n                        Choose metrics\n                    "
+                    "\n                            Choose metrics\n                        "
                   )
                 ]
               ),
@@ -993,9 +1282,9 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                    " +
+                          "\n                        " +
                             _vm._s(_vm.metrics[metric]) +
-                            "\n                "
+                            "\n                    "
                         )
                       ]
                     )
@@ -1068,7 +1357,7 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                        Back\n                    "
+                      "\n                            Back\n                        "
                     )
                   ]
                 )
@@ -1103,7 +1392,9 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                        " + _vm._s(metric) + " "
+                          "\n                            " +
+                            _vm._s(metric) +
+                            " "
                         ),
                         _vm.active.indexOf(index) >= 0
                           ? _c(
@@ -1137,7 +1428,7 @@ var staticRenderFns = [
     return _c("div", [
       _c("div", { staticClass: "tracking-tight font-bold" }, [
         _vm._v(
-          "\n                        Displayed metrics\n                    "
+          "\n                            Displayed metrics\n                        "
         )
       ]),
       _vm._v(" "),
