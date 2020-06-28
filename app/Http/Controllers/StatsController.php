@@ -5162,14 +5162,20 @@ class StatsController extends Controller
                                                 if(isset($input['confirmed']))
                                                 {
                                                     $today_input['confirmed'] -= $input['confirmed'] - $state_today->confirmed;
+                                                    if($today_input['confirmed'] < 0)
+                                                        $today_input['confirmed'] = 0;
                                                 }
                                                 if(isset($input['deaths']))
                                                 {
                                                     $today_input['deaths'] -= $input['deaths'] - $state_today->deaths;
+                                                    if($today_input['deaths'] < 0)
+                                                        $today_input['deaths'] = 0;
                                                 }
                                                 if(isset($input['recovered']))
                                                 {
                                                     $today_input['recovered'] -= $input['recovered'] - $state_today->recovered;
+                                                    if($today_input['recovered'] < 0)
+                                                        $today_input['recovered'] = 0;
                                                 }
 
                                                 DB::table('cases')
@@ -5254,14 +5260,20 @@ class StatsController extends Controller
                                             if(isset($input['confirmed']))
                                             {
                                                 $today_input['confirmed'] -= $input['confirmed'] - $state_today->confirmed;
+                                                if($today_input['confirmed'] < 0)
+                                                    $today_input['confirmed'] = 0;
                                             }
                                             if(isset($input['deaths']))
                                             {
                                                 $today_input['deaths'] -= $input['deaths'] - $state_today->deaths;
+                                                if($today_input['deaths'] < 0)
+                                                    $today_input['deaths'] = 0;
                                             }
                                             if(isset($input['recovered']))
                                             {
                                                 $today_input['recovered'] -= $input['recovered'] - $state_today->recovered;
+                                                if($today_input['recovered'] < 0)
+                                                    $today_input['recovered'] = 0;
                                             }
 
                                             DB::table('cases')
@@ -5558,14 +5570,20 @@ class StatsController extends Controller
                                         if(isset($input['confirmed']))
                                         {
                                             $today_input['confirmed'] -= $input['confirmed'] - $state_today->confirmed;
+                                            if($today_input['confirmed'] < 0)
+                                                $today_input['confirmed'] = 0;
                                         }
                                         if(isset($input['deaths']))
                                         {
                                             $today_input['deaths'] -= $input['deaths'] - $state_today->deaths;
+                                            if($today_input['deaths'] < 0)
+                                                $today_input['deaths'] = 0;
                                         }
                                         if(isset($input['recovered']))
                                         {
                                             $today_input['recovered'] -= $input['recovered'] - $state_today->recovered;
+                                            if($today_input['recovered'] < 0)
+                                                $today_input['recovered'] = 0;
                                         }
 
                                         DB::table('cases')
@@ -5650,14 +5668,20 @@ class StatsController extends Controller
                                     if(isset($input['confirmed']))
                                     {
                                         $today_input['confirmed'] -= $input['confirmed'] - $state_today->confirmed;
+                                        if($today_input['confirmed'] < 0)
+                                            $today_input['confirmed'] = 0;
                                     }
                                     if(isset($input['deaths']))
                                     {
                                         $today_input['deaths'] -= $input['deaths'] - $state_today->deaths;
+                                        if($today_input['deaths'] < 0)
+                                            $today_input['deaths'] = 0;
                                     }
                                     if(isset($input['recovered']))
                                     {
                                         $today_input['recovered'] -= $input['recovered'] - $state_today->recovered;
+                                        if($today_input['recovered'] < 0)
+                                            $today_input['recovered'] = 0;
                                     }
 
                                     DB::table('cases')
