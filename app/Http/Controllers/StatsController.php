@@ -5102,6 +5102,20 @@ class StatsController extends Controller
                                     $unspecified->deaths += $adjustments['deaths'];
                                     $unspecified->recovered += $adjustments['recovered'];
 
+
+                                    if($unspecified->confirmed < 0)
+                                    {
+                                        $unspecified->confirmed = 0;
+                                    }
+                                    if($unspecified->deaths < 0)
+                                    {
+                                        $unspecified->deaths = 0;
+                                    }
+                                    if($unspecified->recovered < 0)
+                                    {
+                                        $unspecified->recovered = 0;
+                                    }
+
                                     DB::table('cases')
                                         ->where('state_id',$unspecified->state_id)
                                         ->where('date',$date)
