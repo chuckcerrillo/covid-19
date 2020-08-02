@@ -146,9 +146,6 @@
             this.map = map;
             map.setZoom(this.options.zoom);
 
-            map.setCenter([6.679687499992383, 34.597041516152586]);
-
-
             if(this.settings)
             {
                 if(this.settings && this.settings.home)
@@ -178,9 +175,14 @@
             map.on('load',function(){
                 self.mapReady = true;
                 self.setLayers(self.layers);
+                console.log(self.location);
                 if(self.location)
                 {
-                    map.setCenter([self.location.longitude, self.location.latitude]);
+                    self.map.setCenter([self.location.lng, self.location.lat]);
+                }
+                else
+                {
+                    self.map.setCenter([6.679687499992383, 34.597041516152586]);
                 }
             })
         },
@@ -193,44 +195,120 @@
                     features: [
                     ]
                 };
+
+                if(this.data)
+                {
+                    var list = this.data;
+                }
+                else
+                {
+                    list = this.database.processed.dataset;
+                }
+
+                var allowedCountryStates = [
+                    'United States',
+                    'Denmark',
+                    'Australia',
+                    'Canada',
+                    'China',
+                ]
+
+                var omitCountries = [
+                    'Denmark',
+                    'China',
+                    'Australia',
+                    'United States',
+                    'China',
+                ]
+
+
+
                 if(!field)
                 {
                     field = 'confirmed';
                 }
 
-
                 if(['confirmed','deaths','recovered'].indexOf(field) !== -1)
                 {
-                    if (this.database && this.database.processed)
+                    if (list)
                     {
-                        for(var x in this.database.processed.dataset)
+                        for(var x in list)
                         {
-                            var row = this.database.processed.dataset[x];
-                            if(x !== 'Global')
+                            var row = list[x];
+
+                            if(
+                                // exclude global
+                                row.name.country === 'Global'
+
+                                ||
+                                // exclude countries from this list
+                                (
+                                    omitCountries.indexOf(row.name.country) !== -1
+                                    && row.name.state
+                                    && row.name.state.length === 0
+                                )
+
+                                ||
+                                // exclude states from countries not in this list
+                                (
+                                    row.name.state && row.name.state.length > 0
+                                    && allowedCountryStates.indexOf(row.name.country) === -1
+                                )
+
+
+
+                            )
                             {
-                                for(var y in row.daily)
+                                // If we encounter any of the items we want to exclude, skip to the next one
+                                continue;
+                            }
+                            else
+                            {
+                                if(!row.daily)
                                 {
-                                    if(row.daily[y])
+                                    data.features.push({
+                                        type: 'Feature',
+                                        properties: {
+                                            name: x,
+                                            confirmed: parseInt(row.total.c),
+                                            deaths: parseInt(row.total.d),
+                                            recovered: parseInt(row.total.r),
+                                        },
+                                        geometry: {
+                                            type: 'Point',
+                                            coordinates: [
+                                                _.clone(row.lng),
+                                                _.clone(row.lat),
+                                            ]
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    for(var y in row.daily)
                                     {
-                                        if(row.daily[y].date === this.date)
+                                        if(row.daily[y])
                                         {
-                                            data.features.push({
-                                                type: 'Feature',
-                                                properties: {
-                                                    name: x,
-                                                    confirmed: parseInt(row.daily[y].c),
-                                                    deaths: parseInt(row.daily[y].d),
-                                                    recovered: parseInt(row.daily[y].r),
-                                                },
-                                                geometry: {
-                                                    type: 'Point',
-                                                    coordinates: [
-                                                        row.long,
-                                                        row.lat,
-                                                    ]
-                                                }
-                                            });
-                                            break;
+                                            if(row.daily[y].date === this.date)
+                                            {
+                                                data.features.push({
+                                                    type: 'Feature',
+                                                    properties: {
+                                                        name: x,
+                                                        confirmed: parseInt(row.daily[y].c),
+                                                        deaths: parseInt(row.daily[y].d),
+                                                        recovered: parseInt(row.daily[y].r),
+                                                    },
+                                                    geometry: {
+                                                        type: 'Point',
+                                                        coordinates: [
+                                                            _.clone(row.long),
+                                                            _.clone(row.lat),
+                                                        ]
+                                                    }
+                                                });
+                                                break;
+                                            }
                                         }
                                     }
                                 }
@@ -242,7 +320,7 @@
                         for(var x in this.data)
                         {
                             var row = this.data[x];
-                            if(row.name !== 'Global')
+                            if(row.name.country !== 'Global' && (row.name.state === false || row.name.state.length === 0))
                             {
                                 data.features.push({
                                     type: 'Feature',
@@ -278,7 +356,7 @@
 
                         for(var y in this.data)
                         {
-                            if(this.data[y] && this.data[y].name && this.data[y].name === row.name)
+                            if(this.data[y] && this.data[y].name && this.data[y].name.country === row.name)
                             {
                                 country = _.clone(this.data[y]);
                             }
@@ -288,14 +366,14 @@
                             data.features.push({
                                 type: 'Feature',
                                 properties: {
-                                    name: row.name,
+                                    name: row.name.country,
                                     confirmedSurge: row.confirmedSurge,
                                     confirmed: parseInt(row.confirmedDelta),
                                 },
                                 geometry: {
                                     type: 'Point',
                                     coordinates: [
-                                        country.lng,
+                                        country.long,
                                         country.lat,
                                     ]
                                 }
@@ -715,8 +793,8 @@
             location: {
                 immediate: true,
                 deep: true,
-                handler(newvalue, oldvalue) {
-                    this.map.setCenter([newvalue.longitude, newvalue.latitude]);
+                handler(newvalue) {
+                    this.map.setCenter([newvalue.lng, newvalue.lat]);
                 }
             },
         }

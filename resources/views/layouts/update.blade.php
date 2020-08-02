@@ -35,7 +35,7 @@
         <li><a target="_blank" href="/statistics/generate_global_summary">Homepage: Global summary</a></li>
         <li><a target="_blank" href="/statistics/generate_at_a_glance">Homepage: At a glance</a></li>
         <li><a target="_blank" href="/statistics/generate_daily_ranking">Homepage: Daily Ranking</a></li>
-        <li><a target="_blank" href="/statistics/generate_all_countries">All: Countries and states list</a></li>
+{{--        <li><a target="_blank" href="/statistics/generate_all_countries">All: Countries and states list</a></li>--}}
         <li><a target="_blank" href="/statistics/generate_all_daily">Comparison: Daily stats used for comparison and charts</a></li>
         <li><a target="_blank" href="/statistics/update_json">Runs all of the above JSON-related scripts</a></li>
     </ul>

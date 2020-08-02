@@ -24,6 +24,7 @@ Route::get('/statistics/countries_list_map', 'StatsController@get_all_countries'
 
 
 Route::get('/statistics/harvest_oxford', 'StatsController@harvest_oxford');
+Route::get('/statistics/harvest_australia', 'StatsController@harvest_australia');
 Route::get('/statistics/harvest_annotations', 'StatsController@harvest_annotations');
 Route::get('/statistics/harvest_countries_and_states', 'StatsController@harvest_countries_and_states');
 Route::get('/statistics/harvest_cases_from_jh_timeline_us', 'StatsController@harvest_cases_from_jh_timeline_us');
@@ -49,6 +50,7 @@ Route::get('/statistics/generate_at_a_glance', 'StatsController@generate_at_a_gl
 Route::get('/statistics/generate_daily_ranking', 'StatsController@generate_daily_ranking');
 
 // Individual generation scripts for comparison pages
+Route::get('/statistics/generate_sidebar_list', 'StatsController@generate_sidebar_list');
 Route::get('/statistics/generate_all_countries', 'StatsController@generate_all_countries');
 Route::get('/statistics/generate_all_countries_daily', 'StatsController@generate_all_countries_daily');
 Route::get('/statistics/generate_all_states_daily', 'StatsController@generate_all_states_daily');

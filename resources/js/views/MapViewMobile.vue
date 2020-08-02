@@ -1,7 +1,7 @@
 <template>
     <div class="absolute inset-x-0 top-0 bottom-4">
         <div class="absolute inset-x-0 top-0 bottom-5">
-            <keep-alive>
+            <keep-alive v-if="loaded">
                 <Map
                     class="absolute inset-x-0 inset-y-0"
                     id="world_map"
@@ -15,6 +15,9 @@
                     :location="location"
                 />
             </keep-alive>
+            <div v-else>
+                Loading map data
+            </div>
         </div>
         <div @click="ui.events = true" :class="ui.events || ui.markers ? 'hidden' : 'block'" class="absolute top-0 left-0 z-20 p-2 rounded" style="background: rgba(0,0,0,0.5); top: 1rem; left: 1rem;">Events</div>
         <div v-if="ui.events" class="absolute top-0 bottom-5 inset-x-0 p-2 z-30" style="background: rgba(0,0,0,0.75)">
@@ -112,6 +115,7 @@
             'countries_sorted',
             'getDaily',
             'database',
+            'loaded',
         ],
         data()
         {
@@ -148,6 +152,10 @@
         },
         mounted()
         {
+            setTimeout(function(){
+                self.$emit('loadMapData');
+            },100)
+
             axios.get('/api/stats/rankings')
                 .then(res => {
                     this.ajax.rankings = res.data;

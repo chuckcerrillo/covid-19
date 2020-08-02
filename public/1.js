@@ -1,14 +1,58 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[1],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CountryStateItem.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CountryStateItem.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ui/CountryStateItem.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ui/CountryStateItem.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -77,7 +121,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CountryStateItem",
-  props: ['data', 'country_key', 'compare', 'sidebarExpanded', 'settings'],
+  props: ['data', 'country_key', 'compare', 'sidebarExpanded', 'settings', 'fields', 'rank'],
   data: function data() {
     return {
       'expanded': false
@@ -88,10 +132,10 @@ __webpack_require__.r(__webpack_exports__);
       for (var x in this.compare) {
         var item = this.compare[x];
 
-        if (country == item.country) {
-          if (state == false) {
+        if (country === item.country) {
+          if (state === false) {
             return true;
-          } else if (state == item.state) {
+          } else if (state === item.state) {
             return true;
           }
         }
@@ -109,40 +153,70 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     config: function config() {
       return {
-        dashboard: this.settings && this.settings.dashboard == true ? this.settings.dashboard : false
+        dashboard: this.settings && this.settings.dashboard === true ? this.settings.dashboard : false
       };
-    },
-    favourite: function favourite() {
-      if (this.settings && this.settings.favourite) {
-        return this.settings.favourite;
-      }
-
-      return false;
     }
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Sidebar.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Sidebar.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ui/Sidebar.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ui/Sidebar.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var simplebar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! simplebar-vue */ "./node_modules/simplebar-vue/dist/simplebar-vue.esm.js");
-/* harmony import */ var _components_CountryStateItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/CountryStateItem */ "./resources/js/components/CountryStateItem.vue");
+/* harmony import */ var _CountryStateItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CountryStateItem */ "./resources/js/components/ui/CountryStateItem.vue");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
-function _createForOfIteratorHelper(o) { if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) { var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var it, normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -211,9 +285,37 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   name: "Sidebar",
   components: {
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    CountryStateItem: _components_CountryStateItem__WEBPACK_IMPORTED_MODULE_1__["default"]
+    CountryStateItem: _CountryStateItem__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  props: ['global', 'sort_stats', 'countriesIndex', 'countries_sorted', 'selectCountry', 'compare'],
+  props: ['global', 'sort_stats', 'countriesIndex', 'countries_sorted', 'countries_states', 'selectCountry', 'compare', 'rankings'],
+  data: function data() {
+    return {
+      ui: {
+        metrics: false
+      },
+      metrics: {
+        'confirmed': 'Confirmed cases',
+        'deaths': 'Deaths',
+        'recovered': 'Recovered',
+        'active': 'Active cases',
+        'confirmedDelta': 'New confirmed',
+        'deathsDelta': 'New deaths',
+        'recoveredDelta': 'New recoveries',
+        'confirmedCapita': 'Confirmed per capita',
+        'deathsCapita': 'Deaths per capita',
+        'recoveredCapita': 'Recovered per capita',
+        'activeCapita': 'Active per 1M population',
+        'confirmedAverage': 'Average confirmed',
+        'deathsAverage': 'Average deaths',
+        'recoveredAverage': 'Average recovered',
+        'deathsRate': 'Death rate',
+        'recoveredRate': 'Recovery rate',
+        'growthFactor': 'Growth Factor',
+        'population': 'Population'
+      },
+      active: ['confirmed', 'deaths', 'recovered']
+    };
+  },
   methods: {
     toggleSort: function toggleSort(key) {
       if (this.sort_stats.key == key) {
@@ -226,48 +328,37 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         this.sort_stats.key = key;
       }
     },
-    findFavourite: function findFavourite(search) {
-      if (search) {
-        if (search.country) {
-          if (localStorage.favourites) {
-            var favourites = JSON.parse(localStorage.favourites);
-
-            var _iterator = _createForOfIteratorHelper(favourites),
-                _step;
-
-            try {
-              for (_iterator.s(); !(_step = _iterator.n()).done;) {
-                var row = _step.value;
-                if (row) if (row.country === search.country) {
-                  if (search.state) {
-                    if (row.state === search.state) {
-                      return true;
-                    }
-                  } else {
-                    return true;
-                  }
-                }
-              }
-            } catch (err) {
-              _iterator.e(err);
-            } finally {
-              _iterator.f();
-            }
-          }
+    toggleMetrics: function toggleMetrics() {
+      this.ui.metrics = !this.ui.metrics;
+    },
+    selectMetric: function selectMetric(index) {
+      if (this.active.indexOf(index) >= 0) {
+        this.active.splice(this.active.indexOf(index), 1);
+      } else {
+        if (this.active.length < 3) {
+          this.active.push(index);
+        }
+      }
+    },
+    get_rank: function get_rank(country) {
+      if (country) {
+        if (this.rankings && this.rankings.positions[this.sort_stats.key]) {
+          return this.rankings.positions[this.sort_stats.key][country];
         }
       }
 
       return false;
     }
-  }
+  },
+  mounted: function mounted() {}
 });
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CountryStateItem.vue?vue&type=template&id=32c9afb9&scoped=true&":
-/*!*******************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CountryStateItem.vue?vue&type=template&id=32c9afb9&scoped=true& ***!
-  \*******************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ui/CountryStateItem.vue?vue&type=template&id=00a0ffe4&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ui/CountryStateItem.vue?vue&type=template&id=00a0ffe4&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -285,31 +376,35 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass: "flex cursor-pointer items-center",
+          staticClass:
+            "flex hover:bg-lightslab cursor-pointer items-center h-8",
           class:
             (_vm.config.dashboard ? "justify-center " : "") +
-            (_vm.isSelected(_vm.data.name, false)
-              ? _vm.favourite
-                ? "bg-heading border border-heading mt-1 text-gray-800 rounded h-12"
-                : "bg-heading text-gray-800 h-8 mt-1"
-              : _vm.favourite
-              ? "bg-lightlabel hover:bg-heading hover:border-heading border border-lightlabel mt-1 text-gray-800 rounded h-12"
-              : _vm.country_key % 2 == 1
-              ? "bg-slab-primary hover:bg-lightslab h-8 mt-1"
-              : "bg-slab-secondary hover:bg-lightslab h-8 mt-1")
+            (_vm.isSelected(_vm.data.name.country, false)
+              ? "bg-hoverslab "
+              : _vm.country_key % 2 === 1
+              ? "bg-slab-primary "
+              : "bg-slab-secondary ")
         },
         [
+          _c("div", { staticClass: "w-10 p-2 m-1 ml-0" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "rounded bg-white font-bold px-1 text-xs text-center text-baseslab inline-block"
+              },
+              [_vm._v(_vm._s(_vm.rank))]
+            )
+          ]),
+          _vm._v(" "),
           _vm.data.states.length <= 1
             ? _c("div", { staticClass: "w-4 p-2 m-1 ml-0" })
             : _c(
                 "div",
                 {
                   staticClass:
-                    "w-5 m-0 border border-transparent hover:border-white rounded text-center font-bold",
-                  class:
-                    _vm.favourite || _vm.isSelected(_vm.data.name, false)
-                      ? "text-gray-800"
-                      : "text-white",
+                    "w-5 m-0 text-white border border-transparent hover:border-white rounded text-center font-bold",
                   on: {
                     click: function($event) {
                       return _vm.toggleExpand()
@@ -329,191 +424,431 @@ var render = function() {
               staticClass: "text-xs py-1 w-32 px-2 font-bold",
               on: {
                 click: function($event) {
-                  return _vm.selectCountry(_vm.data["name"], false)
+                  return _vm.selectCountry(_vm.data.name.country, false)
                 }
               }
             },
-            [_vm._v(_vm._s(_vm.data["name"]))]
+            [_vm._v(_vm._s(_vm.data.name.country))]
           ),
           _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data["name"], false)
-                }
-              }
-            },
-            [
-              _vm._v(
-                _vm._s(_vm._f("numeralFormat")(_vm.data["total"]["confirmed"]))
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data["name"], false)
-                }
-              }
-            },
-            [
-              _vm._v(
-                _vm._s(_vm._f("numeralFormat")(_vm.data["total"]["deaths"]))
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "text-xs pl-2 py-1 w-20",
-              on: {
-                click: function($event) {
-                  return _vm.selectCountry(_vm.data["name"], false)
-                }
-              }
-            },
-            [
-              _vm._v(
-                _vm._s(_vm._f("numeralFormat")(_vm.data["total"]["recovered"]))
-              )
-            ]
-          )
-        ]
+          _vm._l(_vm.fields, function(metric) {
+            return _vm.fields.indexOf(metric) >= 0
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "text-xs pl-2 py-1 w-20",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          _vm.data.name.country,
+                          _vm.data.name.state
+                        )
+                      }
+                    }
+                  },
+                  [
+                    metric === "confirmed"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(_vm._f("numeralFormat")(_vm.data.total.c))
+                          )
+                        ])
+                      : metric === "deaths"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(_vm._f("numeralFormat")(_vm.data.total.d))
+                          )
+                        ])
+                      : metric === "recovered"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(_vm._f("numeralFormat")(_vm.data.total.r))
+                          )
+                        ])
+                      : metric === "active"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(_vm._f("numeralFormat")(_vm.data.total.a))
+                          )
+                        ])
+                      : metric === "confirmedDelta"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.delta.c)
+                            )
+                          )
+                        ])
+                      : metric === "deathsDelta"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.delta.d)
+                            )
+                          )
+                        ])
+                      : metric === "recoveredDelta"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.delta.r)
+                            )
+                          )
+                        ])
+                      : metric === "confirmedCapita"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.capita.c)
+                            )
+                          )
+                        ])
+                      : metric === "deathsCapita"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.capita.d)
+                            )
+                          )
+                        ])
+                      : metric === "recoveredCapita"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.capita.r)
+                            )
+                          )
+                        ])
+                      : metric === "activeCapita"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.capita.a)
+                            )
+                          )
+                        ])
+                      : metric === "confirmedAverage"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.average.c)
+                            )
+                          )
+                        ])
+                      : metric === "deathsAverage"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.average.d)
+                            )
+                          )
+                        ])
+                      : metric === "recoveredAverage"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(_vm.data.total.average.r)
+                            )
+                          )
+                        ])
+                      : metric === "deathsRate"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(
+                                _vm.data.total.rate.d,
+                                "0,000.000%"
+                              )
+                            )
+                          )
+                        ])
+                      : metric === "recoveredRate"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(
+                                _vm.data.total.rate.r,
+                                "0,000.000%"
+                              )
+                            )
+                          )
+                        ])
+                      : metric === "growthFactor"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(
+                                _vm.data.total.growth.c,
+                                "0.000"
+                              )
+                            )
+                          )
+                        ])
+                      : metric === "population"
+                      ? _c("div", [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeralFormat")(
+                                _vm.data.population,
+                                "0,000"
+                              )
+                            )
+                          )
+                        ])
+                      : _vm._e()
+                  ]
+                )
+              : _vm._e()
+          })
+        ],
+        2
       ),
       _vm._v(" "),
       _vm._l(_vm.data.states, function(row, key, index) {
-        return _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.expanded,
-                expression: "expanded"
-              }
-            ],
-            key: key,
-            staticClass:
-              "pb-1 hover:bg-lightslab cursor-pointer flex items-center text-xs",
-            class:
-              (_vm.config.dashboard ? "justify-center " : "") +
-              (_vm.isSelected(_vm.data.name, row.name)
-                ? "bg-hoverslab"
-                : "bg-darkslab")
-          },
-          [
-            _c("div", { staticClass: "w-4 p-2 m-1 ml-0" }),
-            _vm._v(" "),
-            _c(
+        return row.total && row.total.delta
+          ? _c(
               "div",
               {
-                staticClass: "w-32 px-2",
-                on: {
-                  click: function($event) {
-                    return _vm.selectCountry(_vm.data["name"], row["name"])
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.expanded,
+                    expression: "expanded"
                   }
-                }
-              },
-              [_c("div", [_vm._v(_vm._s(row["name"]))])]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "w-20 pl-2",
-                on: {
-                  click: function($event) {
-                    return _vm.selectCountry(_vm.data["name"], row["name"])
-                  }
-                }
+                ],
+                key: key,
+                staticClass:
+                  "pb-1 hover:bg-lightslab cursor-pointer flex items-center text-xs",
+                class:
+                  (_vm.config.dashboard ? "justify-center " : "") +
+                  (_vm.isSelected(_vm.data.name.country, row.name.state)
+                    ? "bg-hoverslab"
+                    : "bg-darkslab")
               },
               [
-                _vm._v(
-                  _vm._s(
-                    _vm._f("numeralFormat")(
-                      row.total && row.total.confirmed
-                        ? row["total"]["confirmed"]
-                        : 0
-                    )
-                  )
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "w-20 pl-2",
-                on: {
-                  click: function($event) {
-                    return _vm.selectCountry(_vm.data["name"], row["name"])
-                  }
-                }
-              },
-              [
-                _vm._v(
-                  _vm._s(
-                    _vm._f("numeralFormat")(
-                      row.total && row.total.deaths ? row["total"]["deaths"] : 0
-                    )
-                  )
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "w-20 pl-2",
-                on: {
-                  click: function($event) {
-                    return _vm.selectCountry(_vm.data["name"], row["name"])
-                  }
-                }
-              },
-              [
-                _vm._v(
-                  _vm._s(
-                    _vm._f("numeralFormat")(
-                      row.total && row.total.recovered
-                        ? row["total"]["recovered"]
-                        : 0
-                    )
-                  )
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _vm.config.dashboard
-              ? _c("div", { staticClass: "w-120" })
-              : _vm._e()
-          ]
-        )
+                _vm._m(0, true),
+                _vm._v(" "),
+                _c("div", { staticClass: "w-4 p-2 m-1 ml-0" }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "w-32 px-2",
+                    on: {
+                      click: function($event) {
+                        return _vm.selectCountry(
+                          _vm.data.name.country,
+                          row.name.state
+                        )
+                      }
+                    }
+                  },
+                  [_c("div", [_vm._v(_vm._s(row.name.state))])]
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.fields, function(metric) {
+                  return _vm.fields.indexOf(metric) >= 0
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "text-xs pl-2 py-1 w-20",
+                          on: {
+                            click: function($event) {
+                              return _vm.selectCountry(
+                                row.name.country,
+                                row.name.state
+                              )
+                            }
+                          }
+                        },
+                        [
+                          metric === "confirmed"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(_vm._f("numeralFormat")(row.total.c))
+                                )
+                              ])
+                            : metric === "deaths"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(_vm._f("numeralFormat")(row.total.d))
+                                )
+                              ])
+                            : metric === "recovered"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(_vm._f("numeralFormat")(row.total.r))
+                                )
+                              ])
+                            : metric === "active"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(_vm._f("numeralFormat")(row.total.a))
+                                )
+                              ])
+                            : metric === "confirmedDelta"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.delta.c)
+                                  )
+                                )
+                              ])
+                            : metric === "deathsDelta"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.delta.d)
+                                  )
+                                )
+                              ])
+                            : metric === "recoveredDelta"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.delta.r)
+                                  )
+                                )
+                              ])
+                            : metric === "confirmedCapita"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.capita.c)
+                                  )
+                                )
+                              ])
+                            : metric === "deathsCapita"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.capita.d)
+                                  )
+                                )
+                              ])
+                            : metric === "recoveredCapita"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.capita.r)
+                                  )
+                                )
+                              ])
+                            : metric === "activeCapita"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.capita.a)
+                                  )
+                                )
+                              ])
+                            : metric === "confirmedAverage"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.average.c)
+                                  )
+                                )
+                              ])
+                            : metric === "deathsAverage"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.average.d)
+                                  )
+                                )
+                              ])
+                            : metric === "recoveredAverage"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(row.total.average.r)
+                                  )
+                                )
+                              ])
+                            : metric === "deathsRate"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(
+                                      row.total.rate.d,
+                                      "0,000.000%"
+                                    )
+                                  )
+                                )
+                              ])
+                            : metric === "recoveredRate"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(
+                                      row.total.rate.r,
+                                      "0,000.000%"
+                                    )
+                                  )
+                                )
+                              ])
+                            : metric === "growthFactor"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(
+                                      row.total.growth.c,
+                                      "0.000"
+                                    )
+                                  )
+                                )
+                              ])
+                            : metric === "population"
+                            ? _c("div", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("numeralFormat")(
+                                      row.population,
+                                      "0,000"
+                                    )
+                                  )
+                                )
+                              ])
+                            : _vm._e()
+                        ]
+                      )
+                    : _vm._e()
+                }),
+                _vm._v(" "),
+                _vm.config.dashboard
+                  ? _c("div", { staticClass: "w-120" })
+                  : _vm._e()
+              ],
+              2
+            )
+          : _vm._e()
       })
     ],
     2
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-10 p-2 m-1 ml-0" }, [
+      _c("div", { staticClass: "px-1 text-xs" })
+    ])
+  }
+]
 render._withStripped = true
 
 
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Sidebar.vue?vue&type=template&id=81fbb27e&scoped=true&":
-/*!**********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Sidebar.vue?vue&type=template&id=81fbb27e&scoped=true& ***!
-  \**********************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ui/Sidebar.vue?vue&type=template&id=ebfc9a68&scoped=true&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ui/Sidebar.vue?vue&type=template&id=ebfc9a68&scoped=true& ***!
+  \*************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -546,9 +881,7 @@ var render = function() {
               _c("div", { staticClass: "text-sm" }, [_vm._v("Confirmed")]),
               _vm._v(" "),
               _c("div", { staticClass: "text-2xl text-white" }, [
-                _vm._v(
-                  _vm._s(_vm._f("numeralFormat")(_vm.global.total.confirmed))
-                )
+                _vm._v(_vm._s(_vm._f("numeralFormat")(_vm.global.total.c)))
               ])
             ]),
             _vm._v(" "),
@@ -556,7 +889,7 @@ var render = function() {
               _c("div", { staticClass: "text-sm" }, [_vm._v("Deaths")]),
               _vm._v(" "),
               _c("div", { staticClass: "text-2xl text-white" }, [
-                _vm._v(_vm._s(_vm._f("numeralFormat")(_vm.global.total.deaths)))
+                _vm._v(_vm._s(_vm._f("numeralFormat")(_vm.global.total.d)))
               ])
             ]),
             _vm._v(" "),
@@ -564,9 +897,7 @@ var render = function() {
               _c("div", { staticClass: "text-sm" }, [_vm._v("Recovered")]),
               _vm._v(" "),
               _c("div", { staticClass: "text-2xl text-white" }, [
-                _vm._v(
-                  _vm._s(_vm._f("numeralFormat")(_vm.global.total.recovered))
-                )
+                _vm._v(_vm._s(_vm._f("numeralFormat")(_vm.global.total.r)))
               ])
             ])
           ]
@@ -578,23 +909,47 @@ var render = function() {
       "div",
       {
         staticClass:
-          "overflow-hidden bg-slab rounded m-4 flex flex-col items-start h-full p-4 relative"
+          "overflow-hidden bg-slab rounded m-4 px-2 flex flex-col items-start h-full p-4 relative"
       },
       [
-        _c("div", {}, [
-          _c("div", { staticClass: "tracking-tight font-bold" }, [
-            _vm._v("Countries and states "),
-            _c("br"),
-            _vm._v("(" + _vm._s(_vm.countriesIndex.length) + " total)")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "text-xs text-right" }, [
-            _vm._v(
-              "Sorting by " +
-                _vm._s(_vm.sort_stats.key) +
-                " " +
-                _vm._s(_vm.sort_stats.order)
-            )
+        _c("div", { staticClass: "w-full" }, [
+          _c("div", { staticClass: "flex flex-1 justify-between px-2" }, [
+            _c("div", { staticClass: "tracking-tight font-bold" }, [
+              _c("div", [_vm._v("Countries and states")]),
+              _vm._v(" "),
+              _c("div", [
+                _vm._v("(" + _vm._s(_vm.countriesIndex.length) + " total)")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-right" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "text-xs p-2 border rounded border-lightslab hover:bg-hoverslab inline-block cursor-pointer",
+                  on: {
+                    click: function($event) {
+                      return _vm.toggleMetrics()
+                    }
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n                        Choose metrics\n                    "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "my-2 text-xs text-right" }, [
+                _vm._v(
+                  "Sorting by " +
+                    _vm._s(_vm.sort_stats.key) +
+                    " " +
+                    _vm._s(_vm.sort_stats.order)
+                )
+              ])
+            ])
           ]),
           _vm._v(" "),
           _c(
@@ -604,6 +959,8 @@ var render = function() {
                 "flex font-bold py-2 text-xs items-center bg-slab-primary"
             },
             [
+              _c("div", { staticClass: "w-10 p-2 m-1 ml-0" }),
+              _vm._v(" "),
               _c("div", { staticClass: "w-4 p-2 m-1 ml-0" }),
               _vm._v(" "),
               _c(
@@ -620,50 +977,32 @@ var render = function() {
                 [_vm._v("Country / Region")]
               ),
               _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "confirmed" ? "bg-hoverslab" : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("confirmed")
-                    }
-                  }
-                },
-                [_vm._v("Confirmed")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class: _vm.sort_stats.key === "deaths" ? "bg-hoverslab" : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("deaths")
-                    }
-                  }
-                },
-                [_vm._v("Deaths")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
-                  class:
-                    _vm.sort_stats.key === "recovered" ? "bg-hoverslab" : "",
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleSort("recovered")
-                    }
-                  }
-                },
-                [_vm._v("Recovered")]
-              )
-            ]
+              _vm._l(_vm.active, function(metric) {
+                return _vm.active.indexOf(metric) >= 0
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "w-20 cursor-pointer p-2 overflow-hidden",
+                        class:
+                          _vm.sort_stats.key === metric ? "bg-hoverslab" : "",
+                        on: {
+                          click: function($event) {
+                            return _vm.toggleSort(metric)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm.metrics[metric]) +
+                            "\n                "
+                        )
+                      ]
+                    )
+                  : _vm._e()
+              })
+            ],
+            2
           )
         ]),
         _vm._v(" "),
@@ -675,44 +1014,113 @@ var render = function() {
               "simplebar",
               {
                 staticClass: "top-0 right-0 bottom-0 left-0",
-                staticStyle: { position: "absolute" },
-                attrs: { "data-simplebar-auto-hide": "false" }
+                staticStyle: { position: "absolute" }
+              },
+              _vm._l(_vm.countries_sorted, function(data, key, index) {
+                return _c("CountryStateItem", {
+                  key: key,
+                  attrs: {
+                    data: data,
+                    country_key: key,
+                    rank: _vm.get_rank(data.name.country),
+                    compare: _vm.compare,
+                    fields: _vm.active,
+                    metrics: _vm.metrics,
+                    settings: { dashboard: false }
+                  },
+                  on: { selectCountry: _vm.selectCountry }
+                })
+              }),
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.ui.metrics,
+                expression: "ui.metrics"
+              }
+            ],
+            staticClass: "bg-hoverslab absolute inset-0 p-4"
+          },
+          [
+            _c("div", { staticClass: "flex flex-1 justify-between" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "text-right" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "text-xs p-2 border rounded border-lightslab hover:bg-lightslab inline-block cursor-pointer",
+                    on: {
+                      click: function($event) {
+                        return _vm.toggleMetrics()
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                        Back\n                    "
+                    )
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "simplebar",
+              {
+                staticClass: "inset-x-0 bottom-0 top-4 m-2",
+                staticStyle: { position: "absolute" }
               },
               [
-                _vm._l(_vm.countries_sorted, function(data, key, index) {
-                  return _vm.findFavourite({ country: data.name, state: false })
-                    ? _c("CountryStateItem", {
-                        key: key,
-                        attrs: {
-                          data: data,
-                          country_key: key,
-                          compare: _vm.compare,
-                          settings: { dashboard: false, favourite: true }
-                        },
-                        on: { selectCountry: _vm.selectCountry }
-                      })
-                    : _vm._e()
-                }),
-                _vm._v(" "),
-                _vm._l(_vm.countries_sorted, function(data, key, index) {
-                  return !_vm.findFavourite({
-                    country: data.name,
-                    state: false
-                  })
-                    ? _c("CountryStateItem", {
-                        key: key,
-                        attrs: {
-                          data: data,
-                          country_key: key,
-                          compare: _vm.compare,
-                          settings: { dashboard: false }
-                        },
-                        on: { selectCountry: _vm.selectCountry }
-                      })
-                    : _vm._e()
-                })
-              ],
-              2
+                _c(
+                  "div",
+                  {},
+                  _vm._l(_vm.metrics, function(metric, index) {
+                    return _c(
+                      "div",
+                      {
+                        staticClass:
+                          "p-2 my-1 rounded border border-lightslab hover:border-white cursor-pointer text-sm",
+                        class:
+                          _vm.active.indexOf(index) >= 0
+                            ? "bg-heading text-slab"
+                            : "",
+                        on: {
+                          click: function($event) {
+                            return _vm.selectMetric(index)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " + _vm._s(metric) + " "
+                        ),
+                        _vm.active.indexOf(index) >= 0
+                          ? _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "inline-block text-xs bg-white text-hoverslab px-1 ml-2"
+                              },
+                              [_vm._v(_vm._s(_vm.active.indexOf(index) + 1))]
+                            )
+                          : _vm._e()
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]
             )
           ],
           1
@@ -721,25 +1129,40 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("div", { staticClass: "tracking-tight font-bold" }, [
+        _vm._v(
+          "\n                        Displayed metrics\n                    "
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-xs" }, [_vm._v("Choose up to 3 metrics")])
+    ])
+  }
+]
 render._withStripped = true
 
 
 
 /***/ }),
 
-/***/ "./resources/js/components/CountryStateItem.vue":
-/*!******************************************************!*\
-  !*** ./resources/js/components/CountryStateItem.vue ***!
-  \******************************************************/
+/***/ "./resources/js/components/ui/CountryStateItem.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/ui/CountryStateItem.vue ***!
+  \*********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _CountryStateItem_vue_vue_type_template_id_32c9afb9_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CountryStateItem.vue?vue&type=template&id=32c9afb9&scoped=true& */ "./resources/js/components/CountryStateItem.vue?vue&type=template&id=32c9afb9&scoped=true&");
-/* harmony import */ var _CountryStateItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CountryStateItem.vue?vue&type=script&lang=js& */ "./resources/js/components/CountryStateItem.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _CountryStateItem_vue_vue_type_template_id_00a0ffe4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CountryStateItem.vue?vue&type=template&id=00a0ffe4&scoped=true& */ "./resources/js/components/ui/CountryStateItem.vue?vue&type=template&id=00a0ffe4&scoped=true&");
+/* harmony import */ var _CountryStateItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CountryStateItem.vue?vue&type=script&lang=js& */ "./resources/js/components/ui/CountryStateItem.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -749,66 +1172,66 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _CountryStateItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _CountryStateItem_vue_vue_type_template_id_32c9afb9_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _CountryStateItem_vue_vue_type_template_id_32c9afb9_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _CountryStateItem_vue_vue_type_template_id_00a0ffe4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CountryStateItem_vue_vue_type_template_id_00a0ffe4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "32c9afb9",
+  "00a0ffe4",
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/CountryStateItem.vue"
+component.options.__file = "resources/js/components/ui/CountryStateItem.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/CountryStateItem.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************!*\
-  !*** ./resources/js/components/CountryStateItem.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************/
+/***/ "./resources/js/components/ui/CountryStateItem.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/ui/CountryStateItem.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CountryStateItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./CountryStateItem.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CountryStateItem.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CountryStateItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./CountryStateItem.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ui/CountryStateItem.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CountryStateItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/CountryStateItem.vue?vue&type=template&id=32c9afb9&scoped=true&":
-/*!*************************************************************************************************!*\
-  !*** ./resources/js/components/CountryStateItem.vue?vue&type=template&id=32c9afb9&scoped=true& ***!
-  \*************************************************************************************************/
+/***/ "./resources/js/components/ui/CountryStateItem.vue?vue&type=template&id=00a0ffe4&scoped=true&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/js/components/ui/CountryStateItem.vue?vue&type=template&id=00a0ffe4&scoped=true& ***!
+  \****************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CountryStateItem_vue_vue_type_template_id_32c9afb9_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./CountryStateItem.vue?vue&type=template&id=32c9afb9&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CountryStateItem.vue?vue&type=template&id=32c9afb9&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CountryStateItem_vue_vue_type_template_id_32c9afb9_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CountryStateItem_vue_vue_type_template_id_00a0ffe4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./CountryStateItem.vue?vue&type=template&id=00a0ffe4&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ui/CountryStateItem.vue?vue&type=template&id=00a0ffe4&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CountryStateItem_vue_vue_type_template_id_00a0ffe4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CountryStateItem_vue_vue_type_template_id_32c9afb9_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CountryStateItem_vue_vue_type_template_id_00a0ffe4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
 /***/ }),
 
-/***/ "./resources/js/components/Sidebar.vue":
-/*!*********************************************!*\
-  !*** ./resources/js/components/Sidebar.vue ***!
-  \*********************************************/
+/***/ "./resources/js/components/ui/Sidebar.vue":
+/*!************************************************!*\
+  !*** ./resources/js/components/ui/Sidebar.vue ***!
+  \************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Sidebar_vue_vue_type_template_id_81fbb27e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Sidebar.vue?vue&type=template&id=81fbb27e&scoped=true& */ "./resources/js/components/Sidebar.vue?vue&type=template&id=81fbb27e&scoped=true&");
-/* harmony import */ var _Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Sidebar.vue?vue&type=script&lang=js& */ "./resources/js/components/Sidebar.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _Sidebar_vue_vue_type_template_id_ebfc9a68_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Sidebar.vue?vue&type=template&id=ebfc9a68&scoped=true& */ "./resources/js/components/ui/Sidebar.vue?vue&type=template&id=ebfc9a68&scoped=true&");
+/* harmony import */ var _Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Sidebar.vue?vue&type=script&lang=js& */ "./resources/js/components/ui/Sidebar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -818,49 +1241,49 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Sidebar_vue_vue_type_template_id_81fbb27e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Sidebar_vue_vue_type_template_id_81fbb27e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Sidebar_vue_vue_type_template_id_ebfc9a68_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Sidebar_vue_vue_type_template_id_ebfc9a68_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "81fbb27e",
+  "ebfc9a68",
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/Sidebar.vue"
+component.options.__file = "resources/js/components/ui/Sidebar.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/Sidebar.vue?vue&type=script&lang=js&":
-/*!**********************************************************************!*\
-  !*** ./resources/js/components/Sidebar.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************/
+/***/ "./resources/js/components/ui/Sidebar.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/ui/Sidebar.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Sidebar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Sidebar.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Sidebar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ui/Sidebar.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/Sidebar.vue?vue&type=template&id=81fbb27e&scoped=true&":
-/*!****************************************************************************************!*\
-  !*** ./resources/js/components/Sidebar.vue?vue&type=template&id=81fbb27e&scoped=true& ***!
-  \****************************************************************************************/
+/***/ "./resources/js/components/ui/Sidebar.vue?vue&type=template&id=ebfc9a68&scoped=true&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/ui/Sidebar.vue?vue&type=template&id=ebfc9a68&scoped=true& ***!
+  \*******************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_template_id_81fbb27e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Sidebar.vue?vue&type=template&id=81fbb27e&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Sidebar.vue?vue&type=template&id=81fbb27e&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_template_id_81fbb27e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_template_id_ebfc9a68_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Sidebar.vue?vue&type=template&id=ebfc9a68&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ui/Sidebar.vue?vue&type=template&id=ebfc9a68&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_template_id_ebfc9a68_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_template_id_81fbb27e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_template_id_ebfc9a68_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

@@ -14,6 +14,11 @@
                     <div class="text-right text-green-400" v-else>done</div>
                 </div>
                 <div class="flex items-center text-xs w-44">
+                    <div class="w-32">Sidebar list</div>
+                    <div class="text-right text-lightlabel" v-if="!ajax_loading.sidebar_list">loading</div>
+                    <div class="text-right text-green-400" v-else>done</div>
+                </div>
+                <div class="flex items-center text-xs w-44">
                     <div class="w-32">Case counts</div>
                     <div class="text-right text-lightlabel" v-if="countryCasesStatus !== 'success' || stateCasesStatus !== 'success'">loading</div>
                     <div class="text-right text-green-400" v-else>done</div>
@@ -34,20 +39,22 @@
         </div>
         <div v-else class="h-full overflow-hidden relative">
             <div class="relative h-full xl:flex flex-1">
-                <div class="absolute top-0 left-0 bg-white text-black p-4 z-20 hidden">
+                <div class="absolute top-0 right-0 bg-white text-black p-4 z-20 hidden">
                     <div>Test</div>
                     <div @click="log_debug('policies')">Policies</div>
                     <div @click="log_debug('process_policies')">Process policies</div>
                 </div>
                 <Sidebar
-                    class="hidden xl:flex"
+                    class="hidden xl:flex w-160"
                     :class="view === 'dashboard' || view === 'about' || view === 'map'? 'xl:hidden' : ''"
                     :global="global()"
                     :sort_stats="sort_stats"
                     :countriesIndex="countriesIndex"
-                    :countries_sorted="countries_sorted"
+                    :countries_sorted="sorted_countries_list"
                     :selectCountry="selectCountry"
                     :compare="compare"
+                    :countries_states="countries_states"
+                    :rankings="rankings"
                 />
                 <SidebarMobile
                     class="xl:hidden"
@@ -55,9 +62,11 @@
                     :global="global()"
                     :sort_stats="sort_stats"
                     :countriesIndex="countriesIndex"
-                    :countries_sorted="countries_sorted"
+                    :countries_sorted="sorted_countries_list"
                     :selectCountry="selectCountry"
                     :compare="compare"
+                    :countries_states="countries_states"
+                    :rankings="rankings"
                     v-on:removeAllCompare="removeAllCompare"
                 />
 
@@ -71,6 +80,7 @@
                                     </div>
                                     <div v-if="row" v-for="(row,key,index) in compare" :key="key">
                                         <div @click="updateSelected(key)" class="cursor-pointer relative rounded rounded-b-none py-2 px-4 xl:pr-8 mx-1 whitespace-no-wrap overflow-hidden truncate ..." :class="selectedCompareTab == key ? 'bg-hoverslab' : 'bg-slab-primary'" style="max-width: 12rem;">
+                                            <div v-if="get_rank(row.country)>0" class="rounded bg-white font-bold px-1 text-xs text-center text-baseslab inline-block">{{get_rank(row.country)}}</div>
                                             {{getCompareLength() > 0 && row.state ? row.state + ' - ' : ''}}
                                             {{getCompareLength() > 0 ? row.country : '(none)'}}
                                             <div v-on:click.stop="removeCompare({country: row.country,state: row.state})" class="hidden xl:block text-lightlabel text-xs absolute top-0 right-0 m-2 px-2 pb-1 rounded hover:text-heading hover:bg-lightlabel">x</div>
@@ -103,6 +113,7 @@
                                     :comparisonData="getComparisonData()"
                                     :view="view"
                                     :compare="compare"
+                                    :rankings="rankings"
                                     v-on:updateCompare="emitCompare"
                                     v-on:updateSelected="updateSelected"
                                 />
@@ -139,6 +150,8 @@
                                     :annotations="getAnnotations()"
                                     :getDaily="getDaily()"
                                     :database="database"
+                                    :loaded="map_loaded"
+                                    v-on:loadMapData="prepare_map_data"
                                 />
                                 <MapView
                                     v-else-if="view === 'map'"
@@ -146,6 +159,8 @@
                                     :annotations="getAnnotations()"
                                     :getDaily="getDaily()"
                                     :database="database"
+                                    :loaded="map_loaded"
+                                    v-on:loadMapData="prepare_map_data"
 
                                 />
                             </keep-alive>
@@ -168,7 +183,7 @@
     import 'simplebar/dist/simplebar.min.css';
     import moment from 'moment'
     import {mapGetters} from 'vuex';
-    import SidebarMobile from "../components/SidebarMobile";
+    import SidebarMobile from "../components/ui/SidebarMobile";
     import DailyView from "./DailyView";
     import MapView from "./MapView";
     import MapViewMobile from "./MapViewMobile";
@@ -184,10 +199,10 @@
             MapView,
             MapViewMobile,
             PoliciesView: () => import('./PoliciesView'),
-            Sidebar: () => import('../components/Sidebar'),
+            Sidebar: () => import('../components/ui/Sidebar'),
             SidebarMobile,
-            StatsChart: () => import('../components/StatsChart'),
-            StatsChartMobile: () => import('../components/StatsChartMobile'),
+            StatsChart: () => import('../components/charts/StatsChart'),
+            StatsChartMobile: () => import('../components/charts/StatsChartMobile'),
             About: () => import('./About'),
             simplebar,
         },
@@ -207,7 +222,14 @@
                 this.options.compare_limit = 3;
             }
 
-            // LOCAL STORAGE THINGS
+            axios.get('/api/stats/get_sidebar_list')
+                .then(res => {
+                    this.sidebar_list = res.data;
+                    this.ajax_loading.sidebar_list = true;
+                })
+                .catch(error => {
+
+                });
 
             axios.get('/api/stats/annotations')
                 .then(res => {
@@ -241,7 +263,51 @@
                     'compare_limit' : 10,
                 },
                 'comparison' : [],
-
+                map_loaded: false,
+                rankings: {
+                    sorted: {
+                        country: [],
+                        confirmed: [],
+                        deaths: [],
+                        recovered: [],
+                        active: [],
+                        confirmedDelta: [],
+                        deathsDelta: [],
+                        recoveredDelta: [],
+                        confirmedCapita: [],
+                        deathsCapita: [],
+                        recoveredCapita: [],
+                        activeCapita: [],
+                        confirmedAverage: [],
+                        deathsAverage: [],
+                        recoveredAverage: [],
+                        deathsRate: [],
+                        recoveredRate: [],
+                        growthFactor: [],
+                        population: [],
+                    },
+                    positions: {
+                        country: {},
+                        confirmed: {},
+                        deaths: {},
+                        recovered: {},
+                        active: {},
+                        confirmedDelta: {},
+                        deathsDelta: {},
+                        recoveredDelta: {},
+                        confirmedCapita: {},
+                        deathsCapita: {},
+                        recoveredCapita: {},
+                        activeCapita: {},
+                        confirmedAverage: {},
+                        deathsAverage: {},
+                        recoveredAverage: {},
+                        deathsRate: {},
+                        recoveredRate: {},
+                        growthFactor: {},
+                        population: {},
+                    }
+                },
                 'show_countries': true,
                 'ui' : {
                     'content' : {
@@ -266,34 +332,39 @@
                 ajax_loading: {
                     oxford: false,
                     final: false,
+                    sidebar_list: false,
                 },
                 user: {
                     location: false,
                 },
+                sorted_countries_source: {},
+                sorted_countries_list: false,
+                timeout: false,
+                excludedCountries: [
+                    'Global',
+                    'Diamond Princess',
+                    'MS Zaandam',
+                ],
+                sidebar_list: [],
             }
         },
-        methods:{
-            localStorageReady()
-            {
+        methods: {
+            localStorageReady() {
 
                 console.log('Favourite countries');
                 console.log(localStorage.favourites);
 
-                if(localStorage.favourites)
-                {
+                if (localStorage.favourites) {
 
 
-                }
-                else
-                {
+                } else {
                     console.log('No favourites yet');
                 }
 
                 // console.log('Selected for comparison');
                 // console.log(localStorage.compare);
 
-                if(localStorage.compare && localStorage.compare.length > 0)
-                {
+                if (localStorage.compare && localStorage.compare.length > 0) {
                     // console.log('compare is not blank')
                     // console.log(localStorage.compare);
                     // if(JSON.parse(localStorage.compare))
@@ -309,6 +380,232 @@
                     // }
                 }
             },
+            prepare_map_data()
+            {
+                if(!this.map_loaded)
+                {
+                    for(var x in this.countries)
+                    {
+
+                        this.assembleDataset({
+                            country: this.countries[x].name.country,
+                            state: false,
+                        });
+
+                        if(this.countries[x].states && this.countries[x].states.length > 0)
+                        {
+                            for(var y in this.countries[x].states)
+                            {
+                                this.assembleDataset({
+                                    country: this.countries[x].name.country,
+                                    state: this.countries[x].states[y].name.state,
+                                });
+                            }
+                        }
+                    }
+                    this.map_loaded = true;
+                }
+            },
+            draw_sorted_countries()
+            {
+                clearTimeout(this.timeout);
+                var sort = this.sort_stats;
+                this.sorted_countries_list = [];
+                var country_state_map = this.countries_states();
+                var data = [], source = [], excluded = [];
+                if(this.sorted_countries_source && this.sorted_countries_source[sort.key] && this.sorted_countries_source[sort.key][sort.order])
+                {
+                    data = _.cloneDeep(this.sorted_countries_source[sort.key][sort.order]);
+                }
+                else
+                {
+                    source = this.sidebar_list;
+                    for(var x in source)
+                    {
+                        if(this.excludedCountries.indexOf(source[x].name.country) === -1)
+                        {
+                            data.push(_.cloneDeep(source[x]));
+                        }
+                        else
+                        {
+                            excluded.push(_.cloneDeep(source[x]));
+                        }
+                    }
+
+                    if(!this.sorted_countries_source[sort.key])
+                    {
+                        this.sorted_countries_source[sort.key] = {};
+                    }
+
+                    data.sort(function (a, b) {
+                        if(sort.key === 'country')
+                        {
+                            return a.name.country.toUpperCase() > b.name.country.toUpperCase() ? 1 : -1;
+                        }
+                        else if(sort.key === 'confirmed')
+                        {
+                            return a.total.c < b.total.c ? 1 : -1;
+                        }
+                        else if(sort.key === 'deaths')
+                        {
+                            return a.total.d < b.total.d ? 1 : -1;
+                        }
+                        else if(sort.key === 'recovered')
+                        {
+                            return a.total.r < b.total.r ? 1 : -1;
+                        }
+                        else if(sort.key === 'active')
+                        {
+                            return a.total.a < b.total.a ? 1 : -1;
+                        }
+
+                        else if(sort.key === 'confirmedDelta')
+                        {
+                            return a.total.delta.c < b.total.delta.c ? 1 : -1;
+                        }
+                        else if(sort.key === 'deathsDelta')
+                        {
+                            return a.total.delta.d < b.total.delta.d ? 1 : -1;
+                        }
+                        else if(sort.key === 'recoveredDelta')
+                        {
+                            return a.total.delta.r < b.total.delta.r ? 1 : -1;
+                        }
+
+                        else if(sort.key === 'confirmedCapita')
+                        {
+                            return a.total.capita.c < b.total.capita.c ? 1 : -1;
+                        }
+                        else if(sort.key === 'deathsCapita')
+                        {
+                            return a.total.capita.d < b.total.capita.d ? 1 : -1;
+                        }
+                        else if(sort.key === 'recoveredCapita')
+                        {
+                            return a.total.capita.r < b.total.capita.r ? 1 : -1;
+                        }
+                        else if(sort.key === 'activeCapita')
+                        {
+                            return a.total.capita.a < b.total.capita.a ? 1 : -1;
+                        }
+
+                        else if(sort.key === 'confirmedAverage')
+                        {
+                            return a.total.average.c < b.total.average.c ? 1 : -1;
+                        }
+                        else if(sort.key === 'deathsAverage')
+                        {
+                            return a.total.average.d < b.total.average.d ? 1 : -1;
+                        }
+                        else if(sort.key === 'recoveredAverage')
+                        {
+                            return a.total.average.r < b.total.average.r ? 1 : -1;
+                        }
+
+                        else if(sort.key === 'deathsRate')
+                        {
+                            return a.total.rate.d < b.total.rate.d ? 1 : -1;
+                        }
+                        else if(sort.key === 'recoveredRate')
+                        {
+                            return a.total.rate.r < b.total.rate.r ? 1 : -1;
+                        }
+
+                        else if(sort.key === 'growthFactor')
+                        {
+                            return a.total.growth.c < b.total.growth.c ? 1 : -1;
+                        }
+
+                        else if(sort.key === 'population')
+                        {
+                            return a.population < b.population ? 1 : -1;
+                        }
+                    });
+
+                    this.sorted_countries_source[sort.key].desc = _.cloneDeep(data);
+                    data.reverse();
+                    this.sorted_countries_source[sort.key].asc = _.cloneDeep(data);
+
+                    if(sort.order === 'desc')
+                    {
+                        data = _.cloneDeep(this.sorted_countries_source[sort.key].desc);
+                    }
+                }
+
+                // Draw excluded countries
+                for(var x in excluded)
+                {
+                    // var row = _.cloneDeep(this.assembleDataset({
+                    //     country: this.excludedCountries[x],
+                    //     state: false
+                    // }));
+                    var row = _.cloneDeep(excluded[x]);
+
+                    // row.total.delta = _.cloneDeep(row.daily.slice(-2,-1)[0].delta);
+
+                    row.states = [];
+                    if(row)
+                    {
+                        if(row.name.country && country_state_map[row.name.country])
+                        {
+                            for(var y in country_state_map[row.name.country])
+                            {
+                                if(country_state_map[row.name.country][y] !== '(Unspecified)')
+                                {
+                                    var state_row = _.cloneDeep(this.assembleDataset({
+                                        country: row.name.country,
+                                        state: country_state_map[row.name.country][y]
+                                    }));
+                                    // if(state_row && state_row.daily)
+                                    // {
+                                    //     state_row.total.delta = _.cloneDeep(state_row.daily.slice(-2,-1)[0].delta);
+                                    // }
+                                    row.states.push(
+                                        _.cloneDeep(state_row)
+                                    );
+                                }
+                            }
+                        }
+                        data.push(_.cloneDeep(row));
+                    }
+                }
+
+
+                this.draw_next(data,50,150);
+                // var self = this;
+                // setTimeout(function(){
+                //     self.sorted_countries_list = data;
+                // },1)
+
+            },
+            draw_next(data,first,limit,count)
+            {
+                var self = this;
+                if(!count)
+                    var count = 0;
+                if(!limit)
+                    var limit = first;
+
+                self.timeout = setTimeout(function(){
+                    if(count === 0)
+                    {
+                        var batch = data.splice(0,first);
+                    }
+                    else
+                    {
+                        var batch = data.splice(0,limit);
+                    }
+
+                    for(var y in batch)
+                    {
+                        self.sorted_countries_list.push(_.cloneDeep(batch[y]));
+                    }
+                    if(data.length > 0)
+                    {
+                        self.draw_next(data,first,limit,count++);
+                    }
+                },1)
+            },
             log_debug(item)
             {
                 if(item === 'policies')
@@ -319,6 +616,11 @@
                 {
                     this.processGovtResponse();
                 }
+                if(item === 'dataset')
+                {
+                    console.log(this.database.processed.dataset);
+                }
+
             },
             updateChartSettings(settings)
             {
@@ -704,27 +1006,32 @@
 
                 var population = 0,
                     lat = 0, long = 0,
+                    total = false,
                     state = false;
 
-                if(!daily && !name)
-                {
+                // if(!daily || !name)
+                // {
 
                     if(source.state)
                     {
-                        for(var x in country.states)
+                        if(country && country.states)
                         {
-                            if(country.states[x].name == source.state)
+                            for(var x in country.states)
                             {
-                                state = _.clone(country.states[x]);
-                                break;
+                                if(country.states[x].name.state === source.state)
+                                {
+                                    state = _.clone(country.states[x]);
+                                    break;
+                                }
                             }
                         }
 
                         if(state)
                         {
-                            lat = state.lat;
-                            long = state.lng;
+                            lat = _.clone(state.lat);
+                            long = _.clone(state.lng);
                             population = state.population;
+                            total = _.cloneDeep(state.total);
                         }
                     }
                     else
@@ -732,9 +1039,10 @@
                         lat = country.lat;
                         long = country.lng;
                         population = country.population;
+                        total = _.cloneDeep(country.total);
                     }
 
-                }
+                // }
 
 
                 row = {
@@ -744,8 +1052,20 @@
                     population: population,
                     annotations: [],
                     daily: (daily ? daily : this.getDaily(source)),
+                    total: total,
                 }
-                row.total = row.daily[row.daily.length - 1];
+
+                row.total = {
+                    c: 0,
+                    d: 0,
+                    r: 0,
+                }
+
+                if(row.daily)
+                {
+                    row.total = row.daily[row.daily.length - 1];
+                }
+
 
                 if(this.database.raw.raw_annotations)
                 {
@@ -894,7 +1214,7 @@
                         {
                             if(this.countryCases[compare.country] && this.countryCases[compare.country].daily)
                             {
-                                var daily = _.clone(this.countryCases[compare.country].daily);
+                                var daily = _.cloneDeep(this.countryCases[compare.country].daily);
                                 for(var x in daily)
                                 {
                                     daily[x].delta.a = daily[x].delta.c - daily[x].delta.d - daily[x].delta.r;
@@ -936,9 +1256,19 @@
 
                             for(var x in country.states)
                             {
-                                if(country.states[x] && country.states[x].id && country.states[x].name == compare.state)
+                                if(country.states[x] && country.states[x].id && country.states[x].name.state === compare.state)
                                 {
-                                    var daily = _.clone(this.stateCases[country.states[x].id].daily);
+                                    if(this.stateCases && this.stateCases[country.states[x].id])
+                                    {
+                                        var daily = _.cloneDeep(this.stateCases[country.states[x].id].daily);
+                                    }
+                                    else
+                                    {
+                                        var daily = [];
+                                    }
+
+
+
                                     for(var x in daily)
                                     {
                                         daily[x].delta.a = daily[x].delta.c - daily[x].delta.d - daily[x].delta.r;
@@ -1056,6 +1386,20 @@
                 }
                 this.$emit('updateCompare',_.cloneDeep(this.compare));
             },
+            countries_states()
+            {
+                var data = {};
+                for(var x in this.countries)
+                {
+                    var row = _.cloneDeep(this.countries[x]);
+                    data[row.name] = [];
+                    for(var y in row.states)
+                    {
+                        data[row.name].push(_.clone(row.states[y].name));
+                    }
+                }
+                return data;
+            },
             countries_and_stats()
             {
                 return _.clone(this.countries);
@@ -1085,11 +1429,6 @@
                     country: 'Global',
                     state: false
                 }
-
-                if(data.total)
-                {
-                    data.total.active = data.total.confirmed - data.total.deaths - data.total.recovered;
-                }
                 return data;
             },
             globalDataset()
@@ -1104,9 +1443,10 @@
                     var row = this.global().daily[x];
                     daily.push({
                         'date' : x,
-                        'confirmed' : row.confirmed,
-                        'deaths' : row.deaths,
-                        'recovered' : row.recovered
+                        'confirmed' : row.c,
+                        'deaths' : row.d,
+                        'recovered' : row.r,
+                        'active' : row.a,
                     });
                 }
 
@@ -1203,12 +1543,116 @@
             },
             preProcessData()
             {
-                var countries = _.clone(this.countries_and_stats());
+                // var countries = _.clone(this.countries_and_stats());
+                var countries = _.clone(this.sidebar_list);
+                var countries_states = this.countries_states();
+                var self = this;
+
+                var excluded = this.excludedCountries;
+
                 for(var x in countries)
                 {
-                    this.assembleDataset({country:countries[x].name})
+                    // var data = this.assembleDataset({country:countries[x].name})
+                    var data = countries[x];
+                    setTimeout(function(){
+                        self.assembleDataset({country:data.name.country})
+                    },1);
+
+
+                    if(excluded.indexOf(countries[x].name.country) === -1)
+                    {
+                        this.rankings.sorted.country.push({country : _.clone(countries[x].name.country), value : _.clone(countries[x].name.country)});
+                        this.rankings.sorted.confirmed.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.total.c))});
+                        this.rankings.sorted.deaths.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.total.d))});
+                        this.rankings.sorted.recovered.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.total.r))});
+                        this.rankings.sorted.active.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.total.a))});
+
+                        this.rankings.sorted.confirmedDelta.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.total.delta.c))});
+                        this.rankings.sorted.deathsDelta.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.total.delta.d))});
+                        this.rankings.sorted.recoveredDelta.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.total.delta.r))});
+
+                        this.rankings.sorted.confirmedCapita.push({country : _.clone(countries[x].name.country), value : _.clone((data.total.capita.c))});
+                        this.rankings.sorted.deathsCapita.push({country : _.clone(countries[x].name.country), value : _.clone((data.total.capita.d))});
+                        this.rankings.sorted.recoveredCapita.push({country : _.clone(countries[x].name.country), value : _.clone((data.total.capita.r))});
+                        this.rankings.sorted.activeCapita.push({country : _.clone(countries[x].name.country), value : _.clone((data.total.capita.a))});
+
+                        this.rankings.sorted.confirmedAverage.push({country : _.clone(countries[x].name.country), value : _.clone((data.total.average.c))});
+                        this.rankings.sorted.deathsAverage.push({country : _.clone(countries[x].name.country), value : _.clone((data.total.average.d))});
+                        this.rankings.sorted.recoveredAverage.push({country : _.clone(countries[x].name.country), value : _.clone((data.total.average.r))});
+
+                        this.rankings.sorted.deathsRate.push({country : _.clone(countries[x].name.country), value : _.clone(parseFloat(data.total.rate.d))});
+                        this.rankings.sorted.recoveredRate.push({country : _.clone(countries[x].name.country), value : _.clone(parseFloat(data.total.rate.r))});
+
+                        this.rankings.sorted.population.push({country : _.clone(countries[x].name.country), value : _.clone(parseInt(data.population))});
+
+                        this.rankings.sorted.growthFactor.push({country : _.clone(countries[x].name.country), value : _.clone((data.total.growth.c))});
+                    }
+
+                    // Populate the states within the country
+                    if(countries_states && countries_states[countries[x].name.country] && countries_states[countries[x].name.country].length > 1)
+                    {
+                        for(var y in countries_states[countries[x].name.country])
+                        {
+                            if(countries_states[countries[x].name.country][y] && countries_states[countries[x].name.country][y] !== '(Unspecified)')
+                            {
+                                // this.assembleDataset({
+                                //     country: countries[x].name,
+                                //     state: countries_states[countries[x].name][y]
+                                // });
+                                // setTimeout(function(){
+                                //     self.assembleDataset({
+                                //         country: countries[x].name,
+                                //         state: countries_states[countries[x].name.country][y]
+                                //     })
+                                // },1);
+                            }
+                        }
+                    }
                 }
+
+                // Sort the ranking data and reorganise the index
+
+                for(var x in this.rankings.sorted)
+                {
+                    var key = x;
+                    var sorted = this.rankings.sorted[x].sort(function (a, b) {
+                        if(key === 'country')
+                        {
+                            return a.country.toUpperCase() > b.country.toUpperCase() ? 1 : -1;
+                        }
+                        else
+                        {
+                            return a.value < b.value ? 1 : -1;
+                        }
+                    });
+
+                    this.rankings.sorted[x] = _.cloneDeep(sorted);
+
+                    var count = 0;
+                    for(var y in this.rankings.sorted[x])
+                    {
+                        if(excluded.indexOf(this.rankings.sorted[x][y].country) === -1)
+                        {
+                            count++;
+                            this.rankings.positions[x][this.rankings.sorted[x][y].country] = count;
+                        }
+                    }
+                }
+
+                this.draw_sorted_countries();
+                // this.draw_excluded_countries();
             },
+            get_rank(country)
+            {
+                if(country)
+                {
+                    if(this.rankings.positions && this.sort_stats && this.sort_stats.key && this.rankings.positions[this.sort_stats.key] && this.rankings.positions[this.sort_stats.key][country])
+                    {
+                        return this.rankings.positions[this.sort_stats.key][country];
+                    }
+                }
+                return 0;
+            }
         },
         computed: {
             ...mapGetters({
@@ -1263,8 +1707,6 @@
                 {
                     this.ui.content.selectedTab = 'dashboard';
                 }
-                console.log('view');
-                console.log(this.ui.content.selectedTab);
                 return this.ui.content.selectedTab;
             },
             loading()
@@ -1287,38 +1729,7 @@
             },
             countries_sorted()
             {
-                var sort = this.sort_stats;
-                var data = _.clone(this.countries_and_stats());
-                return data.sort(function (a, b) {
-                    if (sort.key == 'country')
-                    {
-                        if (sort.order == 'asc')
-                            return a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1;
-                        else
-                            return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
-                    }
-
-                    else if (sort.key == 'confirmed') {
-                        if (sort.order == 'desc')
-                            return parseInt(a.total.confirmed) < parseInt(b.total.confirmed) ? 1 : -1;
-                        else
-                            return parseInt(a.total.confirmed) > parseInt(b.total.confirmed) ? 1 : -1;
-                    }
-
-                    else if (sort.key == 'deaths') {
-                        if (sort.order == 'desc')
-                            return parseInt(a.total.deaths) < parseInt(b.total.deaths) ? 1 : -1;
-                        else
-                            return parseInt(a.total.deaths) > parseInt(b.total.deaths) ? 1 : -1;
-                    }
-
-                    else if (sort.key == 'recovered') {
-                        if (sort.order == 'desc')
-                            return parseInt(a.total.recovered) < parseInt(b.total.recovered) ? 1 : -1;
-                        else
-                            return parseInt(a.total.recovered) > parseInt(b.total.recovered) ? 1 : -1;
-                    }
-                });
+                return this.sorted_countries_list;
 
             },
             loaded()
@@ -1355,6 +1766,14 @@
                 {
                     this.preProcessData();
                     this.processGovtResponse();
+                }
+            },
+            sort_stats:
+            {
+                deep: true,
+                handler()
+                {
+                    this.draw_sorted_countries();
                 }
             }
         }

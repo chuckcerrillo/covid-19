@@ -70,10 +70,10 @@
 </template>
 
 <script>
-    import ComparePolicies from "../components/ComparePolicies";
+    import ComparePolicies from "../components/policies/ComparePolicies";
     import moment from 'moment';
     import simplebar from 'simplebar-vue';
-    import GovtResponse from "../components/GovtResponse";
+    import GovtResponse from "../components/policies/GovtResponse";
 
     export default {
         name: "PoliciesView",
