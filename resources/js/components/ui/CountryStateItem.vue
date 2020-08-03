@@ -119,6 +119,7 @@
             'settings',
             'fields',
             'rank',
+            'favourite',
         ],
         data(){
             return {

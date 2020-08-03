@@ -403,6 +403,7 @@
                 }
 
                 localStorage.favourites = JSON.stringify(favourites);
+                this.$emit('updateFavourites',true);
             },
             findFavourite(search)
             {

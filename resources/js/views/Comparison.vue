@@ -55,6 +55,7 @@
                     :compare="compare"
                     :countries_states="countries_states"
                     :rankings="rankings"
+                    :events="events"
                 />
                 <SidebarMobile
                     class="xl:hidden"
@@ -67,6 +68,7 @@
                     :compare="compare"
                     :countries_states="countries_states"
                     :rankings="rankings"
+                    :events="events"
                     v-on:removeAllCompare="removeAllCompare"
                 />
 
@@ -116,6 +118,7 @@
                                     :rankings="rankings"
                                     v-on:updateCompare="emitCompare"
                                     v-on:updateSelected="updateSelected"
+                                    v-on:updateFavourites="updateFavourites"
                                 />
 
                             <keep-alive>
@@ -346,6 +349,9 @@
                     'MS Zaandam',
                 ],
                 sidebar_list: [],
+                events: {
+                    updateFavourites: 0,
+                }
             }
         },
         methods: {
@@ -1652,6 +1658,12 @@
                     }
                 }
                 return 0;
+            },
+            updateFavourites()
+            {
+                this.events.updateFavourites += 1;
+                console.log(this.events);
+                console.log('Comparison - trigger update event');
             }
         },
         computed: {

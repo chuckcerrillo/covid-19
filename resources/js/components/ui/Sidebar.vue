@@ -55,7 +55,21 @@
             <div class="w-full h-full relative">
                 <simplebar class="top-0 right-0 bottom-0 left-0" style="position:absolute">
                     <CountryStateItem
-                        v-for="(data,key,index) in countries_sorted"
+                        v-for="(data,key,index) in countries_favourite"
+                        v-on:selectCountry="selectCountry"
+                        :data="data"
+                        :key="key + '-faved'"
+                        :country_key="key"
+                        :rank="get_rank(data.name.country)"
+                        :compare="compare"
+                        :fields="active"
+                        :metrics="metrics"
+                        :favourite="true"
+                        :settings="{dashboard:false}"
+                    />
+
+                    <CountryStateItem
+                        v-for="(data,key,index) in countries_not_favourite"
                         v-on:selectCountry="selectCountry"
                         :data="data"
                         :key="key"
@@ -64,6 +78,7 @@
                         :compare="compare"
                         :fields="active"
                         :metrics="metrics"
+                        :favourite="false"
                         :settings="{dashboard:false}"
                     />
                 </simplebar>
@@ -122,6 +137,7 @@
             'selectCountry',
             'compare',
             'rankings',
+            'events',
         ],
         data(){
             return {
@@ -206,9 +222,59 @@
                 return false;
             }
         },
+        computed:
+        {
+            countries_favourite()
+            {
+                let temp = this.events.updateFavourites;
+                let data = localStorage.getItem('favourites');
+                let favourites = [];
+                if (data && data.length > 2)
+                {
+                    let saved_favourites = JSON.parse(data);
+                    for(let x in saved_favourites)
+                    {
+                        for(let y in this.countries_sorted)
+                        {
+                            if(this.countries_sorted[y].name.country === saved_favourites[x].country)
+                            {
+                                favourites.push(_.cloneDeep(this.countries_sorted[y]));
+                            }
+                        }
+                    }
+                }
+                return favourites;
+            },
+            countries_not_favourite()
+            {
+                let favourites = this.countries_favourite;
+                let found = false;
+                let data = [];
+
+                for(let x in this.countries_sorted)
+                {
+                    for(let y in favourites)
+                    {
+                        if(this.countries_sorted[x].id === favourites[y].id)
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if(found === true)
+                    {
+                        found = false;
+                        continue;
+                    }
+                    data.push(_.cloneDeep(this.countries_sorted[x]));
+                }
+                return data;
+            }
+        },
         mounted()
         {
-        }
+        },
     }
 </script>
 
