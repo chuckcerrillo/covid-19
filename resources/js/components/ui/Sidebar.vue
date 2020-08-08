@@ -36,8 +36,12 @@
                         <div class="my-2 text-xs text-right">Sorting by {{sort_stats.key}} {{sort_stats.order}}</div>
                     </div>
                 </div>
-                <div class="w-full p-2">
-                    <div><input class="w-full border p-1 rounded border-lightslab focus:border-heading focus:bg-hoverslab bg-transparent text-xs focus:outline-none text-white placeholder-lightslab focus:placeholder-heading" type="text" name="search-country" placeholder="Search" v-model="searchFilter" /></div>
+                <div class="w-full p-2 relative">
+                    <div class="relative">
+                        <input class="w-full border p-1 rounded border-lightslab focus:border-heading focus:bg-hoverslab bg-transparent text-xs focus:outline-none text-white placeholder-lightslab focus:placeholder-heading" type="text" name="search-country" placeholder="Search" v-model="searchFilter" />
+                        <div @click="searchFilter = ''" v-show="searchFilter.length > 0" class="absolute right-0 inset-y-0 cursor-pointer hover:text-white mr-2 mt-1 text-xs">clear</div>
+                    </div>
+
                 </div>
                 <div class="flex font-bold py-2 text-xs items-center bg-slab-primary">
                     <div class="w-10 p-2 m-1 ml-0">

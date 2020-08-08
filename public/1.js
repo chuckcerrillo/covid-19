@@ -299,6 +299,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -1030,8 +1034,8 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "w-full p-2" }, [
-            _c("div", [
+          _c("div", { staticClass: "w-full p-2 relative" }, [
+            _c("div", { staticClass: "relative" }, [
               _c("input", {
                 directives: [
                   {
@@ -1057,7 +1061,29 @@ var render = function() {
                     _vm.searchFilter = $event.target.value
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.searchFilter.length > 0,
+                      expression: "searchFilter.length > 0"
+                    }
+                  ],
+                  staticClass:
+                    "absolute right-0 inset-y-0 cursor-pointer hover:text-white mr-2 mt-1 text-xs",
+                  on: {
+                    click: function($event) {
+                      _vm.searchFilter = ""
+                    }
+                  }
+                },
+                [_vm._v("clear")]
+              )
             ])
           ]),
           _vm._v(" "),
