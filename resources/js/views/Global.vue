@@ -349,7 +349,6 @@
         },
         mounted()
         {
-
             axios.get('/api/stats/rankings')
                 .then(res => {
                     this.ajax.rankings = res.data;

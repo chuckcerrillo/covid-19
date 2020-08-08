@@ -1,9 +1,11 @@
 <template>
     <div class="bg-darkslab xl:bg-slab text-white text-left">
         <div class="py-2 px-2 flex text-heading items-center justify-between xl:justify-center">
-            <router-link to="/" class="flex items-center"><img src="/img/logo/logo-140.png" style="height:40px" />
-                <div class="xl:w-128 py-2 px-2 font-bold mx-2">COVID-19 Tracker <sup class="font-normal">beta</sup></div>
-            </router-link>
+            <div>
+                <router-link to="/" class="flex items-center"><img src="/img/logo/logo-140.png" style="height:40px" />
+                    <div class="xl:w-128 py-2 px-2 font-bold mx-2">COVID-19 Tracker <sup class="font-normal">beta</sup></div>
+                </router-link>
+            </div>
             <div class="hidden xl:hidden">
                 <svg class="text-lightlabel h-8 fill-current" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 28 28">
                     <g>

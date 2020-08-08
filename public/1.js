@@ -121,7 +121,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CountryStateItem",
-  props: ['data', 'country_key', 'compare', 'sidebarExpanded', 'settings', 'fields', 'rank'],
+  props: ['data', 'country_key', 'compare', 'sidebarExpanded', 'settings', 'fields', 'rank', 'favourite'],
   data: function data() {
     return {
       'expanded': false
@@ -278,6 +278,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -287,7 +312,7 @@ __webpack_require__.r(__webpack_exports__);
     simplebar: simplebar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     CountryStateItem: _CountryStateItem__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  props: ['global', 'sort_stats', 'countriesIndex', 'countries_sorted', 'countries_states', 'selectCountry', 'compare', 'rankings'],
+  props: ['global', 'sort_stats', 'countriesIndex', 'countries_sorted', 'countries_states', 'selectCountry', 'compare', 'rankings', 'events'],
   data: function data() {
     return {
       ui: {
@@ -313,7 +338,8 @@ __webpack_require__.r(__webpack_exports__);
         'growthFactor': 'Growth Factor',
         'population': 'Population'
       },
-      active: ['confirmed', 'deaths', 'recovered']
+      active: ['confirmed', 'deaths', 'recovered'],
+      searchFilter: ''
     };
   },
   methods: {
@@ -348,6 +374,62 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return false;
+    }
+  },
+  computed: {
+    countries_favourite: function countries_favourite() {
+      var temp = this.events.updateFavourites;
+      var data = localStorage.getItem('favourites');
+      var favourites = [];
+      var regexp = new RegExp(this.searchFilter, 'i');
+
+      if (data && data.length > 2) {
+        var saved_favourites = JSON.parse(data);
+
+        for (var x in saved_favourites) {
+          for (var y in this.countries_sorted) {
+            if (this.countries_sorted[y].name.country === saved_favourites[x].country) {
+              // search pattern not matched
+              if (this.searchFilter && this.searchFilter.length > 0 && !regexp.test(this.countries_sorted[y].name.country)) {
+                continue;
+              }
+
+              favourites.push(_.cloneDeep(this.countries_sorted[y]));
+            }
+          }
+        }
+      }
+
+      return favourites;
+    },
+    countries_not_favourite: function countries_not_favourite() {
+      var favourites = this.countries_favourite;
+      var found = false;
+      var data = [];
+      var regexp = new RegExp(this.searchFilter, 'i');
+
+      for (var x in this.countries_sorted) {
+        for (var y in favourites) {
+          if (this.countries_sorted[x].id === favourites[y].id) {
+            found = true;
+            break;
+          }
+        }
+
+        if (found === true) {
+          found = false;
+          continue;
+        } // search pattern not matched
+
+
+        if (this.searchFilter && this.searchFilter.length > 0 && !regexp.test(this.countries_sorted[x].name.country)) {
+          continue;
+        }
+
+        data.push(_.cloneDeep(this.countries_sorted[x]));
+      }
+
+      return data;
     }
   },
   mounted: function mounted() {}
@@ -952,6 +1034,59 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
+          _c("div", { staticClass: "w-full p-2 relative" }, [
+            _c("div", { staticClass: "relative" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.searchFilter,
+                    expression: "searchFilter"
+                  }
+                ],
+                staticClass:
+                  "w-full border p-1 rounded border-lightslab focus:border-heading focus:bg-hoverslab bg-transparent text-xs focus:outline-none text-white placeholder-lightslab focus:placeholder-heading",
+                attrs: {
+                  type: "text",
+                  name: "search-country",
+                  placeholder: "Search"
+                },
+                domProps: { value: _vm.searchFilter },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.searchFilter = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.searchFilter.length > 0,
+                      expression: "searchFilter.length > 0"
+                    }
+                  ],
+                  staticClass:
+                    "absolute right-0 inset-y-0 cursor-pointer hover:text-white mr-2 mt-1 text-xs",
+                  on: {
+                    click: function($event) {
+                      _vm.searchFilter = ""
+                    }
+                  }
+                },
+                [_vm._v("clear")]
+              )
+            ])
+          ]),
+          _vm._v(" "),
           _c(
             "div",
             {
@@ -1008,6 +1143,38 @@ var render = function() {
         _vm._v(" "),
         _c(
           "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.countries_favourite.length > 0,
+                expression: "countries_favourite.length > 0"
+              }
+            ],
+            staticClass: "w-full border border-heading"
+          },
+          _vm._l(_vm.countries_favourite, function(data, key, index) {
+            return _c("CountryStateItem", {
+              key: key + "-faved",
+              attrs: {
+                data: data,
+                country_key: key,
+                rank: _vm.get_rank(data.name.country),
+                compare: _vm.compare,
+                fields: _vm.active,
+                metrics: _vm.metrics,
+                favourite: true,
+                settings: { dashboard: false }
+              },
+              on: { selectCountry: _vm.selectCountry }
+            })
+          }),
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
           { staticClass: "w-full h-full relative" },
           [
             _c(
@@ -1016,7 +1183,7 @@ var render = function() {
                 staticClass: "top-0 right-0 bottom-0 left-0",
                 staticStyle: { position: "absolute" }
               },
-              _vm._l(_vm.countries_sorted, function(data, key, index) {
+              _vm._l(_vm.countries_not_favourite, function(data, key, index) {
                 return _c("CountryStateItem", {
                   key: key,
                   attrs: {
@@ -1026,6 +1193,7 @@ var render = function() {
                     compare: _vm.compare,
                     fields: _vm.active,
                     metrics: _vm.metrics,
+                    favourite: false,
                     settings: { dashboard: false }
                   },
                   on: { selectCountry: _vm.selectCountry }

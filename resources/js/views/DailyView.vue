@@ -21,6 +21,7 @@
                         v-if="row"
                         v-once
                         v-on:removeCompare="removeCompare"
+                        v-on:updateFavourites="updateFavourites"
                         :data="comparisonData[key]"
                         :settings="{absolute:true, solo:false}"
                         v-once
@@ -51,6 +52,10 @@
         },
         methods:
         {
+            updateFavourites()
+            {
+                this.$emit('updateFavourites',true);
+            },
             removeCompare(item)
             {
                 var found = this.findCompare(item);

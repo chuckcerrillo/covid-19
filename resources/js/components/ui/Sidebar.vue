@@ -36,6 +36,13 @@
                         <div class="my-2 text-xs text-right">Sorting by {{sort_stats.key}} {{sort_stats.order}}</div>
                     </div>
                 </div>
+                <div class="w-full p-2 relative">
+                    <div class="relative">
+                        <input class="w-full border p-1 rounded border-lightslab focus:border-heading focus:bg-hoverslab bg-transparent text-xs focus:outline-none text-white placeholder-lightslab focus:placeholder-heading" type="text" name="search-country" placeholder="Search" v-model="searchFilter" />
+                        <div @click="searchFilter = ''" v-show="searchFilter.length > 0" class="absolute right-0 inset-y-0 cursor-pointer hover:text-white mr-2 mt-1 text-xs">clear</div>
+                    </div>
+
+                </div>
                 <div class="flex font-bold py-2 text-xs items-center bg-slab-primary">
                     <div class="w-10 p-2 m-1 ml-0">
                     </div>
@@ -52,10 +59,27 @@
                     </div>
                 </div>
             </div>
+            <div class="w-full border border-heading" v-show="countries_favourite.length > 0">
+                <CountryStateItem
+                    v-for="(data,key,index) in countries_favourite"
+                    v-on:selectCountry="selectCountry"
+                    :data="data"
+                    :key="key + '-faved'"
+                    :country_key="key"
+                    :rank="get_rank(data.name.country)"
+                    :compare="compare"
+                    :fields="active"
+                    :metrics="metrics"
+                    :favourite="true"
+                    :settings="{dashboard:false}"
+                />
+            </div>
             <div class="w-full h-full relative">
                 <simplebar class="top-0 right-0 bottom-0 left-0" style="position:absolute">
+
+
                     <CountryStateItem
-                        v-for="(data,key,index) in countries_sorted"
+                        v-for="(data,key,index) in countries_not_favourite"
                         v-on:selectCountry="selectCountry"
                         :data="data"
                         :key="key"
@@ -64,6 +88,7 @@
                         :compare="compare"
                         :fields="active"
                         :metrics="metrics"
+                        :favourite="false"
                         :settings="{dashboard:false}"
                     />
                 </simplebar>
@@ -122,6 +147,7 @@
             'selectCountry',
             'compare',
             'rankings',
+            'events',
         ],
         data(){
             return {
@@ -152,8 +178,8 @@
                     'confirmed',
                     'deaths',
                     'recovered',
-                ]
-
+                ],
+                searchFilter: '',
             }
         },
         methods:
@@ -206,9 +232,73 @@
                 return false;
             }
         },
+        computed:
+        {
+            countries_favourite()
+            {
+                let temp = this.events.updateFavourites;
+                let data = localStorage.getItem('favourites');
+                let favourites = [];
+                let regexp = new RegExp(this.searchFilter,'i');
+
+                if (data && data.length > 2)
+                {
+                    let saved_favourites = JSON.parse(data);
+                    for(let x in saved_favourites)
+                    {
+                        for(let y in this.countries_sorted)
+                        {
+                            if(this.countries_sorted[y].name.country === saved_favourites[x].country)
+                            {
+                                // search pattern not matched
+                                if(this.searchFilter && this.searchFilter.length > 0 && !regexp.test(this.countries_sorted[y].name.country))
+                                {
+                                    continue;
+                                }
+                                favourites.push(_.cloneDeep(this.countries_sorted[y]));
+                            }
+                        }
+                    }
+                }
+                return favourites;
+            },
+            countries_not_favourite()
+            {
+                let favourites = this.countries_favourite;
+                let found = false;
+                let data = [];
+                let regexp = new RegExp(this.searchFilter,'i');
+
+                for(let x in this.countries_sorted)
+                {
+                    for(let y in favourites)
+                    {
+                        if(this.countries_sorted[x].id === favourites[y].id)
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if(found === true)
+                    {
+                        found = false;
+                        continue;
+                    }
+
+                    // search pattern not matched
+                    if(this.searchFilter && this.searchFilter.length > 0 && !regexp.test(this.countries_sorted[x].name.country))
+                    {
+                        continue;
+                    }
+                    data.push(_.cloneDeep(this.countries_sorted[x]));
+                }
+                return data;
+            }
+        },
         mounted()
         {
-        }
+        },
     }
 </script>
 

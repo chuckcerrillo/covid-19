@@ -55,6 +55,7 @@
                     :compare="compare"
                     :countries_states="countries_states"
                     :rankings="rankings"
+                    :events="events"
                 />
                 <SidebarMobile
                     class="xl:hidden"
@@ -67,6 +68,7 @@
                     :compare="compare"
                     :countries_states="countries_states"
                     :rankings="rankings"
+                    :events="events"
                     v-on:removeAllCompare="removeAllCompare"
                 />
 
@@ -116,6 +118,7 @@
                                     :rankings="rankings"
                                     v-on:updateCompare="emitCompare"
                                     v-on:updateSelected="updateSelected"
+                                    v-on:updateFavourites="updateFavourites"
                                 />
 
                             <keep-alive>
@@ -346,9 +349,43 @@
                     'MS Zaandam',
                 ],
                 sidebar_list: [],
+                events: {
+                    updateFavourites: 0,
+                }
             }
         },
-        methods:{
+        methods: {
+            localStorageReady() {
+
+                console.log('Favourite countries');
+                console.log(localStorage.favourites);
+
+                if (localStorage.favourites) {
+
+
+                } else {
+                    console.log('No favourites yet');
+                }
+
+                // console.log('Selected for comparison');
+                // console.log(localStorage.compare);
+
+                if (localStorage.compare && localStorage.compare.length > 0) {
+                    // console.log('compare is not blank')
+                    // console.log(localStorage.compare);
+                    // if(JSON.parse(localStorage.compare))
+                    // {
+                    //     // this.compare = compare;
+                    //     var compare = JSON.parse(localStorage.compare);
+                    //     console.log(compare);
+                    //     for(var row of compare)
+                    //     {
+                    //         this.compare.push(row);
+                    //     }
+                    //
+                    // }
+                }
+            },
             prepare_map_data()
             {
                 if(!this.map_loaded)
@@ -1152,6 +1189,12 @@
                     {
                         this.updateSelected(this.getLastCompareItem());
                     }
+                    // var data = [];
+                    // for(var row of this.compare)
+                    // {
+                    //     data.push(row);
+                    // }
+                    // localStorage.compare = JSON.stringify(this.compare);
                 }
 
                 this.$emit('updateCompare',this.compare);
@@ -1339,8 +1382,15 @@
                     }
 
                     // this.updateSelected(this.getLastCompareItem());
+
+                    // var data = [];
+                    // for(var row of this.compare)
+                    // {
+                    //     data.push(row);
+                    // }
+                    // localStorage.compare = JSON.stringify(this.compare);
                 }
-                this.$emit('updateCompare',this.compare);
+                this.$emit('updateCompare',_.cloneDeep(this.compare));
             },
             countries_states()
             {
@@ -1489,6 +1539,12 @@
             },
             emitCompare(item)
             {
+                // var data = [];
+                // for(var row of this.compare)
+                // {
+                //     data.push(row);
+                // }
+                // localStorage.compare = JSON.stringify(this.compare);
                 this.$emit('updateCompare',item);
             },
             preProcessData()
@@ -1602,6 +1658,12 @@
                     }
                 }
                 return 0;
+            },
+            updateFavourites()
+            {
+                this.events.updateFavourites += 1;
+                console.log(this.events);
+                console.log('Comparison - trigger update event');
             }
         },
         computed: {
@@ -1689,6 +1751,9 @@
                     var self = this;
                     setTimeout(function(){
                         self.ajax_loading.final = true;
+                        setTimeout(function() {
+                            self.localStorageReady();
+                        },100);
                     },100);
                 }
                 else if(this.countriesStatus == 'success' && this.countryCasesStatus == 'success' && this.stateCasesStatus == 'success' && this.ajax_loading.oxford && this.ajax_loading.final)
