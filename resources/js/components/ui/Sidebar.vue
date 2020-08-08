@@ -36,6 +36,9 @@
                         <div class="my-2 text-xs text-right">Sorting by {{sort_stats.key}} {{sort_stats.order}}</div>
                     </div>
                 </div>
+                <div class="w-full p-2">
+                    <div><input class="w-full border p-1 rounded border-lightslab focus:border-heading focus:bg-hoverslab bg-transparent text-xs focus:outline-none text-white placeholder-lightslab focus:placeholder-heading" type="text" name="search-country" placeholder="Search" v-model="searchFilter" /></div>
+                </div>
                 <div class="flex font-bold py-2 text-xs items-center bg-slab-primary">
                     <div class="w-10 p-2 m-1 ml-0">
                     </div>
@@ -52,21 +55,24 @@
                     </div>
                 </div>
             </div>
+            <div class="w-full border border-heading" v-show="countries_favourite.length > 0">
+                <CountryStateItem
+                    v-for="(data,key,index) in countries_favourite"
+                    v-on:selectCountry="selectCountry"
+                    :data="data"
+                    :key="key + '-faved'"
+                    :country_key="key"
+                    :rank="get_rank(data.name.country)"
+                    :compare="compare"
+                    :fields="active"
+                    :metrics="metrics"
+                    :favourite="true"
+                    :settings="{dashboard:false}"
+                />
+            </div>
             <div class="w-full h-full relative">
                 <simplebar class="top-0 right-0 bottom-0 left-0" style="position:absolute">
-                    <CountryStateItem
-                        v-for="(data,key,index) in countries_favourite"
-                        v-on:selectCountry="selectCountry"
-                        :data="data"
-                        :key="key + '-faved'"
-                        :country_key="key"
-                        :rank="get_rank(data.name.country)"
-                        :compare="compare"
-                        :fields="active"
-                        :metrics="metrics"
-                        :favourite="true"
-                        :settings="{dashboard:false}"
-                    />
+
 
                     <CountryStateItem
                         v-for="(data,key,index) in countries_not_favourite"
@@ -168,8 +174,8 @@
                     'confirmed',
                     'deaths',
                     'recovered',
-                ]
-
+                ],
+                searchFilter: '',
             }
         },
         methods:
@@ -229,6 +235,8 @@
                 let temp = this.events.updateFavourites;
                 let data = localStorage.getItem('favourites');
                 let favourites = [];
+                let regexp = new RegExp(this.searchFilter,'i');
+
                 if (data && data.length > 2)
                 {
                     let saved_favourites = JSON.parse(data);
@@ -238,6 +246,11 @@
                         {
                             if(this.countries_sorted[y].name.country === saved_favourites[x].country)
                             {
+                                // search pattern not matched
+                                if(this.searchFilter && this.searchFilter.length > 0 && !regexp.test(this.countries_sorted[y].name.country))
+                                {
+                                    continue;
+                                }
                                 favourites.push(_.cloneDeep(this.countries_sorted[y]));
                             }
                         }
@@ -250,6 +263,7 @@
                 let favourites = this.countries_favourite;
                 let found = false;
                 let data = [];
+                let regexp = new RegExp(this.searchFilter,'i');
 
                 for(let x in this.countries_sorted)
                 {
@@ -265,6 +279,12 @@
                     if(found === true)
                     {
                         found = false;
+                        continue;
+                    }
+
+                    // search pattern not matched
+                    if(this.searchFilter && this.searchFilter.length > 0 && !regexp.test(this.countries_sorted[x].name.country))
+                    {
                         continue;
                     }
                     data.push(_.cloneDeep(this.countries_sorted[x]));
